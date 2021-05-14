@@ -26,5 +26,12 @@ namespace VivedyWebApp.Controllers
 
             return View();
         }
+
+        public ActionResult Privacy()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
     }
 }
