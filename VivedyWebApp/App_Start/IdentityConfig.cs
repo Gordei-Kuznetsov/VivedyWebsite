@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -19,6 +21,13 @@ namespace VivedyWebApp
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("vivedycinemas@gmail.com", "Techtorium12345"),
+                EnableSsl = true,
+            };
+            smtpClient.Send("gordei.ku.ro.ki@gmail.com", "Gordei Kuznetsov", "Reseting Password", "This is a test email via SMTP");
             return Task.FromResult(0);
         }
     }

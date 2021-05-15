@@ -29,5 +29,9 @@ namespace VivedyWebApp.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Rotation> Rotations { get; set; }
     }
 }

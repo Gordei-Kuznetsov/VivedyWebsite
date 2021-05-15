@@ -15,6 +15,6 @@ namespace VivedyWebApp.Models
         public string RotationId { get; set; }
         public Rotation Rotation { get; set; }
         public string UserId { get; set; }
-        public  ApplicationUser User { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

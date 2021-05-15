@@ -105,3 +105,7 @@ C:\Users\64211\source\repos\Vivedy Website\VivedyWebApp\obj\Debug\VivedyWebApp.c
 C:\Users\64211\source\repos\Vivedy Website\VivedyWebApp\obj\Debug\VivedyWebApp.csproj.CopyComplete
 C:\Users\64211\source\repos\Vivedy Website\VivedyWebApp\obj\Debug\VivedyWebApp.dll
 C:\Users\64211\source\repos\Vivedy Website\VivedyWebApp\obj\Debug\VivedyWebApp.pdb
+C:\Users\64211\source\repos\Vivedy Website\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.InitialCreate.resources
+C:\Users\64211\source\repos\Vivedy Website\VivedyWebApp\obj\Debug\VivedyWebApp.csproj.GenerateResource.cache
+C:\Users\64211\source\repos\Vivedy Website\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.AddedModelsRemovedManage.resources
+C:\Users\64211\source\repos\Vivedy Website\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.RestoredResetPasswordModel.resources
