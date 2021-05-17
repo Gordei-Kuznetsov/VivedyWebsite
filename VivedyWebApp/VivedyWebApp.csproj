@@ -170,6 +170,7 @@
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
+    <Compile Include="Controllers\RotationsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -245,6 +246,11 @@
     <Content Include="Views\Movies\Details.cshtml" />
     <Content Include="Views\Movies\Edit.cshtml" />
     <Content Include="Views\Movies\Index.cshtml" />
+    <Content Include="Views\Rotations\Create.cshtml" />
+    <Content Include="Views\Rotations\Delete.cshtml" />
+    <Content Include="Views\Rotations\Details.cshtml" />
+    <Content Include="Views\Rotations\Edit.cshtml" />
+    <Content Include="Views\Rotations\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
