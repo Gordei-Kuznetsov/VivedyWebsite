@@ -4,13 +4,6 @@ using Microsoft.AspNet.Identity;
 
 namespace VivedyWebApp.Models
 {
-    public class ForgotViewModel
-    {
-        [Required]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-    }
-
     public class LoginViewModel
     {
         [Required]
@@ -49,6 +42,7 @@ namespace VivedyWebApp.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
+
 
     public class ForgotPasswordViewModel
     {
