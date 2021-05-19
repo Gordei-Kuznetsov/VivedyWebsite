@@ -169,8 +169,6 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MoviesController.cs" />
-    <Compile Include="Controllers\RotationsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -182,13 +180,15 @@
     <Compile Include="Migrations\202105150640235_AddedModelsRemovedManage.Designer.cs">
       <DependentUpon>202105150640235_AddedModelsRemovedManage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105150728241_RestoredResetPasswordModel.cs" />
-    <Compile Include="Migrations\202105150728241_RestoredResetPasswordModel.Designer.cs">
-      <DependentUpon>202105150728241_RestoredResetPasswordModel.cs</DependentUpon>
+    <Compile Include="Migrations\202105182302105_ModifiedKeyAttributes.cs" />
+    <Compile Include="Migrations\202105182302105_ModifiedKeyAttributes.Designer.cs">
+      <DependentUpon>202105182302105_ModifiedKeyAttributes.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountsViewModels.cs" />
-    <Compile Include="Models\Bookings.cs" />
+    <Compile Include="Models\AdminViewModels.cs" />
+    <Compile Include="Models\Booking.cs" />
+    <Compile Include="Models\MoviesViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Rotation.cs" />
@@ -241,19 +241,11 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Privacy.cshtml" />
-    <Content Include="Views\Movies\Create.cshtml" />
-    <Content Include="Views\Movies\Delete.cshtml" />
-    <Content Include="Views\Movies\Details.cshtml" />
-    <Content Include="Views\Movies\Edit.cshtml" />
-    <Content Include="Views\Movies\Index.cshtml" />
-    <Content Include="Views\Rotations\Create.cshtml" />
-    <Content Include="Views\Rotations\Delete.cshtml" />
-    <Content Include="Views\Rotations\Details.cshtml" />
-    <Content Include="Views\Rotations\Edit.cshtml" />
-    <Content Include="Views\Rotations\Index.cshtml" />
+    <Content Include="Views\Accounts\EditDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -275,8 +267,8 @@
     <EmbeddedResource Include="Migrations\202105150640235_AddedModelsRemovedManage.resx">
       <DependentUpon>202105150640235_AddedModelsRemovedManage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105150728241_RestoredResetPasswordModel.resx">
-      <DependentUpon>202105150728241_RestoredResetPasswordModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202105182302105_ModifiedKeyAttributes.resx">
+      <DependentUpon>202105182302105_ModifiedKeyAttributes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

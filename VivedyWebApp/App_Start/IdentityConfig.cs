@@ -21,6 +21,7 @@ namespace VivedyWebApp
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
+            /*
             var smtpClient = new SmtpClient("smtp.gmail.com")
             {
                 Port = 587,
@@ -28,6 +29,7 @@ namespace VivedyWebApp
                 EnableSsl = true,
             };
             smtpClient.Send("gordei.ku.ro.ki@gmail.com", "Gordei Kuznetsov", "Reseting Password", "This is a test email via SMTP");
+            */
             return Task.FromResult(0);
         }
     }
