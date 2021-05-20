@@ -214,9 +214,9 @@ C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\bin\Microsoft.CodeDom
 C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.csprojAssemblyReference.cache
 C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.InitialCreate.resources
 C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.AddedModelsRemovedManage.resources
-C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.RestoredResetPasswordModel.resources
 C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.csproj.GenerateResource.cache
 C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.csproj.CopyComplete
 C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.dll
 C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.pdb
 C:\Users\64211\source\repos\Vivedy Website\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.ModifiedKeyAttributes.resources
+C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.ModifiedKeyAttributes.resources

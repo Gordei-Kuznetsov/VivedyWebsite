@@ -18,7 +18,7 @@
     <Controller_SelectedScaffolderCategoryPath>root/Controller</Controller_SelectedScaffolderCategoryPath>
     <WebStackScaffolding_ControllerDialogWidth>600</WebStackScaffolding_ControllerDialogWidth>
     <WebStackScaffolding_IsAsyncSelected>True</WebStackScaffolding_IsAsyncSelected>
-    <_SelectedScaffolderID>MvcControllerWithContextScaffolder</_SelectedScaffolderID>
+    <_SelectedScaffolderID>MvcViewScaffolder</_SelectedScaffolderID>
     <_SelectedScaffolderCategoryPath>root/Common</_SelectedScaffolderCategoryPath>
     <WebStackScaffolding_DbContextTypeFullName>VivedyWebApp.Models.ApplicationDbContext</WebStackScaffolding_DbContextTypeFullName>
     <WebStackScaffolding_IsViewGenerationSelected>True</WebStackScaffolding_IsViewGenerationSelected>
