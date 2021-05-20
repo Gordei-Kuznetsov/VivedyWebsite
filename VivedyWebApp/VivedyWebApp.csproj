@@ -185,6 +185,10 @@
     <Compile Include="Migrations\202105182302105_ModifiedKeyAttributes.Designer.cs">
       <DependentUpon>202105182302105_ModifiedKeyAttributes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105201119301_ChagedBookingModel.cs" />
+    <Compile Include="Migrations\202105201119301_ChagedBookingModel.Designer.cs">
+      <DependentUpon>202105201119301_ChagedBookingModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountsViewModels.cs" />
     <Compile Include="Models\AdminViewModels.cs" />
@@ -246,6 +250,9 @@
     <Content Include="Views\Movies\Details.cshtml" />
     <Content Include="Views\Movies\Index.cshtml" />
     <Content Include="Views\Movies\Booking.cshtml" />
+    <Content Include="Views\Movies\BookingConfirmation.cshtml" />
+    <Content Include="Views\Movies\CreateMovie.cshtml" />
+    <Content Include="Views\Movies\CreateRotation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -273,6 +280,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105182302105_ModifiedKeyAttributes.resx">
       <DependentUpon>202105182302105_ModifiedKeyAttributes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105201119301_ChagedBookingModel.resx">
+      <DependentUpon>202105201119301_ChagedBookingModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

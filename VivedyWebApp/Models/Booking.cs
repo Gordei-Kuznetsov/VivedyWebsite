@@ -18,6 +18,6 @@ namespace VivedyWebApp.Models
         [Required]
         public string RotationId { get; set; }
         [Required]
-        public string UserId { get; set; }
+        public string UserEmail { get; set; }
     }
 }
