@@ -1,41 +1,73 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title | Vivedy</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    <link rel="stylesheet" href="Content/all.min.css">
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Vivedy", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Movies", "Index", "Movies")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("Privacy", "Privacy", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-    </div>
+<!--class="ScrollHide"-->
 
+<body class="ScrollHide">
+
+    <!--style=" color: #A80000;"-->
+    <!-- Nav Bar start -->
+    <!--<nav class="navbar navbar-expand-lg navbar-red bg-primary">-->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+            @Html.ActionLink("VIVEDY", "Index", "Home", new { area = "" }, new { @class = "navbar-brand phenomena" })
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        @Html.ActionLink("Vivedy", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link ml-1 mr-1" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Movies", "Index", "Movies", routeValues: null, htmlAttributes: new { @class = "nav-link ml-1 mr-1" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("About", "About", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link ml-1 mr-1" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Contact", "Contact", "Home",routeValues: null, htmlAttributes: new { @class = "nav-link ml-1 mr-1" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Privacy", "Privacy", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link ml-1 mr-1" })
+                    </li>
+                    @Html.Partial("_LoginPartial")
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- Nav Bar End-->
+    <!-- Main Body start-->
+    @RenderBody()
+    <!-- Main Body End-->
+    <!-- Footer start -->
+    <footer class=" text-center fixed-bottom ">
+        <div class="container p-2">
+            <section>
+                <a><i class="fab fa-1x fa-facebook-f"></i></a>
+                <a><i class="fab fa-1x fa-twitter pr-3 pl-3"></i></a>
+                <a><i class="fab fa-1x fa-instagram"></i></a>
+            </section>
+        </div>
+        <div class="text-center p-3">
+            © 2021 Copyright:
+            @Html.ActionLink("Vivdey.com", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "text-light" })
+        </div>
+    </footer>
+    <!-- Footer End -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
+
 </html>

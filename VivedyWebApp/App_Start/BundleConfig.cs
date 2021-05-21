@@ -20,10 +20,12 @@ namespace VivedyWebApp
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+                      "~/Scripts/bootstrap.js",
+                      "~/Scripts/navbarred.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/vivedy-bootstrap.css",
+                      "~/Content/all.min.css",
                       "~/Content/site.css"));
         }
     }

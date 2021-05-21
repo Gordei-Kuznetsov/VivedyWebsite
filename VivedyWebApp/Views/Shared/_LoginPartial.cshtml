@@ -1,28 +1,30 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Accounts", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    if (User.IsInRole("Admin"))
+    {
+        <li class="nav-item">
+            @Html.ActionLink("Admin", "Index", "Admin", routeValues: null, htmlAttributes: new { id = "adminLink", @class = "nav-link" })
+        </li>
+    }
+    using (Html.BeginForm("LogOff", "Accounts", FormMethod.Post, new { id = "logoutForm" }))
     {
         @Html.AntiForgeryToken()
-
-        <ul class="nav navbar-nav navbar-right">
-            @if (User.IsInRole("Admin"))
-            {
-                <li>
-                    @Html.ActionLink("Admin", "Index", "Admin", routeValues: null, htmlAttributes: new { id = "adminLink" })
-                </li>
-            }
-            <li>
-                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Accounts", routeValues: null, htmlAttributes: new { title = "Accounts" })
-            </li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-        </ul>
+        <li class="nav-item">
+            <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+        </li>
     }
+    <li class="nav-item">
+        <a href="/Accounts" class="nav-link ml-1 mr-1"><i class="fas fa-2x fa-user-circle"></i></a>
+    </li>
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Accounts", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Accounts", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+    <li class="nav-item">
+        @Html.ActionLink("Register", "Register", "Accounts", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "nav-link" })
+    </li>
+    <li class="nav-item">
+        @Html.ActionLink("Log in", "Login", "Accounts", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })
+    </li>
 }
+
