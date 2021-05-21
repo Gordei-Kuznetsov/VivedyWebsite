@@ -28,6 +28,7 @@ namespace VivedyWebApp
             // Plug in your email service here to send an email.
             string from = "vivedycinemas@gmail.com"; //From address 
             MailMessage message = new MailMessage(from, to, subject, body);
+            message.IsBodyHtml = true;
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587); //Gmail smtp    
             NetworkCredential basicCredential1 = new NetworkCredential("vivedycinemas@gmail.com", "Techtorium12345");
             client.EnableSsl = true;
