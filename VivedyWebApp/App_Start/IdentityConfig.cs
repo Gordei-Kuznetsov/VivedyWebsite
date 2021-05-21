@@ -21,15 +21,27 @@ namespace VivedyWebApp
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            /*
-            var smtpClient = new SmtpClient("smtp.gmail.com")
+            return Task.FromResult(0);
+        }
+        public Task SendAsync(string to, string subject, string body)
+        {
+            // Plug in your email service here to send an email.
+            string from = "vivedycinemas@gmail.com"; //From address 
+            MailMessage message = new MailMessage(from, to, subject, body);
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587); //Gmail smtp    
+            NetworkCredential basicCredential1 = new NetworkCredential("vivedycinemas@gmail.com", "Techtorium12345");
+            client.EnableSsl = true;
+            client.UseDefaultCredentials = false;
+            client.Credentials = basicCredential1;
+            try
             {
-                Port = 587,
-                Credentials = new NetworkCredential("vivedycinemas@gmail.com", "Techtorium12345"),
-                EnableSsl = true,
-            };
-            smtpClient.Send("gordei.ku.ro.ki@gmail.com", "Gordei Kuznetsov", "Reseting Password", "This is a test email via SMTP");
-            */
+                client.Send(message);
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             return Task.FromResult(0);
         }
     }

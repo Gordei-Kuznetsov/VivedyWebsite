@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -72,6 +73,7 @@ namespace VivedyWebApp.Controllers
             {
                 return View(model);
             }
+            //var user = UserManager.FindByEmail(model.Email);
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
@@ -89,6 +91,8 @@ namespace VivedyWebApp.Controllers
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
+            ViewBag.ErrorMessage = "You have not confirmed your email. Please check your email box.";
+            return View("CustomError");
         }
 
         //
@@ -115,12 +119,15 @@ namespace VivedyWebApp.Controllers
                     var currentUser = UserManager.FindByEmail(user.Email);
                     var roleresult = UserManager.AddToRole(currentUser.Id, "Visitor");
 
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    //string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    //await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    //await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    string subject = "Sending Email Using Asp.Net & C#";
+                    string mailbody = "Thank you for regestering on our website. Please follow the link to confirm your email address " + callbackUrl;
+                    EmailService mailService = new EmailService();
+                    await mailService.SendAsync(user.Email, subject, mailbody);
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
@@ -171,7 +178,7 @@ namespace VivedyWebApp.Controllers
                 // Send an email with this link
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Accounts", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                //await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 return RedirectToAction("ForgotPasswordConfirmation", "Accounts");
             }
 
