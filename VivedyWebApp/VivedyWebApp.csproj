@@ -269,7 +269,8 @@
     <Content Include="Views\Movies\BookingConfirmation.cshtml" />
     <Content Include="Views\Movies\CreateMovie.cshtml" />
     <Content Include="Views\Movies\CreateRotation.cshtml" />
-    <Content Include="Views\Shared\CustomError.cshtml" />
+    <Content Include="Views\Accounts\ResetPassword.cshtml" />
+    <Content Include="Views\Accounts\ResetPasswordConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
