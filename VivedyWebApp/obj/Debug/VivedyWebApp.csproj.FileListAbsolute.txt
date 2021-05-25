@@ -222,3 +222,4 @@ C:\Users\64211\source\repos\Vivedy Website\VivedyWebApp\obj\Debug\VivedyWebApp.M
 C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.ModifiedKeyAttributes.resources
 C:\Users\64211\source\repos\Vivedy Website\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.ChagedBookingModel.resources
 C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.ChagedBookingModel.resources
+C:\Users\64211\source\repos\Vivedy Website\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.FiddledSomeStuff.resources

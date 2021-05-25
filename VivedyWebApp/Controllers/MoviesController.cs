@@ -37,50 +37,6 @@ namespace VivedyWebApp.Controllers
             return View(movie);
         }
 
-        // GET: Movies/CreateMovie
-        [AllowAnonymous]
-        public ActionResult CreateMovie()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        // POST: Movies/CreateMovie
-        public async Task<ActionResult> CreateMovie(Movie model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            db.Movies.Add(model);
-            var result = await db.SaveChangesAsync();
-            return RedirectToAction("Index", "Movies");
-        }
-
-        // GET: Movies/CreateRotation
-        [AllowAnonymous]
-        public ActionResult CreateRotation()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        // POST: Movies/CreateRotation
-        public async Task<ActionResult> CreateRotation(Rotation model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            db.Rotations.Add(model);
-            var result = await db.SaveChangesAsync();
-            return RedirectToAction("Index", "Movies");
-        }
-
         // GET: /Movies/Booking/5
         [AllowAnonymous]
         public async Task<ActionResult> Booking(string id)
@@ -93,7 +49,7 @@ namespace VivedyWebApp.Controllers
             if (rotations == null)
             {
                 ViewBag.ErrorMessage = "No rotations found for this movie";
-                return RedirectToAction("Details", "Movies", id);
+                return RedirectToAction("Error");
             }
             MoviesBookingViewModel model = new MoviesBookingViewModel { Rotations = rotations };
             return View(model);

@@ -168,6 +168,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
+    <Compile Include="Controllers\AdminBookingsController.cs" />
+    <Compile Include="Controllers\AdminMoviesController.cs" />
+    <Compile Include="Controllers\AdminRotationsController.cs" />
+    <Compile Include="Controllers\AdminUsersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -189,11 +193,18 @@
     <Compile Include="Migrations\202105201119301_ChagedBookingModel.Designer.cs">
       <DependentUpon>202105201119301_ChagedBookingModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105250253075_FiddledSomeStuff.cs" />
+    <Compile Include="Migrations\202105250253075_FiddledSomeStuff.Designer.cs">
+      <DependentUpon>202105250253075_FiddledSomeStuff.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AccountsViewModels.cs" />
-    <Compile Include="Models\AdminViewModels.cs" />
+    <Compile Include="Models\ViewModels\AccountsViewModels.cs" />
     <Compile Include="Models\Booking.cs" />
-    <Compile Include="Models\MoviesViewModels.cs" />
+    <Compile Include="Models\ViewModels\AdminBookingsViewModels.cs" />
+    <Compile Include="Models\ViewModels\AdminMoviesViewModels.cs" />
+    <Compile Include="Models\ViewModels\AdminRotationsViewModels.cs" />
+    <Compile Include="Models\ViewModels\AdminUsersViewModels.cs" />
+    <Compile Include="Models\ViewModels\MoviesViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Rotation.cs" />
@@ -253,7 +264,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Accounts\ConfirmEmail.cshtml" />
     <Content Include="Views\Accounts\ForgotPassword.cshtml" />
     <Content Include="Views\Accounts\ForgotPasswordConfirmation.cshtml" />
@@ -269,10 +279,29 @@
     <Content Include="Views\Movies\Index.cshtml" />
     <Content Include="Views\Movies\Booking.cshtml" />
     <Content Include="Views\Movies\BookingConfirmation.cshtml" />
-    <Content Include="Views\Movies\CreateMovie.cshtml" />
-    <Content Include="Views\Movies\CreateRotation.cshtml" />
     <Content Include="Views\Accounts\ResetPassword.cshtml" />
     <Content Include="Views\Accounts\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\AdminMovies\New.cshtml" />
+    <Content Include="Views\AdminMovies\Delete.cshtml" />
+    <Content Include="Views\AdminMovies\Details.cshtml" />
+    <Content Include="Views\AdminMovies\Edit.cshtml" />
+    <Content Include="Views\AdminMovies\Index.cshtml" />
+    <Content Include="Views\AdminBookings\New.cshtml" />
+    <Content Include="Views\AdminBookings\Delete.cshtml" />
+    <Content Include="Views\AdminBookings\Details.cshtml" />
+    <Content Include="Views\AdminBookings\Edit.cshtml" />
+    <Content Include="Views\AdminBookings\Index.cshtml" />
+    <Content Include="Views\AdminRotations\New.cshtml" />
+    <Content Include="Views\AdminRotations\Delete.cshtml" />
+    <Content Include="Views\AdminRotations\Details.cshtml" />
+    <Content Include="Views\AdminRotations\Edit.cshtml" />
+    <Content Include="Views\AdminRotations\Index.cshtml" />
+    <Content Include="Views\AdminUsers\New.cshtml" />
+    <Content Include="Views\AdminUsers\Delete.cshtml" />
+    <Content Include="Views\AdminUsers\Details.cshtml" />
+    <Content Include="Views\AdminUsers\Edit.cshtml" />
+    <Content Include="Views\AdminUsers\Index.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -303,6 +332,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105201119301_ChagedBookingModel.resx">
       <DependentUpon>202105201119301_ChagedBookingModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105250253075_FiddledSomeStuff.resx">
+      <DependentUpon>202105250253075_FiddledSomeStuff.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
