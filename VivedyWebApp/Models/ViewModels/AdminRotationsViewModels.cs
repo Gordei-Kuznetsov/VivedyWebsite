@@ -7,5 +7,7 @@ namespace VivedyWebApp.Models.ViewModels
 {
     public class AdminRotationsViewModels
     {
+        public Rotation StartTime { get; set; }
+        public string MovieId { get; set; }
     }
 }

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivedy || My Order</title>
+    <link rel="stylesheet" href="Css/Vivedy Bootstrap.css">
+    <link rel="stylesheet" href="Css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="js/NavbarRed.js"></script>
+</head>
+<!--class="ScrollHide"-->
+
+<body class="ScrollHide">
+
+    <!--style=" color: #A80000;"-->
+    <!-- Nav Bar start -->
+    <!--<nav class="navbar navbar-expand-lg navbar-red bg-primary">-->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+            <a class="navbar-brand phenomena" href="#">VIVEDY</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link ml-1 mr-1" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link ml-1 mr-1 " href="#">Current Movies </a>
+                    </li>
+                    <li class="nav-item mr-2">
+                        <a class="nav-link " href="#">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link ml-1 mr-1"><i class="fas fa-2x fa-user-circle"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- Nav Bar End-->
+    <!-- Main Body start-->
+
+    <form>
+
+        <div class="card mx-auto " style="width: auto; margin-top: 5rem; margin-bottom: 3rem;">
+            <div class=" mx-auto phenomena-sm display-3 text-center">
+                Account Orders
+            </div>
+            <div class="card-header phenomena-sm">
+                <nav class="nav nav-pills flex-column flex-sm-row">
+                    <a class="flex-sm-fill text-sm-center nav-link " href="userDashboard.html">Dashboard</a>
+                    <a class="flex-sm-fill text-sm-center nav-link " href="userDetails.html">My Details</a>
+                    <a class="flex-sm-fill text-sm-center nav-link active" href="userOrder.html">My Orders</a>
+                    <a class="flex-sm-fill text-sm-center nav-link" href="userWatchlist.html">My Watchlist</a>
+                    <a class="flex-sm-fill text-sm-center nav-link" href="userReward.html">Redeemable Rewards</a>
+                </nav>
+            </div>
+            <div class="card-body ">
+                <div class="white-bg-color">
+                    <h5 class="card-title h3 ">Welcome back, <b class="phenomena-sm h2"
+                            style="color: #a80000; font-weight: 900;">{USERNAME}</b>! </h5>
+                    <p class="card-text phenomena-sm h5 "><b>Card Number:</b> {USER ID} ....<button type="button"
+                            style="border-radius: 20rem; margin-left: .5rem; font-size: .75rem;"
+                            class="btn btn-danger"><i class="fas fa-barcode"></i></button></p>
+                    <p class="card-text phenomena-sm h3" style="color: #a80000;"><b class="phenomena-sm h2"
+                            style="font-weight: 1000;">0 </b>Reward Points</p>
+                </div>
+
+                <div class="card mb-3 ">
+                    <div class="card-header text-light ">
+                        Movie Tickets <i class="fas fa-ticket-alt float-right"></b></i>
+                    </div>
+                    <div class="card mb-3 mt-3 white-bg-color" style="max-width: auto;">
+                        <!-- <div class="card-body phenomena-sm " >
+                                    <p>You currently have no booked movie(s). To book a movie click <a href="#" class="text-link"><u>Here.</u></a></p>
+                                </div> -->
+                        <div class="row mb-4">
+                            <div class="col-md-2 mx-auto">
+                                <img src="https://upload.wikimedia.org/wikipedia/en/8/8a/The_Avengers_%282012_film%29_poster.jpg"
+                                    class="card-img " alt="..." style="max-width: 300px;">
+                            </div>
+                            <div class="col-md-10 ">
+                                <div class="card-body phenomena-sm  row">
+                                    <h5 class="card-title h2 col-md-12 mb-4 pb-4 border-bottom border-dark"
+                                        style="color: #a80000; font-weight: 1000;"> <b>Avengers</b> </h5>
+                                    <p class="col-md-6 mb-4">Rating : </p>
+                                    <p class="col-md-6 mb-4">Category : </p>
+                                    <p class="col-md-6 mb-4">Duration : </p>
+                                    <p class="col-md-6 mb-4">Price : </p>
+                                    <p class="col-md-6 mb-4">Trailer : </p>
+                                    <p class="col-md-6 mb-4">Seat(s) : </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-header text-light ">
+                        Ordered Goods <i class="fas fa-hamburger float-right"></b></i>
+                    </div>
+                    <div class="card-body phenomena-sm row">
+                        <div class="col-md-2">
+                            <div class="card " style="max-width: 200px;">
+                                <img src="..." class="card-img-top" alt="...">
+                                <div class="card-body ">
+                                    <h5 class="card-title">Food Name</h5>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item" style="color: #a80000;">200 Reward Points</li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+    </form>
+
+
+
+    <!-- Main Body End-->
+    <!-- Footer start -->
+    <footer class=" text-center">
+        <div class="container p-2">
+            <section>
+                <a><i class="fab fa-1x fa-facebook-f"></i></a>
+                <a><i class="fab fa-1x fa-twitter pr-3 pl-3"></i></a>
+                <a><i class="fab fa-1x fa-instagram"></i></a>
+
+            </section>
+        </div>
+        <div class="text-center p-3"> © 2020 Copyright:
+            <a class="text-light" href="https://mdbootstrap.com/">Vivdey.com</a>
+        </div>
+    </footer>
+    <!-- Footer End -->
+
+</body>
+
+</html>
