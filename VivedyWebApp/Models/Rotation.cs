@@ -10,7 +10,7 @@ namespace VivedyWebApp.Models
     public class Rotation
     {
         public string RotationId { get; set; }
-        public DateTime StartTime { get; set; }
+        public Rotation StartTime { get; set; }
         public string MovieId { get; set; }
     }
 }

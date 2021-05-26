@@ -42,8 +42,6 @@ namespace VivedyWebApp.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
-
-
     public class ForgotPasswordViewModel
     {
         [Required]
@@ -75,12 +73,30 @@ namespace VivedyWebApp.Models
     public class IndexViewModel
     {
         public bool HasPassword { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
     }
+    public class ChangeEmailViewModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Current email")]
+        public string OldEmail { get; set; }
 
+        [Required]
+        [EmailAddress]
+        [Display(Name = "New email")]
+        public string NewEmail { get; set; }
+
+        [EmailAddress]
+        [Display(Name = "Confirm new email")]
+        [Compare("NewEmail", ErrorMessage = "The new email and confirmation email do not match.")]
+        public string ConfirmEmail { get; set; }
+    }
     public class ChangePasswordViewModel
     {
         [Required]

@@ -70,12 +70,16 @@ namespace VivedyWebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                
                 return View(model);
-                
             }
             var user = UserManager.FindByEmail(model.Email);
-            if (user.EmailConfirmed == true)
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Invalid login attempt.");
+                return View(model);
+            }
+
+            else if (user.EmailConfirmed == true)
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, change to shouldLockout: true
@@ -261,16 +265,69 @@ namespace VivedyWebApp.Controllers
         {
             ViewBag.StatusMessage =
                 message == AccountsMessageId.ChangePasswordSuccess ? "Your password has been changed."
+                : message == AccountsMessageId.ChangeEmailSuccess ? "Your email has been changed."
                 : message == AccountsMessageId.Error ? "An error has occurred."
                 : "";
 
             var userId = User.Identity.GetUserId();
+            var user = UserManager.FindById(userId);
             var model = new IndexViewModel
             {
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+                UserName = user.UserName,
+                Email = user.Email,
             };
             return View(model);
 
+        }
+
+        //
+        // GET: /Accounts/ChangeEmail
+        public ActionResult ChangeEmail()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Accounts/ChangeEmail
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeEmail(ChangeEmailViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            if (user != null)
+            {
+                if (user.Email != model.OldEmail)
+                {
+                    return View("Error");
+                }
+                user.Email = model.NewEmail;
+                user.UserName = model.NewEmail;
+                IdentityResult result = await UserManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    string subject = "Email Confirmation";
+                    string mailbody = "You have changed your email address on our website. Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
+                    EmailService mailService = new EmailService();
+                    await mailService.SendAsync(user.Email, subject, mailbody);
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            else
+            {
+                return View("Error");
+            }
         }
 
         //
@@ -384,7 +441,8 @@ namespace VivedyWebApp.Controllers
         public enum AccountsMessageId
         {
             ChangePasswordSuccess,
-            Error
+            Error,
+            ChangeEmailSuccess
         }
         #endregion
     }

@@ -35,6 +35,5 @@ namespace VivedyWebApp.Models
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Rotation> Rotations { get; set; }
 
-        public System.Data.Entity.DbSet<VivedyWebApp.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 }

@@ -197,6 +197,14 @@
     <Compile Include="Migrations\202105250253075_FiddledSomeStuff.Designer.cs">
       <DependentUpon>202105250253075_FiddledSomeStuff.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105260803403_ModifiedBookingModel.cs" />
+    <Compile Include="Migrations\202105260803403_ModifiedBookingModel.Designer.cs">
+      <DependentUpon>202105260803403_ModifiedBookingModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105260815513_ModifiedBookingModelAgain.cs" />
+    <Compile Include="Migrations\202105260815513_ModifiedBookingModelAgain.Designer.cs">
+      <DependentUpon>202105260815513_ModifiedBookingModelAgain.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ViewModels\AccountsViewModels.cs" />
     <Compile Include="Models\Booking.cs" />
@@ -273,10 +281,8 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Privacy.cshtml" />
-    <Content Include="Views\Accounts\EditDetails.cshtml" />
     <Content Include="Views\Movies\Details.cshtml" />
     <Content Include="Views\Movies\Index.cshtml" />
-    <Content Include="Views\Movies\Booking.cshtml" />
     <Content Include="Views\Movies\BookingConfirmation.cshtml" />
     <Content Include="Views\Accounts\ResetPassword.cshtml" />
     <Content Include="Views\Accounts\ResetPasswordConfirmation.cshtml" />
@@ -301,6 +307,8 @@
     <Content Include="Views\AdminUsers\Edit.cshtml" />
     <Content Include="Views\AdminUsers\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Accounts\ChangeEmail.cshtml" />
+    <Content Include="Views\Movies\Booking.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -334,6 +342,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105250253075_FiddledSomeStuff.resx">
       <DependentUpon>202105250253075_FiddledSomeStuff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105260803403_ModifiedBookingModel.resx">
+      <DependentUpon>202105260803403_ModifiedBookingModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105260815513_ModifiedBookingModelAgain.resx">
+      <DependentUpon>202105260815513_ModifiedBookingModelAgain.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
