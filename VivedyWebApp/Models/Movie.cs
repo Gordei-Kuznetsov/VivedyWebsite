@@ -8,6 +8,7 @@ namespace VivedyWebApp.Models
 {
     public class Movie
     {
+        [Key]
         public string MovieId { get; set; }
         public string Name { get; set; }
         public int Rating { get; set; }

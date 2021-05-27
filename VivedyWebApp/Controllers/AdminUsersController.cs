@@ -8,18 +8,32 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using VivedyWebApp.Models;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace VivedyWebApp.Controllers
 {
     public class AdminUsersController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+
+        private ApplicationUserManager _userManager;
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         // GET: AdminUsers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Index()
         {
-            return View(await db.ApplicationUsers.ToListAsync());
+            return View(await UserManager.Users.ToListAsync());
         }
 
         // GET: AdminUsers/Details/5
@@ -30,7 +44,7 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser applicationUser = await db.ApplicationUsers.FindAsync(id);
+            ApplicationUser applicationUser = await UserManager.FindByIdAsync(id);
             if (applicationUser == null)
             {
                 return HttpNotFound();
@@ -55,8 +69,7 @@ namespace VivedyWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.ApplicationUsers.Add(applicationUser);
-                await db.SaveChangesAsync();
+                await UserManager.CreateAsync(applicationUser);
                 return RedirectToAction("Index");
             }
 
@@ -71,7 +84,7 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser applicationUser = await db.ApplicationUsers.FindAsync(id);
+            ApplicationUser applicationUser = await UserManager.FindByIdAsync(id);
             if (applicationUser == null)
             {
                 return HttpNotFound();
@@ -89,8 +102,7 @@ namespace VivedyWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(applicationUser).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                await UserManager.UpdateAsync(applicationUser);
                 return RedirectToAction("Index");
             }
             return View(applicationUser);
@@ -104,7 +116,7 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser applicationUser = await db.ApplicationUsers.FindAsync(id);
+            ApplicationUser applicationUser = await UserManager.FindByIdAsync(id);
             if (applicationUser == null)
             {
                 return HttpNotFound();
@@ -118,9 +130,8 @@ namespace VivedyWebApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
-            ApplicationUser applicationUser = await db.ApplicationUsers.FindAsync(id);
-            db.ApplicationUsers.Remove(applicationUser);
-            await db.SaveChangesAsync();
+            ApplicationUser applicationUser = await UserManager.FindByIdAsync(id);
+            await UserManager.DeleteAsync(applicationUser);
             return RedirectToAction("Index");
         }
 
@@ -128,8 +139,13 @@ namespace VivedyWebApp.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                if (_userManager != null)
+                {
+                    _userManager.Dispose();
+                    _userManager = null;
+                }
             }
+
             base.Dispose(disposing);
         }
     }

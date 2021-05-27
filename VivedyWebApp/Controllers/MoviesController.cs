@@ -49,9 +49,10 @@ namespace VivedyWebApp.Controllers
             if (rotations == null)
             {
                 ViewBag.ErrorMessage = "No rotations found for this movie";
-                return RedirectToAction("Error");
+                return RedirectToAction("Details", "Movies", id);
             }
-            MoviesBookingViewModel model = new MoviesBookingViewModel { Rotations = rotations };
+            MoviesBookingViewModel model = new MoviesBookingViewModel { AvailableRotations = rotations };
+            model.Movie = await db.Movies.FindAsync(id);
             return View(model);
         }
 
@@ -65,14 +66,16 @@ namespace VivedyWebApp.Controllers
             {
                 return View(model);
             }
-            var booking = new Booking { 
+            var booking = new Booking
+            { 
                 BookingId = new Guid().ToString(), 
-                CreationDate = DateTime.Now, 
-                RotationId = model.PickedRotation.RotationId, 
-                Seats = new List<int> { model.Seat }, 
-                UserEmail = model.Email };
+                CreationDate = System.DateTime.Now,
+                RotationId = model.SelectedRotation.RotationId, 
+                Seats = "need to implement the seat thingy",
+                UserEmail = model.Email 
+            };
             db.Bookings.Add(booking);
-            var result = await db.SaveChangesAsync();
+            int result = await db.SaveChangesAsync();
             return (result > 0) ? RedirectToAction("BookingConfirmation", "Movies") : RedirectToAction("Error");
         }
 

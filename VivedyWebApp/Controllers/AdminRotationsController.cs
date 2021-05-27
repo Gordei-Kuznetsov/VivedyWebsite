@@ -30,7 +30,7 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Rotation rotation = await db.Rotations.FindAsync(id);
+            Models.Rotation rotation = await db.Rotations.FindAsync(id);
             if (rotation == null)
             {
                 return HttpNotFound();
@@ -51,7 +51,7 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> New([Bind(Include = "RotationId,StartTime,MovieId")] Rotation rotation)
+        public async Task<ActionResult> New([Bind(Include = "RotationId,StartTime,MovieId")] Models.Rotation rotation)
         {
             if (ModelState.IsValid)
             {
@@ -71,7 +71,7 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Rotation rotation = await db.Rotations.FindAsync(id);
+            Models.Rotation rotation = await db.Rotations.FindAsync(id);
             if (rotation == null)
             {
                 return HttpNotFound();
@@ -85,7 +85,7 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Edit([Bind(Include = "RotationId,StartTime,MovieId")] Rotation rotation)
+        public async Task<ActionResult> Edit([Bind(Include = "RotationId,StartTime,MovieId")] Models.Rotation rotation)
         {
             if (ModelState.IsValid)
             {
@@ -104,7 +104,7 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Rotation rotation = await db.Rotations.FindAsync(id);
+            Models.Rotation rotation = await db.Rotations.FindAsync(id);
             if (rotation == null)
             {
                 return HttpNotFound();
@@ -118,7 +118,7 @@ namespace VivedyWebApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
-            Rotation rotation = await db.Rotations.FindAsync(id);
+            Models.Rotation rotation = await db.Rotations.FindAsync(id);
             db.Rotations.Remove(rotation);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");

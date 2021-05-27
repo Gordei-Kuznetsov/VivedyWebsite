@@ -9,8 +9,11 @@ namespace VivedyWebApp.Models
 {
     public class Rotation
     {
+        [Key]
         public string RotationId { get; set; }
-        public DateTime StartTime { get; set; }
+        public Rotation StartTime { get; set; }
+        [ForeignKey ("Movie")]
         public string MovieId { get; set; }
+        public Movie Movie { get; set; }
     }
 }

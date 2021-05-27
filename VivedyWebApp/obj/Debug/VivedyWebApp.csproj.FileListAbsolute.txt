@@ -223,3 +223,9 @@ C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebAp
 C:\Users\64211\source\repos\Vivedy Website\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.ChagedBookingModel.resources
 C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.ChagedBookingModel.resources
 C:\Users\64211\source\repos\Vivedy Website\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.FiddledSomeStuff.resources
+C:\Users\64211\source\repos\Vivedy Website\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.ModifiedBookingModel.resources
+C:\Users\64211\source\repos\Vivedy Website\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.ModifiedBookingModelAgain.resources
+C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.FiddledSomeStuff.resources
+C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.ModifiedBookingModel.resources
+C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.ModifiedBookingModelAgain.resources
+C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.AddedKeys.resources
