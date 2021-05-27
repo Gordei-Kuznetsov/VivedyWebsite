@@ -4667,7 +4667,6 @@ input[type="button"].btn-block {
         }
 
 .card {
-    padding-top: 150px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -11903,7 +11902,7 @@ button.bg-secondary:focus {
 /* Fonts Start*/
 @font-face {
     font-family: Phenomena;
-    src: url(fonts/Phenomena-Regular.ttf) format("truetype");
+    src: url(/fonts/Phenomena-Regular.ttf) format("truetype");
     font-weight: normal;
     font-style: normal;
 }
