@@ -11,12 +11,19 @@ namespace VivedyWebApp.Models
     {
         [Required]
         public string BookingId { get; set; }
+
+        [Display (Name = "Seats")]
         [Required]
         public string Seats { get; set; }
+
+        [Display(Name = "Date Created")]
         [Required]
         public System.DateTime CreationDate { get; set; }
+
         [Required]
         public string RotationId { get; set; }
+
+        [EmailAddress]
         [Required]
         public string UserEmail { get; set; }
     }
