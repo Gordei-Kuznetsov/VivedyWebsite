@@ -46,7 +46,7 @@ namespace VivedyWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             List<Rotation> rotations = await db.Rotations.Where(rotation => rotation.MovieId == id).ToListAsync();
-            if (rotations == null)
+            if (rotations.Count == 0)
             {
                 ViewBag.ErrorMessage = "No rotations found for this movie";
                 return RedirectToAction("Details", "Movies", id);

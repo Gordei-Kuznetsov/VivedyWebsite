@@ -4,74 +4,37 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
 @if (ViewBag.ErrorMessage != null)
 {
     <h2 class="text-danger">@ViewBag.ErrorMessage</h2>
 }
 
-<div>
-    <h4>Movie</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Rating)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Rating)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Category)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Duration)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Duration)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TrailerUrl)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TrailerUrl)
-        </dd>
-
-    </dl>
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="card">
+                <iframe style="min-height: 400px;" src="@Model.TrailerUrl"
+                        title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+                <!--Add [?autoplay=1&mute=1] to the end of the link for it to auto play and on mute-->
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="card">
+                <div class="card-body">
+                    <h5 style="color: #A80000;" class="display-2">@Model.Name</h5>
+                    <p class="card-text"> Catoegry: <span class="badge badge-pill badge-secondary">@Model.Category</span></p>
+                    <p class="card-text"> Rating: <span class="badge badge-pill badge-danger"> @Model.Rating</span></p>
+                    <p class="card-text">
+                        Movie Duration: <span class="badge badge-pill badge-danger">
+                            @Model.Duration.Hours hr
+                            @Model.Duration.Minutes min
+                        </span>
+                    </p>
+                    <p class="card-text">@Model.Description</p>
+                    <p class="Price"> <span style="color: #A80000;">Movie Price: </span>@Model.Price</p>
+                    @Html.ActionLink("Book", "Booking", "Movies", routeValues: new { id = Model.MovieId }, htmlAttributes: null)
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
