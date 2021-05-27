@@ -4,67 +4,28 @@
     ViewBag.Title = "Movies";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Rating)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Category)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Duration)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TrailerUrl)
-        </th>
-        <th></th>
-    </tr>
-
+<div class="jumbotron">
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rating)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TrailerUrl)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.MovieId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.MovieId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.MovieId })
-            </td>
-        </tr>
+        <div class="container mb-5">
+            <div class="card topborder mb-3">
+                <div class="img-hover-zoom">
+                    <a href="/Movies/Details?id=@item.MovieId">
+                        <img class="fadeimage card-img-top"
+                             src="https://cdn.eventfinda.co.nz/uploads/events/transformed/1496455-655043-34.jpg?v=2"
+                             alt="Image Failed to load">
+                        <div class="middle">
+                            <div class="movietext">Click to Contuniue <i class="fas fa-external-link-alt"></i> </div>
+                        </div>
+                    </a>
+                </div>
+                <a href="/Movies/Details?id=@item.MovieId">
+                    <div class="card-body">
+                        <p class="card-text"> @item.Name </p>
+                    </div>
+                </a>
+            </div>
+        </div>
     }
 
-</table>
+</div>

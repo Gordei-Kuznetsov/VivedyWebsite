@@ -10,7 +10,14 @@ namespace VivedyWebApp.Models
     public class Rotation
     {
         [Key]
+        [Required]
         public string RotationId { get; set; }
+
+        [Display(Name = "Start Time")]
+        [Required]
+        public Rotation StartTime { get; set; }
+
+        [Required]
         public Rotation StartTime { get; set; }
         [ForeignKey ("Movie")]
         public string MovieId { get; set; }

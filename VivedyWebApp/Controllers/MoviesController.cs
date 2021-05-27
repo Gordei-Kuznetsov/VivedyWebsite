@@ -46,7 +46,7 @@ namespace VivedyWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             List<Rotation> rotations = await db.Rotations.Where(rotation => rotation.MovieId == id).ToListAsync();
-            if (rotations == null)
+            if (rotations.Count == 0)
             {
                 ViewBag.ErrorMessage = "No rotations found for this movie";
                 return RedirectToAction("Details", "Movies", id);
@@ -84,6 +84,21 @@ namespace VivedyWebApp.Controllers
         public ActionResult BookingConfirmation()
         {
             return View();
+        }
+
+        public JsonResult TakenSeats(string id)
+        {
+            if (id == null)
+            {
+                return Json(null);
+            }
+            List<Booking> allBookings = db.Bookings.Where(booking => booking.RotationId == id).ToList();
+            string allseats = "";
+            foreach(Booking booking in allBookings)
+            {
+                allseats += booking.Seats;
+            }
+            return Json(allseats);
         }
 
         protected override void Dispose(bool disposing)
