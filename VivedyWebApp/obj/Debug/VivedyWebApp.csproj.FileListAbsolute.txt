@@ -229,3 +229,4 @@ C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebAp
 C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.ModifiedBookingModel.resources
 C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.ModifiedBookingModelAgain.resources
 C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.AddedKeys.resources
+C:\Users\campb\Documents\GitHub\VivedyWebsite\VivedyWebApp\obj\Debug\VivedyWebApp.Migrations.RemovedRotationField.resources
