@@ -37,9 +37,9 @@ namespace VivedyWebApp.Controllers
             return View(movie);
         }
 
-        // GET: /Movies/Booking/5
+        // GET: /Movies/BookingTime/5
         [AllowAnonymous]
-        public async Task<ActionResult> Booking(string id)
+        public async Task<ActionResult> BookingTime(string id)
         {
             if (id == null)
             {
@@ -51,32 +51,62 @@ namespace VivedyWebApp.Controllers
                 ViewBag.ErrorMessage = "No rotations found for this movie";
                 return RedirectToAction("Details", "Movies", id);
             }
-            MoviesBookingViewModel model = new MoviesBookingViewModel { AvailableRotations = rotations };
+            MoviesBookingTimeViewModel model = new MoviesBookingTimeViewModel { AvailableRotations = rotations };
             model.Movie = await db.Movies.FindAsync(id);
             return View(model);
         }
 
-        // POST: /Movies/Booking
+        // POST: /Movies/BookingTime
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Booking(MoviesBookingViewModel model)
+        public ViewResult BookingTime(MoviesBookingTimeViewModel timeModel)
         {
-            if (!ModelState.IsValid)
+            MoviesBookingSeatsViewModel seatsModel = new MoviesBookingSeatsViewModel { SelectedRotation = timeModel.SelectedRotation, Movie = timeModel.Movie };
+            List<Booking> bookings = db.Bookings.Where(booking => booking.RotationId == timeModel.SelectedRotation.RotationId).ToList();
+            foreach(Booking booking in bookings)
             {
-                return View(model);
+                char separator = ',';
+                seatsModel.OccupiedSeats.AddRange(booking.Seats.Split(separator));
             }
-            var booking = new Booking
-            { 
-                BookingId = new Guid().ToString(), 
-                CreationDate = System.DateTime.Now,
-                RotationId = model.SelectedRotation.RotationId, 
-                Seats = "need to implement the seat thingy",
-                UserEmail = model.Email 
+            return View("BookingSeats", seatsModel);
+        }
+
+        // POST: /Movies/BookingSeats
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ViewResult BookingSeats(MoviesBookingSeatsViewModel seatsModel)
+        {
+            MoviesBookingPayViewModel payModel = new MoviesBookingPayViewModel { SelectedSeats = seatsModel.SelectedSeats, SelectedRotation = seatsModel.SelectedRotation, Movie = seatsModel.Movie };
+            return View("BookingPay", payModel);
+        }
+
+        // POST: /Movies/BookingPay
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ViewResult BookingPayAsync(MoviesBookingPayViewModel payModel)
+        {
+            Booking booking = new Booking
+            {
+                BookingId = new Guid().ToString(),
+                Seats = payModel.SelectedSeats,
+                CreationDate = DateTime.Now,
+                UserEmail = payModel.Email,
+                RotationId = payModel.SelectedRotation.RotationId
             };
             db.Bookings.Add(booking);
-            int result = await db.SaveChangesAsync();
-            return (result > 0) ? RedirectToAction("BookingConfirmation", "Movies") : RedirectToAction("Error");
+            int result = db.SaveChanges();
+            if (result > 0)
+            {
+                return View("BookingConfirmation");
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "There was a problem processing your booking.";
+                return View("Error");
+            }
         }
 
         // GET: /Movies/BookingConfirmation
