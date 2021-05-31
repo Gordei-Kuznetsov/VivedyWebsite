@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using VivedyWebApp.Models;
+using VivedyWebApp.Models.ViewModels;
 
 namespace VivedyWebApp.Controllers
 {
@@ -38,29 +39,33 @@ namespace VivedyWebApp.Controllers
             return View(rotation);
         }
 
-        // GET: AdminRotations/New
+        // GET: AdminRotations/Create
         [Authorize(Roles = "Admin")]
-        public ActionResult New()
+        public ActionResult Create()
         {
             return View();
         }
 
-        // POST: AdminRotations/New
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: AdminRotations/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> New([Bind(Include = "RotationId,StartTime,MovieId")] Models.Rotation rotation)
+        public async Task<ActionResult> Create(AdminRotationsViewModel newRotation)
         {
             if (ModelState.IsValid)
             {
+                Rotation rotation = new Rotation
+                {
+                    RotationId = Guid.NewGuid().ToString(),
+                    StartTime = newRotation.StartTime,
+                    MovieId = newRotation.MovieId
+                };
                 db.Rotations.Add(rotation);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            return View(rotation);
+            return View(newRotation);
         }
 
         // GET: AdminRotations/Edit/5
@@ -80,8 +85,6 @@ namespace VivedyWebApp.Controllers
         }
 
         // POST: AdminRotations/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]

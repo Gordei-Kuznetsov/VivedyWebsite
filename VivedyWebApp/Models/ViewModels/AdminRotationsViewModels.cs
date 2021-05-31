@@ -6,12 +6,13 @@ using System.Web;
 
 namespace VivedyWebApp.Models.ViewModels
 {
-    public class AdminRotationsViewModels
+    public class AdminRotationsViewModel
     {
         [Display(Name = "Start Time")]
         [Required]
         public Rotation StartTime { get; set; }
 
+        [Display(Name = "Movie Id")]
         [Required]
         public string MovieId { get; set; }
     }

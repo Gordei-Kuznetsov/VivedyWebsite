@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using VivedyWebApp.Models;
+using VivedyWebApp.Models.ViewModels;
 
 namespace VivedyWebApp.Controllers
 {
@@ -38,29 +39,35 @@ namespace VivedyWebApp.Controllers
             return View(booking);
         }
 
-        // GET: AdminBookings/New
+        // GET: AdminBookings/Create
         [Authorize(Roles = "Admin")]
-        public ActionResult New()
+        public ActionResult Create()
         {
             return View();
         }
 
-        // POST: AdminBookings/New
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: AdminBookings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> New([Bind(Include = "BookingId,CreationDate,RotationId,UserEmail")] Booking booking)
+        public async Task<ActionResult> Create(AdminBookingsNewViewModel newBooking)
         {
             if (ModelState.IsValid)
             {
+                Booking booking = new Booking
+                {
+                    BookingId = Guid.NewGuid().ToString(),
+                    Seats = newBooking.Seats,
+                    CreationDate = DateTime.Now,
+                    UserEmail = newBooking.UserEmail,
+                    RotationId = newBooking.RotationId
+                };
                 db.Bookings.Add(booking);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            return View(booking);
+            return View(newBooking);
         }
 
         // GET: AdminBookings/Edit/5
@@ -80,8 +87,6 @@ namespace VivedyWebApp.Controllers
         }
 
         // POST: AdminBookings/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]

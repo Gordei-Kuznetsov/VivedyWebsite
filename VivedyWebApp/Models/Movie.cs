@@ -8,6 +8,7 @@ namespace VivedyWebApp.Models
 {
     public class Movie
     {
+        //[Display(Name = "Movie Id")]
         [Key]
         [Required]
         public string MovieId { get; set; }
@@ -36,6 +37,7 @@ namespace VivedyWebApp.Models
         [Required]
         public int Price { get; set; }
 
+        //[Display(Name = "Trailer URL")]
         [Required]
         [Url]
         public string TrailerUrl { get; set; }

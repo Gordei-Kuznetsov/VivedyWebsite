@@ -33,22 +33,27 @@ namespace VivedyWebApp.Models
 
         public string SelectedSeats { get; set; }
 
+        [Display(Name = "Emial")]
         [Required]
         [EmailAddress]
         public string Email { get; set; }
 
+        [Display(Name = "Card Number")]
         [Required]
-        [RegularExpression("^(?:(4[0 - 9]{12}(?:[0-9]{3})?)|(5[1-5] [0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47] [0-9]{13})|(3(?:0[0-5]|[68] [0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$")]
+        [CreditCard]
         public int CardNumber { get; set;}
 
+        [Display(Name = "CVC")]
         [Required]
         [RegularExpression("^\\d\\d\\d$")]
         public int CVC { get; set; }
 
+        [Display(Name = "Expiry Date")]
         [Required]
         [RegularExpression("^\\d\\d[/,\\]\\d\\d$")]
         public string ExpDate { get; set; }
 
+        [Display(Name = "Card Holder's Name")]
         [Required]
         public string CardHolder { get; set; }
 

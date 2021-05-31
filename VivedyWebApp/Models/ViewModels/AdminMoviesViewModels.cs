@@ -6,7 +6,7 @@ using System.Web;
 
 namespace VivedyWebApp.Models.ViewModels
 {
-    public class AdminMoviesNewViewModels
+    public class AdminMoviesCreateViewModel
     {
         [Display(Name = "Name")]
         [Required]
@@ -32,6 +32,7 @@ namespace VivedyWebApp.Models.ViewModels
         [Required]
         public int Price { get; set; }
 
+        [Display(Name = "Trailer URL")]
         [Required]
         [Url]
         public string TrailerUrl { get; set; }

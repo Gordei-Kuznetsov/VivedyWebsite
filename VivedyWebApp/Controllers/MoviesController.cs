@@ -110,28 +110,6 @@ namespace VivedyWebApp.Controllers
             }
         }
 
-        // GET: /Movies/BookingConfirmation
-        [AllowAnonymous]
-        public ActionResult BookingConfirmation()
-        {
-            return View();
-        }
-
-        public JsonResult TakenSeats(string id)
-        {
-            if (id == null)
-            {
-                return Json(null);
-            }
-            List<Booking> allBookings = db.Bookings.Where(booking => booking.RotationId == id).ToList();
-            string allseats = "";
-            foreach(Booking booking in allBookings)
-            {
-                allseats += booking.Seats;
-            }
-            return Json(allseats);
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
