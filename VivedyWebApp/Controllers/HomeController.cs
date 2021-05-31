@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using VivedyWebApp.Models;
 
 namespace VivedyWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        private ApplicationDbContext db = new ApplicationDbContext();
+
+        public async Task<ActionResult> Index()
         {
-            return View();
+            return View(await db.Movies.ToListAsync());
         }
 
         public ActionResult About()

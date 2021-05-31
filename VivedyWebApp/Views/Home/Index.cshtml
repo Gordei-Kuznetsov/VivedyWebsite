@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<VivedyWebApp.Models.Movie>
+@{
     ViewBag.Title = "Home";
 }
 
@@ -60,7 +61,7 @@
                             <img src="https://lumiere-a.akamaihd.net/v1/images/p_marvel_avengers_infinity_war_5ecb49d0.png"
                                  class="card-img-top" alt="...">
                             <div class="card">
-                                <a href="/Movies/Details?id=@item.MovieId" class="btn btn-primary">@Model.Name</a>
+                                <a href="/Movies/Details?id=@item.MovieId" class="btn btn-primary">@item.Name</a>
                             </div>
                         </div>
                     </div>

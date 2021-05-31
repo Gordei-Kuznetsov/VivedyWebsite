@@ -316,6 +316,9 @@
     <Content Include="Views\AdminUsers\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Accounts\ChangeEmail.cshtml" />
+    <Content Include="Views\Movies\BookingTime.cshtml" />
+    <Content Include="Views\Movies\BookingSeats.cshtml" />
+    <Content Include="Views\Movies\BookingPay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

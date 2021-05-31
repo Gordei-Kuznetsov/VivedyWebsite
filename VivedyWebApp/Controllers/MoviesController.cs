@@ -38,6 +38,7 @@ namespace VivedyWebApp.Controllers
         }
 
         // GET: /Movies/BookingTime/5
+        [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> BookingTime(string id)
         {
@@ -48,8 +49,8 @@ namespace VivedyWebApp.Controllers
             List<Rotation> rotations = await db.Rotations.Where(rotation => rotation.MovieId == id).ToListAsync();
             if (rotations.Count == 0)
             {
-                ViewBag.ErrorMessage = "No rotations found for this movie";
-                return RedirectToAction("Details", "Movies", id);
+                ViewBag.ErrorMessage = "No rotations found for this movie.";
+                return RedirectToAction("Details", "Movies", routeValues: new { id = id });
             }
             MoviesBookingTimeViewModel model = new MoviesBookingTimeViewModel { AvailableRotations = rotations };
             model.Movie = await db.Movies.FindAsync(id);
