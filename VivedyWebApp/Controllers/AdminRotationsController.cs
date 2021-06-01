@@ -88,7 +88,7 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Edit([Bind(Include = "RotationId,StartTime,MovieId")] Models.Rotation rotation)
+        public async Task<ActionResult> Edit(Rotation rotation)
         {
             if (ModelState.IsValid)
             {

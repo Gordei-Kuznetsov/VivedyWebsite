@@ -63,6 +63,10 @@ namespace VivedyWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ViewResult BookingTime(MoviesBookingTimeViewModel timeModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(timeModel);
+            }
             MoviesBookingSeatsViewModel seatsModel = new MoviesBookingSeatsViewModel { SelectedRotation = timeModel.SelectedRotation, Movie = timeModel.Movie };
             List<Booking> bookings = db.Bookings.Where(booking => booking.RotationId == timeModel.SelectedRotation.RotationId).ToList();
             foreach(Booking booking in bookings)
@@ -79,6 +83,10 @@ namespace VivedyWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ViewResult BookingSeats(MoviesBookingSeatsViewModel seatsModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(seatsModel);
+            }
             MoviesBookingPayViewModel payModel = new MoviesBookingPayViewModel { SelectedSeats = seatsModel.SelectedSeats, SelectedRotation = seatsModel.SelectedRotation, Movie = seatsModel.Movie };
             return View("BookingPay", payModel);
         }
@@ -87,11 +95,15 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ViewResult BookingPayAsync(MoviesBookingPayViewModel payModel)
+        public async Task<ViewResult> BookingPay(MoviesBookingPayViewModel payModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(payModel);
+            }
             Booking booking = new Booking
             {
-                BookingId = new Guid().ToString(),
+                BookingId = Guid.NewGuid().ToString(),
                 Seats = payModel.SelectedSeats,
                 CreationDate = DateTime.Now,
                 UserEmail = payModel.Email,
@@ -101,6 +113,10 @@ namespace VivedyWebApp.Controllers
             int result = db.SaveChanges();
             if (result > 0)
             {
+                string subject = "Booking Confirmation";
+                string mailbody = "Thank you for making a booking in our cinemas.<br/> You can check your bookings on your <a href=\"vivedy.azurewebsites.net/Accounts/Index\">Account page</a> on our website.";
+                EmailService mailService = new EmailService();
+                await mailService.SendAsync(payModel.Email, subject, mailbody);
                 return View("BookingConfirmation");
             }
             else

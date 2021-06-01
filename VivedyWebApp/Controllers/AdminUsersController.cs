@@ -79,7 +79,16 @@ namespace VivedyWebApp.Controllers
                 if (result.Succeeded)
                 {
                     var currentUser = UserManager.FindByEmail(user.Email);
-                    UserManager.AddToRole(currentUser.Id, newUser.Role);
+                    switch (newUser.Role) 
+                    {
+                        case "Admin":
+                            UserManager.AddToRole(currentUser.Id, "Admin");
+                            break;
+                        case "Visitor":
+                        default:
+                            UserManager.AddToRole(currentUser.Id, "Visitor");
+                            break;
+                    }
 
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
@@ -115,7 +124,7 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
+        public async Task<ActionResult> Edit(ApplicationUser applicationUser)
         {
             if (ModelState.IsValid)
             {
