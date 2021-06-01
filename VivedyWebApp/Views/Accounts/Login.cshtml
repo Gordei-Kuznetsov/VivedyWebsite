@@ -5,8 +5,9 @@
     ViewBag.Title = "Login";
 }
 
-@using (Html.BeginForm("Login", "Accounts", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("Login", "Accounts", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal jumbotron", role = "form" }))
 {
+    @Html.AntiForgeryToken()
     <form>
         <div class="row">
             <div class="col-4"></div>
@@ -36,10 +37,7 @@
                         </div>
                         <div class="form-check phenomena-sm col-6 ">
 
-                            <button href="" type="button" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm ">
-                                Log In
-                                <i class="fas fa-sign-in-alt "></i>
-                            </button>
+                            <input type="submit" value="Log In" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm ">
                             <label class="form-check-label mt-2" for="flexCheckDefault">
                                 Remember Me?<input class="" type="checkbox" value="" id="flexCheckDefault">
                             </label>

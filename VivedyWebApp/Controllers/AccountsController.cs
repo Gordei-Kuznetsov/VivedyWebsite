@@ -258,7 +258,7 @@ namespace VivedyWebApp.Controllers
         }
         //
         // GET: /Accounts/Index
-        public async Task<ActionResult> Index(AccountsMessageId? message)
+        public ActionResult Index(AccountsMessageId? message)
         {
             ViewBag.StatusMessage =
                 message == AccountsMessageId.ChangePasswordSuccess ? "Your password has been changed."
@@ -270,7 +270,6 @@ namespace VivedyWebApp.Controllers
             var user = UserManager.FindById(userId);
             var model = new IndexViewModel
             {
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
                 Name = user.Name,
                 Email = user.Email,
                 HasPassword = true,
