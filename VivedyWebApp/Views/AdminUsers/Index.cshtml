@@ -41,6 +41,9 @@
                         <th scope="col">
                             @Html.DisplayNameFor(model => model.UserName)
                         </th>
+                        <th scope="col">
+                            
+                        </th>
                     </tr>
                 </thead>
                 <tbody id="myList">
@@ -65,9 +68,9 @@
                                 @Html.DisplayFor(modelItem => item.UserName)
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", "AdminUsers", routeAttributes: new { id=item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                                @Html.ActionLink("Details", "Details", "AdminUsers", routeAttributes: new { id=item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                                @Html.ActionLink("Delete", "Delete", "AdminUsers", routeAttributes: new { id=item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                @Html.ActionLink("Edit", "Edit", "AdminUsers", routeValues: new { id=item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                @Html.ActionLink("Details", "Details", "AdminUsers", routeValues: new { id=item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                @Html.ActionLink("Delete", "Delete", "AdminUsers", routeValues: new { id=item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                             </td>
                         </tr>
                     }
