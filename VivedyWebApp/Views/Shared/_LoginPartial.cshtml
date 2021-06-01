@@ -4,7 +4,7 @@
     if (User.IsInRole("Admin"))
     {
         <li class="nav-item">
-            @Html.ActionLink("Admin", "Index", "Admin", routeValues: null, htmlAttributes: new { id = "adminLink", @class = "nav-link" })
+            @Html.ActionLink("Admin", "Index", "AdminMovies", routeValues: null, htmlAttributes: new { id = "adminLink", @class = "nav-link" })
         </li>
     }
     using (Html.BeginForm("LogOff", "Accounts", FormMethod.Post, new { id = "logoutForm" }))
