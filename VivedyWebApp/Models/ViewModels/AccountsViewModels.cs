@@ -24,7 +24,7 @@ namespace VivedyWebApp.Models
     {
         [Required]
         [Display(Name = "User Name")]
-        public string UserName { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [EmailAddress]
@@ -77,7 +77,7 @@ namespace VivedyWebApp.Models
     public class IndexViewModel
     {
         public bool HasPassword { get; set; }
-        public string UserName { get; set; }
+        public string Name { get; set; }
         public string Email { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }

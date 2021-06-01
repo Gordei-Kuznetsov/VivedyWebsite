@@ -122,7 +122,7 @@ namespace VivedyWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber };
+                var user = new ApplicationUser { UserName = model.Email, Name = model.Name, Email = model.Email, PhoneNumber = model.PhoneNumber };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -132,7 +132,7 @@ namespace VivedyWebApp.Controllers
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     string subject = "Email Confirmation";
-                    string mailbody = "Thank you for regestering on our website. Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
+                    string mailbody = "<b>Hi " + user.Name + "</b><br/>Thank you for regestering on our website. Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
                     EmailService mailService = new EmailService();
                     await mailService.SendAsync(user.Email, subject, mailbody);
                     return RedirectToAction("Index", "Home");
@@ -271,8 +271,10 @@ namespace VivedyWebApp.Controllers
             var model = new IndexViewModel
             {
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
-                UserName = user.UserName,
+                Name = user.Name,
                 Email = user.Email,
+                HasPassword = true,
+                PhoneNumber = user.PhoneNumber,
             };
             return View(model);
 

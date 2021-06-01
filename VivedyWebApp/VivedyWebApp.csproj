@@ -213,6 +213,10 @@
     <Compile Include="Migrations\202105272309428_RemovedRotationField.Designer.cs">
       <DependentUpon>202105272309428_RemovedRotationField.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202106010046370_AddedNameToUserModel.cs" />
+    <Compile Include="Migrations\202106010046370_AddedNameToUserModel.Designer.cs">
+      <DependentUpon>202106010046370_AddedNameToUserModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ViewModels\AccountsViewModels.cs" />
     <Compile Include="Models\Booking.cs" />
@@ -364,6 +368,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105272309428_RemovedRotationField.resx">
       <DependentUpon>202105272309428_RemovedRotationField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106010046370_AddedNameToUserModel.resx">
+      <DependentUpon>202106010046370_AddedNameToUserModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
