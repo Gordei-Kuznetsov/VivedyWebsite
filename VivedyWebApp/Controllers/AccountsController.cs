@@ -273,7 +273,6 @@ namespace VivedyWebApp.Controllers
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
                 Name = user.Name,
                 Email = user.Email,
-                HasPassword = true,
                 PhoneNumber = user.PhoneNumber,
             };
             return View(model);
