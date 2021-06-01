@@ -70,8 +70,9 @@ namespace VivedyWebApp.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { 
-                    UserName = newUser.UserName, 
+                    UserName = newUser.Email, 
                     Email = newUser.Email,
+                    Name = newUser.Name,
                     PhoneNumber = newUser.PhoneNumber,
                 };
                 var result = await UserManager.CreateAsync(user, newUser.Password);
