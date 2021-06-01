@@ -35,6 +35,5 @@ namespace VivedyWebApp.Models.ViewModels
         [Required]
         [Display(Name = "Role")]
         public string Role { get; set; }
-
     }
 }

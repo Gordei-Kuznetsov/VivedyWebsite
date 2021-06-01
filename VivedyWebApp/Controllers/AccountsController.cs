@@ -72,6 +72,8 @@ namespace VivedyWebApp.Controllers
             {
                 return View(model);
             }
+            returnUrl = (returnUrl == null) ? "/Home/Index" : returnUrl;
+
             var user = UserManager.FindByEmail(model.Email);
             if (user == null)
             {
@@ -187,7 +189,7 @@ namespace VivedyWebApp.Controllers
                 var callbackUrl = Url.Action("ResetPassword", "Accounts", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 //await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 string subject = "Password Resetting";
-                string mailbody = "Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to reset password for your account on vivedy.com.";
+                string mailbody = "Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to reset password for your account on <a href=\"vivedy.azurewebsites.net/Home/Index\">vivedy.azurewebsites.net</a>.";
                 EmailService mailService = new EmailService();
                 await mailService.SendAsync(user.Email, subject, mailbody);
                 return RedirectToAction("ForgotPasswordConfirmation", "Accounts");
@@ -310,7 +312,7 @@ namespace VivedyWebApp.Controllers
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     string subject = "Email Confirmation";
-                    string mailbody = "You have changed your email address on our website. Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
+                    string mailbody = "You have changed your email address on our website.<br/>Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
                     EmailService mailService = new EmailService();
                     await mailService.SendAsync(user.Email, subject, mailbody);
                     AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);

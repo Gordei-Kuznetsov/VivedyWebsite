@@ -15,27 +15,17 @@ namespace VivedyWebApp.Controllers
 
         public async Task<ActionResult> Index()
         {
-            return View(await db.Movies.ToListAsync());
+            var movies = await db.Movies.ToListAsync();
+            return View(movies.Take(5));
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
 
         public ActionResult Privacy()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
     }

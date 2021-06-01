@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -21,7 +22,9 @@ namespace VivedyWebApp.Models.ViewModels
         public string UserEmail { get; set; }
 
         [Display(Name = "Rotation Id")]
+        [ForeignKey("Rotation")]
         [Required]
         public string RotationId { get; set; }
+        public Rotation Rotation { get; set; }
     }
 }
