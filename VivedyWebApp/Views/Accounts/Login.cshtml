@@ -5,48 +5,37 @@
     ViewBag.Title = "Login";
 }
 
-@using (Html.BeginForm("Login", "Accounts", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal jumbotron", role = "form" }))
+@using (Html.BeginForm("Login", "Accounts", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
 {
     @Html.AntiForgeryToken()
     <form>
-        <div class="row">
-            <div class="col-4"></div>
-            <div class="jumbotron">
+            <div class="containerOne">
                 <div class="grey-bg-color">
                     <div class="mb-5 mt-4 phenomena-sm border-bottom ">
                         <h1 class="display-5">LOGIN TO YOUR ACCOUNT</h1>
                     </div>
                     <div class="row">
-                        @Html.LabelFor(m => m.Email, new { @class = "col-4  phenomena-sm" })
-                        <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.Email, new { @class = "mb-3 col-7" })
-                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                        </div>
+                        @Html.LabelFor(m => m.Email, new { @class = "col-sm-12  phenomena-sm" })
+                        @Html.TextBoxFor(m => m.Email, new { @class = "mb-3 col-sm-12" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                     </div>
                     <div class="row">
-                        @Html.LabelFor(m => m.Password, new { @class = "col-4  phenomena-sm" })
-                        <div class="col-md-10">
-                            @Html.PasswordFor(m => m.Password, new { @class = "mb-3 col-7" })
-                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                        </div>
+                        @Html.LabelFor(m => m.Password, new { @class = " col-sm-12 phenomena-sm" })  
+                        @Html.PasswordFor(m => m.Password, new { @class = "mb-3 col-sm-12" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                     </div>
                     <div class="row">
-                        <div class="phenomena-sm mt-3 col-6 ">
-                            <div class="text-light"> Don't have an account? @Html.ActionLink("Register as a new user", "Register") </div>
-                            @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                        <div class="col-6 text-center">      
+                                <div class="text-light"> Don't have an account? @Html.ActionLink("Register as a new user", "Register") </div>
+                                <div class="text-light"> @Html.ActionLink("Forgot your password?", "ForgotPassword") </div>
                         </div>
-                        <div class="form-check phenomena-sm col-6 ">
-
-                            <input type="submit" value="Log In" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm ">
-                            <label class="form-check-label mt-2" for="flexCheckDefault">
-                                Remember Me?<input class="" type="checkbox" value="" id="flexCheckDefault">
-                            </label>
+                        <div class="col-6 text-center">
+                                <input type="submit" value="Log In" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm ">
+                                <label class="form-check-label mt-2" for="flexCheckDefault"> Remember Me? <input class="" type="checkbox" value="" id="flexCheckDefault"></label>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-4"></div>
-        </div>
     </form>
 }
 @section Scripts {
