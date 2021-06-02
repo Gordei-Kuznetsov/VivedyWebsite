@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using VivedyWebApp.Models;
 using VivedyWebApp.Models.ViewModels;
+using System.IO;
 
 namespace VivedyWebApp.Controllers
 {
@@ -50,7 +51,7 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Create(AdminMoviesCreateViewModel newMovie)
+        public async Task<ActionResult> Create(AdminMoviesViewModel newMovie)
         {
             if (ModelState.IsValid)
             {
@@ -67,6 +68,22 @@ namespace VivedyWebApp.Controllers
                 };
                 db.Movies.Add(movie);
                 await db.SaveChangesAsync();
+                if(newMovie.HorizontalImage != null)
+                {
+                    string content = newMovie.HorizontalImage.ContentType;
+                    string format = content.Substring(content.IndexOf('/') + 1);
+                    string fileName = movie.MovieId + "HorizontalPoster." + format;
+                    var imagePath = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
+                    newMovie.HorizontalImage.SaveAs(imagePath);
+                }
+                if(newMovie.VerticalImage != null)
+                {
+                    string content = newMovie.VerticalImage.ContentType;
+                    string format = content.Substring(content.IndexOf('/') + 1);
+                    string fileName = movie.MovieId + "VerticalPoster." + format;
+                    var imagePath = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
+                    newMovie.VerticalImage.SaveAs(imagePath);
+                }
                 return RedirectToAction("Index");
             }
 

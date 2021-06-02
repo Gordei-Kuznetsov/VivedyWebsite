@@ -67,13 +67,16 @@ namespace VivedyWebApp.Controllers
             {
                 return View(timeModel);
             }
-            MoviesBookingSeatsViewModel seatsModel = new MoviesBookingSeatsViewModel { SelectedRotation = timeModel.SelectedRotation, Movie = timeModel.Movie };
+            MoviesBookingSeatsViewModel seatsModel = new MoviesBookingSeatsViewModel { SelectedRotation = timeModel.SelectedRotation, Movie = timeModel.Movie, OccupiedSeats = "" };
             List<Booking> bookings = db.Bookings.Where(booking => booking.RotationId == timeModel.SelectedRotation.RotationId).ToList();
-            foreach(Booking booking in bookings)
+            if(bookings != null)
             {
-                char separator = ',';
-                seatsModel.OccupiedSeats.AddRange(booking.Seats.Split(separator));
+                foreach (Booking booking in bookings)
+                {
+                    seatsModel.OccupiedSeats += booking.Seats;
+                }
             }
+
             return View("BookingSeats", seatsModel);
         }
 
