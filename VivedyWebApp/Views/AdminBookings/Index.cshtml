@@ -5,42 +5,61 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RotationId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserEmail)
-        </th>
-        <th></th>
-    </tr>
+<form>
+    <div class="card mx-auto " style="width: auto; margin-top: 5rem; margin-bottom: 3rem;">
+        <nav class="nav nav-pills nav-fill  row no-gutters phenomena-sm" style="background-color: #a8000a; ">
+            <a class="nav-item nav-link raijaLink " href="/AdminMovies/Index">MOVIES</a>
+            <a class="nav-item nav-link raijaLink" 
+               style="background-color: #f0f0f0; color: #222; border-radius: 0rem; border-top: 5px solid #a8000a;">
+                BOOKINGS
+            </a>
+            <a class="nav-item nav-link raijaLink" href="/AdminRotations/Index">ROTATIONS</a>
+            <a class="nav-item nav-link raijaLink" href="/AdminUsers/Index">USERS </a>
+        </nav>
+        <div class="white-bg-color">
+            <a type="button" class="btn btn-danger  phenomena-sm " href="/AdminUser/Create">ADD <i class="fas fa-plus"></i></a>
+            <input type="text" class="mb-3 float-right" id="myInput" placeholder="Search..">
+            <br>
+            <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
+                <thead>
+                    <tr class="text-center ">
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.CreationDate)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.RotationId)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.UserEmail)
+                        </th>
+                        <th scope="col">
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreationDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RotationId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserEmail)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.BookingId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.BookingId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.BookingId })
-        </td>
-    </tr>
-}
-
-</table>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="myList">
+                    @foreach (var item in Model)
+                    {
+                    <tr class="text-center">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RotationId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserEmail)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "AdminMovies", routeValues: new { id = item.BookingId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                            @Html.ActionLink("Details", "Details", "AdminMovies", routeValues: new { id = item.BookingId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                            @Html.ActionLink("Delete", "Delete", "AdminMovies", routeValues: new { id = item.BookingId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>

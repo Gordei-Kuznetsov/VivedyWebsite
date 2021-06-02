@@ -22,7 +22,7 @@
             <br>
             <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
                 <thead>
-                    <tr class="text-center table-danger">
+                    <tr class="text-center ">
                         <th scope="col">
                             @Html.DisplayNameFor(model => model.Email)
                         </th>
@@ -73,7 +73,7 @@
                                 @Html.ActionLink("Delete", "Delete", "AdminUsers", routeValues: new { id=item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                             </td>
                         </tr>
-                    }
+                      }
                 </tbody>
             </table>
         </div>
