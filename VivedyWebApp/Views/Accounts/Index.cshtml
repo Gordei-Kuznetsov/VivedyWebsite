@@ -3,47 +3,18 @@
 @{
     ViewBag.Title = "My Account";
 }
-
-<h2>Manage my account</h2>
-
-<p class="text-success">@ViewBag.StatusMessage</p>
 <div>
-
-    <h4>Change your account settings</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>User Name:</dt>
-        <dd>@Model.Name</dd>
-        <dt>Phone Number:</dt>
-        <dd>@Model.PhoneNumber</dd>
-        <dt>Password:</dt>
-        <dd>
-            @Html.ActionLink("Change your password", "ChangePassword")
-        </dd>
-        <dt>Email:</dt>
-        <dd>@Model.Email</dd>
-        @Html.ActionLink("Change your email", "ChangeEmail")
-    </dl>
-</div>
-
-<div class="card-body ">
-    <div class="row">
-        <div class="col-md-1 col-sm-12 phenomena-sm">User Name :</div>
-        <div class="mb-3 col-md-9 col-sm-12"></div>
-    </div>
-    <div class="row">
-        <div class="col-md-1 col-sm-12 phenomena-sm">First Name :</div>
-        <div class="mb-3 col-md-9 col-sm-12"></div>
-        @Html.ActionLink("Change your password", "ChangePassword")
-    </div>
-    <div class="row">
-        <div class="col-md-1 col-sm-12 phenomena-sm">Last Name :</div>
-        <div class="mb-3 col-md-9 col-sm-12"></div>
-    </div>
-
-
-    <div class="row">
-        <div class="col-md-1 col-sm-12 phenomena-sm">Contact Number :</div>
-        <div class="mb-3 col-md-9 col-sm-12"></div>
+    <div class="jumbotron container">
+        <p class="text-success">@ViewBag.StatusMessage</p>
+        <p class="">User Name: @Model.Name</p>
+        <p class="">Phone Number: @Model.PhoneNumber</p>
+        <div>
+            <p class="">Password:</p>
+            <P>@Html.ActionLink("Change your password", "ChangePassword")</P>
+        </div>
+        <div>
+            <p class="">Email: @Model.Email</p>
+            <P>@Html.ActionLink("Change your email", "ChangeEmail")</P>
+        </div>
     </div>
 </div>
