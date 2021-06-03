@@ -52,22 +52,21 @@
                     <hr class="my-4">
                 </div>
             </div>
-
-            @foreach (var item in Model)
-            {
-                <div class="row mt-5">
+            <div class="row mt-5">
+                @foreach (var item in Model)
+                {
                     <div class="card-body col-lg-3 col-sm-6">
                         <div class="card">
                             <img src="/Content/Images/@item.MovieId-VerticalPoster.png"
-                                 class="card-img-top" alt="...">
+                                 class="card-img-top" style="max-height:20rem; min-height:20rem; object-fit:cover" alt="Failed Img">
                             <div class="card">
                                 <a href="/Movies/Details?id=@item.MovieId" class="btn btn-primary">@item.Name</a>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
+                }
+            </div>
+         </div>
     </div>
 </main>
 
