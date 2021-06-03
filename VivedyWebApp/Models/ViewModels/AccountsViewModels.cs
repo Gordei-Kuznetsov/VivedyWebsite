@@ -81,6 +81,7 @@ namespace VivedyWebApp.Models
         public string PhoneNumber { get; set; }
         public bool BrowserRemembered { get; set; }
     }
+
     public class ChangeEmailViewModel
     {
         [Required]

@@ -3,6 +3,16 @@
     ViewBag.Title = "Home";
 }
 
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+
 <main>
     <div class="containerOne">
         <div class="card-body">
@@ -17,21 +27,34 @@
     <div class="jumbotron-fluid">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                @for (int count = 0; count < Model.Count(); count++)
+                {
+                    if (count == 0)
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="@count" class="active"></li>
+                    }
+                    else
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="@count"></li>
+                    }
+                }
             </ol>
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="https://marvelblog.com/wp-content/uploads/2020/06/960x0.jpg" class="d-block w-100"
-                         alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="..." class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="..." class="d-block w-100" alt="...">
-                </div>
+                @foreach (var item in Model)
+                {
+                    if (item == Model.First())
+                    {
+                        <div class="carousel-item active">
+                            <img style="max-height:60rem; min-height:60rem" class="d-block w-100" src="/Content/Images/@item.MovieId-HorizontalPoster.png" alt="slide Failed">
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="carousel-item">
+                            <img style="max-height:60rem; min-height:60rem" class="d-block w-100" src="/Content/Images/@item.MovieId-HorizontalPoster.png" alt="slide Filaed">
+                        </div>
+                    }
+                }
             </div>
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -52,22 +75,24 @@
                     <hr class="my-4">
                 </div>
             </div>
-
-            @foreach (var item in Model)
-            {
-                <div class="row mt-5">
+            <div class="row mt-5">
+                @foreach (var item in Model)
+                {
                     <div class="card-body col-lg-3 col-sm-6">
                         <div class="card">
-                            <img src="https://lumiere-a.akamaihd.net/v1/images/p_marvel_avengers_infinity_war_5ecb49d0.png"
-                                 class="card-img-top" alt="...">
+                            <img src="/Content/Images/@item.MovieId-VerticalPoster.png"
+                                 class="card-img-top" style="max-height:20rem; min-height:20rem; object-fit:cover" alt="Failed Img">
                             <div class="card">
                                 <a href="/Movies/Details?id=@item.MovieId" class="btn btn-primary">@item.Name</a>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
     </div>
 </main>
+
+
+
 

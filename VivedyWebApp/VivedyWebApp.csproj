@@ -241,6 +241,10 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\8119f606-e339-4f5d-ac87-a25a92a07316-HorizontalPoster.png" />
+    <Content Include="Content\Images\8119f606-e339-4f5d-ac87-a25a92a07316-VerticalPoster.png" />
+    <Content Include="Content\Images\c1dfd057-c32c-46ce-b483-0b03131c57c6-HorizontalPoster.png" />
+    <Content Include="Content\Images\c1dfd057-c32c-46ce-b483-0b03131c57c6-VerticalPoster.png" />
     <Content Include="Content\vivedy-bootstrap.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -330,7 +334,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

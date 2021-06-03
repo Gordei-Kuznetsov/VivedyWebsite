@@ -20,7 +20,7 @@ namespace VivedyWebApp.Models
     {
         public Rotation SelectedRotation { get; set; }
 
-        public List<string> OccupiedSeats { get; set; }
+        public string OccupiedSeats { get; set; }
 
         [Required]
         public string SelectedSeats { get; set; }
