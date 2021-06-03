@@ -193,10 +193,6 @@
     <Compile Include="Migrations\202105201119301_ChagedBookingModel.Designer.cs">
       <DependentUpon>202105201119301_ChagedBookingModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105250253075_FiddledSomeStuff.cs" />
-    <Compile Include="Migrations\202105250253075_FiddledSomeStuff.Designer.cs">
-      <DependentUpon>202105250253075_FiddledSomeStuff.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202105260803403_ModifiedBookingModel.cs" />
     <Compile Include="Migrations\202105260803403_ModifiedBookingModel.Designer.cs">
       <DependentUpon>202105260803403_ModifiedBookingModel.cs</DependentUpon>
@@ -357,9 +353,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105201119301_ChagedBookingModel.resx">
       <DependentUpon>202105201119301_ChagedBookingModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105250253075_FiddledSomeStuff.resx">
-      <DependentUpon>202105250253075_FiddledSomeStuff.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105260803403_ModifiedBookingModel.resx">
       <DependentUpon>202105260803403_ModifiedBookingModel.cs</DependentUpon>
