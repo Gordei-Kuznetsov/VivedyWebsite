@@ -61,6 +61,19 @@ namespace VivedyWebApp.Controllers
                     MovieId = newRotation.MovieId
                 };
                 db.Rotations.Add(rotation);
+                if (newRotation.GenerateRotations && newRotation.StartDay != null)
+                {
+                    for(int i = 0; i < 7; i++)
+                    {
+                        Rotation autoRotation = new Rotation
+                        {
+                            RotationId = Guid.NewGuid().ToString(),
+                            StartTime = newRotation.StartDay.AddDays(i),
+                            MovieId = newRotation.MovieId
+                        };
+                        db.Rotations.Add(autoRotation);
+                    }
+                }
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
