@@ -26,13 +26,17 @@
                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
             </div>
             <div class="row">
-                <div class="col-6 text-center">
+                <div class="col-6">
                     <div class="text-light"> Don't have an account? @Html.ActionLink("Register as a new user", "Register", new { @class = "text-link" }) </div>
                     <div class="text-link"> @Html.ActionLink("Forgot your password?", "ForgotPassword") </div>
                 </div>
                 <div class="col-6 text-center">
-                    <input type="submit" value="Log In" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm ">
-                    <label class="form-check-label mt-2" for="flexCheckDefault"> Remember Me? <input class="" type="checkbox" value="" id="flexCheckDefault"></label>
+                    <div class="col-6">
+                        <input type="submit" value="Log In" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm ">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-check-label mt-2" for="flexCheckDefault"> Remember Me? <input class="" type="checkbox" value="" id="flexCheckDefault"></label>
+                    </div>
                 </div>
             </div>
         </div>
