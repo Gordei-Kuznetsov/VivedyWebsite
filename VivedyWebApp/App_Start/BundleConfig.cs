@@ -22,7 +22,7 @@ namespace VivedyWebApp
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/navbarred.js"));
-
+         
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/vivedy-bootstrap.css",
                       "~/Content/all.min.css",

@@ -16,7 +16,7 @@ namespace VivedyWebApp.Controllers
         public async Task<ActionResult> Index()
         {
             var movies = await db.Movies.ToListAsync();
-            return View(movies.Take(5));
+            return View(movies.Take(4));
         }
 
         public ActionResult About()

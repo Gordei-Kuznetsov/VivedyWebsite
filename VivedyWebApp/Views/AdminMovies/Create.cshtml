@@ -7,7 +7,7 @@
 
 <h2>Create</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "AdminMovies", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -74,16 +74,20 @@
         <div class="form-group">
             @Html.LabelFor(model => model.HorizontalImage, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.HorizontalImage, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.TextBoxFor(model => model.HorizontalImage, "", new { @class = "text-danger" })
+                <input accept="image/png" class="form-control" data-val-file="The field Horizontal Poster must be a file." 
+                       data-val-required="The Horizontal Poster field is required." id="HorizontalImage" 
+                       name="HorizontalImage" type="file" value="">
+                @Html.ValidationMessageFor(model => model.HorizontalImage, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.VerticalImage, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.VerticalImage, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.TextBoxFor(model => model.VerticalImage, "", new { @class = "text-danger" })
+                <input accept="image/png" class="form-control" data-val-file="The field Vertical Image must be a file." 
+                       data-val-required="The Vertical Image field is required." id="VerticalImage" 
+                       name="VerticalImage" type="file" value="">
+                @Html.ValidationMessageFor(model => model.VerticalImage, "", new { @class = "text-danger" })
             </div>
         </div>
 
