@@ -11907,6 +11907,10 @@ button.bg-secondary:focus {
     font-style: normal;
 }
 
+.phenomena-sm {
+    font-family: Phenomena;
+}
+
 .phenomena {
     font-family: Phenomena;
     font-weight: 900;
@@ -12088,3 +12092,6 @@ button.bg-secondary:focus {
     .raijaLink:hover {
         color: #222;
     }
+
+
+

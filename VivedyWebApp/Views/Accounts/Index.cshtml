@@ -4,17 +4,32 @@
     ViewBag.Title = "My Account";
 }
 <div>
-    <div class="jumbotron container">
-        <p class="text-success">@ViewBag.StatusMessage</p>
-        <p class="">User Name: @Model.Name</p>
-        <p class="">Phone Number: @Model.PhoneNumber</p>
-        <div>
-            <p class="">Password:</p>
-            <P>@Html.ActionLink("Change your password", "ChangePassword")</P>
-        </div>
-        <div>
-            <p class="">Email: @Model.Email</p>
-            <P>@Html.ActionLink("Change your email", "ChangeEmail")</P>
+    <div class="containerOne">
+        <div class="row">        
+                <div class="col-lg-7 col-sm-12 text-center mt-4">
+                    <h1 class="phenomena">Your</h1>
+                    <h5 class="phenomenaThree" style="color: #ae0000"> VIVEDY</h5>
+                    <h1 class="phenomena">Profile</h1>
+                </div>
+            <div class="col-lg-5 col-sm-12 mb-5">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <p class=""><b class="text-danger">User Name:</b> @Model.Name</p>
+                    </div>
+                    <div class="card-header">
+                        <p class=""><b class="text-danger">Phone Number:</b> @Model.PhoneNumber</p>
+                    </div>
+                    <div class="card-header">
+                        <p class=""><b class="text-danger">Password:</b></p>
+                        <b>@Html.ActionLink("[Change Password]", "ChangePassword")</b>
+                    </div>
+                    <div class="card-header">
+                        <p class=""><b class="text-danger">Email:</b> @Model.Email</p>
+                        <b>@Html.ActionLink("[Change Email]", "ChangeEmail")</b>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
