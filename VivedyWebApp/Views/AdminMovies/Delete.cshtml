@@ -70,7 +70,8 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
@@ -79,6 +80,9 @@
         </div>
     }
 </div>
+
+<!--This might be causing problems-->
+
 <form>
     <div class="card mx-auto " style="width: auto; margin-top: 5rem; margin-bottom: 3rem;">
         <nav class="nav nav-pills nav-fill  row no-gutters phenomena-sm" style="background-color: #a8000a; ">
