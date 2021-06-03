@@ -84,3 +84,7 @@
         </div>
     </div>
 </form>
+@foreach(string filepath in ViewBag.Files)
+{
+    <p>@filepath</p>
+}
