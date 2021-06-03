@@ -38,9 +38,11 @@ namespace VivedyWebApp.Models.ViewModels
         public string TrailerUrl { get; set; }
 
         [Display(Name = "Horizontal Poster")]
+        [Required]
         public HttpPostedFileBase HorizontalImage {get;set;}
 
         [Display(Name = "Vertical Poster")]
+        [Required]
         public HttpPostedFileBase VerticalImage { get; set; }
     }
 }

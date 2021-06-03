@@ -70,17 +70,13 @@ namespace VivedyWebApp.Controllers
                 await db.SaveChangesAsync();
                 if(newMovie.HorizontalImage != null)
                 {
-                    string content = newMovie.HorizontalImage.ContentType;
-                    string format = content.Substring(content.IndexOf('/') + 1);
-                    string fileName = movie.MovieId + "HorizontalPoster." + format;
+                    string fileName = movie.MovieId + "-HorizontalPoster.png";
                     var imagePath = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
                     newMovie.HorizontalImage.SaveAs(imagePath);
                 }
                 if(newMovie.VerticalImage != null)
                 {
-                    string content = newMovie.VerticalImage.ContentType;
-                    string format = content.Substring(content.IndexOf('/') + 1);
-                    string fileName = movie.MovieId + "VerticalPoster." + format;
+                    string fileName = movie.MovieId + "-VerticalPoster.png";
                     var imagePath = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
                     newMovie.VerticalImage.SaveAs(imagePath);
                 }
