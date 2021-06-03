@@ -1,4 +1,4 @@
-﻿@model VivedyWebApp.Models.ViewModels.IndexViewModel
+﻿@model VivedyWebApp.Models.IndexViewModel
 
 @{
     ViewBag.Title = "My Account";
@@ -27,36 +27,23 @@
 </div>
 
 <div class="card-body ">
-    <form>
-        <div class="row">
-            <div class="col-md-1 col-sm-12 phenomena-sm">User Name :</div>
-            <input type="text" class="mb-3 col-md-9 col-sm-12">
-        </div>
-        <div class="row">
-            <div class="col-md-1 col-sm-12 phenomena-sm">First Name :</div>
-            <input type="text" class="mb-3 col-md-9 col-sm-12">
-            @Html.ActionLink("Change your password", "ChangePassword")
-        </div>
-        <div class="row">
-            <div class="col-md-1 col-sm-12 phenomena-sm">Last Name :</div>
-            <input type="text" class="mb-3 col-md-9 col-sm-12">
-        </div>
+    <div class="row">
+        <div class="col-md-1 col-sm-12 phenomena-sm">User Name :</div>
+        <div class="mb-3 col-md-9 col-sm-12"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-1 col-sm-12 phenomena-sm">First Name :</div>
+        <div class="mb-3 col-md-9 col-sm-12"></div>
+        @Html.ActionLink("Change your password", "ChangePassword")
+    </div>
+    <div class="row">
+        <div class="col-md-1 col-sm-12 phenomena-sm">Last Name :</div>
+        <div class="mb-3 col-md-9 col-sm-12"></div>
+    </div>
 
 
-        <div class="row">
-            <div class="col-md-1 col-sm-12 phenomena-sm">Contact Number :</div>
-            <input type="text" class="mb-3 col-md-9 col-sm-12">
-        </div>
-        <div class="row mb-3">
-            <form action="/action_page.php">
-                <label class="col-md-1 col-sm-12 phenomena-sm" for="birthday">
-                    Date of Birth
-                    :
-                </label>
-                <input type="date" id="birthday" name="birthday">
-            </form>
-        </div>
-
-    </form>
-
+    <div class="row">
+        <div class="col-md-1 col-sm-12 phenomena-sm">Contact Number :</div>
+        <div class="mb-3 col-md-9 col-sm-12"></div>
+    </div>
 </div>

@@ -277,7 +277,6 @@ namespace VivedyWebApp.Controllers
                 PhoneNumber = user.PhoneNumber,
             };
             return View(model);
-
         }
 
         //
