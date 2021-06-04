@@ -5,11 +5,11 @@
 }
 
 <div class="jumbotron">
-    @if(ViewBag.ErrorMessage != null)
-    {
-        <h2 class="text-danger">@ViewBag.ErrorMessage</h2>
-    }
     <div class="row">
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <h2 class="text-danger">@ViewBag.ErrorMessage</h2>
+        }
         <div class="col-lg-5">
             <div class="card">
                 <iframe style="min-height: 400px;" src="@Model.TrailerUrl"
