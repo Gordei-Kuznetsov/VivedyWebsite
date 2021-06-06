@@ -315,7 +315,7 @@ namespace VivedyWebApp.Controllers
                     EmailService mailService = new EmailService();
                     await mailService.SendAsync(user.Email, subject, mailbody);
                     AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Login", new { Message = AccountsMessageId.ChangeEmailSuccess });
                 }
                 else
                 {
@@ -351,9 +351,9 @@ namespace VivedyWebApp.Controllers
                 var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 if (user != null)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
                 }
-                return RedirectToAction("Index", new { Message = AccountsMessageId.ChangePasswordSuccess });
+                return RedirectToAction("Login", new { Message = AccountsMessageId.ChangePasswordSuccess });
             }
             AddErrors(result);
             return View(model);
