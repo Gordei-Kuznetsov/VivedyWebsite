@@ -21,8 +21,6 @@ namespace VivedyWebApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Index()
         {
-            string[] filePaths = Directory.GetFiles(Server.MapPath("~/Content/Images/"));
-            ViewBag.Files = filePaths;
             return View(await db.Movies.ToListAsync());
         }
 
