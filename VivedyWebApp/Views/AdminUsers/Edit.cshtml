@@ -17,14 +17,14 @@
             <div class="border-bottom">
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Email) : </div>
-                    <div class="mb-3 col-md-8">
+                    <div class="mb-3 col-md-8 phenomena-sm">
                         @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Name) :</div>
-                    <div class="mb-3 col-md-8">
+                    <div class="mb-3 col-md-8 phenomena-sm">
                         @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
@@ -32,7 +32,7 @@
 
                 <div class="row">
                     <div class="col-4 phenomena-sm">@Html.LabelFor(model => model.EmailConfirmed) :</div>
-                    <div class=" mb-3 col-md-8">
+                    <div class=" mb-3 col-md-8 phenomena-sm">
                         <div class="checkbox">
                             @Html.EditorFor(model => model.EmailConfirmed)
                             @Html.ValidationMessageFor(model => model.EmailConfirmed, "", new { @class = "text-danger" })
@@ -46,7 +46,7 @@
 
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.PhoneNumber) :</div>
-                    <div class="mb-3 col-md-8">
+                    <div class="mb-3 col-md-8 phenomena-sm">
                         @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                     </div>
@@ -55,7 +55,7 @@
 
                 <div class="row">
                     <div class="col-4 phenomena-sm">@Html.LabelFor(model => model.PhoneNumberConfirmed) : </div>
-                    <div class="mb-3 col-md-8">
+                    <div class="mb-3 col-md-8 phenomena-sm">
                         <div class="checkbox">
                             @Html.EditorFor(model => model.PhoneNumberConfirmed)
                             @Html.ValidationMessageFor(model => model.PhoneNumberConfirmed, "", new { @class = "text-danger" })
@@ -77,7 +77,7 @@
                 <div class="row mb-3">
                     <form action="/action_page.php">
                         <label class="col-3 phenomena-sm">@Html.LabelFor(model => model.UserName):</label>
-                        <div class="col-md-8 mb-3">
+                        <div class="col-md-8 mb-3 phenomena-sm">
                             @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "col-md-12" } })
                             @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
                         </div>
