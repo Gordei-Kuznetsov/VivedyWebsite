@@ -113,11 +113,38 @@ namespace VivedyWebApp.Controllers
                 RotationId = payModel.SelectedRotation.RotationId
             };
             db.Bookings.Add(booking);
+
             int result = db.SaveChanges();
             if (result > 0)
             {
+                string htmlSeats = "";
+                foreach(string seat in payModel.SelectedSeats.Split(','))
+                {
+                    htmlSeats += $"<li>{seat}</li>";
+                }
+                string dataToEncode = "{\"bookingId\":\"" + booking.BookingId + "\",\"email\":\"" + booking.UserEmail + "\"}";
+                var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(dataToEncode);
+                string qrCodeData = Convert.ToBase64String(plainTextBytes);
                 string subject = "Booking Confirmation";
-                string mailbody = "Thank you for making a booking in our cinemas.<br/> You can check your bookings on your <a href=\"vivedy.azurewebsites.net/Accounts/Index\">Account page</a> on our website.";
+                string mailbody = $"<div id=\"mainEmailContent\" style=\"-webkit-text-size-adjust: 100%; font-family: Verdana,sans-serif;\">" +
+                                    $"<img style=\"display: block; margin-left: auto; margin-right: auto; height: 3rem; width: 3rem;\" src=\"http://vivedy.azurewebsites.net/favicon.ico\">" +
+                                    $"<b><h2 style=\"text-align: center;\">Thank you for purchasing tickets at our website!</h2></b>" +
+                                    $"<p>Below are details of your purchase.</p>" +
+                                    $"<i><p>Please present this email when you arrive to the cinema to the our stuuf at the entrance to the auditorium.</p></i>" +
+                                    $"<div style=\"box-sizing: inherit; padding: 0.01em 16px; margin-top: 16px; margin-bottom: 16px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);\">" +
+                                        $"<h3>{payModel.Movie.Name}</h3>" +
+                                        $"<h4><b>Date:</b> {payModel.SelectedRotation.StartTime.Date}</h4>" +
+                                        $"<h4><b>Time:</b> {payModel.SelectedRotation.StartTime.TimeOfDay}</h4>" +
+                                        $"<h4><b>Your seats:</b> </h4>" +
+                                        $"<ul>" +
+                                            $"{htmlSeats}" +
+                                        $"</ul>" +
+                                        $"<br>" +
+                                        $"<img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://api.qrserver.com/v1/create-qr-code/?size=250&bgcolor=255-255-255&color=9-10-15&qzone=0&data={qrCodeData}\" alt=\"Qrcode\">" +
+                                        $"<br>" +
+                                    $"</div>" +
+                                    $"<p>Go to our <a href=\"vivedy.azurewebsites.net\">website</a> to find more movies!</p>" +
+                                  $"</div>";
                 EmailService mailService = new EmailService();
                 await mailService.SendAsync(payModel.Email, subject, mailbody);
                 return View("BookingConfirmation");

@@ -11,22 +11,27 @@
             <div class="mb-5 mt-4 phenomena-sm border-bottom ">
                 <h1 class="display-5">CHANGE YOUR EMAIL</h1>
             </div>
+            <h5 class="text-center">Please, login again after changing your email.</h5>
+            <br />
+            @Html.ValidationSummary("", new { @class = "text-danger" })
             <div class="row">
-                @Html.ValidationSummary("", new { @class = "text-danger" })
                 @Html.LabelFor(m => m.OldEmail, new { @class = "col-sm-12" })
                 @Html.EditorFor(m => m.OldEmail, new { @class = "mb-3 col-sm-12" })
+                @Html.ValidationMessageFor(m => m.OldEmail, "", new { @class = "text-danger" })
             </div>
             <div class="row">
                 @Html.LabelFor(m => m.NewEmail, new { @class = "col-sm-12" })
                 @Html.EditorFor(m => m.NewEmail, new { @class = "mb-3 col-sm-12" })
+                @Html.ValidationMessageFor(m => m.NewEmail, "", new { @class = "text-danger" })
             </div>
             <div class="row">
                 @Html.LabelFor(m => m.ConfirmEmail, new { @class = "col-sm-12" })
                 @Html.EditorFor(m => m.ConfirmEmail, new { @class = "mb-3 col-sm-12" })
+                @Html.ValidationMessageFor(m => m.ConfirmEmail, "", new { @class = "text-danger" })
             </div>
-            <div class="row">
-                <div class="col-12 text-center">
-                    <input type="submit" value="Change email" class="btn btn-primary"/>
+            <div class="row text-center">
+                <div class="col-12">
+                    <input type="submit" value="Change email" class="btn btn-primary" />
                 </div>
             </div>
         </div>

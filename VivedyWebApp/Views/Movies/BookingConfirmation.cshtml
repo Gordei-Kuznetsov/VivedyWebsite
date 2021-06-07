@@ -3,9 +3,14 @@
     ViewBag.Title = "Booking Confirmation";
 }
 
-<div class="jumbotron">
-    <p>
-        Your booking has been confirmed. Please check you email for the reciept.
-        You can also view your booking in your @Html.ActionLink("account page", "Index", "Accounts").
-    </p>
+<div class="jumbotron text-center">
+    <h2>Confirm Email</h2>
+    <div>
+        <p>
+            Your booking has been confirmed. Please check you email for the reciept.
+        </p>
+        <p>
+            You can also view your booking at your @Html.ActionLink("account page", "Index", "Accounts").
+        </p>
+    </div>
 </div>

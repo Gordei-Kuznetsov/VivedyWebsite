@@ -142,6 +142,18 @@ namespace VivedyWebApp.Controllers
             Movie movie = await db.Movies.FindAsync(id);
             db.Movies.Remove(movie);
             await db.SaveChangesAsync();
+            string path = Server.MapPath("/Content/Images/" + id + "-HorizontalPoster.png");
+            FileInfo fi = new FileInfo(path);
+            if (fi.Exists)
+            {
+                fi.Delete();
+            }
+            path = Server.MapPath("/Content/Images/" + id + "-VerticalPoster.png");
+            fi = new FileInfo(path);
+            if (fi.Exists)
+            {
+                fi.Delete();
+            }
             return RedirectToAction("Index");
         }
 

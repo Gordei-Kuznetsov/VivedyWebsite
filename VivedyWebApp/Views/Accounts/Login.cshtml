@@ -10,7 +10,7 @@
     @Html.AntiForgeryToken()
 
     <div class="containerOne">
-        <div class="grey-bg-color mx-auto" style="width: 550px">
+        <div class="grey-bg-color">
             <div class="mb-5 mt-4 phenomena-sm border-bottom ">
                 <h1 class="display-5">LOGIN TO YOUR ACCOUNT</h1>
             </div>
@@ -26,16 +26,16 @@
                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
             </div>
             <div class="row">
-                <div class="col-6 phenomena-sm">
-                    <div class="text-light "> Don't have an account? @Html.ActionLink("Register as a new user", "Register", new { @class = "text-link" }) </div>
-                    <div class="text-link"> @Html.ActionLink("Forgot your password?", "ForgotPassword") </div>
+                <div class="col-6">
+                    <div> Don't have an account? <a href="/Accounts/Register" class="text-link">Register as a new user.</a></div>
+                    <div> <a href="/Accounts/ForgotPassword" class="text-link">Forgot Password?</a> </div>
                 </div>
                 <div class="col-6 text-center">
                     <div class="col-6">
                         <input type="submit" value="Log In" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm ">
                     </div>
                     <div class="col-6">
-                        <label class="form-check-label mt-2 phenomena-sm" for="flexCheckDefault"> Remember Me? <input class="" type="checkbox" value="" id="flexCheckDefault"></label>
+                        <label class="form-check-label mt-2" for="flexCheckDefault"> Remember Me? <input class="" type="checkbox" value="" id="flexCheckDefault"></label>
                     </div>
                 </div>
             </div>

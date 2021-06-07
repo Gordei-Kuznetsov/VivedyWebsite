@@ -9,7 +9,7 @@ namespace VivedyWebApp.Models.ViewModels
 {
     public class AdminRotationsViewModel
     {
-        [Display(Name = "Start Time")]
+        [Display(Name = "Start Day and Time")]
         [Required]
         public System.DateTime StartTime { get; set; }
 
@@ -18,5 +18,11 @@ namespace VivedyWebApp.Models.ViewModels
         [Required]
         public string MovieId { get; set; }
         public Movie Movie { get; set; }
+
+        [Display(Name = "Auto-generate a week of rotations?")]
+        public bool GenerateRotations { get; set; }
+
+        [Display(Name = "First day for the week and time")]
+        public System.DateTime StartDay { get; set; }
     }
 }

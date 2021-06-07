@@ -5,9 +5,9 @@
 }
 
 <div class="jumbotron">
-    @if(ViewBag.ErrorMessage != null)
+     @if (ViewBag.ErrorMessage != null)
     {
-        <h2 class="text-danger">@ViewBag.ErrorMessage</h2>
+        <h2 class="text-danger text-center">@ViewBag.ErrorMessage</h2>
     }
     <div class="row">
         <div class="col-lg-5">
@@ -22,7 +22,7 @@
                 <div class="card-body">
                     <h5 style="color: #A80000;" class="display-2">@Model.Name</h5>
                     <p class="card-text"> Catoegry: <span class="badge badge-pill badge-secondary">@Model.Category</span></p>
-                    <p class="card-text"> Rating: <span class="badge badge-pill badge-danger"> @Model.Rating</span></p>
+                    <p class="card-text"> Rating: <span class="badge badge-pill badge-danger"> +@Model.Rating</span></p>
                     <p class="card-text">
                         Movie Duration: <span class="badge badge-pill badge-danger">
                             @Model.Duration.Hours hr
@@ -30,7 +30,7 @@
                         </span>
                     </p>
                     <p class="card-text">@Model.Description</p>
-                    <p class="Price"> <span style="color: #A80000;">Movie Price: </span>@Model.Price</p>
+                    <p class="Price"> <span style="color: #A80000;">Movie Price: </span>$@Model.Price</p>
                     <a href="/Movies/BookingTime?id=@Model.MovieId" class="btn btn-danger">Book Movie</a>
                 </div>
             </div>

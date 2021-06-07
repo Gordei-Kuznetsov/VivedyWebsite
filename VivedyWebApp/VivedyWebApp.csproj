@@ -49,12 +49,21 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -193,10 +202,6 @@
     <Compile Include="Migrations\202105201119301_ChagedBookingModel.Designer.cs">
       <DependentUpon>202105201119301_ChagedBookingModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105250253075_FiddledSomeStuff.cs" />
-    <Compile Include="Migrations\202105250253075_FiddledSomeStuff.Designer.cs">
-      <DependentUpon>202105250253075_FiddledSomeStuff.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202105260803403_ModifiedBookingModel.cs" />
     <Compile Include="Migrations\202105260803403_ModifiedBookingModel.Designer.cs">
       <DependentUpon>202105260803403_ModifiedBookingModel.cs</DependentUpon>
@@ -246,8 +251,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap-4.0.0.min.js" />
     <Content Include="fonts\Phenomena-Regular.ttf" />
     <Content Include="fonts\fa-brands-400.eot" />
     <Content Include="fonts\fa-brands-400.ttf" />
@@ -263,7 +267,6 @@
     <Content Include="fonts\fa-solid-900.woff2" />
     <None Include="Properties\PublishProfiles\vivedy - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
@@ -274,6 +277,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\navbarred.js" />
+    <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\Search and Filter.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -357,9 +361,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105201119301_ChagedBookingModel.resx">
       <DependentUpon>202105201119301_ChagedBookingModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105250253075_FiddledSomeStuff.resx">
-      <DependentUpon>202105250253075_FiddledSomeStuff.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105260803403_ModifiedBookingModel.resx">
       <DependentUpon>202105260803403_ModifiedBookingModel.cs</DependentUpon>
