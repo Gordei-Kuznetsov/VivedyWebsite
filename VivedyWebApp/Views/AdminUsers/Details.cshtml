@@ -1,4 +1,4 @@
-﻿@model VivedyWebApp.Models.ApplicationUser
+﻿@model VivedyWebApp.Models.ViewModels.AdminUsersViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -58,6 +58,13 @@
                     </div>
 
                 </div>
+                <div class="row ">
+                    <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.Role):</div>
+                    <div class="col-md-8 mb-3 phenomena-sm">
+                        @Html.DisplayFor(model => model.Role)
+                    </div>
+
+                </div>
 
 
             </div>
@@ -67,7 +74,7 @@
                     @Html.ActionLink("Edit", "Edit", null, new { id = Model.Id }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " })
                 </div>
                 <div class="col">
-                    <input type="submit" value="Delete" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm" >
+                    <input type="submit" value="Delete" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm">
                 </div>
             </div>
             <div>
