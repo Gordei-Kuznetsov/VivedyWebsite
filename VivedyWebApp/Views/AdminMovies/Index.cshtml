@@ -20,8 +20,8 @@
             <input type="text" class="mb-3 float-right" id="myInput" placeholder="Search..">
             <br>
             <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
-                <thead>
-                    <tr class="text-center ">
+                <thead >
+                    <tr class="text-center">
                         <th scope="col">
                             @Html.DisplayNameFor(model => model.Name)
                         </th>
@@ -31,7 +31,7 @@
                         <th scope="col">
                             @Html.DisplayNameFor(model => model.Category)
                         </th>
-                        <th scope="col">
+                        <th scope="col" style="width:300px">
                             @Html.DisplayNameFor(model => model.Description)
                         </th>
                         <th scope="col">
@@ -48,7 +48,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody id="myList">
+                <tbody  id="myList" style="height:30px">
                     @foreach (var item in Model) {
                     <tr class="text-center">
                         <td>
@@ -60,14 +60,14 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Category)
                         </td>
-                        <td>
+                        <td style="width:450px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
                             @Html.DisplayFor(modelItem => item.Description)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Duration)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Price)
+                            $@Html.DisplayFor(modelItem => item.Price)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.TrailerUrl)

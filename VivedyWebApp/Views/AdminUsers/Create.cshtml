@@ -1,4 +1,4 @@
-﻿@model VivedyWebApp.Models.ViewModels.AdminUsersViewModel
+﻿@model VivedyWebApp.Models.ViewModels.AdminUsersCreateViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -63,7 +63,7 @@
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.Role) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.PasswordFor(m => m.Role, new { @class = "col-md-12" })
+                        @Html.EditorFor(m => m.Role, new { @class = "col-md-12" })
                         @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -76,7 +76,7 @@
 
             <div class="row">
                 <div class="form-check phenomena-sm col-8">
-                    <button type="button" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " value="Create">ADD  <i class="fas fa-plus"></i></button>
+                    <input type="submit" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " value="Create">
                 </div>
             </div>
             <div>

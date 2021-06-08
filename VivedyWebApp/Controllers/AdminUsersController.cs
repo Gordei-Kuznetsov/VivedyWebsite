@@ -35,7 +35,23 @@ namespace VivedyWebApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Index()
         {
-            return View(await UserManager.Users.ToListAsync());
+            List<ApplicationUser> allUsers = await UserManager.Users.ToListAsync();
+            List<AdminUsersViewModel> allViewModels = new List<AdminUsersViewModel>();
+            foreach(ApplicationUser user in allUsers)
+            {
+                allViewModels.Add(new AdminUsersViewModel
+                {
+                     Name = user.Name,
+                     UserName = user.UserName,
+                     Id = user.Id,
+                     Role = UserManager.GetRoles(user.Id).First(),
+                     PhoneNumberConfirmed = user.PhoneNumberConfirmed,
+                     PhoneNumber  = user.PhoneNumber,
+                     EmailConfirmed = user.EmailConfirmed,
+                     Email = user.Email
+                });
+            };
+            return View(allViewModels);
         }
 
         // GET: AdminUsers/Details/5
@@ -51,7 +67,18 @@ namespace VivedyWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            return View(applicationUser);
+            AdminUsersViewModel model = new AdminUsersViewModel
+            {
+                Name = applicationUser.Name,
+                UserName = applicationUser.UserName,
+                Id = applicationUser.Id,
+                Role = UserManager.GetRoles(applicationUser.Id).First(),
+                PhoneNumberConfirmed = applicationUser.PhoneNumberConfirmed,
+                PhoneNumber = applicationUser.PhoneNumber,
+                EmailConfirmed = applicationUser.EmailConfirmed,
+                Email = applicationUser.Email
+            };
+            return View(model);
         }
 
         // GET: AdminUsers/Create
@@ -65,7 +92,7 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Create(AdminUsersViewModel newUser)
+        public async Task<ActionResult> Create(AdminUsersCreateViewModel newUser)
         {
             if (ModelState.IsValid)
             {
@@ -117,21 +144,40 @@ namespace VivedyWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            return View(applicationUser);
+            AdminUsersViewModel model = new AdminUsersViewModel
+            {
+                Name = applicationUser.Name,
+                UserName = applicationUser.UserName,
+                Id = applicationUser.Id,
+                Role = UserManager.GetRoles(applicationUser.Id).First(),
+                PhoneNumberConfirmed = applicationUser.PhoneNumberConfirmed,
+                PhoneNumber = applicationUser.PhoneNumber,
+                EmailConfirmed = applicationUser.EmailConfirmed,
+                Email = applicationUser.Email
+            };
+            return View(model);
         }
 
         // POST: AdminUsers/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Edit(ApplicationUser applicationUser)
+        public async Task<ActionResult> Edit(AdminUsersViewModel model)
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser applicationUser = UserManager.FindById(model.Id);
+                applicationUser.Name = model.Name;
+                applicationUser.UserName = model.UserName;
+                UserManager.AddToRole(model.Id, model.Role);
+                applicationUser.PhoneNumberConfirmed = model.PhoneNumberConfirmed;
+                applicationUser.PhoneNumber = model.PhoneNumber;
+                applicationUser.EmailConfirmed = model.EmailConfirmed;
+                applicationUser.Email = model.Email;
                 await UserManager.UpdateAsync(applicationUser);
                 return RedirectToAction("Index");
             }
-            return View(applicationUser);
+            return View(model);
         }
 
         // GET: AdminUsers/Delete/5
@@ -147,7 +193,18 @@ namespace VivedyWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            return View(applicationUser);
+            AdminUsersViewModel model = new AdminUsersViewModel
+            {
+                Name = applicationUser.Name,
+                UserName = applicationUser.UserName,
+                Id = applicationUser.Id,
+                Role = UserManager.GetRoles(applicationUser.Id).First(),
+                PhoneNumberConfirmed = applicationUser.PhoneNumberConfirmed,
+                PhoneNumber = applicationUser.PhoneNumber,
+                EmailConfirmed = applicationUser.EmailConfirmed,
+                Email = applicationUser.Email
+            };
+            return View(model);
         }
 
         // POST: AdminUsers/Delete/5
