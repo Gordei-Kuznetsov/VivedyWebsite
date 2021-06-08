@@ -107,10 +107,10 @@
 
 
             <div>
-                @Html.ActionLink("Edit", "Edit", null, new { id = Model.Id }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " }) 
+                @Html.ActionLink("Edit", "Edit", null, routeValues: new { id = Model.Id }, htmlAttributes: new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " }) 
             </div>
             <div>
-                @Html.ActionLink("Back to List", "Index")
+                @Html.ActionLink("Back to List", "Index", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
             </div>
             
         </div>

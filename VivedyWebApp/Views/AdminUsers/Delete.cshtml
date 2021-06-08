@@ -104,14 +104,15 @@
                 </div>
 
             </div>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
 
-            <div>
-                <input type="submit" value="Delete" class="btn btn-danger mt-3">
-            </div>
-            <div>
-                @Html.ActionLink("Back to List", "Index")
-            </div>
-
+                <div class="form-actions no-color">
+                    <input type="submit" value="Delete" class="btn btn-danger mt-3" /> |
+                    @Html.ActionLink("Back to List", "Index")
+                </div>
+            }
         </div>
     </div>
 </div>
