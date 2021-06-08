@@ -9,6 +9,8 @@ using System.Web;
 using System.Web.Mvc;
 using VivedyWebApp.Models;
 using Microsoft.AspNet.Identity.Owin;
+using VivedyWebApp.Models.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace VivedyWebApp.Controllers
 {
@@ -52,28 +54,54 @@ namespace VivedyWebApp.Controllers
             return View(applicationUser);
         }
 
-        // GET: AdminUsers/New
+        // GET: AdminUsers/Create
         [Authorize(Roles = "Admin")]
-        public ActionResult New()
+        public ActionResult Create()
         {
             return View();
         }
 
-        // POST: AdminUsers/New
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: AdminUsers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> New([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
+        public async Task<ActionResult> Create(AdminUsersViewModel newUser)
         {
             if (ModelState.IsValid)
             {
-                await UserManager.CreateAsync(applicationUser);
-                return RedirectToAction("Index");
+                var user = new ApplicationUser { 
+                    UserName = newUser.Email, 
+                    Email = newUser.Email,
+                    Name = newUser.Name,
+                    PhoneNumber = newUser.PhoneNumber,
+                };
+                var result = await UserManager.CreateAsync(user, newUser.Password);
+                if (result.Succeeded)
+                {
+                    var currentUser = UserManager.FindByEmail(user.Email);
+                    switch (newUser.Role) 
+                    {
+                        case "Admin":
+                            UserManager.AddToRole(currentUser.Id, "Admin");
+                            break;
+                        case "Visitor":
+                        default:
+                            UserManager.AddToRole(currentUser.Id, "Visitor");
+                            break;
+                    }
+
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    string subject = "Email Confirmation";
+                    string mailbody = "Thank you for regestering on our website. Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
+                    EmailService mailService = new EmailService();
+                    await mailService.SendAsync(user.Email, subject, mailbody);
+                    return RedirectToAction("Index");
+                }
             }
 
-            return View(applicationUser);
+            // If we got this far, something failed, redisplay form
+            return View(newUser);
         }
 
         // GET: AdminUsers/Edit/5
@@ -93,12 +121,10 @@ namespace VivedyWebApp.Controllers
         }
 
         // POST: AdminUsers/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
+        public async Task<ActionResult> Edit(ApplicationUser applicationUser)
         {
             if (ModelState.IsValid)
             {

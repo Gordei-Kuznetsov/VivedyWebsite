@@ -9,7 +9,7 @@ namespace VivedyWebApp
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-3.4.1.slim.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -20,13 +20,15 @@ namespace VivedyWebApp
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
+                      "~/Scripts/bootstrap-4.0.0.min.js",
                       "~/Scripts/navbarred.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/popper").Include(
+                      "~/Scripts/popper.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/vivedy-bootstrap.css",
-                      "~/Content/all.min.css",
-                      "~/Content/site.css"));
+                      "~/Content/all.min.css"));
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Web;
 
 namespace VivedyWebApp.Models.ViewModels
 {
-    public class AdminMoviesNewViewModels
+    public class AdminMoviesViewModel
     {
         [Display(Name = "Name")]
         [Required]
@@ -32,8 +32,19 @@ namespace VivedyWebApp.Models.ViewModels
         [Required]
         public int Price { get; set; }
 
+        [Display(Name = "Trailer URL")]
         [Required]
         [Url]
         public string TrailerUrl { get; set; }
+
+        [Display(Name = "Horizontal Poster")]
+        [DataType(DataType.Upload)]
+        [Required]
+        public HttpPostedFileBase HorizontalImage {get;set;}
+
+        [Display(Name = "Vertical Poster")]
+        [DataType(DataType.Upload)]
+        [Required]
+        public HttpPostedFileBase VerticalImage { get; set; }
     }
 }

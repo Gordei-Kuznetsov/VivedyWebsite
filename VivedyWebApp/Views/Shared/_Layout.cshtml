@@ -7,8 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title | Vivedy</title>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-    <link rel="stylesheet" href="Content/all.min.css">
 </head>
 <!--class="ScrollHide"-->
 
@@ -31,9 +29,6 @@
                     </li>
                     <li class="nav-item">
                         @Html.ActionLink("About", "About", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link ml-1 mr-1" })
-                    </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("Contact", "Contact", "Home",routeValues: null, htmlAttributes: new { @class = "nav-link ml-1 mr-1" })
                     </li>
                     <li class="nav-item">
                         @Html.ActionLink("Privacy", "Privacy", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link ml-1 mr-1" })
@@ -64,6 +59,7 @@
     <!-- Footer End -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
     @RenderSection("scripts", required: false)
 </body>
 

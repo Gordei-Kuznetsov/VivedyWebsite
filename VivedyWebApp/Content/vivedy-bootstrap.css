@@ -42,6 +42,7 @@ html {
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(22, 25, 37, 0);
+    scroll-behavior: smooth;
 }
 
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
@@ -11907,6 +11908,10 @@ button.bg-secondary:focus {
     font-style: normal;
 }
 
+.phenomena-sm {
+    font-family: Phenomena;
+}
+
 .phenomena {
     font-family: Phenomena;
     font-weight: 900;
@@ -12088,3 +12093,6 @@ button.bg-secondary:focus {
     .raijaLink:hover {
         color: #222;
     }
+
+
+

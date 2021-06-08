@@ -6,16 +6,20 @@ using System.Web;
 
 namespace VivedyWebApp.Models.ViewModels
 {
-    public class AdminUsersViewModels
+    public class AdminUsersViewModel
     {
         [Required]
         [Display(Name = "User Name")]
-        public string UserName { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Phone]
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
@@ -31,6 +35,5 @@ namespace VivedyWebApp.Models.ViewModels
         [Required]
         [Display(Name = "Role")]
         public string Role { get; set; }
-
     }
 }

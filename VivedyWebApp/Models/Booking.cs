@@ -11,15 +11,22 @@ namespace VivedyWebApp.Models
     {
         [Key]
         [Required]
+        [Display(Name = "Booking Id")]
         public string BookingId { get; set; }
+
+        [Display(Name = "Seats")]
         [Required]
         public string Seats { get; set; }
+
+        [Display(Name = "Creation Date")]
         [Required]
         public System.DateTime CreationDate { get; set; }
 
+        [Display(Name = "User Email")]
         [Required]
         public string UserEmail { get; set; }
 
+        [Display(Name = "Rotation Id")]
         [ForeignKey("Rotation")]
         [Required]
         public string RotationId { get; set; }

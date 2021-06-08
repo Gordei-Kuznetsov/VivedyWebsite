@@ -2,93 +2,84 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmailConfirmed)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PasswordHash)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SecurityStamp)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TwoFactorEnabled)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LockoutEndDateUtc)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LockoutEnabled)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccessFailedCount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th></th>
-    </tr>
+    <form>
+        <div class="card mx-auto " style="width: auto; margin-top: 5rem; margin-bottom: 3rem;">
+            <nav class="nav nav-pills nav-fill  row no-gutters phenomena-sm" style="        background-color: #a8000a;
+">
+                <a class="nav-item nav-link raijaLink" href="/AdminMovies/Index">MOVIES</a>
+                <a class="nav-item nav-link raijaLink" href="/AdminBookings/Index">BOOKINGS</a>
+                <a class="nav-item nav-link raijaLink" href="/AdminRotations/Index">ROTATIONS</a>
+                <a class="nav-item nav-link raijaLink"
+                   style="background-color: #f0f0f0; color: #222; border-radius: 0rem; border-top: 5px solid #a8000a;">
+                    USERS
+                </a>
+            </nav>
+            <div class="white-bg-color">
+                <a  class="btn btn-danger  phenomena-sm " href="/AdminUsers/Create">ADD <i class="fas fa-plus"></i></a>
+                <input type="text" class="mb-3 float-right" id="myInput" placeholder="Search..">
+                <br>
+                <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
+                    <thead>
+                        <tr class="text-center ">
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.Email)
+                            </th>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.EmailConfirmed)
+                            </th>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.PhoneNumber)
+                            </th>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
+                            </th>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.UserName)
+                            </th>
+                            <th scope="col">
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmailConfirmed)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PasswordHash)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SecurityStamp)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PhoneNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PhoneNumberConfirmed)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TwoFactorEnabled)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LockoutEndDateUtc)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LockoutEnabled)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AccessFailedCount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="myList">
+                        @foreach (var item in Model)
+                        {
+                            <tr class="text-center">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EmailConfirmed)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoneNumberConfirmed)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", "AdminUsers", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                    @Html.ActionLink("Details", "Details", "AdminUsers", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                    @Html.ActionLink("Delete", "Delete", "AdminUsers", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-</table>
+
+    </form>

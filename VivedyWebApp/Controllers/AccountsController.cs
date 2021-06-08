@@ -72,6 +72,8 @@ namespace VivedyWebApp.Controllers
             {
                 return View(model);
             }
+            returnUrl = (returnUrl == null) ? "/Home/Index" : returnUrl;
+
             var user = UserManager.FindByEmail(model.Email);
             if (user == null)
             {
@@ -122,20 +124,17 @@ namespace VivedyWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email};
+                var user = new ApplicationUser { UserName = model.Email, Name = model.Name, Email = model.Email, PhoneNumber = model.PhoneNumber };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     var currentUser = UserManager.FindByEmail(user.Email);
-                    var roleresult = UserManager.AddToRole(currentUser.Id, "Visitor");
-
-                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    UserManager.AddToRole(currentUser.Id, "Visitor");
 
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    //await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
                     string subject = "Email Confirmation";
-                    string mailbody = "Thank you for regestering on our website. Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
+                    string mailbody = "<b>Hi " + user.Name + "</b><br/>Thank you for regestering on our website. Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
                     EmailService mailService = new EmailService();
                     await mailService.SendAsync(user.Email, subject, mailbody);
                     return RedirectToAction("Index", "Home");
@@ -190,7 +189,7 @@ namespace VivedyWebApp.Controllers
                 var callbackUrl = Url.Action("ResetPassword", "Accounts", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 //await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 string subject = "Password Resetting";
-                string mailbody = "Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to reset password for your account on vivedy.com.";
+                string mailbody = "Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to reset password for your account on <a href=\"vivedy.azurewebsites.net/Home/Index\">vivedy.azurewebsites.net</a>.";
                 EmailService mailService = new EmailService();
                 await mailService.SendAsync(user.Email, subject, mailbody);
                 return RedirectToAction("ForgotPasswordConfirmation", "Accounts");
@@ -261,7 +260,7 @@ namespace VivedyWebApp.Controllers
         }
         //
         // GET: /Accounts/Index
-        public async Task<ActionResult> Index(AccountsMessageId? message)
+        public ActionResult Index(AccountsMessageId? message)
         {
             ViewBag.StatusMessage =
                 message == AccountsMessageId.ChangePasswordSuccess ? "Your password has been changed."
@@ -273,12 +272,11 @@ namespace VivedyWebApp.Controllers
             var user = UserManager.FindById(userId);
             var model = new IndexViewModel
             {
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
-                UserName = user.UserName,
+                Name = user.Name,
                 Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
             };
             return View(model);
-
         }
 
         //
@@ -313,11 +311,11 @@ namespace VivedyWebApp.Controllers
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     string subject = "Email Confirmation";
-                    string mailbody = "You have changed your email address on our website. Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
+                    string mailbody = "You have changed your email address on our website.<br/>Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
                     EmailService mailService = new EmailService();
                     await mailService.SendAsync(user.Email, subject, mailbody);
                     AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Login", new { Message = AccountsMessageId.ChangeEmailSuccess });
                 }
                 else
                 {
@@ -353,9 +351,9 @@ namespace VivedyWebApp.Controllers
                 var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 if (user != null)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
                 }
-                return RedirectToAction("Index", new { Message = AccountsMessageId.ChangePasswordSuccess });
+                return RedirectToAction("Login", new { Message = AccountsMessageId.ChangePasswordSuccess });
             }
             AddErrors(result);
             return View(model);

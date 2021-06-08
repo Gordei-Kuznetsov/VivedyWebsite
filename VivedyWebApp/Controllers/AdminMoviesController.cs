@@ -8,6 +8,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using VivedyWebApp.Models;
+using VivedyWebApp.Models.ViewModels;
+using System.IO;
 
 namespace VivedyWebApp.Controllers
 {
@@ -38,29 +40,50 @@ namespace VivedyWebApp.Controllers
             return View(movie);
         }
 
-        // GET: AdminMovies/New
+        // GET: AdminMovies/Create
         [Authorize(Roles = "Admin")]
-        public ActionResult New()
+        public ActionResult Create()
         {
             return View();
         }
 
-        // POST: AdminMovies/New
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: AdminMovies/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> New([Bind(Include = "MovieId,Name,Rating,Category,Description,Duration,Price,TrailerUrl")] Movie movie)
+        public async Task<ActionResult> Create(AdminMoviesViewModel newMovie)
         {
             if (ModelState.IsValid)
             {
+                Movie movie = new Movie
+                {
+                    MovieId = Guid.NewGuid().ToString(),
+                    Name = newMovie.Name,
+                    Rating = newMovie.Rating,
+                    Category = newMovie.Category,
+                    Description = newMovie.Description,
+                    Duration = newMovie.Duration,
+                    Price = newMovie.Price,
+                    TrailerUrl = newMovie.TrailerUrl
+                };
                 db.Movies.Add(movie);
                 await db.SaveChangesAsync();
+                if(newMovie.HorizontalImage != null)
+                {
+                    string fileName = movie.MovieId + "-HorizontalPoster.png";
+                    var imagePath = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
+                    newMovie.HorizontalImage.SaveAs(imagePath);
+                }
+                if(newMovie.VerticalImage != null)
+                {
+                    string fileName = movie.MovieId + "-VerticalPoster.png";
+                    var imagePath = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
+                    newMovie.VerticalImage.SaveAs(imagePath);
+                }
                 return RedirectToAction("Index");
             }
 
-            return View(movie);
+            return View(newMovie);
         }
 
         // GET: AdminMovies/Edit/5
@@ -80,12 +103,10 @@ namespace VivedyWebApp.Controllers
         }
 
         // POST: AdminMovies/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Edit([Bind(Include = "MovieId,Name,Rating,Category,Description,Duration,Price,TrailerUrl")] Movie movie)
+        public async Task<ActionResult> Edit(Movie movie)
         {
             if (ModelState.IsValid)
             {
@@ -121,6 +142,18 @@ namespace VivedyWebApp.Controllers
             Movie movie = await db.Movies.FindAsync(id);
             db.Movies.Remove(movie);
             await db.SaveChangesAsync();
+            string path = Server.MapPath("/Content/Images/" + id + "-HorizontalPoster.png");
+            FileInfo fi = new FileInfo(path);
+            if (fi.Exists)
+            {
+                fi.Delete();
+            }
+            path = Server.MapPath("/Content/Images/" + id + "-VerticalPoster.png");
+            fi = new FileInfo(path);
+            if (fi.Exists)
+            {
+                fi.Delete();
+            }
             return RedirectToAction("Index");
         }
 

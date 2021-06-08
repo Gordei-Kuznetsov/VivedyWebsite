@@ -23,13 +23,17 @@ namespace VivedyWebApp.Models
     public class RegisterViewModel
     {
         [Required]
-        [Display(Name = "User Name")]
-        public string UserName { get; set; }
+        [Display(Name = "Name")]
+        public string Name { get; set; }
 
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Phone]
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
@@ -72,14 +76,12 @@ namespace VivedyWebApp.Models
 
     public class IndexViewModel
     {
-        public bool HasPassword { get; set; }
-        public string UserName { get; set; }
+        public string Name { get; set; }
         public string Email { get; set; }
-        public IList<UserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }
-        public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
     }
+
     public class ChangeEmailViewModel
     {
         [Required]

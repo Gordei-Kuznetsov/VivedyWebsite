@@ -1,7 +1,7 @@
-﻿
+﻿@model IEnumerable<VivedyWebApp.Models.Movie>
 @{
     ViewBag.Title = "Home";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Scripts.Render("~/bundles/jquery");
 }
 
 <main>
@@ -10,7 +10,7 @@
             <div class="card-body">
                 <h1 style="color: #a80000;" class=" display-2 phenomena2">VIVEDY</h1>
                 <hr class="my-4">
-                <p class="ml-3 mb-4">Welcome to Vivedy cinemas, Pick a movie here</p>
+                <p class="ml-3 mb-4">Welcome to Vivedy cinemas, pick a movie here</p>
                 <a href="/Movies/Index" class="btn btn-danger ml-3">Movies <i class="fas fa-film"></i></a>
             </div>
         </div>
@@ -18,21 +18,34 @@
     <div class="jumbotron-fluid">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                @for (int count = 0; count < Model.Count(); count++)
+                {
+                    if (count == 0)
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="@count" class="active"></li>
+                    }
+                    else
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="@count"></li>
+                    }
+                }
             </ol>
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="https://marvelblog.com/wp-content/uploads/2020/06/960x0.jpg" class="d-block w-100"
-                         alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="..." class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="..." class="d-block w-100" alt="...">
-                </div>
+                @foreach (var item in Model)
+                {
+                    if (item == Model.First())
+                    {
+                        <div class="carousel-item active">
+                            <img style="max-height:60rem; min-height:60rem" class="d-block w-100" src="/Content/Images/@item.MovieId-HorizontalPoster.png" alt="Slide Failed">
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="carousel-item">
+                            <img style="max-height:60rem; min-height:60rem" class="d-block w-100" src="/Content/Images/@item.MovieId-HorizontalPoster.png" alt="Slide Failed">
+                        </div>
+                    }
+                }
             </div>
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -48,50 +61,32 @@
         <div class="container">
             <div class="row">
                 <div class="container">
-                    <h1 style="color: #a80000;" class="display-1 phenomena2 mb-5">MOVIES</h1>
+                    <h1 style="color: #a80000;" class="display-1 phenomena2 mb-5">TOP MOVIES</h1>
                     <p class="ml-3 mb-4">Current Movies being sold</p>
                     <hr class="my-4">
                 </div>
             </div>
             <div class="row mt-5">
-                <div class="card-body col-lg-3 col-sm-6">
-                    <div class="card">
-                        <img src="https://lumiere-a.akamaihd.net/v1/images/p_marvel_avengers_infinity_war_5ecb49d0.png"
-                             class="card-img-top" alt="...">
+                @foreach (var item in Model)
+                {
+                    <div class="card-body col-lg-3 col-sm-6 movieCard">
                         <div class="card">
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                            <img src="/Content/Images/@item.MovieId-VerticalPoster.png"
+                                 class="card-img-top" style="max-height:20rem; min-height:20rem; object-fit:cover" alt="Failed Img">
+                            <div class="card">
+                                <a href="/Movies/Details?id=@item.MovieId" class="btn btn-primary">@item.Name</a>
+                            </div>
                         </div>
+                        <div style="display: none" class="movieName">@item.Name</div>
+                        <div style="display: none" class="movieRating">@item.Rating</div>
+                        <div style="display: none" class="movieCategory">@item.Category</div>
                     </div>
-                </div>
-                <div class="card-body col-lg-3 col-sm-6">
-                    <div class="card">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/8/8a/The_Avengers_%282012_film%29_poster.jpg"
-                             class="card-img-top" alt="...">
-                        <div class="card">
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body col-lg-3 col-sm-6">
-                    <div class="card">
-                        <img src="https://13thdimension.com/wp-content/uploads/2018/03/D1nkY7UVAAUs7KN-580x859.jpg"
-                             class="card-img-top" alt="...">
-                        <div class="card">
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body col-lg-3 col-sm-6">
-                    <div class="card">
-                        <img src="https://13thdimension.com/wp-content/uploads/2018/03/iron_man_ver3_xlg-580x860.jpg"
-                             class="card-img-top" alt="...">
-                        <div class="card">
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </div>
 </main>
+
+
+
 

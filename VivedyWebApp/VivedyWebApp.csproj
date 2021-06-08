@@ -49,12 +49,21 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -193,10 +202,6 @@
     <Compile Include="Migrations\202105201119301_ChagedBookingModel.Designer.cs">
       <DependentUpon>202105201119301_ChagedBookingModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105250253075_FiddledSomeStuff.cs" />
-    <Compile Include="Migrations\202105250253075_FiddledSomeStuff.Designer.cs">
-      <DependentUpon>202105250253075_FiddledSomeStuff.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202105260803403_ModifiedBookingModel.cs" />
     <Compile Include="Migrations\202105260803403_ModifiedBookingModel.Designer.cs">
       <DependentUpon>202105260803403_ModifiedBookingModel.cs</DependentUpon>
@@ -212,6 +217,14 @@
     <Compile Include="Migrations\202105272309428_RemovedRotationField.cs" />
     <Compile Include="Migrations\202105272309428_RemovedRotationField.Designer.cs">
       <DependentUpon>202105272309428_RemovedRotationField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202106010046370_AddedNameToUserModel.cs" />
+    <Compile Include="Migrations\202106010046370_AddedNameToUserModel.Designer.cs">
+      <DependentUpon>202106010046370_AddedNameToUserModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202106012140087_EditedModels.cs" />
+    <Compile Include="Migrations\202106012140087_EditedModels.Designer.cs">
+      <DependentUpon>202106012140087_EditedModels.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ViewModels\AccountsViewModels.cs" />
@@ -238,8 +251,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap-4.0.0.min.js" />
     <Content Include="fonts\Phenomena-Regular.ttf" />
     <Content Include="fonts\fa-brands-400.eot" />
     <Content Include="fonts\fa-brands-400.ttf" />
@@ -253,8 +265,8 @@
     <Content Include="fonts\fa-solid-900.ttf" />
     <Content Include="fonts\fa-solid-900.woff" />
     <Content Include="fonts\fa-solid-900.woff2" />
+    <None Include="Properties\PublishProfiles\vivedy - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
@@ -265,6 +277,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\navbarred.js" />
+    <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\Search and Filter.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -278,7 +291,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Accounts\ConfirmEmail.cshtml" />
     <Content Include="Views\Accounts\ForgotPassword.cshtml" />
     <Content Include="Views\Accounts\ForgotPasswordConfirmation.cshtml" />
@@ -294,29 +306,31 @@
     <Content Include="Views\Movies\BookingConfirmation.cshtml" />
     <Content Include="Views\Accounts\ResetPassword.cshtml" />
     <Content Include="Views\Accounts\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\AdminMovies\New.cshtml" />
+    <Content Include="Views\AdminMovies\Create.cshtml" />
     <Content Include="Views\AdminMovies\Delete.cshtml" />
     <Content Include="Views\AdminMovies\Details.cshtml" />
     <Content Include="Views\AdminMovies\Edit.cshtml" />
     <Content Include="Views\AdminMovies\Index.cshtml" />
-    <Content Include="Views\AdminBookings\New.cshtml" />
+    <Content Include="Views\AdminBookings\Create.cshtml" />
     <Content Include="Views\AdminBookings\Delete.cshtml" />
     <Content Include="Views\AdminBookings\Details.cshtml" />
     <Content Include="Views\AdminBookings\Edit.cshtml" />
     <Content Include="Views\AdminBookings\Index.cshtml" />
-    <Content Include="Views\AdminRotations\New.cshtml" />
+    <Content Include="Views\AdminRotations\Create.cshtml" />
     <Content Include="Views\AdminRotations\Delete.cshtml" />
     <Content Include="Views\AdminRotations\Details.cshtml" />
     <Content Include="Views\AdminRotations\Edit.cshtml" />
     <Content Include="Views\AdminRotations\Index.cshtml" />
-    <Content Include="Views\AdminUsers\New.cshtml" />
+    <Content Include="Views\AdminUsers\Create.cshtml" />
     <Content Include="Views\AdminUsers\Delete.cshtml" />
     <Content Include="Views\AdminUsers\Details.cshtml" />
     <Content Include="Views\AdminUsers\Edit.cshtml" />
     <Content Include="Views\AdminUsers\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Accounts\ChangeEmail.cshtml" />
-    <Content Include="Views\Movies\Booking.cshtml" />
+    <Content Include="Views\Movies\BookingTime.cshtml" />
+    <Content Include="Views\Movies\BookingSeats.cshtml" />
+    <Content Include="Views\Movies\BookingPay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -348,9 +362,6 @@
     <EmbeddedResource Include="Migrations\202105201119301_ChagedBookingModel.resx">
       <DependentUpon>202105201119301_ChagedBookingModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105250253075_FiddledSomeStuff.resx">
-      <DependentUpon>202105250253075_FiddledSomeStuff.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105260803403_ModifiedBookingModel.resx">
       <DependentUpon>202105260803403_ModifiedBookingModel.cs</DependentUpon>
     </EmbeddedResource>
@@ -362,6 +373,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105272309428_RemovedRotationField.resx">
       <DependentUpon>202105272309428_RemovedRotationField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106010046370_AddedNameToUserModel.resx">
+      <DependentUpon>202106010046370_AddedNameToUserModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106012140087_EditedModels.resx">
+      <DependentUpon>202106012140087_EditedModels.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
