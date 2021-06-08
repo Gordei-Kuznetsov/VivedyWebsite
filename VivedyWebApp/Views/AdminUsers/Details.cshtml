@@ -11,6 +11,13 @@
             <div class="mb-5 mt-4 phenomena-sm border-bottom border-dark " style="color: #a8000a"><h1 class="display-5">USER DETAILS</h1></div>
             <div class="border-bottom">
                 <div class="row">
+                    <div class="col-3 phenomena-sm">User @Html.DisplayNameFor(model => model.Id) : </div>
+                    <div class="mb-3 col-md-8 phenomena-sm" readonly>
+                        @Html.DisplayFor(model => model.Id)
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.Email) : </div>
                     <div class="mb-3 col-md-8 phenomena-sm" readonly>
                         @Html.DisplayFor(model => model.Email)
@@ -32,24 +39,6 @@
 
                 </div>
 
-                <div class="row">
-                    <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.PasswordHash) :</div>
-                    <div class=" mb-3 col-md-8 phenomena-sm">
-                        <div class="checkbox">
-                            @Html.DisplayFor(model => model.PasswordHash)
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="row">
-                    <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.SecurityStamp) :</div>
-                    <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.DisplayFor(model => model.SecurityStamp)
-                    </div>
-                </div>
-
-
 
 
                 <div class="row">
@@ -70,49 +59,21 @@
 
                 </div>
 
-                <div class="row ">
-                    <div class="col-4 phenomena-sm">@Html.DisplayNameFor(model => model.TwoFactorEnabled):</div>
-                    <div class="col-md-8 mb-3 phenomena-sm">
-                        @Html.DisplayFor(model => model.TwoFactorEnabled)
-                    </div>
-
-                </div>
-                <div class="row ">
-                    <div class="col-4 phenomena-sm">@Html.DisplayNameFor(model => model.LockoutEndDateUtc):</div>
-                    <div class="col-md-8 mb-3 phenomena-sm">
-                        @Html.DisplayFor(model => model.LockoutEndDateUtc)
-                    </div>
-
-                </div>
-
-
-                <div class="row ">
-                    <div class="col-4 phenomena-sm">@Html.DisplayNameFor(model => model.LockoutEnabled):</div>
-                    <div class="col-md-8 mb-3 phenomena-sm">
-                        @Html.DisplayFor(model => model.LockoutEnabled)
-                    </div>
-
-                </div>
-
-
-                <div class="row ">
-                    <div class="col-4 phenomena-sm">@Html.DisplayNameFor(model => model.AccessFailedCount):</div>
-                    <div class="col-md-8 mb-3 phenomena-sm">
-                        @Html.DisplayFor(model => model.AccessFailedCount)
-                    </div>
-
-                </div>
 
             </div>
 
-
-            <div>
-                @Html.ActionLink("Edit", "Edit", null, new { id = Model.Id }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " }) 
+            <div class="row">
+                <div class="col">
+                    @Html.ActionLink("Edit", "Edit", null, new { id = Model.Id }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " })
+                </div>
+                <div class="col">
+                    <input type="submit" value="Delete" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm" >
+                </div>
             </div>
             <div>
-                @Html.ActionLink("Back to List", "Index")
+                @Html.ActionLink("Back to List", "Index", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
             </div>
-            
+
         </div>
     </div>
 </div>
