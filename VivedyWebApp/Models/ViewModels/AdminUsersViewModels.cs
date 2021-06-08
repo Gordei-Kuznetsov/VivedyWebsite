@@ -6,7 +6,7 @@ using System.Web;
 
 namespace VivedyWebApp.Models.ViewModels
 {
-    public class AdminUsersViewModel
+    public class AdminUsersCreateViewModel
     {
         [Required]
         [Display(Name = "User Name")]
@@ -35,5 +35,43 @@ namespace VivedyWebApp.Models.ViewModels
         [Required]
         [Display(Name = "Role")]
         public string Role { get; set; }
+    }
+
+    public class AdminUsersViewModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Email Conmfirmed")]
+        public bool EmailConfirmed { get; set; }
+
+        [Required]
+        [Phone]
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
+
+        [Required]
+        [Display(Name = "Phone Number Confirmed")]
+        public bool PhoneNumberConfirmed { get; set; }
+
+        [Required]
+        [Display(Name = "Role")]
+        public string Role { get; set; }
+
+        [Required]
+        [Display(Name = "Id")]
+        public string Id { get; set; }
+
+        [Required]
+        [Compare("Email", ErrorMessage = "The Email and User Name do not match.")]
+        [Display(Name = "User Name")]
+        public string UserName { get; set; }
+
+        [Required]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
     }
 }

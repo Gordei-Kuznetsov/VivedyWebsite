@@ -19,7 +19,32 @@ namespace VivedyWebApp.Controllers
         // GET: Movies
         public async Task<ActionResult> Index()
         {
-            return View(await db.Movies.ToListAsync());
+            List<Movies> movies = await db.Movies.ToListAsync();
+            if(movies == null)
+            {
+                return View(movies);
+            }
+            ViewBag.Categories = new List<string>();
+            ViewBag.Ratings = new List<string>();
+            foreach (Movies movie in movies) {
+                if (ViewBag.Categories.Contains(movie.Category))
+                {
+                    continue;
+                }
+                else
+                {
+                    ViewBag.Categories.Add(movie.Category);
+                }
+                if (ViewBag.Ratings.Contains('+' + movie.Rating))
+                {
+                    continue;
+                }
+                else
+                {
+                    ViewBag.Ratings.Add('+' + movie.Rating);
+                }
+            }
+            return View(movies);
         }
 
         // GET: Movies/Details/5
