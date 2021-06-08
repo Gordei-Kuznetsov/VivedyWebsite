@@ -19,14 +19,14 @@ namespace VivedyWebApp.Controllers
         // GET: Movies
         public async Task<ActionResult> Index()
         {
-            List<Movies> movies = await db.Movies.ToListAsync();
+            List<Movie> movies = await db.Movies.ToListAsync();
             if(movies == null)
             {
                 return View(movies);
             }
             ViewBag.Categories = new List<string>();
             ViewBag.Ratings = new List<string>();
-            foreach (Movies movie in movies) {
+            foreach (Movie movie in movies) {
                 if (ViewBag.Categories.Contains(movie.Category))
                 {
                     continue;
