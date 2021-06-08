@@ -35,15 +35,18 @@ namespace VivedyWebApp.Controllers
                 {
                     ViewBag.Categories.Add(movie.Category);
                 }
-                if (ViewBag.Ratings.Contains('+' + movie.Rating))
+                if (ViewBag.Ratings.Contains("+" + movie.Rating))
                 {
                     continue;
                 }
                 else
                 {
-                    ViewBag.Ratings.Add('+' + movie.Rating);
+                    ViewBag.Ratings.Add("+" + movie.Rating);
                 }
             }
+            ViewBag.Categories.Sort();
+            ViewBag.Ratings.Sort();
+
             return View(movies);
         }
 

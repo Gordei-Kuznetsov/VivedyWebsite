@@ -1,36 +1,38 @@
-﻿let movieSearch = document.getElementById("SearchFor");
-let categoryDropdown = document.getElementById("categoryFilter");
-let ratingDropdown = document.getElementById("ratingFilter");
+﻿let movieSearch;
+let categoryDropdown;
+let ratingDropdown;
 let items = Array();
+
 window.onload = function () {
-    let ul = document.getElementById("Movies");
-    items = ul.getElementsByTagName("li");
+    movieSearch = document.getElementById("SearchFor");
+    categoryDropdown = document.getElementById("categoryFilter");
+    ratingDropdown = document.getElementById("ratingFilter");
+    movieSearch.oninput = SearchForMovie;
+    categoryDropdown.oninput = CategorySelectionChange;
+    ratingDropdown.oninput = RatingSelectionChange;
+
+    let list = document.getElementById("moviesList");
+    items = list.getElementsByClassName("movieCard");
     for (let i = 0; i < items.length; i++) {
         items[i].unmatched = false;
         items[i].filteredByRating = false;
         items[i].filteredByCategory = false;
-        items[i].moviename = items[i].getElementsByClassName("moviename")[0].innerText;
-        items[i].category = items[i].getElementsByClassName("moviecategory")[0].innerText;
-        items[i].rating = items[i].getElementsByClassName("movierating")[0].innerText;
+        items[i].moviename = items[i].getElementsByClassName("movieName")[0].innerText;
+        items[i].category = items[i].getElementsByClassName("movieCategory")[0].innerText;
+        items[i].rating = items[i].getElementsByClassName("movieRating")[0].innerText;
     }
-}
-function CategorySelectionChange() {
-    var selected = [];
-    for (var option of categoryDropdown.options) {
-        if (option.selected) {
-            selected.push(option.value)
+    document.getElementById("resetCategory").onclick = function () {
+        for (var option of categoryDropdown.options) {
+            option.selected = option.defaultSelected;
         }
+        CategoryReset();
     }
-    filterCategory(selected);
-}
-function RatingSelectionChange() {
-    var selected = [];
-    for (var option of ratingDropdown.options) {
-        if (option.selected) {
-            selected.push(option.value)
+    document.getElementById("resetRating").onclick = function () {
+        for (var option of ratingDropdown.options) {
+            option.selected = option.defaultSelected;
         }
+        RatingReset();
     }
-    filterRating(selected);
 }
 function SearchForMovie() {
     for (let i = 0; i < items.length; i++) {
@@ -50,6 +52,24 @@ function SearchForMovie() {
 
 
     };
+}
+function CategorySelectionChange() {
+    var selected = [];
+    for (var option of categoryDropdown.options) {
+        if (option.selected) {
+            selected.push(option.value)
+        }
+    }
+    filterCategory(selected);
+}
+function RatingSelectionChange() {
+    var selected = [];
+    for (var option of ratingDropdown.options) {
+        if (option.selected) {
+            selected.push(option.value)
+        }
+    }
+    filterRating(selected);
 }
 function filterCategory(categories) {
     for (let j = 0; j < categories.length; j++) {
@@ -92,6 +112,28 @@ function filterRating(ratings) {
         };
     };
 }
-
-
+function CategoryReset() {
+    for (let i = 0; i < items.length; i++) {
+        items[i].filteredByCategory = false;
+        if (!items[i].unmatched && !items[i].filteredByRating) {
+            items[i].style.display = "";
+            continue;
+        }
+        else {
+            items[i].style.display = "none"
+        }
+    }
+}
+function RatingReset() {
+    for (let i = 0; i < items.length; i++) {
+        items[i].filteredByRating = false;
+        if (!items[i].unmatched && !items[i].filteredByCategory) {
+            items[i].style.display = "";
+            continue;
+        }
+        else {
+            items[i].style.display = "none"
+        }
+    }
+}
 

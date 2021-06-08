@@ -4,45 +4,72 @@
     ViewBag.Title = "Movies";
 }
 
-    <div class="jumbotron">
-        <input type="search" id="SearchFor" placeholder="Search..."/>
-        <select id="categoryFilter" multiple>
-            @foreach(string category in ViewBag.Categories)
+<div class="jumbotron">
+    <h1 style="color: #a80000;" class=" display-2 phenomena2 text-center">Movies</h1>
+    <br />
+    <div class="container grey-bg-color mt-2 mb-5">
+        <div class="row mt-2 md-2 justify-content-center">
+            <input class="col-6 col-sm-8 col-xs-10" name="search" type="search" id="SearchFor" placeholder="Search up a movie" />
+        </div>
+        <div class="row mt-2 md-2">
+            <div class="col-5">
+                <div class="d-flex flex-row-reverse">
+                    <label for="categoryFilter">Categories:</label>
+                </div>
+                <div class="d-flex flex-row-reverse">
+                    <label for="ratingFilter">Ratings:</label>
+                </div>
+            </div>
+            <div class="col-7">
+                <div class="row">
+                    <select class="col-6 col-sm-8 col-lg-3" name="categoryFilter" id="categoryFilter">
+                        <option id="emptyCategory" value="" selected disabled hidden></option>
+                        @foreach (string category in ViewBag.Categories)
+                        {
+                            <option value="@category">@category</option>
+                        }
+                    </select>
+                    <button id="resetCategory" class="btn ml-2"><i class="fa fa-close"></i></button>
+                </div>
+                <div class="row">
+                    <select class="col-6 col-sm-8 col-lg-3" name="ratingFilter" id="ratingFilter">
+                        <option id="emptyRating" value="" selected disabled hidden></option>
+                        @foreach (string rating in ViewBag.Ratings)
+                        {
+                            <option value="@rating">@rating</option>
+                        }
+                    </select>
+                    <button id="resetRating" class="btn ml-2"><i class="fa fa-close"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div id="moviesList">
+            @foreach (var item in Model)
             {
-                <option value="@category">@category</option>
-            }
-        </select>
-        <select id="ratingFilter" multiple>
-            @foreach (string rating in ViewBag.Ratings)
-            {
-                <option value="@rating">@rating</option>
-            }
-        </select>
-        <h1 style="color: #a80000;" class=" display-2 phenomena2 text-center">Movies</h1>
-        @foreach (var item in Model)
-        {
-            <div class="container mb-5">
-                <div class="card topborder mb-3">
-                    <div class="img-hover-zoom">
+                <div class="container mb-5 movieCard">
+                    <div class="card topborder mb-3">
+                        <div class="img-hover-zoom">
+                            <a href="/Movies/Details?id=@item.MovieId">
+                                <img style="max-height:20rem; min-height:42rem; object-fit:cover" class="fadeimage card-img-top"
+                                     src="/Content/Images/@item.MovieId-HorizontalPoster.png"
+                                     alt="Image Failed to load">
+                                <div class="middle">
+                                    <div class="movietext">Click to Contuniue <i class="fas fa-external-link-alt"></i> </div>
+                                </div>
+                            </a>
+                        </div>
                         <a href="/Movies/Details?id=@item.MovieId">
-                            <img style="max-height:20rem; min-height:42rem; object-fit:cover" class="fadeimage card-img-top"
-                                 src="/Content/Images/@item.MovieId-HorizontalPoster.png"
-                                 alt="Image Failed to load">
-                            <div class="middle">
-                                <div class="movietext">Click to Contuniue <i class="fas fa-external-link-alt"></i> </div>
+                            <div class="card-body">
+                                <p class="card-text"> @item.Name </p>
                             </div>
                         </a>
                     </div>
-                    <a href="/Movies/Details?id=@item.MovieId">
-                        <div class="card-body">
-                            <p class="card-text"> @item.Name </p>
-                        </div>
-                    </a>
+                    <div class="movieName" style="display: none">@item.Name</div>
+                    <div class="movieCategory" style="display: none">@item.Category</div>
+                    <div class="movieRating" style="display: none">+@item.Rating</div>
                 </div>
-                <div class="movieName" style="display: none">@item.Name</div>
-                <div class="movieCategory" style="display: none">@item.Category</div>
-                <div class="movieRating" style="display: none">+@item.Rating</div>
-            </div>
-        }
-        <script src="~/Scripts/searchAndfilter.js"></script>
+            }
+        </div>
     </div>
+<script src="~/Scripts/searchAndfilter.js"></script>
