@@ -11,14 +11,15 @@ namespace VivedyWebApp.Models
         public List<Rotation> AvailableRotations { get; set; }
 
         [Required]
-        public Rotation SelectedRotation { get; set; }
+        public string SelectedRotationId { get; set; }
 
         public Movie Movie { get; set; }
     }
 
     public class MoviesBookingSeatsViewModel
     {
-        public Rotation SelectedRotation { get; set; }
+        [Required]
+        public string SelectedRotationId { get; set; }
 
         public string OccupiedSeats { get; set; }
 
@@ -29,8 +30,10 @@ namespace VivedyWebApp.Models
     }
     public class MoviesBookingPayViewModel
     {
-        public Rotation SelectedRotation { get; set; }
+        [Required]
+        public string SelectedRotationId { get; set; }
 
+        [Required]
         public string SelectedSeats { get; set; }
 
         [Display(Name = "Emial")]

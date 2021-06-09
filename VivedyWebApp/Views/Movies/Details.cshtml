@@ -5,7 +5,7 @@
 }
 
 <div class="jumbotron">
-     @if (ViewBag.ErrorMessage != null)
+     @if (ViewBag.ErrorMessage != null && ViewBag.ErrorMessage != "")
     {
         <h2 class="text-danger text-center">@ViewBag.ErrorMessage</h2>
     }
