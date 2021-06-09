@@ -14,7 +14,6 @@ namespace VivedyWebApp.Models.ViewModels
         public string Seats { get; set; }
 
         [Display(Name = "Creation Date")]
-        [Required]
         public System.DateTime CreationDate { get; set; }
 
         [Display(Name = "User Email")]

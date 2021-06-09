@@ -4,149 +4,86 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Movie</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Rating)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Rating)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Category)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Duration)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Duration)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TrailerUrl)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TrailerUrl)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.MovieId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
-
-<!--This might be causing problems-->
 
 <form>
-    <div class="card mx-auto " style="width: auto; margin-top: 5rem; margin-bottom: 3rem;">
-        <nav class="nav nav-pills nav-fill  row no-gutters phenomena-sm" style="background-color: #a8000a; ">
-            <a class="nav-item nav-link raijaLink" href="/AdminMovies/Index">MOVIES</a>
-            <a class="nav-item nav-link raijaLink" href="/AdminBookings/Index">BOOKINGS</a>
-            <a class="nav-item nav-link raijaLink" href="/AdminRotations/Index">ROTATIONS</a>
-            <a class="nav-item nav-link raijaLink"
-               style="background-color: #f0f0f0; color: #222; border-radius: 0rem; border-top: 5px solid #a8000a;">
-                USERS
-            </a>
-        </nav>
-        <div class="white-bg-color">
-            <a type="button" class="btn btn-danger  phenomena-sm " href="/AdminUser/Create">ADD <i class="fas fa-plus"></i></a>
-            <input type="text" class="mb-3 float-right" id="myInput" placeholder="Search..">
-            <br>
-            <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
-                <thead>
-                    <tr class="text-center ">
-                        <th scope="col">
-                            @Html.DisplayNameFor(model => model.Email)
-                        </th>
-                        <th scope="col">
-                            @Html.DisplayNameFor(model => model.Name)
-                        </th>
-                        <th scope="col">
-                            @Html.DisplayNameFor(model => model.EmailConfirmed)
-                        </th>
-                        <th scope="col">
-                            @Html.DisplayNameFor(model => model.PhoneNumber)
-                        </th>
-                        <th scope="col">
-                            @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
-                        </th>
-                        <th scope="col">
-                            @Html.DisplayNameFor(model => model.UserName)
-                        </th>
-                        <th scope="col">
+    <div>
+        <div class="card mx-auto " style="width: auto; margin-top: 5rem; margin-bottom: 3rem;">
+            <div class="white-bg-color mx-auto text-dark " style="width: 750px; border: .5rem solid #a8000a;">
+                <div class="mb-5 mt-4 phenomena-sm border-bottom border-dark " style="color: #a8000a"><h1 class="display-5">USER DETAILS</h1></div>
+                <div class="border-bottom">
+                    <div class="row">
+                        <div class="col-3 phenomena-sm">User @Html.DisplayNameFor(model => model.Name) : </div>
+                        <div class="mb-3 col-md-8 phenomena-sm" readonly>
+                            @Html.DisplayFor(model => model.Name)
+                        </div>
+                    </div>
 
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="myList">
-                    @foreach (var item in Model)
-                    {
-                        <tr class="text-center">
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Email)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.EmailConfirmed)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PhoneNumber)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PhoneNumberConfirmed)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.UserName)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", "AdminUsers", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                                @Html.ActionLink("Details", "Details", "AdminUsers", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                                @Html.ActionLink("Delete", "Delete", "AdminUsers", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                    <div class="row">
+                        <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.Rating) : </div>
+                        <div class="mb-3 col-md-8 phenomena-sm" readonly>
+                            @Html.DisplayFor(model => model.Rating)
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.Category) :</div>
+                        <div class="mb-3 col-md-8 phenomena-sm">
+                            @Html.DisplayFor(model => model.Category)
+                        </div>
+                    </div>
+
+                    <div class="row ">
+                        <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.Description):</div>
+                        <div class="col-md-8 mb-3 phenomena-sm">
+                            @Html.DisplayFor(model => model.Description)
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.Duration) : </div>
+                        <div class="mb-3 col-md-8 phenomena-sm">
+                            <div class="checkbox">
+                                @Html.DisplayFor(model => model.Duration)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row ">
+                        <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.Price):</div>
+                        <div class="col-md-8 mb-3 phenomena-sm">
+                            @Html.DisplayFor(model => model.Price)
+                        </div>
+
+                    </div>
+                    <div class="row ">
+                        <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.TrailerUrl):</div>
+                        <div class="col-md-8 mb-3 phenomena-sm">
+                            @Html.DisplayFor(model => model.TrailerUrl)
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        @Html.ActionLink("Edit", "Edit", null, new { id = Model.MovieId }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " })
+                    </div>
+                    <div class="col">
+                        <input type="submit" value="Delete" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm">
+                    </div>
+                </div>
+                <div>
+                    @Html.ActionLink("Back to List", "Index", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
+                </div>
+
+            </div>
         </div>
     </div>
+
 </form>
