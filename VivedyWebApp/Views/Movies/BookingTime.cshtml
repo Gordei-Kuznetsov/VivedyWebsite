@@ -1,7 +1,9 @@
-﻿
-@{
+﻿@model VivedyWebApp.Models.MoviesBookingTimeViewModel 
+
+@{ 
     ViewBag.Title = "BookingTime";
 }
+
 
 <div class="jumbotron">
     <div class="row text-center">
@@ -10,13 +12,13 @@
                 <div class="card-header">
                     <ul class="nav nav-pills card-header-pills">
                         <li class="nav-item">
-                            <a href="#" class="btn btn-danger">Times</a>
+                            <a href="#" class="btn btn-danger">Time</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Seats</a>
+                            <a class="nav-link" href="/Movies/BookingSeats">Seats</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Payment</a>
+                            <a class="nav-link" href="/Movies/BookingPay">Payment</a>
                         </li>
 
                     </ul>
@@ -26,18 +28,10 @@
                     <p class="card-text">Select a time to watch your movie</p>
                     <div class="row mt-5 ">
                         <div class="">
-                            <button class="btn btn-danger m-1">[Time]</button>
-                            <button class="btn btn-danger m-1">[Time]</button>
-                            <button class="btn btn-danger m-1">[Time]</button>
-                            <button class="btn btn-danger m-1">[Time]</button>
-                            <button class="btn btn-danger m-1">[Time]</button>
-                            <button class="btn btn-danger m-1">[Time]</button>
-                            <button class="btn btn-danger m-1">[Time]</button>
-                            <button class="btn btn-danger m-1">[Time]</button>
-                            <button class="btn btn-danger m-1">[Time]</button>
-                            <button class="btn btn-danger m-1">[Time]</button>
-                            <button class="btn btn-danger m-1">[Time]</button>
-                            <button class="btn btn-danger m-1">[Time]</button>
+                            @foreach(var rotation in Model.Rotations)
+                            {
+                                <a href="/Movies/BookingSeats @rotation.RotationId"></a>
+                            }
                         </div>
                     </div>
                 </div>

@@ -8,7 +8,10 @@ namespace VivedyWebApp.Models
 {
     public class MoviesBookingTimeViewModel
     {
-        public List<Rotation> AvailableRotations { get; set; }
+        public List<string> RotationIds { get; set; }
+        public List<DateTime> RotationStartTimes { get; set; }
+
+        public List<Rotation> Rotations { get; set; }
 
         [Required]
         public string SelectedRotationId { get; set; }

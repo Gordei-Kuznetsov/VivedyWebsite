@@ -80,8 +80,12 @@ namespace VivedyWebApp.Controllers
                 ViewBag.ErrorMessage = "No rotations found for this movie.";
                 return RedirectToAction("Details", "Movies", routeValues: new { id = id });
             }
-            MoviesBookingTimeViewModel model = new MoviesBookingTimeViewModel { AvailableRotations = rotations };
-            model.Movie = await db.Movies.FindAsync(id);
+            MoviesBookingTimeViewModel model = new MoviesBookingTimeViewModel { Movie = await db.Movies.FindAsync(id) };
+            foreach (Rotation r in rotations)
+            {
+                model.RotationIds.Add(r.RotationId);
+                model.RotationStartTimes.Add(r.StartTime);
+            }
             return View(model);
         }
 
@@ -89,17 +93,19 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ViewResult BookingTime(MoviesBookingTimeViewModel timeModel)
+        public ViewResult BookingTime(string id)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return View(timeModel);
+
+                return View(db.Rotations.Find(id).MovieId);
             }
-            MoviesBookingSeatsViewModel seatsModel = new MoviesBookingSeatsViewModel { 
-                SelectedRotationId = timeModel.SelectedRotationId, 
-                Movie = timeModel.Movie, 
-                OccupiedSeats = "" };
-            List<Booking> bookings = db.Bookings.Where(booking => booking.RotationId == timeModel.SelectedRotationId).ToList();
+            MoviesBookingSeatsViewModel seatsModel = new MoviesBookingSeatsViewModel {
+                SelectedRotationId = id,
+                Movie = db.Movies.Find(db.Rotations.Find(id).MovieId), 
+                OccupiedSeats = "" 
+            };
+            List<Booking> bookings = db.Bookings.Where(booking => booking.RotationId == id).ToList();
             if(bookings != null)
             {
                 foreach (Booking booking in bookings)
