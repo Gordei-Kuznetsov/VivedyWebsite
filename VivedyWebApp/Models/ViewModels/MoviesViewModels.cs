@@ -36,7 +36,7 @@ namespace VivedyWebApp.Models
         [Required]
         public string SelectedSeats { get; set; }
 
-        [Display(Name = "Emial")]
+        [Display(Name = "Email")]
         [Required]
         [EmailAddress]
         public string Email { get; set; }
@@ -61,5 +61,6 @@ namespace VivedyWebApp.Models
         public string CardHolder { get; set; }
 
         public Movie Movie { get; set; }
+
     }
 }

@@ -1,168 +1,130 @@
-﻿
+﻿@model VivedyWebApp.Models.MoviesBookingPayViewModel
 @{
     ViewBag.Title = "BookingPay";
 }
 
-<!-- Main Body start-->
-<div class="jumbotron">
-    <div class="row text-center">
-        <div class="col-lg-9 col-sm-12 ">
-            <div class=" text-center mb-5">
-                <div class="card-header">
-                    <ul class="nav nav-pills card-header-pills">
-                        <li class="nav-item">
-                            <a href="#" class="btn btn-danger">Times</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Seats</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Payment</a>
-                        </li>
+@using (Html.BeginForm("BookingPay", "Movies", FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
 
-                    </ul>
-                </div>
-                <div class="align-self-center grey-bg-color">
+    <!-- Main Body start-->
+    <div class="jumbotron">
+        <div class="row text-center">
+            <div class="col-lg-9 col-sm-12 ">
+                <div class=" text-center mb-5">
+                    <div class="card-header">
+                        <ul class="nav nav-pills card-header-pills">
+                            <li class="nav-item">
+                                <a href="#" class="btn btn-danger">Times</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Movies/BookingSeats">Seats</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Movies/BookingConfirmation">Payment</a>
+                            </li>
 
-                    <div class="mb-5 mt-4 phenomena-sm border-bottom mt-5">
-                        <h1 class="display-5 text-center">REGISTER NEW ACCOUNT</h1>
+                        </ul>
                     </div>
-                    <div class="border-bottom text-center align-self-center">
-                        <h5 class="text-center">
-                            Please, confirm your email address by following the link in the
-                            email you will recieve
-                            after registering.
-                        </h5>
-                        <br />
-                        <div class="row ">
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <div class="col-3">
-                                @Html.LabelFor(m => m., new { @class = "phenomena-sm" })
-                            </div>
-                            <div class="col-9">
-                                @Html.TextBoxFor(m => m.Name, new { style = "width:100%", @class = "mb-3" })
-                                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                            </div>
+                    <div class="align-self-center grey-bg-color">
+
+                        <div class="mb-5 mt-4 phenomena-sm border-bottom mt-5">
+                            <h1 class="display-5 text-center">REGISTER NEW ACCOUNT</h1>
                         </div>
-                        <div class="row">
-                            <div class="col-3">
-                                @Html.LabelFor(m => m.PhoneNumber, new { @class = "phenomena-sm" })
+                        <div class="border-bottom text-center align-self-center">
+                            <h5 class="text-center">
+                                Please, confirm your email address by following the link in the
+                                email you will recieve
+                                after registering.
+                            </h5>
+                            <br />
+                            <div class="row ">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="col-3">
+                                    @Html.LabelFor(m => m.Email, new { @class = "phenomena-sm" })
+                                </div>
+                                <div class="col-9">
+                                    @Html.TextBoxFor(m => m.Email, new { style = "width:100%", @class = "mb-3" })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                            <div class="col-9">
-                                @Html.TextBoxFor(m => m.PhoneNumber, new
-                                {
-                                    style = "width:100%",
-                                    @class = "mb-3"
-                                })
-                                @Html.ValidationMessageFor(m => m.PhoneNumber, "", new
-                                {
-                                    @class = "text-danger"
-                                })
+                            <div class="row">
+                                <div class="col-3">
+                                    @Html.LabelFor(m => m.CardNumber, new { @class = "phenomena-sm" })
+                                </div>
+                                <div class="col-9">
+                                    @Html.TextBoxFor(m => m.CardNumber, new { style = "width:100%", @class = "mb-3" })
+                                    @Html.ValidationMessageFor(m => m.CardNumber, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3">
-                                @Html.LabelFor(m => m.Email, new { @class = "phenomena-sm" })
+                            <div class="row">
+                                <div class="col-3">
+                                    @Html.LabelFor(m => m.CVC, new { @class = "phenomena-sm" })
+                                </div>
+                                <div class="col-9">
+                                    @Html.TextBoxFor(m => m.CVC, new { style = "width:100%", @class = "mb-3" })
+                                    @Html.ValidationMessageFor(m => m.CVC, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                            <div class="col-9">
-                                @Html.TextBoxFor(m => m.Email, new { style = "width:100%", @class = "mb-3" })
-                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            <div class="row">
+                                <div class="col-3">
+                                    @Html.LabelFor(m => m.ExpDate, new { @class = "phenomena-sm" })
+                                </div>
+                                <div class="col-9">
+                                    @Html.TextBoxFor(m => m.ExpDate, new { style = "width:100%", @class = "mb-3" })
+                                    @Html.ValidationMessageFor(m => m.ExpDate, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3">
-                                @Html.LabelFor(m => m.Password, new { @class = "phenomena-sm" })
-                            </div>
-                            <div class="col-9">
-                                @Html.TextBoxFor(m => m.Password, new { style = "width:100%", @class = "mb-3" })
-                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="row mb-5">
-                            <div class="col-3">
-                                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "phenomena-sm" })
-                            </div>
-                            <div class="col-9">
-                                @Html.TextBoxFor(m => m.ConfirmPassword, new
-                                {
-                                    style = "width:100%",
-                                    @class =
-                                "mb-3"
-                                })
-                                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new
-                                {
-                                    @class =
-                                "text-danger"
-                                })
-                            </div>
-                        </div>
-                        <div class="row phenomena-sm mb-4 ">
-                            <label class="form-check-label  mt-2 col-12" for="flexCheckDefault">
-                                <input class="form-check-label" type="checkbox" value="" id="flexCheckDefault">
-                                I would like to recieve offers from VIVEDY.
-                            </label>
-                            <label class="form-check-label col-12" for="flexCheckDefault">
-                                <input class="form-check-label" type="checkbox" value="" id="flexCheckDefault"
-                                       required>
-                                I have read and agreed to the <a href="/Home/Privacy" class="text-link">
-                                    <u>
-                                        Terms
-                                        & agreement
-                                    </u>
-                                </a>
-                                and <a href="/Home/Privacy" class="text-link"><u>Privacy Policy</u></a>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="align-self-center">
-                        <div class="row text-center mt-4">
-                            <div class="col-12">
-                                <div class=" phenomena-sm ">
-                                    <input type="submit" value="Register"
-                                           class="btn btn-danger pl-4 pr-4 pb-2 pt-2 phenomena-sm ">
+                            <div class="row">
+                                <div class="col-3">
+                                    @Html.LabelFor(m => m.CardHolder, new { @class = "phenomena-sm" })
+                                </div>
+                                <div class="col-9">
+                                    @Html.TextBoxFor(m => m.CardHolder, new { style = "width:100%", @class = "mb-3" })
+                                    @Html.ValidationMessageFor(m => m.CardHolder, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
-                        <div class="row text-center">
-                            <div class="col-12">
-                                <div class="phenomena-sm mt-3">
-                                    <div class="text-light">
-                                        Already have an account? <a href="/Accounts/Login" class="text-link">
-                                            <u>
-                                                Log
-                                                In
-                                            </u>
-                                        </a>
+                        <div class="align-self-center">
+                            <div class="row text-center mt-4">
+                                <div class="col-12">
+                                    <div class=" phenomena-sm ">
+                                        <input type="submit" value="Register"
+                                               class="btn btn-danger pl-4 pr-4 pb-2 pt-2 phenomena-sm ">
                                     </div>
-                                    <a href="/Accounts/ForgotPassword" class="text-link">
-                                        <u>
-                                            I forgot my
-                                            Password
-                                        </u>
-                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-3 col-sm-12">
-            <div class="card mb-5">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Movie Name</h5>
-                    <p class="card-text">
-                        Some quick example text to build on the card title and make up the bulk of
-                        the card's
-                        content.
-                    </p>
+
+            <div class="col-lg-3 col-sm-12">
+                <div class="card mb-5">
+                    <img src="/Content/Images/@Model.Movie.MovieId-VerticalPoster.png" class="card-img-top" alt="Img Failed to Load">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.Movie.Name</h5>
+                        <p class="card-text">
+                            @Model.Movie.Description
+                        </p>
+                    </div>
+                </div>
+                <div class="card mb-5">
+                    <div class="card-body">
+                        <h5 class="card-title">Price</h5>
+                        <p class="card-text">
+                            Total Price: $40
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+}
+@section Scripts {
 
+    @Scripts.Render("~/bundles/jqueryval")
+}
 
 
 <!-- Main Body End-->
