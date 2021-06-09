@@ -11,21 +11,33 @@
         <div class="mb-5 mt-4 phenomena-sm border-bottom border-dark " style="color: #a8000a"><h1 class="display-5">USER DETAILS</h1></div>
         <div class="border-bottom">
             <div class="row">
-                <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.StartTime) : </div>
+                <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.CreationDate) : </div>
                 <div class="mb-3 col-md-8 phenomena-sm" readonly>
-                    @Html.DisplayFor(model => model.StartTime)
+                    @Html.DisplayFor(model => model.CreationDate)
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-4 phenomena-sm">@Html.DisplayNameFor(model => model.MovieId) :</div>
+                <div class="col-4 phenomena-sm">@Html.DisplayNameFor(model => model.RotationId) :</div>
                 <div class="mb-3 col-md-8 phenomena-sm">
-                    @Html.DisplayFor(model => model.MovieId)
+                    @Html.DisplayFor(model => model.RotationId)
                 </div>
             </div>
 
-            <div>
-                @Html.ActionLink("Edit", "Edit", null, new { id = Model.RotationId }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " })
+            <div class="row">
+                <div class="col-4 phenomena-sm">@Html.DisplayNameFor(model => model.UserEmail) :</div>
+                <div class="mb-3 col-md-8 phenomena-sm">
+                    @Html.DisplayFor(model => model.UserEmail)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    @Html.ActionLink("Edit", "Edit", null, new { id = Model.BookingId }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " })
+                </div>
+                <div class="col">
+                    <input type="submit" value="Delete" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm">
+                </div>
             </div>
             <div>
                 @Html.ActionLink("Back to List", "Index")
@@ -34,8 +46,4 @@
         </div>
     </div>
 </div>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.BookingId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
