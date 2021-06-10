@@ -40,6 +40,14 @@ namespace VivedyWebApp.Models.ViewModels
     public class AdminUsersViewModel
     {
         [Required]
+        [Display(Name = "Id")]
+        public string Id { get; set; }
+
+        [Required]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -62,16 +70,8 @@ namespace VivedyWebApp.Models.ViewModels
         public string Role { get; set; }
 
         [Required]
-        [Display(Name = "Id")]
-        public string Id { get; set; }
-
-        [Required]
         [Compare("Email", ErrorMessage = "The Email and User Name do not match.")]
         [Display(Name = "User Name")]
         public string UserName { get; set; }
-
-        [Required]
-        [Display(Name = "Name")]
-        public string Name { get; set; }
     }
 }
