@@ -4,8 +4,9 @@
     ViewBag.Title = "Booking Time";
 }
 
-@using (Html.BeginForm("BookingTime", "Movies", routeValues: null, FormMethod.Post, htmlAttributes: new { role = "form", id = "TimeForm" }))
+@using (Html.BeginForm("BookingTime", "Movies", FormMethod.Post, htmlAttributes: new { role = "form", id = "TimeForm" }))
 {
+    @Html.AntiForgeryToken()
     <div class="jumbotron">
         <div class="row text-center">
             <div class="col-lg-9 col-sm-12 ">
@@ -26,16 +27,18 @@
                     <div class="card-body align-self-center">
                         <h5 class="card-title">Booking Times</h5>
                         <p class="card-text">Select a time to watch your movie</p>
-                        <div class="row mt-5 ">
+                        <div class="row mt-5">
                             <div class="">
                                 @foreach (var rotation in Model.AvailableRotations)
                                 {
-                                    <button class="btn btn-danger m-1 align-items-center SubmitButton" id="@rotation.RotationId">
-                                        <p class="row mb-2">@rotation.StartTime.Date</p>
-                                        <p class="row">@rotation.StartTime.TimeOfDay</p>
+                                    <button class="btn btn-danger m-1 px-5 align-items-center SubmitButton" id="@rotation.RotationId">
+                                        <p class="mb-2 text-center">@rotation.StartTime.DayOfWeek</p>
+                                        <p class="mb-2 text-center">@rotation.StartTime.ToShortDateString()</p>
+                                        <p class="mb-2 text-center">@rotation.StartTime.TimeOfDay</p>
                                     </button>
                                 }
                             </div>
+                            @Html.HiddenFor(m => m.SelectedRotationId)
                         </div>
                         <div class="align-self-center">
                             <div class="row text-center mt-4">

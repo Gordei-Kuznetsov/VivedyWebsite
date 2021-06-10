@@ -4,7 +4,7 @@
     ViewBag.Title = "Booking Payment";
 }
 
-@using (Html.BeginForm("BookingPay", "Movies", routeValues: null, FormMethod.Post, htmlAttributes: new { role = "form", id = "PayForm" }))
+@using (Html.BeginForm("BookingPay", "Movies", FormMethod.Post, htmlAttributes: new { role = "form", id = "PayForm" }))
 {
     @Html.AntiForgeryToken()
 
