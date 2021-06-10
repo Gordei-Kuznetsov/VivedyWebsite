@@ -80,12 +80,10 @@ namespace VivedyWebApp.Controllers
                 ViewBag.ErrorMessage = "No rotations found for this movie.";
                 return RedirectToAction("Details", "Movies", routeValues: new { id = id });
             }
-            MoviesBookingTimeViewModel model = new MoviesBookingTimeViewModel { Movie = await db.Movies.FindAsync(id) };
-            foreach (Rotation r in rotations)
-            {
-                model.RotationIds.Add(r.RotationId);
-                model.RotationStartTimes.Add(r.StartTime);
-            }
+            MoviesBookingTimeViewModel model = new MoviesBookingTimeViewModel { 
+                AvailableRotations = rotations, 
+                Movie = await db.Movies.FindAsync(id) 
+            };
             return View(model);
         }
 
@@ -93,24 +91,27 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ViewResult BookingTime(string id)
+        public ViewResult BookingTime(MoviesBookingTimeViewModel timeModel)
         {
-            if (id == null)
+            if (!ModelState.IsValid)
             {
-
-                return View(db.Rotations.Find(id).MovieId);
+                return View(timeModel);
             }
             MoviesBookingSeatsViewModel seatsModel = new MoviesBookingSeatsViewModel {
-                SelectedRotationId = id,
-                Movie = db.Movies.Find(db.Rotations.Find(id).MovieId), 
-                OccupiedSeats = "" 
+                SelectedRotationId = timeModel.SelectedRotationId,
+                Movie = timeModel.Movie,// db.Movies.Find(db.Rotations.Find(timeModel.SelectedRotationId).MovieId), 
+                OccupiedSeats = new List<int>(),
+                SelectedSeats = ""
             };
-            List<Booking> bookings = db.Bookings.Where(booking => booking.RotationId == id).ToList();
+            List<Booking> bookings = db.Bookings.Where(booking => booking.RotationId == timeModel.SelectedRotationId).ToList();
             if(bookings != null)
             {
                 foreach (Booking booking in bookings)
                 {
-                    seatsModel.OccupiedSeats += booking.Seats;
+                    foreach(string seat in booking.Seats.Split(','))
+                    {
+                        if(seat != null && seat != "") { seatsModel.OccupiedSeats.Add(Convert.ToInt32(seat)); }
+                    }
                 }
             }
 
@@ -127,10 +128,18 @@ namespace VivedyWebApp.Controllers
             {
                 return View(seatsModel);
             }
+            List<int> selectedSeats = new List<int>();
+            foreach (string seat in seatsModel.SelectedSeats.Split(','))
+            {
+                if (seat != null && seat != "") { selectedSeats.Add(Convert.ToInt32(seat)); }
+            }
+
             MoviesBookingPayViewModel payModel = new MoviesBookingPayViewModel { 
-                SelectedSeats = seatsModel.SelectedSeats, 
+                SelectedSeats = selectedSeats, 
                 SelectedRotationId = seatsModel.SelectedRotationId, 
-                Movie = seatsModel.Movie };
+                Movie = seatsModel.Movie,
+                TotalPrice = selectedSeats.Count() * seatsModel.Movie.Price
+            };
             return View("BookingPay", payModel);
         }
 
@@ -144,10 +153,15 @@ namespace VivedyWebApp.Controllers
             {
                 return View(payModel);
             }
+            string selestedSeats = "";
+            foreach(int seat in payModel.SelectedSeats)
+            {
+                selestedSeats += seat + ",";
+            }
             Booking booking = new Booking
             {
                 BookingId = Guid.NewGuid().ToString(),
-                Seats = payModel.SelectedSeats,
+                Seats = selestedSeats,
                 CreationDate = DateTime.Now,
                 UserEmail = payModel.Email,
                 RotationId = payModel.SelectedRotationId
@@ -157,7 +171,7 @@ namespace VivedyWebApp.Controllers
             if (result > 0)
             {
                 string htmlSeats = "";
-                foreach(string seat in payModel.SelectedSeats.Split(','))
+                foreach(int seat in payModel.SelectedSeats)
                 {
                     htmlSeats += $"<li>{seat}</li>";
                 }
@@ -179,6 +193,7 @@ namespace VivedyWebApp.Controllers
                                         $"<ul>" +
                                             $"{htmlSeats}" +
                                         $"</ul>" +
+                                        $"<h4><b>Total amount paid:</b> ${payModel.TotalPrice}</h4>" +
                                         $"<br>" +
                                         $"<img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://api.qrserver.com/v1/create-qr-code/?size=250&bgcolor=255-255-255&color=9-10-15&qzone=0&data={qrCodeData}\" alt=\"Qrcode\">" +
                                         $"<br>" +

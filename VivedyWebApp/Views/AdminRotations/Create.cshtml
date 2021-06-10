@@ -1,4 +1,4 @@
-﻿@model VivedyWebApp.Models.Rotation
+﻿@model VivedyWebApp.Models.ViewModels.AdminRotationsViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -39,7 +39,22 @@
                         @Html.ValidationMessageFor(model => model.MovieId, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                
+
+                <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.GenerateRotations) :</div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        @Html.CheckBoxFor(model => model.GenerateRotations, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.ValidationMessageFor(model => model.GenerateRotations, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row" id="StardDayDiv">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.StartDay) :</div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        @Html.EditorFor(model => model.StartDay, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.ValidationMessageFor(model => model.StartDay, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
 
             <div class="row">
@@ -52,6 +67,20 @@
             </div>
         </div>
     </div>
+    <script>
+        window.onload = function () {
+            let checkbox = document.getElementById("GenerateRotations");
+            checkbox.onclick = function () {
+                if (checkbox.checked) {
+                    document.getElementById("StardDayDiv").style.display = "";
+                }
+                else {
+                    document.getElementById("StardDayDiv").style.display = "none";
+                    document.getElementById("StartDay").value = "";
+                }
+            }
+        }
+    </script>
 }
 
 

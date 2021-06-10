@@ -1,129 +1,117 @@
-﻿
+﻿@model VivedyWebApp.Models.MoviesBookingSeatsViewModel
+
 @{
-    ViewBag.Title = "BookingSeats";
+    ViewBag.Title = "Booking Seats";
 }
 
-<!-- Main Body start-->
-<div class="jumbotron">
-    <div class="row text-center">
-        <div class="col-lg-9 col-sm-12 ">
-            <div class="card text-center mb-5">
-                <div class="card-header">
-                    <ul class="nav nav-pills card-header-pills">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Times</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="btn btn-danger">Seats</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Payment</a>
-                        </li>
+@using (Html.BeginForm("BookingSeats", "Movies", routeValues: null, FormMethod.Post, htmlAttributes: new { role = "form", id = "SeatsForm" }))
+{
+    @Html.AntiForgeryToken()
 
-                    </ul>
-                </div>
-                <div class="card-body align-self-center">
-                    <h5 class="card-title">Seats</h5>
-                    <p class="card-text">Select your seats</p>
-                    <div class="row mt-5 ">
-                        <div class="">
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                        </div>
+    <div class="jumbotron">
+        <div class="row text-center">
+            <div class="col-lg-9 col-sm-12 ">
+                <div class="card text-center mb-5">
+                    <div class="card-header">
+                        <ul class="nav nav-pills card-header-pills">
+                            <li class="nav-item">
+                                <div class="nav-link">Time</div>
+                            </li>
+                            <li class="nav-item">
+                                <div class="btn btn-danger">Seats</div>
+                            </li>
+                            <li class="nav-item">
+                                <div class="nav-link">Payment</div>
+                            </li>
+
+                        </ul>
                     </div>
-                    <div class="row">
-                        <div class="">
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
+                    <div class="card-body align-self-center">
+                        <h5 class="card-title">Seats</h5>
+                        <p class="card-text">Select your seats</p>
+                        @Html.ValidationMessageFor(m => m.SelectedSeats, "", new { @class = "text-danger" })
+                        <div class="row mt-5 ">
+                            @for (int row = 0; row < 5; row++)
+                            {
+                                int min = 12 * row + 1;
+                                int max = min + 11;
+                                <div class="row mt-5 ">
+                                    <div class="">
+                                        @for (int s = min; s <= max; s++)
+                                        {
+                                            <button class="btn m-1 SeatButton">@s</button>
+                                        }
+                                    </div>
+                                </div>
+                            }
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="">
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="">
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="">
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
-                            <button class="btn btn-danger m-1">[Seat]</button>
+                        @Html.HiddenFor(m => m.SelectedSeats)
+                        @Html.HiddenFor(m => m.SelectedRotationId)
+                        <div class="align-self-center">
+                            <div class="row text-center mt-4">
+                                <div class="col-12">
+                                    <div class=" phenomena-sm ">
+                                        <input type="submit" value="Submit"
+                                               class="btn btn-danger pl-4 pr-4 pb-2 pt-2 phenomena-sm ">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-12">
-            <div class="card mb-5">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Movie Name</h5>
-                    <p class="card-text">
-                        Some quick example text to build on the card title and make up the bulk of
-                        the card's
-                        content.
-                    </p>
+                <div class="col-lg-3 col-sm-12">
+                    <div class="card mb-5">
+                        <img src="~/Content/Images/@Model.Movie.MovieId-VerticalPoster" class="card-img-top" alt="Movie Poster">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model.Movie.Name</h5>
+                            <p class="card-text"> Catoegry: <span class="badge badge-pill badge-secondary">@Model.Movie.Category</span></p>
+                            <p class="card-text"> Rating: <span class="badge badge-pill badge-danger"> +@Model.Movie.Rating</span></p>
+                            <p class="card-text">
+                                Movie Duration: <span class="badge badge-pill badge-danger">
+                                    @Model.Movie.Duration.Hours hr
+                                    @Model.Movie.Duration.Minutes min
+                                </span>
+                            </p>
+                            <p class="card-text">@Model.Movie.Description</p>
+                            <p class="Price"> <span style="color: #A80000;">Movie Price: </span>$@Model.Movie.Price</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <script>
+        window.onload = function () {
+            let seats = document.getElementsByClassName("SeatButton");
+            for (let i = 0; i < list.length; i++) {
+                seats[i].selected = false;
+                seats[i].classList.add("btn-danger");
+                seats[i].onclick = selectedChange;
+            }
+            let occupied = @Model.OccupiedSeats.ToArray();
+            for (let i = 0; i < occupied.length; i++) {
+                seats[occupied[i]].occupied = true;
+                seats[occupied[i]].disabled = true;
+                seats[occupied[i]].classList.remove("btn-danger");
+                seats[occupied[i]].classList.add("btn-warning");
+            }
+        }
+        function selectedChange() {
+            if (!this.disabled) {
+                if (this.selected) {
+                    this.selected = false;
+                    document.getElementById("SelectedSeats").value.replace(this.InnerHtml + ",", "");
+                }
+                else {
+                    this.selected = true;
+                    document.getElementById("SelectedSeats").value += this.InnerHtml + ",";
+                }
+            }
+        }
+    </script>
+}
 
+@section Scripts {
 
-
-<!-- Main Body End-->
+    @Scripts.Render("~/bundles/jqueryval")
+}

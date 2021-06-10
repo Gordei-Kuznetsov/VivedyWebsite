@@ -8,10 +8,7 @@ namespace VivedyWebApp.Models
 {
     public class MoviesBookingTimeViewModel
     {
-        public List<string> RotationIds { get; set; }
-        public List<DateTime> RotationStartTimes { get; set; }
-
-        public List<Rotation> Rotations { get; set; }
+        public List<Rotation> AvailableRotations { get; set; }
 
         [Required]
         public string SelectedRotationId { get; set; }
@@ -24,9 +21,10 @@ namespace VivedyWebApp.Models
         [Required]
         public string SelectedRotationId { get; set; }
 
-        public string OccupiedSeats { get; set; }
+        public List<int> OccupiedSeats { get; set; }
 
         [Required]
+        [MinLength(2, ErrorMessage = "Please select a seat")]
         public string SelectedSeats { get; set; }
 
         public Movie Movie { get; set; }
@@ -37,7 +35,7 @@ namespace VivedyWebApp.Models
         public string SelectedRotationId { get; set; }
 
         [Required]
-        public string SelectedSeats { get; set; }
+        public List<int> SelectedSeats { get; set; }
 
         [Display(Name = "Email")]
         [Required]
@@ -63,7 +61,7 @@ namespace VivedyWebApp.Models
         [Required]
         public string CardHolder { get; set; }
 
+        public int TotalPrice { get; set; }
         public Movie Movie { get; set; }
-
     }
 }

@@ -1,54 +1,89 @@
-﻿@model VivedyWebApp.Models.MoviesBookingTimeViewModel 
+﻿@model VivedyWebApp.Models.MoviesBookingTimeViewModel
 
-@{ 
-    ViewBag.Title = "BookingTime";
+@{
+    ViewBag.Title = "Booking Time";
 }
 
-
-<div class="jumbotron">
-    <div class="row text-center">
-        <div class="col-lg-9 col-sm-12 ">
-            <div class="card text-center mb-5">
-                <div class="card-header">
-                    <ul class="nav nav-pills card-header-pills">
-                        <li class="nav-item">
-                            <a href="#" class="btn btn-danger">Time</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Movies/BookingSeats">Seats</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Movies/BookingPay">Payment</a>
-                        </li>
-
-                    </ul>
-                </div>
-                <div class="card-body align-self-center">
-                    <h5 class="card-title">Booking Times</h5>
-                    <p class="card-text">Select a time to watch your movie</p>
-                    <div class="row mt-5 ">
-                        <div class="">
-                            @foreach(var rotation in Model.Rotations)
-                            {
-                                <a href="/Movies/BookingSeats @rotation.RotationId"></a>
-                            }
+@using (Html.BeginForm("BookingTime", "Movies", routeValues: null, FormMethod.Post, htmlAttributes: new { role = "form", id = "TimeForm" }))
+{
+    <div class="jumbotron">
+        <div class="row text-center">
+            <div class="col-lg-9 col-sm-12 ">
+                <div class="card text-center mb-5">
+                    <div class="card-header">
+                        <ul class="nav nav-pills card-header-pills">
+                            <li class="nav-item">
+                                <div class="btn btn-danger">Time</div>
+                            </li>
+                            <li class="nav-item">
+                                <div class="nav-link">Seats</div>
+                            </li>
+                            <li class="nav-item">
+                                <div class="nav-link">Payment</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body align-self-center">
+                        <h5 class="card-title">Booking Times</h5>
+                        <p class="card-text">Select a time to watch your movie</p>
+                        <div class="row mt-5 ">
+                            <div class="">
+                                @foreach (var rotation in Model.AvailableRotations)
+                                {
+                                    <button class="btn btn-danger m-1 align-items-center SubmitButton" id="@rotation.RotationId">
+                                        <p class="row mb-2">@rotation.StartTime.Date</p>
+                                        <p class="row">@rotation.StartTime.TimeOfDay</p>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                        <div class="align-self-center">
+                            <div class="row text-center mt-4">
+                                <div class="col-12">
+                                    <div class=" phenomena-sm ">
+                                        <input type="submit" value="Submit"
+                                               class="btn btn-danger pl-4 pr-4 pb-2 pt-2 phenomena-sm ">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-3 col-sm-12">
-            <div class="card mb-5">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Movie Name</h5>
-                    <p class="card-text">
-                        Some quick example text to build on the card title and make up the bulk of
-                        the card's
-                        content.
-                    </p>
+            <div class="col-lg-3 col-sm-12">
+                <div class="card mb-5">
+                    <img src="~/Content/Images/@Model.Movie.MovieId-VerticalPoster" class="card-img-top" alt="Movie Poster">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.Movie.Name</h5>
+                        <p class="card-text"> Catoegry: <span class="badge badge-pill badge-secondary">@Model.Movie.Category</span></p>
+                        <p class="card-text"> Rating: <span class="badge badge-pill badge-danger"> +@Model.Movie.Rating</span></p>
+                        <p class="card-text">
+                            Movie Duration: <span class="badge badge-pill badge-danger">
+                                @Model.Movie.Duration.Hours hr
+                                @Model.Movie.Duration.Minutes min
+                            </span>
+                        </p>
+                        <p class="card-text">@Model.Movie.Description</p>
+                        <p class="Price"> <span style="color: #A80000;">Movie Price: </span>$@Model.Movie.Price</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <script>
+        window.onload = function () {
+            var timeInput = document.getElementById("SelectedRotationId")
+            var list = document.getElementsByClassName("SubmitButton");
+            for (let i = 0; i < list.length; i++) {
+                list[i].onclick = function () {
+                    timeInput.value = list[i].id;
+                }
+            }
+        }
+    </script>
+}
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+}
