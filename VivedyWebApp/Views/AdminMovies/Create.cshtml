@@ -1,106 +1,98 @@
 ﻿@model VivedyWebApp.Models.ViewModels.AdminMoviesViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create Movie";
 }
 
-<h2>Create</h2>
-
-@using (Html.BeginForm("Create", "AdminMovies", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Create", "AdminMovies", FormMethod.Post, new {role = "form", enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Movie</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    <div class="card mx-auto " style="width: auto; margin-top: 5rem; margin-bottom: 3rem;">
+        <div class="white-bg-color mx-auto text-dark " style="width: 750px; border: .5rem solid #a8000a;">
+            <div class="mb-5 mt-4 phenomena-sm border-bottom border-dark " style="color: #a8000a"><h1 class="display-5">ADD MOVIE</h1></div>
+            <div class="border-bottom">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Name) : </div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Rating) :</div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Category) :</div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.Description) :</div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        @Html.EditorFor(m => m.Description, new { @class = "col-md-12" })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.Duration) :</div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        @Html.EditorFor(m => m.Duration, new { @class = "col-md-12" })
+                        @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.Price) :</div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        @Html.EditorFor(m => m.Price, new { @class = "col-md-12" })
+                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.TrailerUrl) :</div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        @Html.EditorFor(m => m.TrailerUrl, new { @class = "col-md-12" })
+                        @Html.ValidationMessageFor(model => model.TrailerUrl, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.HorizontalImage, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <input accept="image/png" class="form-control" data-val-file="The field Horizontal Poster must be a file."
+                               data-val-required="The Horizontal Poster field is required." id="HorizontalImage"
+                               name="HorizontalImage" type="file" value="">
+                        @Html.ValidationMessageFor(model => model.HorizontalImage, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Rating, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.VerticalImage, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <input accept="image/png" class="form-control" data-val-file="The field Vertical Image must be a file."
+                               data-val-required="The Vertical Image field is required." id="VerticalImage"
+                               name="VerticalImage" type="file" value="">
+                        @Html.ValidationMessageFor(model => model.VerticalImage, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="form-check phenomena-sm col-8">
+                    <input type="submit" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " value="Create">
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TrailerUrl, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TrailerUrl, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TrailerUrl, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.HorizontalImage, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <input accept="image/png" class="form-control" data-val-file="The field Horizontal Poster must be a file." 
-                       data-val-required="The Horizontal Poster field is required." id="HorizontalImage" 
-                       name="HorizontalImage" type="file" value="">
-                @Html.ValidationMessageFor(model => model.HorizontalImage, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.VerticalImage, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <input accept="image/png" class="form-control" data-val-file="The field Vertical Image must be a file." 
-                       data-val-required="The Vertical Image field is required." id="VerticalImage" 
-                       name="VerticalImage" type="file" value="">
-                @Html.ValidationMessageFor(model => model.VerticalImage, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <div>
+                @Html.ActionLink("Back to List", "Index", "AdminMovies", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
             </div>
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -1,20 +1,26 @@
 ﻿@model VivedyWebApp.Models.Movie
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Movie";
 
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Admin Movies", null, FormMethod.Post, new { role = "form" }))
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.MovieId)
+    
 
     <div class="card mx-auto " style="width: auto; margin-top: 5rem; margin-bottom: 3rem;">
         <div class="white-bg-color mx-auto text-dark " style="width: 750px; border: .5rem solid #a8000a;">
-            <div class="mb-5 mt-4 phenomena-sm border-bottom border-dark " style="color: #a8000a"><h1 class="display-5">USER DETAILS</h1></div>
+            <div class="mb-5 mt-4 phenomena-sm border-bottom border-dark " style="color: #a8000a"><h1 class="display-5">EDIT MOVIE</h1></div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="border-bottom">
+                 <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.MovieId) : </div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        @Html.DisplayFor(model => model.MovieId, new { htmlAttributes = new { @class = "col-md-12" } })
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Name) : </div>
                     <div class="mb-3 col-md-8 phenomena-sm">
@@ -54,14 +60,12 @@
 
                 </div>
 
-                <div class="row mb-3">
-                    <form action="/action_page.php">
-                        <label class="col-3 phenomena-sm">@Html.LabelFor(model => model.Duration):</label>
-                        <div class="col-md-8 mb-3 phenomena-sm">
-                            @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "col-md-12" } })
-                            @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
-                        </div>
-                    </form>
+                <div class="row">                   
+                    <label class="col-3 phenomena-sm">@Html.LabelFor(model => model.Duration):</label>
+                    <div class="col-md-8 mb-3 phenomena-sm">
+                        @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
+                    </div>
                 </div>
 
                 <div class="row">
@@ -72,7 +76,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row mb-3">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.TrailerUrl) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
                         @Html.EditorFor(model => model.TrailerUrl, new { @class = "col-md-12" })
@@ -88,7 +92,7 @@
 
             </div>
             <div>
-                @Html.ActionLink("Back to List", "Index", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
+                @Html.ActionLink("Back to List", "Index","AdminMovies", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
             </div>
         </div>
     </div>
