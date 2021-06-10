@@ -8,22 +8,24 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="containerOne" style="width: 40rem;">
+    <div class="containerOne" style="width: 48rem;">
         <div class="grey-bg-color">
-            <div class="mb-5 mt-4 phenomena-sm border-bottom ">
-                <h1 class="display-5 text-center">REGISTER NEW ACCOUNT</h1>
+            <div class="mb-3 mt-4 phenomena-sm border-bottom ">
+                <h1 class="display-5 ">REGISTER NEW ACCOUNT</h1>
             </div>
-            <div class="border-bottom text-center align-self-center">
-                <h5 class="text-center">Please, confirm your email address by following the link in the email you will recieve after registering.</h5>
+            <div class="border-bottom align-self-center">
+                <h5 class="phenomena-sm">Please, confirm your email address by following the link in the email you will recieve after registering.</h5>
                 <br />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger phenomena-sm" })
                 <div class="row ">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
                     <div class="col-3">
                         @Html.LabelFor(m => m.Name, new { @class = "phenomena-sm" })
                     </div>
                     <div class="col-9">
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger phenomena-sm" })
                         @Html.TextBoxFor(m => m.Name, new { style = "width:100%", @class = "mb-3" })
-                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+
                     </div>
                 </div>
                 <div class="row">
@@ -31,8 +33,9 @@
                         @Html.LabelFor(m => m.PhoneNumber, new { @class = "phenomena-sm" })
                     </div>
                     <div class="col-9">
+                        @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger phenomena-sm" })
                         @Html.TextBoxFor(m => m.PhoneNumber, new { style = "width:100%", @class = "mb-3" })
-                        @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+
                     </div>
                 </div>
                 <div class="row">
@@ -40,8 +43,9 @@
                         @Html.LabelFor(m => m.Email, new { @class = "phenomena-sm" })
                     </div>
                     <div class="col-9">
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger phenomena-sm" })
                         @Html.TextBoxFor(m => m.Email, new { style = "width:100%", @class = "mb-3" })
-                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+
                     </div>
                 </div>
                 <div class="row">
@@ -49,17 +53,19 @@
                         @Html.LabelFor(m => m.Password, new { @class = "phenomena-sm" })
                     </div>
                     <div class="col-9">
-                        @Html.TextBoxFor(m => m.Password, new { style = "width:100%", @class = "mb-3" })
-                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger phenomena-sm" })
+                        @Html.PasswordFor(m => m.Password, new { style = "width:100%", @class = "mb-3" })
+
                     </div>
                 </div>
-                <div class="row mb-5">
+                <div class="row mb-3">
                     <div class="col-3">
                         @Html.LabelFor(m => m.ConfirmPassword, new { @class = "phenomena-sm" })
                     </div>
                     <div class="col-9">
-                        @Html.TextBoxFor(m => m.ConfirmPassword, new { style = "width:100%", @class = "mb-3" })
-                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger phenomena-sm" })
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { style = "width:100%", @class = "mb-3" })
+
                     </div>
                 </div>
                 <div class="row phenomena-sm mb-4 ">
@@ -75,20 +81,19 @@
                 </div>
             </div>
             <div class="align-self-center">
-                <div class="row text-center mt-4">
-                    <div class="col-12">
-                        <div class=" phenomena-sm ">
-                            <input type="submit" value="Register" class="btn btn-danger pl-4 pr-4 pb-2 pt-2 phenomena-sm ">
-                        </div>
-                    </div>
-                </div>
-                <div class="row text-center">
-                    <div class="col-12">
-                        <div class="phenomena-sm mt-3">
+                <div class="row mt-4">
+
+                    <div class="col-9">
+                        <div class="phenomena-sm ">
                             <div class="text-light">
                                 Already have an account? <a href="/Accounts/Login" class="text-link"><u>Log In</u></a>
                             </div>
                             <a href="/Accounts/ForgotPassword" class="text-link"><u>I forgot my Password</u></a>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class=" phenomena-sm ">
+                            <input type="submit" value="Register <i class="fas fa-user-plus"></i>" class="btn btn-danger pl-4 pr-4 pb-2 pt-2 phenomena-sm ">
                         </div>
                     </div>
                 </div>

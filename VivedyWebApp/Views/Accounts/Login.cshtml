@@ -10,32 +10,44 @@
     @Html.AntiForgeryToken()
 
     <div class="containerOne">
-        <div class="grey-bg-color mx-auto" style="width:550px;">
+        <div class="grey-bg-color mx-auto" style="width:36rem;">
             <div class="mb-5 mt-4 phenomena-sm border-bottom ">
                 <h1 class="display-5">LOGIN TO YOUR ACCOUNT</h1>
             </div>
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="row">
-                @Html.LabelFor(m => m.Email, new { @class = "col-4  phenomena-sm" })
-                @Html.TextBoxFor(m => m.Email, new { @class = "mb-3 col-7" })
-                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-            </div>
-            <div class="row">
-                @Html.LabelFor(m => m.Password, new { @class = " col-4 phenomena-sm" })
-                @Html.PasswordFor(m => m.Password, new { @class = "mb-3 col-7" })
-                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-            </div>
-            <div class="row">
-                <div class="col-6 phenomena-sm">
-                    <div> Don't have an account? <a href="/Accounts/Register" class="text-link">Register as a new user.</a></div>
-                    <div> <a href="/Accounts/ForgotPassword" class="text-link">Forgot Password?</a> </div>
-                </div>
-                <div class="col-6 text-center">
-                    <div class="col-6">
-                        <input type="submit" value="Log In" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm ">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger phenomena-sm" })
+
+            <div class="pb-2 mb-2 ">
+                <div class="row">
+                    <div class="col-3">
+                        @Html.LabelFor(m => m.Email, new { @class = "phenomena-sm" })
                     </div>
-                    <div class="col-6 phenomena-sm">
-                        <label class="form-check-label mt-2" for="flexCheckDefault"> Remember Me? <input class="" type="checkbox" value="" id="flexCheckDefault"></label>
+                    <div class="col-9">
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger phenomena-sm" })
+                        @Html.TextBoxFor(m => m.Email, new { style = "width:100%", @class = "mb-3" })
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="col-3">
+                        @Html.LabelFor(m => m.Password, new { @class = "phenomena-sm" })
+                    </div>
+                    <div class="col-9">
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger phenomena-sm" })
+                        @Html.PasswordFor(m => m.Password, new { style = "width:100%", @class = "mb-3" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8 phenomena-sm pt-4">
+                    <div> Don't have an account? <a href="/Accounts/Register" class="text-link">Register as a new user.</a></div>
+                    <div> <a href="/Accounts/ForgotPassword" class="text-link">I forgot my Password</a> </div>
+                </div>
+                <div class="col ">
+                    
+                        <input type="submit" value="Log In" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm ">
+                    
+                    <div class=" phenomena-sm">
+                        <label class="form-check-label mt-2" for="flexCheckDefault"> Remember me? <input class="" type="checkbox" value="" id="flexCheckDefault"></label>
                     </div>
                 </div>
             </div>
