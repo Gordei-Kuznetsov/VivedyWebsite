@@ -13,14 +13,14 @@
             <div class="mb-3 mt-4 phenomena-sm border-bottom ">
                 <h1 class="display-5 ">REGISTER NEW ACCOUNT</h1>
             </div>
-            <div class="border-bottom align-self-center">
+            <div class="border-bottom align-self-center phenomena-sm">
                 <h5 class="phenomena-sm">Please, confirm your email address by following the link in the email you will recieve after registering.</h5>
                 <br />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger phenomena-sm" })
                 <div class="row ">
 
                     <div class="col-3">
-                        @Html.LabelFor(m => m.Name, new { @class = "phenomena-sm" })
+                        @Html.LabelFor(m => m.Name, new { @class = "phenomena-sm" })  :
                     </div>
                     <div class="col-9">
                         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger phenomena-sm" })
@@ -30,7 +30,7 @@
                 </div>
                 <div class="row">
                     <div class="col-3">
-                        @Html.LabelFor(m => m.PhoneNumber, new { @class = "phenomena-sm" })
+                        @Html.LabelFor(m => m.PhoneNumber, new { @class = "phenomena-sm" })  :
                     </div>
                     <div class="col-9">
                         @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger phenomena-sm" })
@@ -40,7 +40,7 @@
                 </div>
                 <div class="row">
                     <div class="col-3">
-                        @Html.LabelFor(m => m.Email, new { @class = "phenomena-sm" })
+                        @Html.LabelFor(m => m.Email, new { @class = "phenomena-sm" }) Address :
                     </div>
                     <div class="col-9">
                         @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger phenomena-sm" })
@@ -50,7 +50,7 @@
                 </div>
                 <div class="row">
                     <div class="col-3">
-                        @Html.LabelFor(m => m.Password, new { @class = "phenomena-sm" })
+                        @Html.LabelFor(m => m.Password, new { @class = "phenomena-sm" })  :
                     </div>
                     <div class="col-9">
                         @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger phenomena-sm" })
@@ -60,7 +60,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-3">
-                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "phenomena-sm" })
+                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "phenomena-sm" })  :
                     </div>
                     <div class="col-9">
                         @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger phenomena-sm" })
@@ -93,7 +93,7 @@
                     </div>
                     <div class="col">
                         <div class=" phenomena-sm ">
-                            <input type="submit" value="Register <i class="fas fa-user-plus"></i>" class="btn btn-danger pl-4 pr-4 pb-2 pt-2 phenomena-sm ">
+                            <input type="submit" value="Register" class="btn btn-danger pl-4 pr-4 pb-2 pt-2 phenomena-sm ">
                         </div>
                     </div>
                 </div>
