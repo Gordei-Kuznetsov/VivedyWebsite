@@ -4,7 +4,7 @@
     ViewBag.Title = "Booking Seats";
 }
 
-@using (Html.BeginForm("BookingSeats", "Movies", routeValues: null, FormMethod.Post, htmlAttributes: new { role = "form", id = "SeatsForm" }))
+@using (Html.BeginForm("BookingSeats", "Movies", FormMethod.Post, htmlAttributes: new { role = "form", id = "SeatsForm" }))
 {
     @Html.AntiForgeryToken()
 
@@ -30,29 +30,35 @@
                         <h5 class="card-title">Seats</h5>
                         <p class="card-text">Select your seats</p>
                         @Html.ValidationMessageFor(m => m.SelectedSeats, "", new { @class = "text-danger" })
-                        <div class="row mt-5 ">
-                            @for (int row = 0; row < 5; row++)
-                            {
-                                int min = 12 * row + 1;
-                                int max = min + 11;
-                                <div class="row mt-5 ">
-                                    <div class="">
-                                        @for (int s = min; s <= max; s++)
-                                        {
-                                            <button class="btn m-1 SeatButton">@s</button>
-                                        }
-                                    </div>
-                                </div>
-                            }
-                        </div>
+                        @for (int row = 0; row < 5; row++)
+                        {
+                            int min = 12 * row + 1;
+                            int max = min + 11;
+                            <div class="row mt-5 ">
+                                @for (int s = min; s <= max; s++)
+                                {
+                                    if (Model.OccupiedSeats.Contains(s))
+                                    {
+                                        <div class="col-1">
+                                            <button occupied="true" disabled class="btn btn-warning SeatButton">@s</button>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-1">
+                                            <button class="btn btn-danger SeatButton">@s</button>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        }
                         @Html.HiddenFor(m => m.SelectedSeats)
                         @Html.HiddenFor(m => m.SelectedRotationId)
                         <div class="align-self-center">
                             <div class="row text-center mt-4">
                                 <div class="col-12">
                                     <div class=" phenomena-sm ">
-                                        <input type="submit" value="Submit"
-                                               class="btn btn-danger pl-4 pr-4 pb-2 pt-2 phenomena-sm ">
+                                        <input type="submit" value="Submit" class="btn btn-danger pl-4 pr-4 pb-2 pt-2 phenomena-sm ">
                                     </div>
                                 </div>
                             </div>
@@ -80,34 +86,27 @@
             </div>
         </div>
     </div>
+
     <script>
         window.onload = function () {
-            let seats = document.getElementsByClassName("SeatButton");
-            for (let i = 0; i < list.length; i++) {
-                seats[i].selected = false;
-                seats[i].classList.add("btn-danger");
-                seats[i].onclick = selectedChange;
+        let seats = document.getElementsByClassName("SeatButton");
+        for (let i = 0; i < seats.length; i++) {
+            seats[i].selected = false;
+            seats[i].onclick = selectedChange;
+        }
+    }
+    function selectedChange() {
+        if (!this.disabled) {
+            if (this.selected) {
+                this.selected = false;
+                document.getElementById("SelectedSeats").value.replace(this.InnerText + ",", "");
             }
-            let occupied = @Model.OccupiedSeats.ToArray();
-            for (let i = 0; i < occupied.length; i++) {
-                seats[occupied[i]].occupied = true;
-                seats[occupied[i]].disabled = true;
-                seats[occupied[i]].classList.remove("btn-danger");
-                seats[occupied[i]].classList.add("btn-warning");
+            else {
+                this.selected = true;
+                document.getElementById("SelectedSeats").value += this.InnerHtml + ",";
             }
         }
-        function selectedChange() {
-            if (!this.disabled) {
-                if (this.selected) {
-                    this.selected = false;
-                    document.getElementById("SelectedSeats").value.replace(this.InnerHtml + ",", "");
-                }
-                else {
-                    this.selected = true;
-                    document.getElementById("SelectedSeats").value += this.InnerHtml + ",";
-                }
-            }
-        }
+    }
     </script>
 }
 

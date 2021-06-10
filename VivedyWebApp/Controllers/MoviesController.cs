@@ -99,7 +99,7 @@ namespace VivedyWebApp.Controllers
             }
             MoviesBookingSeatsViewModel seatsModel = new MoviesBookingSeatsViewModel {
                 SelectedRotationId = timeModel.SelectedRotationId,
-                Movie = timeModel.Movie,// db.Movies.Find(db.Rotations.Find(timeModel.SelectedRotationId).MovieId), 
+                Movie = db.Movies.Find(db.Rotations.Find(timeModel.SelectedRotationId).MovieId), 
                 OccupiedSeats = new List<int>(),
                 SelectedSeats = ""
             };
@@ -131,13 +131,13 @@ namespace VivedyWebApp.Controllers
             List<int> selectedSeats = new List<int>();
             foreach (string seat in seatsModel.SelectedSeats.Split(','))
             {
-                if (seat != null && seat != "") { selectedSeats.Add(Convert.ToInt32(seat)); }
+                if (seat != null && seat != "" ) { selectedSeats.Add(Convert.ToInt32(seat)); }
             }
 
             MoviesBookingPayViewModel payModel = new MoviesBookingPayViewModel { 
                 SelectedSeats = selectedSeats, 
                 SelectedRotationId = seatsModel.SelectedRotationId, 
-                Movie = seatsModel.Movie,
+                Movie = db.Movies.Find(db.Rotations.Find(seatsModel.SelectedRotationId).MovieId),
                 TotalPrice = selectedSeats.Count() * seatsModel.Movie.Price
             };
             return View("BookingPay", payModel);
