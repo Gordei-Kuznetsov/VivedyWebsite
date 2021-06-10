@@ -23,10 +23,10 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.BookingId) :</div>
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Seats) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.EditorFor(model => model.BookingId, new { htmlAttributes = new { @class = "col-md-12" } })
-                        @Html.ValidationMessageFor(model => model.BookingId, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Seats, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.ValidationMessageFor(model => model.Seats, "", new { @class = "text-danger" })
                     </div>
                 </div>
 

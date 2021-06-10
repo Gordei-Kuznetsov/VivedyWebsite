@@ -37,47 +37,47 @@
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.Description) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.EditorFor(m => m.Description, new { @class = "col-md-12" })
+                        @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.Duration) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.EditorFor(m => m.Duration, new { @class = "col-md-12" })
+                        @Html.EditorFor(m => m.Duration, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.Price) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.EditorFor(m => m.Price, new { @class = "col-md-12" })
+                        @Html.EditorFor(m => m.Price, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.TrailerUrl) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.EditorFor(m => m.TrailerUrl, new { @class = "col-md-12" })
+                        @Html.EditorFor(m => m.TrailerUrl, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.TrailerUrl, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.HorizontalImage, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <input accept="image/png" class="form-control" data-val-file="The field Horizontal Poster must be a file."
+                <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.HorizontalImage) :</div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        <input accept="image/png" class="col-md-12" data-val-file="The field Horizontal Poster must be a file."
                                data-val-required="The Horizontal Poster field is required." id="HorizontalImage"
                                name="HorizontalImage" type="file" value="">
                         @Html.ValidationMessageFor(model => model.HorizontalImage, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.VerticalImage, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <input accept="image/png" class="form-control" data-val-file="The field Vertical Image must be a file."
-                               data-val-required="The Vertical Image field is required." id="VerticalImage"
-                               name="VerticalImage" type="file" value="">
+                <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.VerticalImage) :</div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        <input accept="image/png" class="col-md-12" data-val-file="The field Horizontal Poster must be a file."
+                               data-val-required="The Horizontal Poster field is required." id="HorizontalImage"
+                               name="HorizontalImage" type="file" value="">
                         @Html.ValidationMessageFor(model => model.VerticalImage, "", new { @class = "text-danger" })
                     </div>
                 </div>
