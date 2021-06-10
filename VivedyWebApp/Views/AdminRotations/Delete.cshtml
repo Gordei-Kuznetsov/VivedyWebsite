@@ -26,7 +26,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4 phenomena-sm">@Html.DisplayNameFor(model => model.MovieId) :</div>
+                        <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.MovieId) :</div>
                         <div class="mb-3 col-md-8 phenomena-sm">
                             @Html.DisplayFor(model => model.MovieId)
                         </div>
@@ -35,7 +35,7 @@
                         <input type="submit" value="Delete" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm">
                     </div>
                     <div>
-                        @Html.ActionLink("Back to List", "Index", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
+                        @Html.ActionLink("Back to List", "Index", "AdminRotations", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
                     </div>
                 </div>
             </div>

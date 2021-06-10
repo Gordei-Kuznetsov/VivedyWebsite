@@ -34,7 +34,7 @@
                         @Html.ValidationMessageFor(model => model.GenerateRotations, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="row" id="StardDayDiv">
+                <div class="row" id="StardDayDiv" style="display: none;">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.StartDay) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
                         @Html.EditorFor(model => model.StartDay, new { htmlAttributes = new { @class = "col-md-12" } })
@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div>
-                @Html.ActionLink("Back to List", "Index", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
+                @Html.ActionLink("Back to List", "Index", "AdminRotations", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
             </div>
         </div>
     </div>

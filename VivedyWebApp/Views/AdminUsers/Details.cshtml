@@ -15,6 +15,12 @@
                     @Html.DisplayFor(model => model.Id)
                 </div>
             </div>
+            <div class="row ">
+                <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.Name):</div>
+                <div class="col-md-8 mb-3 phenomena-sm">
+                    @Html.DisplayFor(model => model.Name)
+                </div>
+            </div>
             <div class="row">
                 <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.Email) : </div>
                 <div class="mb-3 col-md-8 phenomena-sm" readonly>
@@ -25,12 +31,6 @@
                 <div class="col-4 phenomena-sm">@Html.DisplayNameFor(model => model.EmailConfirmed) :</div>
                 <div class="mb-3 col-md-8 phenomena-sm">
                     @Html.DisplayFor(model => model.EmailConfirmed)
-                </div>
-            </div>
-            <div class="row ">
-                <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.Name):</div>
-                <div class="col-md-8 mb-3 phenomena-sm">
-                    @Html.DisplayFor(model => model.Name)
                 </div>
             </div>
             <div class="row">
@@ -65,11 +65,11 @@
                 @Html.ActionLink("Edit", "Edit", "AdminUsers", new { id = Model.Id }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " })
             </div>
             <div class="col">
-                @Html.ActionLink("Delete", "Edit", "AdminUsers", new { id = Model.Id }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " })
+                @Html.ActionLink("Delete", "Delete", "AdminUsers", new { id = Model.Id }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " })
             </div>
         </div>
         <div>
-            @Html.ActionLink("Back to List", "Index", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
+            @Html.ActionLink("Back to List", "Index", "AdminUsers", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
         </div>
     </div>
 </div>

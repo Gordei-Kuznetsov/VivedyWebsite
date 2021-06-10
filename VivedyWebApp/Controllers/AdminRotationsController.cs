@@ -89,7 +89,7 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Models.Rotation rotation = await db.Rotations.FindAsync(id);
+            Rotation rotation = await db.Rotations.FindAsync(id);
             if (rotation == null)
             {
                 return HttpNotFound();
@@ -103,13 +103,13 @@ namespace VivedyWebApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(Rotation rotation)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                db.Entry(rotation).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return View(rotation);
             }
-            return View(rotation);
+            db.Entry(rotation).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
         // GET: AdminRotations/Delete/5
