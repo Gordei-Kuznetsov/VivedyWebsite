@@ -1,21 +1,19 @@
-﻿@model VivedyWebApp.Models.Movie
+﻿@model VivedyWebApp.Models.ViewModels.AdminMoviesViewModel
 
 @{
     ViewBag.Title = "Edit Movie";
-
 }
 
 @using (Html.BeginForm("Edit", "Admin Movies", null, FormMethod.Post, new { role = "form" }))
 {
     @Html.AntiForgeryToken()
     
-
     <div class="card mx-auto " style="width: auto; margin-top: 5rem; margin-bottom: 3rem;">
         <div class="white-bg-color mx-auto text-dark " style="width: 750px; border: .5rem solid #a8000a;">
             <div class="mb-5 mt-4 phenomena-sm border-bottom border-dark " style="color: #a8000a"><h1 class="display-5">EDIT MOVIE</h1></div>
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="border-bottom">
-                 <div class="row">
+                <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.MovieId) : </div>
                     <div class="mb-3 col-md-8 phenomena-sm">
                         @Html.DisplayFor(model => model.MovieId, new { htmlAttributes = new { @class = "col-md-12" } })
@@ -28,7 +26,6 @@
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Rating) :</div>
                     <div class=" mb-3 col-md-8 phenomena-sm">
@@ -36,10 +33,7 @@
                         @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
                     </div>
-
                 </div>
-
-
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Category) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
@@ -47,27 +41,21 @@
                         @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Description) : </div>
                     <div class="mb-3 col-md-8 phenomena-sm">
 
                         @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-
                     </div>
-
                 </div>
-
-                <div class="row">                   
+                <div class="row">
                     <label class="col-3 phenomena-sm">@Html.LabelFor(model => model.Duration):</label>
                     <div class="col-md-8 mb-3 phenomena-sm">
                         @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Price) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
@@ -75,7 +63,6 @@
                         @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
                 <div class="row mb-3">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.TrailerUrl) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
@@ -83,13 +70,29 @@
                         @Html.ValidationMessageFor(model => model.TrailerUrl, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-3 phenomena-sm">Reupload Horizontal Image?</div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        <input accept="image/png" class="col-md-12" data-val-file="The field Horizontal Poster must be a file."
+                               data-val-required="The Horizontal Poster field is required." id="HorizontalImage"
+                               name="HorizontalImage" type="file" value="">
+                        @Html.ValidationMessageFor(model => model.HorizontalImage, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 phenomena-sm">Reupload Vertical Image?</div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        <input accept="image/png" class="col-md-12" data-val-file="The field Horizontal Poster must be a file."
+                               data-val-required="The Horizontal Poster field is required." id="HorizontalImage"
+                               name="HorizontalImage" type="file" value="">
+                        @Html.ValidationMessageFor(model => model.VerticalImage, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
-
             <div class="row">
                 <div class="form-check phenomena-sm col-8">
                     <input type="submit" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " value="Save">
                 </div>
-
             </div>
             <div>
                 @Html.ActionLink("Back to List", "Index","AdminMovies", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
@@ -97,7 +100,6 @@
         </div>
     </div>
 }
-
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

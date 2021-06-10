@@ -51,7 +51,7 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Create(AdminMoviesViewModel newMovie)
+        public async Task<ActionResult> Create(AdminMoviesCreateViewModel newMovie)
         {
             if (ModelState.IsValid)
             {
@@ -99,22 +99,65 @@ namespace VivedyWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            return View(movie);
+            AdminMoviesViewModel model = new AdminMoviesViewModel
+            {
+                MovieId = movie.MovieId,
+                Name = movie.Name,
+                Rating = movie.Rating,
+                Category = movie.Category,
+                Description = movie.Description,
+                Duration = movie.Duration,
+                Price = movie.Price,
+                TrailerUrl = movie.TrailerUrl,
+            };
+            return View(model);
         }
 
         // POST: AdminMovies/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Edit(Movie movie)
+        public async Task<ActionResult> Edit(AdminMoviesViewModel model)
         {
             if (ModelState.IsValid)
             {
+                Movie movie = new Movie
+                {
+                    MovieId = model.MovieId,
+                    Name = model.Name,
+                    Rating = model.Rating,
+                    Category = model.Category,
+                    Description = model.Description,
+                    Duration = model.Duration,
+                    Price = model.Price,
+                    TrailerUrl = model.TrailerUrl
+                };
                 db.Entry(movie).State = EntityState.Modified;
                 await db.SaveChangesAsync();
+
+                if (model.HorizontalImage != null)
+                {
+                    string path = Server.MapPath("/Content/Images/" + model.MovieId + "-HorizontalPoster.png");
+                    FileInfo fi = new FileInfo(path);
+                    if (fi.Exists)
+                    {
+                        fi.Delete();
+                    }
+                    model.HorizontalImage.SaveAs(path);
+                }
+                if (model.VerticalImage != null)
+                {
+                    string path = Server.MapPath("/Content/Images/" + model.MovieId + "-VerticalPoster.png");
+                    FileInfo fi = new FileInfo(path);
+                    if (fi.Exists)
+                    {
+                        fi.Delete();
+                    }
+                    model.VerticalImage.SaveAs(path);
+                }
                 return RedirectToAction("Index");
             }
-            return View(movie);
+            return View(model);
         }
 
         // GET: AdminMovies/Delete/5
