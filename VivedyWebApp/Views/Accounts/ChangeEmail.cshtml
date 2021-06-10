@@ -6,33 +6,49 @@
 {
     @Html.AntiForgeryToken()
 <form>
-    <div class="containerOne">
-        <div class="grey-bg-color">
-            <div class="mb-5 mt-4 phenomena-sm border-bottom ">
+    <div class="containerOne" style="width:45rem;">
+        <div class="grey-bg-color phenomena-sm" >
+            <div class="mb-4 mt-4 phenomena-sm border-bottom ">
                 <h1 class="display-5">CHANGE YOUR EMAIL</h1>
             </div>
-            <h5 class="text-center">Please, login again after changing your email.</h5>
-            <br />
-            @Html.ValidationSummary("", new { @class = "text-danger" })
+            <h5 class="mb-3">Please, login again after changing your email.</h5>
             <div class="row">
-                @Html.LabelFor(m => m.OldEmail, new { @class = "col-sm-12" })
-                @Html.EditorFor(m => m.OldEmail, new { @class = "mb-3 col-sm-12" })
-                @Html.ValidationMessageFor(m => m.OldEmail, "", new { @class = "text-danger" })
+                <div class="col-3">
+                    @Html.LabelFor(m => m.OldEmail, new { @class = "phenomena-sm" })  :
+                </div>
+                <div class="col-9">
+                    @Html.ValidationMessageFor(m => m.OldEmail, "", new { @class = "text-danger phenomena-sm" })
+                    @Html.TextBoxFor(m => m.OldEmail, new { style = "width:100%", @class = "mb-3" })
+
+                </div>
             </div>
             <div class="row">
-                @Html.LabelFor(m => m.NewEmail, new { @class = "col-sm-12" })
-                @Html.EditorFor(m => m.NewEmail, new { @class = "mb-3 col-sm-12" })
-                @Html.ValidationMessageFor(m => m.NewEmail, "", new { @class = "text-danger" })
+                <div class="col-3">
+                    @Html.LabelFor(m => m.NewEmail, new { @class = "phenomena-sm" })  :
+                </div>
+                <div class="col-9">
+                    @Html.ValidationMessageFor(m => m.NewEmail, "", new { @class = "text-danger phenomena-sm" })
+                    @Html.TextBoxFor(m => m.NewEmail, new { style = "width:100%", @class = "mb-3" })
+
+                </div>
             </div>
             <div class="row">
-                @Html.LabelFor(m => m.ConfirmEmail, new { @class = "col-sm-12" })
-                @Html.EditorFor(m => m.ConfirmEmail, new { @class = "mb-3 col-sm-12" })
-                @Html.ValidationMessageFor(m => m.ConfirmEmail, "", new { @class = "text-danger" })
+                <div class="col-3">
+                    @Html.LabelFor(m => m.ConfirmEmail, new { @class = "phenomena-sm" })  :
+                </div>
+                <div class="col-9">
+                    @Html.ValidationMessageFor(m => m.ConfirmEmail, "", new { @class = "text-danger phenomena-sm" })
+                    @Html.TextBoxFor(m => m.ConfirmEmail, new { style = "width:100%", @class = "mb-3" })
+
+                </div>
             </div>
+            
             <div class="row text-center">
                 <div class="col-12">
-                    <input type="submit" value="Change email" class="btn btn-primary" />
+                    <input type="submit" value="Change Email" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm ">
+
                 </div>
+                <a href="/Accounts" class="text-link mx-auto"><u>GO BACK</u></a>
             </div>
         </div>
     </div>
