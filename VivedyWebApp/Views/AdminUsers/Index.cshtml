@@ -21,8 +21,8 @@
         <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
             <thead>
                 <tr class="text-center ">
-                    <th scope="col" style="width:100px">
-                        @Html.DisplayNameFor(model => model.Id)
+                    <th scope="col" style="width:95px">
+                       User @Html.DisplayNameFor(model => model.Id)
                     </th>
                     <th scope="col">
                         @Html.DisplayNameFor(model => model.Name)
@@ -54,7 +54,7 @@
                 @foreach (var item in Model)
                 {
                     <tr class="text-center">
-                        <td style="width:100px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
+                        <td style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
                             @Html.DisplayFor(modelItem => item.Id)
                         </td>
                         <td>

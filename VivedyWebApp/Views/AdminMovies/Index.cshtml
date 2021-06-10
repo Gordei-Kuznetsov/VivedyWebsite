@@ -22,7 +22,7 @@
         <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
             <thead >
                 <tr class="text-center">
-                    <th scope="col">
+                    <th scope="col" style="width:95px">
                         @Html.DisplayNameFor(model => model.MovieId)
                     </th>
                     <th scope="col">
@@ -43,7 +43,7 @@
                     <th scope="col">
                         @Html.DisplayNameFor(model => model.Price)
                     </th>
-                    <th scope="col">
+                    <th scope="col"  style="width:150px">
                         @Html.DisplayNameFor(model => model.TrailerUrl)
                     </th>
                     <th scope="col">
@@ -54,7 +54,7 @@
             <tbody  id="myList" style="height:30px">
                 @foreach (var item in Model) {
                 <tr class="text-center">
-                    <td>
+                    <td style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
                         @Html.DisplayFor(modelItem => item.MovieId)
                     </td>
                     <td>
@@ -75,7 +75,7 @@
                     <td>
                         $@Html.DisplayFor(modelItem => item.Price)
                     </td>
-                    <td>
+                    <td  style="width:150px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
                         @Html.DisplayFor(modelItem => item.TrailerUrl)
                     </td>
                     <td>
