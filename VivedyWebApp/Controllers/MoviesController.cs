@@ -211,6 +211,13 @@ namespace VivedyWebApp.Controllers
             }
         }
 
+        // GET: /Movies/BookingConfirmation
+        [AllowAnonymous]
+        public ActionResult BookingConfirmation()
+        {
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
