@@ -99,6 +99,14 @@
             </div>
             <div class="col-lg-3 col-sm-12">
                 <div class="card mb-5">
+                    <div class="card-body">
+                        <h5 class="card-title">Price</h5>
+                        <p class="card-text">
+                            Total Price: $@Model.TotalPrice
+                        </p>
+                    </div>
+                </div>
+                <div class="card mb-5">
                     <img src="~/Content/Images/@Model.Movie.MovieId-VerticalPoster.png" class="card-img-top" alt="Movie Poster">
                     <div class="card-body">
                         <h5 class="card-title">@Model.Movie.Name</h5>
@@ -112,14 +120,6 @@
                         </p>
                         <p class="card-text">@Model.Movie.Description</p>
                         <p class="Price"> <span style="color: #A80000;">Movie Price: </span>$@Model.Movie.Price</p>
-                    </div>
-                </div>
-                <div class="card mb-5">
-                    <div class="card-body">
-                        <h5 class="card-title">Price</h5>
-                        <p class="card-text">
-                            Total Price: $@Model.TotalPrice
-                        </p>
                     </div>
                 </div>
             </div>
