@@ -29,7 +29,6 @@
                     <div class="card-body align-self-center">
                         <h5 class="card-title">Seats</h5>
                         <p class="card-text">Select your seats</p>
-                        @Html.ValidationMessageFor(m => m.SelectedSeats, "", new { @class = "text-danger" })
                         @for (int row = 0; row < 5; row++)
                         {
                             int min = 12 * row + 1;
@@ -37,22 +36,23 @@
                             <div class="row mt-5 ">
                                 @for (int s = min; s <= max; s++)
                                 {
-                                    if (Model.OccupiedSeats.Contains(s))
+                                    if (Model.OccupiedSeats != null && Model.OccupiedSeats.Contains(s))
                                     {
                                         <div class="col-1">
-                                            <button style="width: 100%;" occupied="true" disabled class="btn btn-warning SeatButton">@s</button>
+                                            <div style="width: 100%;" occupied="true" disabled="true" class="btn btn-warning SeatButton">@s</div>
                                         </div>
                                     }
                                     else
                                     {
                                         <div class="col-1">
-                                            <button class="btn btn-danger SeatButton">@s</button>
+                                            <div style="width: 100%;" class="btn btn-danger SeatButton">@s</div>
                                         </div>
                                     }
                                 }
                             </div>
                         }
                         @Html.HiddenFor(m => m.SelectedSeats)
+                        @Html.ValidationMessageFor(m => m.SelectedSeats, "", new { @class = "text-danger" })
                         @Html.HiddenFor(m => m.SelectedRotationId)
                         <div class="align-self-center">
                             <div class="row text-center mt-4">
@@ -89,21 +89,26 @@
 
     <script>
         window.onload = function () {
-        let seats = document.getElementsByClassName("SeatButton");
-        for (let i = 0; i < seats.length; i++) {
-            seats[i].selected = false;
-            seats[i].onclick = selectedChange;
-        }
+            let seats = document.getElementsByClassName("SeatButton");
+            for (let i = 0; i < seats.length; i++) {
+                seats[i].selected = false;
+                seats[i].onclick = selectedChange;
+            }
         }
         function selectedChange() {
-            if (!this.disabled) {
+            if (!this.occupied) {
                 if (this.selected) {
                     this.selected = false;
-                    document.getElementById("SelectedSeats").value.replace(this.InnerText + ",", "");
+                    this.classList.remove("btn-primary");
+                    this.classList.add("btn-danger");
+                    let seats = document.getElementById("SelectedSeats");
+                    seats.value = seats.value.replace(this.textContent + ",", "");
                 }
                 else {
                     this.selected = true;
-                    document.getElementById("SelectedSeats").value += this.InnerHtml + ",";
+                    this.classList.remove("btn-danger");
+                    this.classList.add("primary");
+                    document.getElementById("SelectedSeats").value += this.textContent + ",";
                 }
             }
         }
@@ -111,6 +116,5 @@
 }
 
 @section Scripts {
-
     @Scripts.Render("~/bundles/jqueryval")
 }

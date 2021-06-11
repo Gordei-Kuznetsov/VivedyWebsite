@@ -133,12 +133,12 @@ namespace VivedyWebApp.Controllers
             {
                 if (seat != null && seat != "" ) { selectedSeats.Add(Convert.ToInt32(seat)); }
             }
-
+            Movie movie = db.Movies.Find(db.Rotations.Find(seatsModel.SelectedRotationId).MovieId);
             MoviesBookingPayViewModel payModel = new MoviesBookingPayViewModel { 
-                SelectedSeats = selectedSeats, 
+                SelectedSeats = seatsModel.SelectedSeats, 
                 SelectedRotationId = seatsModel.SelectedRotationId, 
-                Movie = db.Movies.Find(db.Rotations.Find(seatsModel.SelectedRotationId).MovieId),
-                TotalPrice = selectedSeats.Count() * seatsModel.Movie.Price
+                Movie = movie,
+                TotalPrice = selectedSeats.Count() * movie.Price
             };
             return View("BookingPay", payModel);
         }
@@ -171,9 +171,9 @@ namespace VivedyWebApp.Controllers
             if (result > 0)
             {
                 string htmlSeats = "";
-                foreach(int seat in payModel.SelectedSeats)
+                foreach (string seat in payModel.SelectedSeats.Split(','))
                 {
-                    htmlSeats += $"<li>{seat}</li>";
+                    if (seat != null && seat != "") { htmlSeats += $"<li>{seat}</li>"; }
                 }
                 string dataToEncode = "{\"bookingId\":\"" + booking.BookingId + "\",\"email\":\"" + booking.UserEmail + "\"}";
                 var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(dataToEncode);

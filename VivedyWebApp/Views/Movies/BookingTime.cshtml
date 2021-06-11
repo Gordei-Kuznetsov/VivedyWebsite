@@ -31,7 +31,7 @@
                             <div class="">
                                 @foreach (var rotation in Model.AvailableRotations)
                                 {
-                                    <button class="btn btn-danger m-1 px-5 align-items-center SubmitButton" id="@rotation.RotationId">
+                                    <button class="btn btn-danger m-1 align-items-center SubmitButton" id="@rotation.RotationId">
                                         <p class="mb-2 text-center">@rotation.StartTime.DayOfWeek</p>
                                         <p class="mb-2 text-center">@rotation.StartTime.ToShortDateString()</p>
                                         <p class="mb-2 text-center">@rotation.StartTime.TimeOfDay</p>
@@ -39,16 +39,6 @@
                                 }
                             </div>
                             @Html.HiddenFor(m => m.SelectedRotationId)
-                        </div>
-                        <div class="align-self-center">
-                            <div class="row text-center mt-4">
-                                <div class="col-12">
-                                    <div class=" phenomena-sm ">
-                                        <input type="submit" value="Submit"
-                                               class="btn btn-danger pl-4 pr-4 pb-2 pt-2 phenomena-sm ">
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -75,11 +65,11 @@
     </div>
     <script>
         window.onload = function () {
-            var timeInput = document.getElementById("SelectedRotationId")
-            var list = document.getElementsByClassName("SubmitButton");
-            for (let i = 0; i < list.length; i++) {
-                list[i].onclick = function () {
-                    timeInput.value = list[i].id;
+            let timeInput = document.getElementById("SelectedRotationId");
+            let timesList = document.getElementsByClassName("SubmitButton");
+            for (let i = 0; i < timesList.length; i++) {
+                timesList[i].onclick = function () {
+                    timeInput.value = timesList[i].id;
                 }
             }
         }
