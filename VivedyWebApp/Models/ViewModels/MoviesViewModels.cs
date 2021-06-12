@@ -25,8 +25,7 @@ namespace VivedyWebApp.Models
         public List<int> OccupiedSeats { get; set; }
 
         [Display(Name = "Selected Seats")]
-        [Required]
-        [MinLength(2, ErrorMessage = "Please select a seat")]
+        [Required(ErrorMessage = "Please select a seat")]
         public string SelectedSeats { get; set; }
 
         public Movie Movie { get; set; }
@@ -48,12 +47,12 @@ namespace VivedyWebApp.Models
 
         [Display(Name = "Card Number")]
         [Required]
-        [CreditCard]
-        public string CardNumber { get; set;}
+        [DataType(DataType.CreditCard)]
+        public string CardNumber { get; set; }
 
-        [Display(Name = "CVC")]
+        [Display(Name = "CCV")]
         [Required]
-        public int CVC { get; set; }
+        public int CCV { get; set; }
 
         [Display(Name = "Expiry Date")]
         [Required]

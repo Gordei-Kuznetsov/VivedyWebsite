@@ -4,7 +4,7 @@
     ViewBag.Title = "Booking Payment";
 }
 
-@using (Html.BeginForm("BookingPay", "Movies", FormMethod.Post, htmlAttributes: new { role = "form", id = "PayForm" }))
+@using (Html.BeginForm("BookingPay", "Movies", FormMethod.Post, htmlAttributes: new { role = "form" }))
 {
     @Html.AntiForgeryToken()
 
@@ -55,11 +55,11 @@
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    @Html.LabelFor(m => m.CVC, new { @class = "phenomena-sm" })
+                                    @Html.LabelFor(m => m.CCV, new { @class = "phenomena-sm" })
                                 </div>
                                 <div class="col-9">
-                                    @Html.TextBoxFor(m => m.CVC, new { style = "width:100%", @class = "mb-3" })
-                                    @Html.ValidationMessageFor(m => m.CVC, "", new { @class = "text-danger" })
+                                    @Html.TextBoxFor(m => m.CCV, new { style = "width:100%", @class = "mb-3" })
+                                    @Html.ValidationMessageFor(m => m.CCV, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="row">
@@ -128,6 +128,5 @@
 }
 
 @section Scripts {
-
     @Scripts.Render("~/bundles/jqueryval")
 }

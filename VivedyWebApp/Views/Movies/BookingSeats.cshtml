@@ -4,7 +4,7 @@
     ViewBag.Title = "Booking Seats";
 }
 
-@using (Html.BeginForm("BookingSeats", "Movies", FormMethod.Post, htmlAttributes: new { role = "form", id = "SeatsForm" }))
+@using (Html.BeginForm("BookingSeats", "Movies", FormMethod.Post, htmlAttributes: new { role = "form", id="seatsForm", onsubmit="return validateTheForm()" }))
 {
     @Html.AntiForgeryToken()
 
@@ -29,6 +29,7 @@
                     <div class="card-body align-self-center">
                         <h5 class="card-title">Seats</h5>
                         <p class="card-text">Select your seats</p>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         @for (int row = 0; row < 5; row++)
                         {
                             int min = 12 * row + 1;
@@ -39,7 +40,7 @@
                                     if (Model.OccupiedSeats != null && Model.OccupiedSeats.Contains(s))
                                     {
                                         <div class="col-lg-1 col-md-2 col-sm-4 col-6">
-                                            <div occupied="true" disabled="true" class="btn btn-warning SeatButton m-2" style="width: 100%; min-width:3rem; max-width:5rem;">@s</div>
+                                            <div id="occupied_@s" disabled="true" class="btn btn-warning SeatButton m-2" style="width: 100%; min-width:3rem; max-width:5rem;">@s</div>
                                         </div>
                                     }
                                     else
@@ -52,7 +53,7 @@
                             </div>
                         }
                         @Html.HiddenFor(m => m.SelectedSeats)
-                        @Html.ValidationMessageFor(m => m.SelectedSeats, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(m => m.SelectedSeats, "", new { @class = "text-danger", id="ValMessageSpanForSeats" })
                         @Html.HiddenFor(m => m.SelectedRotationId)
                         <div class="align-self-center">
                             <div class="row text-center mt-4">
@@ -91,8 +92,15 @@
         window.onload = function () {
             let seats = document.getElementsByClassName("SeatButton");
             for (let i = 0; i < seats.length; i++) {
-                seats[i].selected = false;
-                seats[i].onclick = selectedChange;
+                if (seats[i].id.includes("occupied")) {
+                    seats[i].occupied = true;
+                    seats[i].selected = false;
+                }
+                else {
+                    seats[i].occupied = false;
+                    seats[i].selected = false;
+                    seats[i].onclick = selectedChange;
+                }
             }
         }
         function selectedChange() {
@@ -110,6 +118,16 @@
                     this.classList.add("primary");
                     document.getElementById("SelectedSeats").value += this.textContent + ",";
                 }
+            }
+        }
+        function validateTheForm() {
+            if (document.getElementById("SelectedSeats").value == "") {
+                event.preventDefault();
+                document.getElementById("ValMessageSpanForSeats").textContent = "Please select a seat";
+                return false;
+            }
+            else {
+                return true;
             }
         }
     </script>
