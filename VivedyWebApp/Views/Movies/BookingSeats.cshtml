@@ -33,19 +33,19 @@
                         {
                             int min = 12 * row + 1;
                             int max = min + 11;
-                            <div class="row mt-5 ">
+                            <div class="row ">
                                 @for (int s = min; s <= max; s++)
                                 {
                                     if (Model.OccupiedSeats != null && Model.OccupiedSeats.Contains(s))
                                     {
-                                        <div class="col-1">
-                                            <div style="width: 100%;" occupied="true" disabled="true" class="btn btn-warning SeatButton">@s</div>
+                                        <div class="col-lg-1 col-md-2 col-sm-4 col-6">
+                                            <div occupied="true" disabled="true" class="btn btn-warning SeatButton m-2" style="width: 100%; min-width:3rem; max-width:5rem;">@s</div>
                                         </div>
                                     }
                                     else
                                     {
-                                        <div class="col-1">
-                                            <div style="width: 100%;" class="btn btn-danger SeatButton">@s</div>
+                                        <div class="col-lg-1 col-md-2 col-sm-4 col-6">
+                                            <div class="btn btn-danger SeatButton m-2" style="width: 100%; min-width:3rem; max-width:5rem;">@s</div>
                                         </div>
                                     }
                                 }
