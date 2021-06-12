@@ -8,9 +8,11 @@ namespace VivedyWebApp
         // For more information on bundling, visit https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            //Bundle with jquery scripts
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-3.4.1.slim.min.js"));
 
+            //Bundle with jquery scripts for field validations
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
@@ -19,13 +21,16 @@ namespace VivedyWebApp
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
+            //Bundle with bootstrap and custom scripts
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap-4.0.0.min.js",
                       "~/Scripts/navbarred.js"));
 
+            //Bundle with popper scripts
             bundles.Add(new ScriptBundle("~/bundles/popper").Include(
                       "~/Scripts/popper.min.js"));
 
+            //Bundle with bootstrap and custom css files
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/vivedy-bootstrap.css",
                       "~/Content/all.min.css"));

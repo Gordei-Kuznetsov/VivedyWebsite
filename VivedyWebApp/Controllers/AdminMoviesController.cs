@@ -13,18 +13,28 @@ using System.IO;
 
 namespace VivedyWebApp.Controllers
 {
+    /// <summary>
+    /// Application Admin Controller for Movies
+    /// </summary>
     public class AdminMoviesController : Controller
     {
+        /// <summary>
+        /// ApplicationDbContext instance
+        /// </summary>
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: AdminMovies
+        /// <summary>
+        /// GET request action for Index page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Index()
         {
             return View(await db.Movies.ToListAsync());
         }
 
-        // GET: AdminMovies/Details/5
+        /// <summary>
+        /// GET request action for Details page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Details(string id)
         {
@@ -40,14 +50,18 @@ namespace VivedyWebApp.Controllers
             return View(movie);
         }
 
-        // GET: AdminMovies/Create
+        /// <summary>
+        /// GET request action for Create page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: AdminMovies/Create
+        /// <summary>
+        /// POST request action for Create page
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -68,14 +82,17 @@ namespace VivedyWebApp.Controllers
                 };
                 db.Movies.Add(movie);
                 await db.SaveChangesAsync();
+                //Saving the images uploaded for the posters
                 if(newMovie.HorizontalImage != null)
                 {
+                    //Saving horizontal poster
                     string fileName = movie.MovieId + "-HorizontalPoster.png";
                     var imagePath = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
                     newMovie.HorizontalImage.SaveAs(imagePath);
                 }
                 if(newMovie.VerticalImage != null)
                 {
+                    //Saving vertical poster
                     string fileName = movie.MovieId + "-VerticalPoster.png";
                     var imagePath = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
                     newMovie.VerticalImage.SaveAs(imagePath);
@@ -86,8 +103,9 @@ namespace VivedyWebApp.Controllers
             return View(newMovie);
         }
 
-        // GET: AdminMovies/Edit/5
-
+        /// <summary>
+        /// GET request action for Edit page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(string id)
         {
@@ -100,6 +118,7 @@ namespace VivedyWebApp.Controllers
             {
                 return HttpNotFound();
             }
+            
             AdminMoviesViewModel model = new AdminMoviesViewModel
             {
                 MovieId = movie.MovieId,
@@ -110,11 +129,15 @@ namespace VivedyWebApp.Controllers
                 Duration = movie.Duration,
                 Price = movie.Price,
                 TrailerUrl = movie.TrailerUrl,
+                //Not sending the name of the saved poster images yet
+                //Will be added later
             };
             return View(model);
         }
 
-        // POST: AdminMovies/Edit/5
+        /// <summary>
+        /// POST request action for Edit page
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -136,24 +159,29 @@ namespace VivedyWebApp.Controllers
                 db.Entry(movie).State = EntityState.Modified;
                 await db.SaveChangesAsync();
 
+                //Saving the images for the posters if re-uploaded 
                 if (model.HorizontalImage != null)
                 {
+                    //Deleting existing one
                     string path = Server.MapPath("/Content/Images/" + model.MovieId + "-HorizontalPoster.png");
                     FileInfo fi = new FileInfo(path);
                     if (fi.Exists)
                     {
                         fi.Delete();
                     }
+                    //Saving horizontal poster
                     model.HorizontalImage.SaveAs(path);
                 }
                 if (model.VerticalImage != null)
                 {
+                    //Deleting existing one
                     string path = Server.MapPath("/Content/Images/" + model.MovieId + "-VerticalPoster.png");
                     FileInfo fi = new FileInfo(path);
                     if (fi.Exists)
                     {
                         fi.Delete();
                     }
+                    //Saving vertical poster
                     model.VerticalImage.SaveAs(path);
                 }
                 return RedirectToAction("Index");
@@ -161,7 +189,9 @@ namespace VivedyWebApp.Controllers
             return View(model);
         }
 
-        // GET: AdminMovies/Delete/5
+        /// <summary>
+        /// GET request action for Delete page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(string id)
         {
@@ -177,7 +207,9 @@ namespace VivedyWebApp.Controllers
             return View(movie);
         }
 
-        // POST: AdminMovies/Delete/5
+        /// <summary>
+        /// POST request action for DeleteConfirmed page
+        /// </summary>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -186,12 +218,15 @@ namespace VivedyWebApp.Controllers
             Movie movie = await db.Movies.FindAsync(id);
             db.Movies.Remove(movie);
             await db.SaveChangesAsync();
+            //Deleting poster images
+            //Deleting horizontal poster
             string path = Server.MapPath("/Content/Images/" + id + "-HorizontalPoster.png");
             FileInfo fi = new FileInfo(path);
             if (fi.Exists)
             {
                 fi.Delete();
             }
+            //Deleting vertical poster
             path = Server.MapPath("/Content/Images/" + id + "-VerticalPoster.png");
             fi = new FileInfo(path);
             if (fi.Exists)
@@ -201,6 +236,9 @@ namespace VivedyWebApp.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Method for disposing ApplicationDbContext objects
+        /// </summary>
         protected override void Dispose(bool disposing)
         {
             if (disposing)

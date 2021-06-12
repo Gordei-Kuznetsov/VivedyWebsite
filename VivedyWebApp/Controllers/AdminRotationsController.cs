@@ -12,18 +12,28 @@ using VivedyWebApp.Models.ViewModels;
 
 namespace VivedyWebApp.Controllers
 {
+    /// <summary>
+    /// Application Admin Controller for Rotations
+    /// </summary>
     public class AdminRotationsController : Controller
     {
+        /// <summary>
+        /// ApplicationDbContext instance
+        /// </summary>
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: AdminRotations
+        /// <summary>
+        /// GET request action for Index page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Index()
         {
             return View(await db.Rotations.ToListAsync());
         }
 
-        // GET: AdminRotations/Details/5
+        /// <summary>
+        /// GET request action for Details page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Details(string id)
         {
@@ -39,18 +49,22 @@ namespace VivedyWebApp.Controllers
             return View(rotation);
         }
 
-        // GET: AdminRotations/Create
+        /// <summary>
+        /// GET request action for Create page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: AdminRotations/Create
+        /// <summary>
+        /// POST request action for Create page
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Create(AdminRotationsViewModel newRotation)
+        public async Task<ActionResult> Create(AdminRotationsCreateViewModel newRotation)
         {
             if (ModelState.IsValid)
             {
@@ -61,10 +75,12 @@ namespace VivedyWebApp.Controllers
                     MovieId = newRotation.MovieId
                 };
                 db.Rotations.Add(rotation);
+                //Generating rotations
                 if (newRotation.GenerateRotations && newRotation.StartDay != null)
                 {
                     for(int i = 0; i < 7; i++)
                     {
+                        //A rotation for each day starting from the newRotation.StartDay at the same time of the day
                         Rotation autoRotation = new Rotation
                         {
                             RotationId = Guid.NewGuid().ToString(),
@@ -81,7 +97,9 @@ namespace VivedyWebApp.Controllers
             return View(newRotation);
         }
 
-        // GET: AdminRotations/Edit/5
+        /// <summary>
+        /// GET request action for Edit page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(string id)
         {
@@ -97,7 +115,9 @@ namespace VivedyWebApp.Controllers
             return View(rotation);
         }
 
-        // POST: AdminRotations/Edit/5
+        /// <summary>
+        /// POST request action for Edit page
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -112,7 +132,9 @@ namespace VivedyWebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: AdminRotations/Delete/5
+        /// <summary>
+        /// GET request action for Delete page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(string id)
         {
@@ -120,7 +142,7 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Models.Rotation rotation = await db.Rotations.FindAsync(id);
+            Rotation rotation = await db.Rotations.FindAsync(id);
             if (rotation == null)
             {
                 return HttpNotFound();
@@ -128,18 +150,23 @@ namespace VivedyWebApp.Controllers
             return View(rotation);
         }
 
-        // POST: AdminRotations/Delete/5
+        /// <summary>
+        /// POST request action for DeleteConfirmed page
+        /// </summary>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
-            Models.Rotation rotation = await db.Rotations.FindAsync(id);
+            Rotation rotation = await db.Rotations.FindAsync(id);
             db.Rotations.Remove(rotation);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Method for disposing ApplicationDbContext objects
+        /// </summary>
         protected override void Dispose(bool disposing)
         {
             if (disposing)

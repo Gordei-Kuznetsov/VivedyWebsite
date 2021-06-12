@@ -12,18 +12,28 @@ using VivedyWebApp.Models.ViewModels;
 
 namespace VivedyWebApp.Controllers
 {
+    /// <summary>
+    /// Application Admin Controller for Bookings
+    /// </summary>
     public class AdminBookingsController : Controller
     {
+        /// <summary>
+        /// ApplicationDbContext instance
+        /// </summary>
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: AdminBookings
+        /// <summary>
+        /// GET request action for Index page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Index()
         {
             return View(await db.Bookings.ToListAsync());
         }
 
-        // GET: AdminBookings/Details/5
+        /// <summary>
+        /// GET request action for Details page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Details(string id)
         {
@@ -39,14 +49,18 @@ namespace VivedyWebApp.Controllers
             return View(booking);
         }
 
-        // GET: AdminBookings/Create
+        /// <summary>
+        /// GET request action for Create page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: AdminBookings/Create
+        /// <summary>
+        /// POST request action for Create page
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -66,6 +80,8 @@ namespace VivedyWebApp.Controllers
                 int result = await db.SaveChangesAsync();
                 if (result > 0)
                 {
+                    //Sending the email with the tickets to the email address provided
+                    //Will later be moved to the a method of EmailService class
                     Rotation rotation = db.Rotations.Find(booking.RotationId);
                     Movie movie = db.Movies.Find(rotation.MovieId);
                     string htmlSeats = "";
@@ -78,10 +94,13 @@ namespace VivedyWebApp.Controllers
                             TotalPrice += movie.Price;
                         }
                     }
+                    //Generating content to put into the QR code for later validation
+                    //Includes BookingId and UserEmail
                     string dataToEncode = "{\"bookingId\":\"" + booking.BookingId + "\",\"email\":\"" + booking.UserEmail + "\"}";
                     var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(dataToEncode);
                     string qrCodeData = Convert.ToBase64String(plainTextBytes);
                     string subject = "Booking Confirmation";
+                    //Generating an HTML body for the email
                     string mailbody = $"<div id=\"mainEmailContent\" style=\"-webkit-text-size-adjust: 100%; font-family: Verdana,sans-serif;\">" +
                                         $"<img style=\"display: block; margin-left: auto; margin-right: auto; height: 3rem; width: 3rem;\" src=\"http://vivedy.azurewebsites.net/favicon.ico\">" +
                                         $"<b><h2 style=\"text-align: center;\">Thank you for purchasing tickets at our website!</h2></b>" +
@@ -116,7 +135,9 @@ namespace VivedyWebApp.Controllers
             return View(newBooking);
         }
 
-        // GET: AdminBookings/Edit/5
+        /// <summary>
+        /// GET request action for Edit page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(string id)
         {
@@ -132,7 +153,9 @@ namespace VivedyWebApp.Controllers
             return View(booking);
         }
 
-        // POST: AdminBookings/Edit/5
+        /// <summary>
+        /// POST request action for Edit page
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -147,7 +170,9 @@ namespace VivedyWebApp.Controllers
             return View(booking);
         }
 
-        // GET: AdminBookings/Delete/5
+        /// <summary>
+        /// GET request action for Delete page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(string id)
         {
@@ -163,7 +188,9 @@ namespace VivedyWebApp.Controllers
             return View(booking);
         }
 
-        // POST: AdminBookings/Delete/5
+        /// <summary>
+        /// POST request action for DeleteConfirmed page
+        /// </summary>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -175,6 +202,9 @@ namespace VivedyWebApp.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Method for disposing ApplicationDbContext objects
+        /// </summary>
         protected override void Dispose(bool disposing)
         {
             if (disposing)

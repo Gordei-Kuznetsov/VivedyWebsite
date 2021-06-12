@@ -12,11 +12,19 @@ using Microsoft.AspNet.Identity;
 
 namespace VivedyWebApp.Controllers
 {
+    /// <summary>
+    /// Application Movies Controller
+    /// </summary>
     public class MoviesController : Controller
     {
+        /// <summary>
+        /// ApplicationDbContext instance
+        /// </summary>
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Movies
+        /// <summary>
+        /// GET request action for Index page
+        /// </summary>
         public async Task<ActionResult> Index()
         {
             List<Movie> movies = await db.Movies.ToListAsync();
@@ -24,6 +32,7 @@ namespace VivedyWebApp.Controllers
             {
                 return View(movies);
             }
+            //Getting lists of categories and ratings for the filters on the movies page
             ViewBag.Categories = new List<string>();
             ViewBag.Ratings = new List<string>();
             foreach (Movie movie in movies) {
@@ -50,7 +59,9 @@ namespace VivedyWebApp.Controllers
             return View(movies);
         }
 
-        // GET: Movies/Details/5
+        /// <summary>
+        /// GET request action for Details page
+        /// </summary>
         public async Task<ActionResult> Details(string id)
         {
             if (id == null)
@@ -65,7 +76,9 @@ namespace VivedyWebApp.Controllers
             return View(movie);
         }
 
-        // GET: /Movies/BookingTime/5
+        /// <summary>
+        /// GET request action for BookingTime page
+        /// </summary>
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> BookingTime(string id)
@@ -74,9 +87,11 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            //Getting available rotations for the movie
             List<Rotation> rotations = await db.Rotations.Where(rotation => rotation.MovieId == id).ToListAsync();
             if (rotations.Count == 0)
             {
+                //If no rotaions found then send back to the Movies/Details page with a message
                 ViewBag.ErrorMessage = "No rotations found for this movie.";
                 return RedirectToAction("Details", "Movies", routeValues: new { id = id });
             }
@@ -87,7 +102,9 @@ namespace VivedyWebApp.Controllers
             return View(model);
         }
 
-        // POST: /Movies/BookingTime
+        /// <summary>
+        /// POST request action for BookingTime page
+        /// </summary>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -99,13 +116,16 @@ namespace VivedyWebApp.Controllers
             }
             MoviesBookingSeatsViewModel seatsModel = new MoviesBookingSeatsViewModel {
                 SelectedRotationId = timeModel.SelectedRotationId,
+                //Getting the movie from db to avoid depending on the object being sent through the request
                 Movie = db.Movies.Find(db.Rotations.Find(timeModel.SelectedRotationId).MovieId), 
                 OccupiedSeats = new List<int>(),
                 SelectedSeats = ""
             };
+            //Getting all bookings for the rotaion to later get all occupied saets from them
             List<Booking> bookings = db.Bookings.Where(booking => booking.RotationId == timeModel.SelectedRotationId).ToList();
             if(bookings != null)
             {
+                //Getting a list of all occupied  seats
                 foreach (Booking booking in bookings)
                 {
                     foreach(string seat in booking.Seats.Split(','))
@@ -114,11 +134,12 @@ namespace VivedyWebApp.Controllers
                     }
                 }
             }
-
             return View("BookingSeats", seatsModel);
         }
 
-        // POST: /Movies/BookingSeats
+        /// <summary>
+        /// POST request action for BookingSeats page
+        /// </summary>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -128,11 +149,13 @@ namespace VivedyWebApp.Controllers
             {
                 return View(seatsModel);
             }
+            //Parsing the SelectedSeats string into a list
             List<int> selectedSeats = new List<int>();
             foreach (string seat in seatsModel.SelectedSeats.Split(','))
             {
                 if (seat != null && seat != "" ) { selectedSeats.Add(Convert.ToInt32(seat)); }
             }
+            //Getting the movie from db to avoid depending on the object being sent through the request
             Movie movie = db.Movies.Find(db.Rotations.Find(seatsModel.SelectedRotationId).MovieId);
             MoviesBookingPayViewModel payModel = new MoviesBookingPayViewModel { 
                 SelectedSeats = seatsModel.SelectedSeats, 
@@ -143,7 +166,9 @@ namespace VivedyWebApp.Controllers
             return View("BookingPay", payModel);
         }
 
-        // POST: /Movies/BookingPay
+        /// <summary>
+        /// POST request action for BookingPay page
+        /// </summary>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -165,17 +190,22 @@ namespace VivedyWebApp.Controllers
             int result = db.SaveChanges();
             if (result > 0)
             {
+                //Sending the email with the tickets to the email address provided
+                //Will later be moved to the a method of EmailService class
                 string htmlSeats = "";
                 foreach (string seat in payModel.SelectedSeats.Split(','))
                 {
                     if (seat != null && seat != "") { htmlSeats += $"<li>{seat}</li>"; }
                 }
+                //Generating content to put into the QR code for later validation
+                //Includes BookingId and UserEmail
                 string dataToEncode = "{\"bookingId\":\"" + booking.BookingId + "\",\"email\":\"" + booking.UserEmail + "\"}";
                 var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(dataToEncode);
                 string qrCodeData = Convert.ToBase64String(plainTextBytes);
                 Rotation rotation = db.Rotations.Find(payModel.SelectedRotationId);
                 Movie movie = db.Movies.Find(rotation.MovieId);
                 string subject = "Booking Confirmation";
+                //Generating an HTML body for the email
                 string mailbody = $"<div id=\"mainEmailContent\" style=\"-webkit-text-size-adjust: 100%; font-family: Verdana,sans-serif;\">" +
                                     $"<img style=\"display: block; margin-left: auto; margin-right: auto; height: 3rem; width: 3rem;\" src=\"http://vivedy.azurewebsites.net/favicon.ico\">" +
                                     $"<b><h2 style=\"text-align: center;\">Thank you for purchasing tickets at our website!</h2></b>" +
@@ -207,13 +237,18 @@ namespace VivedyWebApp.Controllers
             }
         }
 
-        // GET: /Movies/BookingConfirmation
+        /// <summary>
+        /// GET request action for BookingConfirmation page
+        /// </summary>
         [AllowAnonymous]
         public ActionResult BookingConfirmation()
         {
             return View();
         }
 
+        /// <summary>
+        /// Method for disposing ApplicationDbContext objects
+        /// </summary>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
