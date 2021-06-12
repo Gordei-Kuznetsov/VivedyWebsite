@@ -15,14 +15,14 @@
         </a>
     </nav>
     <div class="white-bg-color">
-        <a  class="btn btn-danger  phenomena-sm " href="/AdminUsers/Create">ADD <i class="fas fa-plus"></i></a>
-        <input type="text" class="mb-3 float-right" id="myInput" placeholder="Search..">
+        <a class="btn btn-danger  phenomena-sm " href="/AdminUsers/Create">ADD <i class="fas fa-plus"></i></a>
+        <input type="text" class="mb-3 float-right" id="myInput"  placeholder="Search..">
         <br>
         <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
             <thead>
                 <tr class="text-center ">
                     <th scope="col" style="width:95px">
-                       User @Html.DisplayNameFor(model => model.Id)
+                        User @Html.DisplayNameFor(model => model.Id)
                     </th>
                     <th scope="col">
                         @Html.DisplayNameFor(model => model.Name)
@@ -50,7 +50,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody id="myList">
+            <tbody id="myTable">
                 @foreach (var item in Model)
                 {
                     <tr class="text-center">
@@ -72,10 +72,10 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.PhoneNumberConfirmed)
                         </td>
-                        <td >
+                        <td>
                             @Html.DisplayFor(modelItem => item.Role)
                         </td>
-                        <td >
+                        <td>
                             @Html.DisplayFor(modelItem => item.UserName)
                         </td>
                         <td>
@@ -84,7 +84,7 @@
                             @Html.ActionLink("Delete", "Delete", "AdminUsers", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                         </td>
                     </tr>
-                }
+                 }
             </tbody>
         </table>
     </div>
