@@ -104,7 +104,7 @@ namespace VivedyWebApp.Controllers
                                       $"</div>";
                     EmailService mailService = new EmailService();
                     await mailService.SendAsync(booking.UserEmail, subject, mailbody);
-                    return View("BookingConfirmation");
+                    return RedirectToAction("BookingConfirmation", "Movies");
                 }
                 else
                 {

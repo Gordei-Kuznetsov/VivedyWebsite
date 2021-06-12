@@ -4,7 +4,7 @@
     ViewBag.Title = "Booking Payment";
 }
 
-@using (Html.BeginForm("BookingPay", "Movies", FormMethod.Post, htmlAttributes: new { role = "form", id = "PayForm" }))
+@using (Html.BeginForm("BookingPay", "Movies", FormMethod.Post, htmlAttributes: new { role = "form" }))
 {
     @Html.AntiForgeryToken()
 
@@ -15,19 +15,17 @@
                     <div class="card-header">
                         <ul class="nav nav-pills card-header-pills">
                             <li class="nav-item">
-                                <div class="btn btn-danger">Time</div>
+                                <div class="nav-link">Time</div>
                             </li>
                             <li class="nav-item">
                                 <div class="nav-link">Seats</div>
                             </li>
                             <li class="nav-item">
-                                <div class="nav-link">Payment</div>
+                                <div class="btn btn-danger" disabled>Payment</div>
                             </li>
-
                         </ul>
                     </div>
                     <div class="align-self-center grey-bg-color">
-
                         <div class="mb-5 mt-4 phenomena-sm border-bottom mt-5">
                             <h1 class="display-5 text-center">Enter your Payment details</h1>
                         </div>
@@ -57,11 +55,11 @@
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    @Html.LabelFor(m => m.CVC, new { @class = "phenomena-sm" })
+                                    @Html.LabelFor(m => m.CCV, new { @class = "phenomena-sm" })
                                 </div>
                                 <div class="col-9">
-                                    @Html.TextBoxFor(m => m.CVC, new { style = "width:100%", @class = "mb-3" })
-                                    @Html.ValidationMessageFor(m => m.CVC, "", new { @class = "text-danger" })
+                                    @Html.TextBoxFor(m => m.CCV, new { style = "width:100%", @class = "mb-3" })
+                                    @Html.ValidationMessageFor(m => m.CCV, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="row">
@@ -82,12 +80,15 @@
                                     @Html.ValidationMessageFor(m => m.CardHolder, "", new { @class = "text-danger" })
                                 </div>
                             </div>
+                            @Html.HiddenFor(m => m.SelectedRotationId)
+                            @Html.HiddenFor(m => m.SelectedSeats)
+                            @Html.HiddenFor(m => m.TotalPrice)
                         </div>
                         <div class="align-self-center">
                             <div class="row text-center mt-4">
                                 <div class="col-12">
                                     <div class=" phenomena-sm ">
-                                        <input type="submit" value="Submit"
+                                        <input type="submit" value="Complete Payment"
                                                class="btn btn-danger pl-4 pr-4 pb-2 pt-2 phenomena-sm ">
                                     </div>
                                 </div>
@@ -98,7 +99,15 @@
             </div>
             <div class="col-lg-3 col-sm-12">
                 <div class="card mb-5">
-                    <img src="~/Content/Images/@Model.Movie.MovieId-VerticalPoster" class="card-img-top" alt="Movie Poster">
+                    <div class="card-body">
+                        <h5 class="card-title">Price</h5>
+                        <p class="card-text">
+                            Total Price: $@Model.TotalPrice
+                        </p>
+                    </div>
+                </div>
+                <div class="card mb-5">
+                    <img src="~/Content/Images/@Model.Movie.MovieId-VerticalPoster.png" class="card-img-top" alt="Movie Poster">
                     <div class="card-body">
                         <h5 class="card-title">@Model.Movie.Name</h5>
                         <p class="card-text"> Catoegry: <span class="badge badge-pill badge-secondary">@Model.Movie.Category</span></p>
@@ -113,20 +122,11 @@
                         <p class="Price"> <span style="color: #A80000;">Movie Price: </span>$@Model.Movie.Price</p>
                     </div>
                 </div>
-                <div class="card mb-5">
-                    <div class="card-body">
-                        <h5 class="card-title">Price</h5>
-                        <p class="card-text">
-                            Total Price: &@Model.TotalPrice
-                        </p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 }
 
 @section Scripts {
-
     @Scripts.Render("~/bundles/jqueryval")
 }

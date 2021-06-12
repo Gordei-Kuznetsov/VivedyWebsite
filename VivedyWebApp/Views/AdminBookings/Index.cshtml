@@ -25,13 +25,16 @@
                         @Html.DisplayNameFor(model => model.BookingId)
                     </th>
                     <th scope="col">
-                        @Html.DisplayNameFor(model => model.CreationDate)
-                    </th>
-                    <th scope="col">
                         @Html.DisplayNameFor(model => model.RotationId)
                     </th>
                     <th scope="col">
+                        @Html.DisplayNameFor(model => model.Seats)
+                    </th>
+                    <th scope="col">
                         @Html.DisplayNameFor(model => model.UserEmail)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.CreationDate)
                     </th>
                     <th scope="col">
 
@@ -46,13 +49,16 @@
                             @Html.DisplayFor(modelItem => item.BookingId)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CreationDate)
-                        </td>
-                        <td>
                             @Html.DisplayFor(modelItem => item.RotationId)
                         </td>
                         <td>
+                            @Html.DisplayFor(modelItem => item.Seats)
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.UserEmail)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDate)
                         </td>
                         <td>
                             @Html.ActionLink("Edit", "Edit", "AdminBookings", routeValues: new { id = item.BookingId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |

@@ -18,24 +18,27 @@ namespace VivedyWebApp.Models
 
     public class MoviesBookingSeatsViewModel
     {
+        [Display(Name = "Selected Rotation Id")]
         [Required]
         public string SelectedRotationId { get; set; }
 
         public List<int> OccupiedSeats { get; set; }
 
-        [Required]
-        [MinLength(2, ErrorMessage = "Please select a seat")]
+        [Display(Name = "Selected Seats")]
+        [Required(ErrorMessage = "Please select a seat")]
         public string SelectedSeats { get; set; }
 
         public Movie Movie { get; set; }
     }
     public class MoviesBookingPayViewModel
     {
+        [Display(Name = "Selected Rotation Id")]
         [Required]
         public string SelectedRotationId { get; set; }
 
+        [Display(Name = "Selected Seats")]
         [Required]
-        public List<int> SelectedSeats { get; set; }
+        public string SelectedSeats { get; set; }
 
         [Display(Name = "Email")]
         [Required]
@@ -44,17 +47,15 @@ namespace VivedyWebApp.Models
 
         [Display(Name = "Card Number")]
         [Required]
-        [CreditCard]
-        public int CardNumber { get; set;}
+        [DataType(DataType.CreditCard)]
+        public string CardNumber { get; set; }
 
-        [Display(Name = "CVC")]
+        [Display(Name = "CCV")]
         [Required]
-        [RegularExpression("^\\d\\d\\d$")]
-        public int CVC { get; set; }
+        public int CCV { get; set; }
 
         [Display(Name = "Expiry Date")]
         [Required]
-        [RegularExpression("^\\d\\d[/,\\]\\d\\d$")]
         public string ExpDate { get; set; }
 
         [Display(Name = "Card Holder's Name")]

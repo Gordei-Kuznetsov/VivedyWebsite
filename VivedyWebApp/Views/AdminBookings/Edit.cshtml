@@ -19,17 +19,17 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-3 phenomena-sm"> @Html.LabelFor(model => model.CreationDate) : </div>
-                    <div class="mb-3 col-md-8 phenomena-sm" readonly>
-                        @Html.EditorFor(model => model.CreationDate, new { htmlAttributes = new { @class = "col-md-12" } })
-                        @Html.ValidationMessageFor(model => model.CreationDate, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.RotationId) : </div>
                     <div class="mb-3 col-md-8 phenomena-sm">
                         @Html.EditorFor(model => model.RotationId, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.RotationId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 phenomena-sm"> @Html.LabelFor(model => model.Seats) : </div>
+                    <div class="mb-3 col-md-8 phenomena-sm" readonly>
+                        @Html.EditorFor(model => model.Seats, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.ValidationMessageFor(model => model.Seats, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="row mb-5">
@@ -37,6 +37,12 @@
                     <div class="mb-3 col-md-8 phenomena-sm">
                         @Html.EditorFor(model => model.UserEmail, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 phenomena-sm"> @Html.DisplayNameFor(model => model.CreationDate) : </div>
+                    <div class="mb-3 col-md-8 phenomena-sm" readonly>
+                        @Html.DisplayFor(model => model.CreationDate)
                     </div>
                 </div>
             </div>

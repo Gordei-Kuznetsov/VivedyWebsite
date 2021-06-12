@@ -87,6 +87,7 @@ namespace VivedyWebApp.Controllers
         }
 
         // GET: AdminMovies/Edit/5
+
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(string id)
         {

@@ -133,12 +133,12 @@ namespace VivedyWebApp.Controllers
             {
                 if (seat != null && seat != "" ) { selectedSeats.Add(Convert.ToInt32(seat)); }
             }
-
+            Movie movie = db.Movies.Find(db.Rotations.Find(seatsModel.SelectedRotationId).MovieId);
             MoviesBookingPayViewModel payModel = new MoviesBookingPayViewModel { 
-                SelectedSeats = selectedSeats, 
+                SelectedSeats = seatsModel.SelectedSeats, 
                 SelectedRotationId = seatsModel.SelectedRotationId, 
-                Movie = db.Movies.Find(db.Rotations.Find(seatsModel.SelectedRotationId).MovieId),
-                TotalPrice = selectedSeats.Count() * seatsModel.Movie.Price
+                Movie = movie,
+                TotalPrice = selectedSeats.Count() * movie.Price
             };
             return View("BookingPay", payModel);
         }
@@ -153,15 +153,10 @@ namespace VivedyWebApp.Controllers
             {
                 return View(payModel);
             }
-            string selestedSeats = "";
-            foreach(int seat in payModel.SelectedSeats)
-            {
-                selestedSeats += seat + ",";
-            }
             Booking booking = new Booking
             {
                 BookingId = Guid.NewGuid().ToString(),
-                Seats = selestedSeats,
+                Seats = payModel.SelectedSeats,
                 CreationDate = DateTime.Now,
                 UserEmail = payModel.Email,
                 RotationId = payModel.SelectedRotationId
@@ -171,14 +166,15 @@ namespace VivedyWebApp.Controllers
             if (result > 0)
             {
                 string htmlSeats = "";
-                foreach(int seat in payModel.SelectedSeats)
+                foreach (string seat in payModel.SelectedSeats.Split(','))
                 {
-                    htmlSeats += $"<li>{seat}</li>";
+                    if (seat != null && seat != "") { htmlSeats += $"<li>{seat}</li>"; }
                 }
                 string dataToEncode = "{\"bookingId\":\"" + booking.BookingId + "\",\"email\":\"" + booking.UserEmail + "\"}";
                 var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(dataToEncode);
                 string qrCodeData = Convert.ToBase64String(plainTextBytes);
-                DateTime StartTime = db.Rotations.Find(payModel.SelectedRotationId).StartTime;
+                Rotation rotation = db.Rotations.Find(payModel.SelectedRotationId);
+                Movie movie = db.Movies.Find(rotation.MovieId);
                 string subject = "Booking Confirmation";
                 string mailbody = $"<div id=\"mainEmailContent\" style=\"-webkit-text-size-adjust: 100%; font-family: Verdana,sans-serif;\">" +
                                     $"<img style=\"display: block; margin-left: auto; margin-right: auto; height: 3rem; width: 3rem;\" src=\"http://vivedy.azurewebsites.net/favicon.ico\">" +
@@ -186,16 +182,16 @@ namespace VivedyWebApp.Controllers
                                     $"<p>Below are details of your purchase.</p>" +
                                     $"<i><p>Please present this email when you arrive to the cinema to the our stuuf at the entrance to the auditorium.</p></i>" +
                                     $"<div style=\"box-sizing: inherit; padding: 0.01em 16px; margin-top: 16px; margin-bottom: 16px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);\">" +
-                                        $"<h3>{payModel.Movie.Name}</h3>" +
-                                        $"<h4><b>Date:</b> {StartTime.Date}</h4>" +
-                                        $"<h4><b>Time:</b> {StartTime.TimeOfDay}</h4>" +
+                                        $"<h3>{movie.Name}</h3>" +
+                                        $"<h4><b>Date:</b> {rotation.StartTime.ToLongDateString()}</h4>" +
+                                        $"<h4><b>Time:</b> {rotation.StartTime.ToLongTimeString()}</h4>" +
                                         $"<h4><b>Your seats:</b> </h4>" +
                                         $"<ul>" +
                                             $"{htmlSeats}" +
                                         $"</ul>" +
                                         $"<h4><b>Total amount paid:</b> ${payModel.TotalPrice}</h4>" +
                                         $"<br>" +
-                                        $"<img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://api.qrserver.com/v1/create-qr-code/?size=250&bgcolor=255-255-255&color=9-10-15&qzone=0&data={qrCodeData}\" alt=\"Qrcode\">" +
+                                        $"<img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://api.qrserver.com/v1/create-qr-code/?size=250&bgcolor=255-255-255&color=9-10-15&qzone=0&data=" + qrCodeData + "\" alt=\"Qrcode\">" +
                                         $"<br>" +
                                     $"</div>" +
                                     $"<p>Go to our <a href=\"vivedy.azurewebsites.net\">website</a> to find more movies!</p>" +
@@ -209,6 +205,13 @@ namespace VivedyWebApp.Controllers
                 ViewBag.ErrorMessage = "There was a problem processing your booking.";
                 return View("Error");
             }
+        }
+
+        // GET: /Movies/BookingConfirmation
+        [AllowAnonymous]
+        public ActionResult BookingConfirmation()
+        {
+            return View();
         }
 
         protected override void Dispose(bool disposing)

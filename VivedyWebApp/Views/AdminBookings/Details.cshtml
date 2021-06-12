@@ -15,21 +15,27 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.CreationDate) : </div>
-                <div class="mb-3 col-md-8 phenomena-sm" readonly>
-                    @Html.DisplayFor(model => model.CreationDate)
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.RotationId) :</div>
                 <div class="mb-3 col-md-8 phenomena-sm">
                     @Html.DisplayFor(model => model.RotationId)
                 </div>
             </div>
             <div class="row">
+                <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.Seats) : </div>
+                <div class="mb-3 col-md-8 phenomena-sm" readonly>
+                    @Html.DisplayFor(model => model.CreationDate)
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.UserEmail) :</div>
                 <div class="mb-3 col-md-8 phenomena-sm">
                     @Html.DisplayFor(model => model.UserEmail)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.CreationDate) : </div>
+                <div class="mb-3 col-md-8 phenomena-sm" readonly>
+                    @Html.DisplayFor(model => model.CreationDate)
                 </div>
             </div>
             <div class="row">
@@ -41,7 +47,7 @@
                 </div>
             </div>
             <div>
-                @Html.ActionLink("Back to List", "Index","AdminBookings", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
+                @Html.ActionLink("Back to List", "Index", "AdminBookings", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
             </div>
         </div>
     </div>
