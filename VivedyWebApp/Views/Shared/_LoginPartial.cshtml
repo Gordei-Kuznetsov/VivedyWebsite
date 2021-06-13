@@ -11,11 +11,11 @@
     {
         @Html.AntiForgeryToken()
         <li class="nav-item">
-            <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+            <a class="nav-link @(ViewBag.Title == "Log off" ? "active" : null)" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
         </li>
     }
     <li class="nav-item">
-        <a href="/Accounts" class="nav-link ml-1 mr-1"><i class="fas fa-2x fa-user-circle"></i></a>
+        <a href="/Accounts" class="nav-link ml-1 mr-1 @(ViewBag.Title == "My Account" ? "active" : null)"><i class="fas fa-2x fa-user-circle"></i></a>
     </li>
 }
 else

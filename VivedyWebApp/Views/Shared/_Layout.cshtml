@@ -11,10 +11,7 @@
 <!--class="ScrollHide"-->
 
 <body class="ScrollHide">
-
-    <!--style=" color: #A80000;"-->
     <!-- Nav Bar start -->
-    <!--<nav class="navbar navbar-expand-lg navbar-red bg-primary">-->
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
             @Html.ActionLink("VIVEDY", "Index", "Home", new { area = "" }, new { @class = "navbar-brand phenomena" })
@@ -25,6 +22,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
+                        <!--{(ViewBag.Title == "Admin" ? "active" : null)}-->
                         @Html.ActionLink("Movies", "Index", "Movies", routeValues: null, htmlAttributes: new { @class = "nav-link ml-1 mr-1" })
                     </li>
                     <li class="nav-item">
