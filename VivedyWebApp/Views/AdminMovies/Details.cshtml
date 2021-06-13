@@ -80,14 +80,14 @@
 
         <div class="row">
             <div class="col">
-                @Html.ActionLink("Edit", "Edit","AdminMovies", new { id = Model.MovieId }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " })
+                @Html.ActionLink("Edit", "Edit","AdminMovies", new { id = Model.MovieId }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3  mr-4 phenomena-sm" })
             </div>
             <div class="col">
-                @Html.ActionLink("Delete", "Delete", "AdminMovies", new { id = Model.MovieId }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm " })
+                @Html.ActionLink("Delete", "Delete", "AdminMovies", new { id = Model.MovieId }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm"           })
             </div>
         </div>
         <div>
-            @Html.ActionLink("Back to List", "Index","AdminMovies", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
+            @Html.ActionLink("Back to List", "Index","AdminMovies", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm ml-2" })
         </div>
 
     </div>
