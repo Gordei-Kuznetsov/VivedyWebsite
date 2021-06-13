@@ -74,9 +74,9 @@
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.VerticalImage) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        <input accept="image/png" class="col-md-12" data-val-file="The field Horizontal Poster must be a file."
-                               data-val-required="The Horizontal Poster field is required." id="HorizontalImage"
-                               name="HorizontalImage" type="file" value="">
+                        <input accept="image/png" class="col-md-12" data-val-file="The field Vertical Poster must be a file."
+                               data-val-required="The Vertical Poster field is required." id="VerticalImage"
+                               name="VerticalImage" type="file" value="">
                         @Html.ValidationMessageFor(model => model.VerticalImage, "", new { @class = "text-danger" })
                     </div>
                 </div>
