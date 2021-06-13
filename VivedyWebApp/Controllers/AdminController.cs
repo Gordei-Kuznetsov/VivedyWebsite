@@ -46,7 +46,7 @@ namespace VivedyWebApp.Controllers
         {
             if (data == null)
             {
-                return Json(new VerifyBookingsResult("HTTP 400: Bad request"));
+                return Json(new VerifyBookingsResult("HTTP 400: Bad request"), JsonRequestBehavior.AllowGet);
             }
             VerifyBookingsJsonResult bookingObject;
             try
@@ -57,27 +57,27 @@ namespace VivedyWebApp.Controllers
             }
             catch
             {
-                return Json(new VerifyBookingsResult("Internal error occured while decoding the requested QR code data."));
+                return Json(new VerifyBookingsResult("Internal error occured while decoding the requested QR code data."), JsonRequestBehavior.AllowGet);
             }
             try
             {
                 Booking booking = db.Bookings.Find(bookingObject.bookingId);
                 if(booking == null)
                 {
-                    return Json(new VerifyBookingsResult(false));
+                    return Json(new VerifyBookingsResult(false), JsonRequestBehavior.AllowGet);
                 }
                 if(booking.UserEmail != bookingObject.email)
                 {
-                    return Json(new VerifyBookingsResult(false));
+                    return Json(new VerifyBookingsResult(false), JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new VerifyBookingsResult(true));
+                    return Json(new VerifyBookingsResult(true), JsonRequestBehavior.AllowGet);
                 }
             }
             catch
             {
-                return Json(new VerifyBookingsResult("Internal error occured while verifying the booking."));
+                return Json(new VerifyBookingsResult("Internal error occured while verifying the booking."), JsonRequestBehavior.AllowGet);
             }
         }
 
