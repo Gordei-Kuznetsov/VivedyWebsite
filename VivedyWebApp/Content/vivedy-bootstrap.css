@@ -10361,7 +10361,7 @@ a.text-danger:hover, a.text-danger:focus {
 }
 
 a.text-light:hover, a.text-light:focus {
-    color: #d9d9d9 !important;
+    color: rebeccapurple !important;
 }
 
 .text-dark {
@@ -11280,9 +11280,6 @@ a {
     transition: all 0.2s;
 }
 
-.text-secondary {
-    color: #bbb !important;
-}
 
 .table-hover > tbody > tr,
 .table-hover > tbody > tr > th,
@@ -11915,6 +11912,14 @@ button.bg-secondary:focus {
     font-style: normal;
 }
 
+/*
+.phenomenaSideBar{
+   font-family: Phenomena;
+   font-weight: 600;
+   font-size: 1rem;
+}
+*/
+
 .phenomena-sm {
     font-family: Phenomena;
 }
@@ -11922,7 +11927,7 @@ button.bg-secondary:focus {
 .phenomena {
     font-family: Phenomena;
     font-weight: 900;
-    font-size: 2rem;
+    font-size: 2rem
 }
 
 .phenomena2 {
@@ -12104,54 +12109,37 @@ button.bg-secondary:focus {
 /*===== GOOGLE FONTS =====*/
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
 
-/*===== VARIABLES CSS =====*/
-:root {
-    --header-height: 3rem;
-    --nav-width: 68px;
-    /*===== Colors =====*/
-    --first-color: none;
-    --first-color-light: #AFA5D9;
-    --white-color: #a80000;
-    /*===== Font and typography =====*/
-    --body-font: 'Nunito', sans-serif;
-    --normal-font-size: 1rem;
-    /*===== z index =====*/
-    --z-fixed: 100;
-}
-
 /*===== BASE =====*/
 *, ::before, ::after {
     box-sizing: border-box;
 }
 
-.bodysidebar {
+.body {
     position: relative;
-    margin: var(--header-height) 0 0 0;
-    padding: 0 1rem;
-    font-family: var(--body-font);
-    font-size: var(--normal-font-size);
+    font-size: 1rem;
     transition: .5s;
+}
+
+a {
+    text-decoration: none;
 }
 
 /*===== HEADER =====*/
 .headersidebar {
-    width: 100%;
-    height: var(--header-height);
-    position: fixed;
-    top: 0;
-    left: 0;
+    width: 53px;
+    height: 3rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 1rem;
-    background-color: var(--white-color);
-    z-index: var(--z-fixed);
+    background-color: #a80000;
+    z-index: 100;
     transition: .5s;
-    margin-top:5rem;
+    padding:1rem;
 }
 
 .header__toggle {
-    color: white;
+    color: #161925;
     font-size: 1.5rem;
     cursor: pointer;
 }
@@ -12165,19 +12153,22 @@ button.bg-secondary:focus {
     overflow: hidden;
 }
 
+    .header__img img {
+        width: 40px;
+    }
+
 /*===== NAV =====*/
 .l-navbar {
     position: fixed;
     top: 0;
     left: -30%;
-    width: var(--nav-width);
-    height: 90vh;
-    background-color: var(--first-color);
+    width: 68px;
+    height: 100vh;
+    background-color: #161925;
     padding: .5rem 1rem 0 0;
     transition: .5s;
-    z-index: var(--z-fixed);
-    box-shadow: 2px 0px 2px rgb(0 0 0 / 30%);
-    margin-top:5rem;
+    z-index: 100;
+    padding: 7rem 1rem 0 0; /*Hight of side navbar*/
 }
 
 .navsidebar {
@@ -12202,11 +12193,11 @@ button.bg-secondary:focus {
 
 .nav__logo-icon {
     font-size: 1.25rem;
-    color: var(--white-color);
+    color: #a80000;
 }
 
 .nav__logo-name {
-    color: var(--white-color);
+    color: #a80000;
     font-weight: 700;
 }
 
@@ -12218,7 +12209,7 @@ button.bg-secondary:focus {
 }
 
     .nav__link:hover {
-        color: var(--white-color);
+        color: #a80000;
     }
 
 .nav__icon {
@@ -12232,59 +12223,38 @@ button.bg-secondary:focus {
 
 /*Add padding body movil*/
 .body-pd {
-    padding-left: calc(var(--nav-width) + 1rem);
+
 }
 
 /*Active links*/
 .activesidebar {
-    color: var(--white-color);
+    color: #a80000;
 }
 
-    .activesidebar::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        width: 2px;
-        height: 32px;
-        background-color: var(--white-color);
-    }
+.activesidebar::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 2px;
+    height: 32px;
+    background-color: #a80000;
+}
 
 /* ===== MEDIA QUERIES=====*/
 @media screen and (min-width: 768px) {
-    bodysidebar {
-        margin: calc(var(--header-height) + 1rem) 0 0 0;
-        padding-left: calc(var(--nav-width) + 2rem);
-    }
-
-    .headersidebar {
-        height: calc(var(--header-height) + 1rem);
-        padding: 0 2rem 0 calc(var(--nav-width) + 2rem);
-    }
-
-    .header__img {
-        width: 40px;
-        height: 40px;
-    }
-
-        .header__img img {
-            width: 45px;
-        }
 
     .l-navbar {
         left: 0;
-        padding: 1rem 1rem 0 0;
     }
 
     /*Show navbar desktop*/
     .showsidebar {
-        width: calc(var(--nav-width) + 156px);
-    }
-
-    /*Add padding body desktop*/
-    .body-pd {
-        padding-left: calc(var(--nav-width) + 188px);
+        width: 200px;
     }
 }
+
+
+
 
 
 

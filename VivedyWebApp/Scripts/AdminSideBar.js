@@ -1,17 +1,17 @@
-/*===== SHOW NAVBAR  =====*/ 
-const showNavbar = (toggleId, navId, bodyId, headerId) =>{
+/*===== SHOW NAVBAR  =====*/
+const showNavbar = (toggleId, navId, bodyId, headerId) => {
     const toggle = document.getElementById(toggleId),
-    navsidebar = document.getElementById(navId),
-    bodypd = document.getElementById(bodyId),
-    headerpd = document.getElementById(headerId)
+        nav = document.getElementById(navId),
+        bodypd = document.getElementById(bodyId),
+        headerpd = document.getElementById(headerId)
 
     // Validate that all variables exist
-    if(toggle && navsidebar && bodypd && headerpd){
-        toggle.addEventListener('click', ()=>{
+    if (toggle && nav && bodypd && headerpd) {
+        toggle.addEventListener('click', () => {
             // show navbar
-            navsiderbar.classList.toggle('showsidebar')
+            nav.classList.toggle('showsidebar')
             // change icon
-            toggle.classList.toggle('bx-x')
+            toggle.classList.toggle('fa-times')
             // add padding to body
             bodypd.classList.toggle('body-pd')
             // add padding to header
@@ -20,15 +20,15 @@ const showNavbar = (toggleId, navId, bodyId, headerId) =>{
     }
 }
 
-showNavbar('header-toggle','nav-bar','body-pd','headersidebar')
+showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header')
 
-/*===== LINK ACTIVE  =====*/ 
+/*===== LINK ACTIVE  =====*/
 const linkColor = document.querySelectorAll('.nav__link')
 
-function colorLink(){
-    if(linkColor){
-        linkColor.forEach(l=> l.classList.remove('activesidebar'))
+function colorLink() {
+    if (linkColor) {
+        linkColor.forEach(l => l.classList.remove('activesidebar'))
         this.classList.add('activesidebar')
     }
 }
-linkColor.forEach(l=> l.addEventListener('click', colorLink))
+linkColor.forEach(l => l.addEventListener('click', colorLink))
