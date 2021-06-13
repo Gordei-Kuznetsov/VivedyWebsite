@@ -43,6 +43,12 @@ namespace VivedyWebApp
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/vivedy-bootstrap.css",
                       "~/Content/all.min.css"));
+
+            //Admin Sidebar
+            bundles.Add(new ScriptBundle("~/Scripts/AdminSideBar").Include(
+                      "~/Scripts/AdminSideBar.js"));
+
+
         }
     }
 }
