@@ -4,8 +4,8 @@
     ViewBag.Title = "User Details";
 }
 
-<div class="card mx-auto " style="width: auto; margin-top: 5rem; margin-bottom: 3rem;">
-    <div class="white-bg-color mx-auto text-dark " style="width: 750px; border: .5rem solid #a8000a;">
+<div class="containerOne">
+    <div class="white-bg-color mx-auto text-dark " style="max-width: 750px; border: .5rem solid #a8000a;">
         <div class="mb-5 mt-4 phenomena-sm border-bottom border-dark " style="color: #a8000a"><h1 class="display-5">USER DETAILS</h1></div>
         <div class="border-bottom">
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -61,11 +61,11 @@
             </div>
         </div>
         <div class="row">
-        @Html.ActionLink("Edit", "Edit", "AdminUsers", new { id = Model.Id }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3  mr-4 phenomena-sm" })
-        @Html.ActionLink("Delete", "Delete", "AdminUsers", new { id = Model.Id }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm" })
+            @Html.ActionLink("Edit", "Edit", "AdminUsers", new { id = Model.Id }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 ml-4 mr-4 phenomena-sm" })
+            @Html.ActionLink("Delete", "Delete", "AdminUsers", new { id = Model.Id }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm" })
         </div>
-        <div class="mt-3">
-            @Html.ActionLink("Back to List", "Index", "AdminUsers", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm ml-2" })
+        <div class="row">
+            @Html.ActionLink("Back to List", "Index", "AdminUsers", routeValues: null, htmlAttributes: new { @class = "mt-3 text-link phenomena-sm ml-5" })
         </div>
     </div>
 </div>
