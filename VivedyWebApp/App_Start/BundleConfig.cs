@@ -31,8 +31,7 @@ namespace VivedyWebApp
                       "~/Scripts/popper.min.js"));
 
             //Bundle with zxing scripts
-            bundles.Add(new ScriptBundle("~/bundles/zxing").Include(
-                      "~/Scripts/zxing-0.18.3.js",
+            bundles.Add(new ScriptBundle("~/bundles/scanner").Include(
                       "~/Scripts/bookingVerification.js"));
 
             //Bundle with search and filters scripts
