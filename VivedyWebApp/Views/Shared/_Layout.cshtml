@@ -23,13 +23,13 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <!--{(ViewBag.Title == "Admin" ? "active" : null)}-->
-                        @Html.ActionLink("Movies", "Index", "Movies", routeValues: null, htmlAttributes: new { @class = "nav-link ml-1 mr-1" })
+                        @Html.ActionLink("Movies", "Index", "Movies", routeValues: null, htmlAttributes: new { @class =   $"nav-link ml-1 mr-1 {(ViewBag.Title == "Index" ? "active" : null)}"  })
                     </li>
                     <li class="nav-item">
-                        @Html.ActionLink("About", "About", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link ml-1 mr-1" })
+                        @Html.ActionLink("About", "About", "Home", routeValues: null, htmlAttributes: new { @class = $"nav-link ml-1 mr-1 {(ViewBag.Title == "About" ? "active" : null)}" })
                     </li>
                     <li class="nav-item">
-                        @Html.ActionLink("Privacy", "Privacy", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link ml-1 mr-1" })
+                        @Html.ActionLink("Privacy", "Privacy", "Home", routeValues: null, htmlAttributes: new { @class = $"nav-link ml-1 mr-1 {(ViewBag.Title == "Privacy" ? "active" : null)}" })
                     </li>
                     @Html.Partial("_LoginPartial")
                 </ul>

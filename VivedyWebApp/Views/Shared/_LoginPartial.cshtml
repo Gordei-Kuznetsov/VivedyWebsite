@@ -4,7 +4,7 @@
     if (User.IsInRole("Admin"))
     {
         <li class="nav-item">
-            @Html.ActionLink("Admin", "Index", "AdminMovies", routeValues: null, htmlAttributes: new { id = "adminLink", @class = "nav-link" })
+            @Html.ActionLink("Admin", "Index", "AdminMovies", routeValues: null, htmlAttributes: new { id = "adminLink", @class = $"nav-link {(ViewBag.Title == "Admin" ? "active" : null)}" })
         </li>
     }
     using (Html.BeginForm("LogOff", "Accounts", FormMethod.Post, new { id = "logoutForm" }))
@@ -21,10 +21,10 @@
 else
 {
     <li class="nav-item">
-        @Html.ActionLink("Register", "Register", "Accounts", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "nav-link" })
+        @Html.ActionLink("Register", "Register", "Accounts", routeValues: null, htmlAttributes: new { id = "registerLink", @class = $"nav-link {(ViewBag.Title == "Admin" ? "active" : null)}" })
     </li>
     <li class="nav-item">
-        @Html.ActionLink("Log in", "Login", "Accounts", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })
+        @Html.ActionLink("Log in", "Login", "Accounts", routeValues: null, htmlAttributes: new { id = "loginLink", @class = $"nav-link {(ViewBag.Title == "Admin" ? "active" : null)}" })
     </li>
 }
 
