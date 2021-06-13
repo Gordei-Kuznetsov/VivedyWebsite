@@ -29,6 +29,15 @@ namespace VivedyWebApp.Controllers
         }
 
         /// <summary>
+        /// GET request action for Index page
+        /// </summary>
+        [Authorize(Roles = "Admin")]
+        public ActionResult BookingScanner()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// GET request action for booking verification api action
         /// </summary>
         [Authorize(Roles = "Admin")]
