@@ -156,14 +156,21 @@ sup {
     top: -.5em;
 }
 
+a.overridehover{
+    color:white;
+}
+
+a.overridehover:hover {
+    color: #A80000;
+}
 a {
-    color: #FFFFFF;
+    color: #A80000;
     text-decoration: none;
     background-color: transparent;
 }
 
     a:hover {
-        color: #A80000;
+        color: red;
         text-decoration: none;
     }
 
