@@ -30,6 +30,15 @@ namespace VivedyWebApp
             bundles.Add(new ScriptBundle("~/bundles/popper").Include(
                       "~/Scripts/popper.min.js"));
 
+            //Bundle with zxing scripts
+            bundles.Add(new ScriptBundle("~/bundles/zxing").Include(
+                      "~/Scripts/zxing-0.18.3.js",
+                      "~/Scripts/bookingVerification.js"));
+
+            //Bundle with search and filters scripts
+            bundles.Add(new ScriptBundle("~/bundles/searchAndFilters").Include(
+                      "~/Scripts/searchAndfilter.js"));
+
             //Bundle with bootstrap and custom css files
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/vivedy-bootstrap.css",

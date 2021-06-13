@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Admin | Scanner";
+}
+
+<main class="wrapper" style="padding-top:2em">
+    <section id="content">
+        <h2 id="totalPointsParagraph" style="text-align:center; text-transform: uppercase;">Scanner</h2>
+        <video id="video" style="width: 100%; object-fit: cover;"></video>
+        <button class="btn btn-default" id="changeSourceButton" style="display: none; margin: 10px 0">
+            Change camera
+        </button>
+    </section>
+    <section id="myModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-center" id="modal-title"></h2>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center" id="modal-message"></h4>
+            </div>
+            <h4 class="text-center" style="padding-top: 150px;">Click anywhere to close</h4>
+        </div>
+    </section>
+</main>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/zxing")
+}

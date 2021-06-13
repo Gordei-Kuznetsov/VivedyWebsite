@@ -98,7 +98,7 @@ namespace VivedyWebApp.Controllers
                     //Includes BookingId and UserEmail
                     string dataToEncode = "{\"bookingId\":\"" + booking.BookingId + "\",\"email\":\"" + booking.UserEmail + "\"}";
                     var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(dataToEncode);
-                    string qrCodeData = Convert.ToBase64String(plainTextBytes);
+                    string qrCodeData = "VIVEDYBOOKING_" + Convert.ToBase64String(plainTextBytes);
                     string subject = "Booking Confirmation";
                     //Generating an HTML body for the email
                     string mailbody = $"<div id=\"mainEmailContent\" style=\"-webkit-text-size-adjust: 100%; font-family: Verdana,sans-serif;\">" +

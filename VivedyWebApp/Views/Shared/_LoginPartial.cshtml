@@ -4,7 +4,7 @@
     if (User.IsInRole("Admin"))
     {
         <li class="nav-item">
-            @Html.ActionLink("Admin", "Index", "AdminMovies", routeValues: null, htmlAttributes: new { id = "adminLink", @class = $"nav-link {(ViewBag.Title == "Admin" ? "active" : null)}" })
+            @Html.ActionLink("Admin", "Index", "AdminMovies", routeValues: null, htmlAttributes: new { id = "adminLink", @class = $"nav-link {(ViewBag.Title.Contains("Admin") ? "active" : null)}" })
         </li>
     }
     using (Html.BeginForm("LogOff", "Accounts", FormMethod.Post, new { id = "logoutForm" }))

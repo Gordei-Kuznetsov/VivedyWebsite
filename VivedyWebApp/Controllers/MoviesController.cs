@@ -201,7 +201,7 @@ namespace VivedyWebApp.Controllers
                 //Includes BookingId and UserEmail
                 string dataToEncode = "{\"bookingId\":\"" + booking.BookingId + "\",\"email\":\"" + booking.UserEmail + "\"}";
                 var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(dataToEncode);
-                string qrCodeData = Convert.ToBase64String(plainTextBytes);
+                string qrCodeData = "VIVEDYBOOKING_" + Convert.ToBase64String(plainTextBytes);
                 Rotation rotation = db.Rotations.Find(payModel.SelectedRotationId);
                 Movie movie = db.Movies.Find(rotation.MovieId);
                 string subject = "Booking Confirmation";
