@@ -14,11 +14,16 @@ using Microsoft.AspNet.Identity;
 
 namespace VivedyWebApp.Controllers
 {
+    /// <summary>
+    /// Application Admin Controller for ApplicationUsers
+    /// </summary>
     public class AdminUsersController : Controller
     {
-
         private ApplicationUserManager _userManager;
 
+        /// <summary>
+        /// UserManager instance
+        /// </summary>
         public ApplicationUserManager UserManager
         {
             get
@@ -31,7 +36,9 @@ namespace VivedyWebApp.Controllers
             }
         }
 
-        // GET: AdminUsers
+        /// <summary>
+        /// GET request action for Index page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Index()
         {
@@ -44,6 +51,7 @@ namespace VivedyWebApp.Controllers
                      Name = user.Name,
                      UserName = user.UserName,
                      Id = user.Id,
+                     //Getting the role for each user
                      Role = UserManager.GetRoles(user.Id).First(),
                      PhoneNumberConfirmed = user.PhoneNumberConfirmed,
                      PhoneNumber  = user.PhoneNumber,
@@ -54,7 +62,9 @@ namespace VivedyWebApp.Controllers
             return View(allViewModels);
         }
 
-        // GET: AdminUsers/Details/5
+        /// <summary>
+        /// GET request action for Details page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Details(string id)
         {
@@ -72,6 +82,7 @@ namespace VivedyWebApp.Controllers
                 Name = applicationUser.Name,
                 UserName = applicationUser.UserName,
                 Id = applicationUser.Id,
+                //Updating the role
                 Role = UserManager.GetRoles(applicationUser.Id).First(),
                 PhoneNumberConfirmed = applicationUser.PhoneNumberConfirmed,
                 PhoneNumber = applicationUser.PhoneNumber,
@@ -81,14 +92,18 @@ namespace VivedyWebApp.Controllers
             return View(model);
         }
 
-        // GET: AdminUsers/Create
+        /// <summary>
+        /// GET request action for Create page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: AdminUsers/Create
+        /// <summary>
+        /// POST request action for Create page
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -106,6 +121,7 @@ namespace VivedyWebApp.Controllers
                 if (result.Succeeded)
                 {
                     var currentUser = UserManager.FindByEmail(user.Email);
+                    //Assigning the role
                     switch (newUser.Role) 
                     {
                         case "Admin":
@@ -117,6 +133,8 @@ namespace VivedyWebApp.Controllers
                             break;
                     }
 
+                    //Sending the email to the user to confirm the email address
+                    //Will later be moved to the a method of EmailService class
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     string subject = "Email Confirmation";
@@ -131,7 +149,9 @@ namespace VivedyWebApp.Controllers
             return View(newUser);
         }
 
-        // GET: AdminUsers/Edit/5
+        /// <summary>
+        /// GET request action for Edit page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(string id)
         {
@@ -149,6 +169,7 @@ namespace VivedyWebApp.Controllers
                 Name = applicationUser.Name,
                 UserName = applicationUser.UserName,
                 Id = applicationUser.Id,
+                //Getting the role
                 Role = UserManager.GetRoles(applicationUser.Id).First(),
                 PhoneNumberConfirmed = applicationUser.PhoneNumberConfirmed,
                 PhoneNumber = applicationUser.PhoneNumber,
@@ -158,7 +179,9 @@ namespace VivedyWebApp.Controllers
             return View(model);
         }
 
-        // POST: AdminUsers/Edit/5
+        /// <summary>
+        /// POST request action for Edit page
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -169,6 +192,7 @@ namespace VivedyWebApp.Controllers
                 ApplicationUser applicationUser = UserManager.FindById(model.Id);
                 applicationUser.Name = model.Name;
                 applicationUser.UserName = model.UserName;
+                //Updating the role
                 UserManager.AddToRole(model.Id, model.Role);
                 applicationUser.PhoneNumberConfirmed = model.PhoneNumberConfirmed;
                 applicationUser.PhoneNumber = model.PhoneNumber;
@@ -180,7 +204,9 @@ namespace VivedyWebApp.Controllers
             return View(model);
         }
 
-        // GET: AdminUsers/Delete/5
+        /// <summary>
+        /// GET request action for Delete page
+        /// </summary>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(string id)
         {
@@ -198,6 +224,7 @@ namespace VivedyWebApp.Controllers
                 Name = applicationUser.Name,
                 UserName = applicationUser.UserName,
                 Id = applicationUser.Id,
+                //Getting the role
                 Role = UserManager.GetRoles(applicationUser.Id).First(),
                 PhoneNumberConfirmed = applicationUser.PhoneNumberConfirmed,
                 PhoneNumber = applicationUser.PhoneNumber,
@@ -207,17 +234,23 @@ namespace VivedyWebApp.Controllers
             return View(model);
         }
 
-        // POST: AdminUsers/Delete/5
+        /// <summary>
+        /// POST request action for DeleteConfirmed page
+        /// </summary>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
             ApplicationUser applicationUser = await UserManager.FindByIdAsync(id);
+            //The role is automatically removed by the UserManager
             await UserManager.DeleteAsync(applicationUser);
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Method for disposing UserManager objects
+        /// </summary>
         protected override void Dispose(bool disposing)
         {
             if (disposing)

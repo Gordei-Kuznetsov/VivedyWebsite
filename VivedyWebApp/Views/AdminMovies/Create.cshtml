@@ -1,4 +1,4 @@
-﻿@model VivedyWebApp.Models.ViewModels.AdminMoviesViewModel
+﻿@model VivedyWebApp.Models.ViewModels.AdminMoviesCreateViewModel
 
 @{
     ViewBag.Title = "Create Movie";
@@ -14,7 +14,7 @@
             <div class="border-bottom">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="row">
-                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Name) : </div>
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.Name) : </div>
                     <div class="mb-3 col-md-8 phenomena-sm">
                         @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
@@ -71,7 +71,6 @@
                         @Html.ValidationMessageFor(model => model.HorizontalImage, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.VerticalImage) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">

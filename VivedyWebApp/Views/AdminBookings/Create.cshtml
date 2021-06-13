@@ -4,11 +4,10 @@
     ViewBag.Title = "Create Booking";
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "AdminBookings", null, FormMethod.Post, new { role = "form" }))
 {
     @Html.AntiForgeryToken()
-
-       
+  
     <div class="card mx-auto " style="width: auto; margin-top: 5rem; margin-bottom: 3rem;">
         <div class="white-bg-color mx-auto text-dark " style="width: 750px; border: .5rem solid #a8000a;">
             <div class="mb-5 mt-4 phenomena-sm border-bottom border-dark " style="color: #a8000a"><h1 class="display-5">CREATE BOOKINGS</h1></div>
@@ -21,7 +20,6 @@
                         @Html.ValidationMessageFor(model => model.RotationId, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Seats) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
@@ -29,7 +27,6 @@
                         @Html.ValidationMessageFor(model => model.Seats, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.UserEmail) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
@@ -38,7 +35,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="form-check phenomena-sm col-8">
                     <input type="submit" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 mr-4 phenomena-sm" value="Create">

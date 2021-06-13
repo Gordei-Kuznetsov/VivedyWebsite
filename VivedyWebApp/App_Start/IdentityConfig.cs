@@ -23,6 +23,8 @@ namespace VivedyWebApp
             // Plug in your email service here to send an email.
             return Task.FromResult(0);
         }
+
+        //Custom method for sending email over SMTP server
         public Task SendAsync(string to, string subject, string body)
         {
             // Plug in your email service here to send an email.

@@ -7,18 +7,29 @@ using System.Web;
 
 namespace VivedyWebApp.Models
 {
-    [DisplayColumn("StartTime")]
+    /// <summary>
+    /// Rotation model
+    /// </summary>
     public class Rotation
     {
+        /// <summary>
+        /// Rotation GIUD
+        /// </summary>
         [Display(Name = "Rotaion Id")]
         [Key]
         [Required]
         public string RotationId { get; set; }
 
+        /// <summary>
+        /// Rotation start date and time
+        /// </summary>
         [Display(Name = "Start Time")]
         [Required]
         public System.DateTime StartTime { get; set; }
 
+        /// <summary>
+        /// ID of the movie for which the rotations is created
+        /// </summary>
         [Display(Name = "Movie Id")]
         [ForeignKey ("Movie")]
         [Required]
