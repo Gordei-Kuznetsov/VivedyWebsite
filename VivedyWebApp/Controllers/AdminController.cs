@@ -40,7 +40,7 @@ namespace VivedyWebApp.Controllers
         /// <summary>
         /// GET request action for booking verification api action
         /// </summary>
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public JsonResult VerifyBookings(string data)
         {
