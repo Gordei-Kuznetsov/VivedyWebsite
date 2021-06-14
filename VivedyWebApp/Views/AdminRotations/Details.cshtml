@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.StartTime) : </div>
                 <div class="mb-3 col-md-8 phenomena-sm" readonly>
-                    @Html.DisplayFor(model => model.StartTime)
+                    @Html.DisplayFor(model => model.StartTime.ToString("dddd, dd MMMM yyyy HH:mm tt"))
                 </div>
             </div>
             <div class="row">

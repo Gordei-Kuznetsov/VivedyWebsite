@@ -35,7 +35,7 @@
             <div class="row">
                 <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.CreationDate) : </div>
                 <div class="mb-3 col-md-8 phenomena-sm" readonly>
-                    @Html.DisplayFor(model => model.CreationDate)
+                    @Html.DisplayFor(model => model.CreationDate.ToString("dddd, dd MMMM yyyy HH:mm tt"))
                 </div>
             </div>
         </div>
