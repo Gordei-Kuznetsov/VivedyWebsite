@@ -58,7 +58,7 @@
                             @Html.DisplayFor(modelItem => item.UserEmail)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CreationDate)
+                            @Html.DisplayFor(modelItem => item.CreationDate.ToString("dddd, dd MMMM yyyy HH:mm tt"))
                         </td>
                         <td>
                             @Html.ActionLink("Edit", "Edit", "AdminBookings", routeValues: new { id = item.BookingId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |

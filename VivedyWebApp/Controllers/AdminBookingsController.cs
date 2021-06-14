@@ -108,8 +108,8 @@ namespace VivedyWebApp.Controllers
                                         $"<i><p>Please present this email when you arrive to the cinema to the our stuuf at the entrance to the auditorium.</p></i>" +
                                         $"<div style=\"box-sizing: inherit; padding: 0.01em 16px; margin-top: 16px; margin-bottom: 16px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);\">" +
                                             $"<h3>{movie.Name}</h3>" +
-                                            $"<h4><b>Date:</b> {rotation.StartTime.ToLongDateString()}</h4>" +
-                                            $"<h4><b>Time:</b> {rotation.StartTime.TimeOfDay}</h4>" +
+                                            $"<h4><b>Date:</b> {rotation.StartTime.ToString("dd MMMM yyyy")}</h4>" +
+                                            $"<h4><b>Time:</b> {rotation.StartTime.ToString("hh:mm tt")}</h4>" +
                                             $"<h4><b>Your seats:</b> </h4>" +
                                             $"<ul>" +
                                                 $"{htmlSeats}" +
