@@ -43,7 +43,10 @@
                             @Html.DisplayFor(modelItem => item.RotationId)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.StartTime.ToString("dddd, dd MMMM yyyy HH:mm tt"))
+                            @{
+                                string startTime = item.StartTime.ToString("dddd, dd MMMM yyyy HH:mm tt");
+                                @Html.DisplayFor(modelItem => startTime)
+                            }
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.MovieId)
