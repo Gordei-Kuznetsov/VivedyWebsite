@@ -95,7 +95,6 @@ namespace VivedyWebApp.Models.ViewModels
         /// <summary>
         /// User phone number
         /// </summary>
-        [Required]
         [Phone]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }

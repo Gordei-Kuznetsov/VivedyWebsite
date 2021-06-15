@@ -205,9 +205,12 @@ namespace VivedyWebApp.Controllers
                 Rotation rotation = db.Rotations.Find(payModel.SelectedRotationId);
                 Movie movie = db.Movies.Find(rotation.MovieId);
                 string subject = "Booking Confirmation";
+                ApplicationUser User = db.Users.Where(user => user.Email == payModel.Email).First();
+                string greeting = User != null ? "<b>Hi " + User.Name + "</b><br/>" : "";
                 //Generating an HTML body for the email
                 string mailbody = $"<div id=\"mainEmailContent\" style=\"-webkit-text-size-adjust: 100%; font-family: Verdana,sans-serif;\">" +
                                     $"<img style=\"display: block; margin-left: auto; margin-right: auto; height: 3rem; width: 3rem;\" src=\"http://vivedy.azurewebsites.net/favicon.ico\">" +
+                                    greeting +
                                     $"<b><h2 style=\"text-align: center;\">Thank you for purchasing tickets at our website!</h2></b>" +
                                     $"<p>Below are details of your purchase.</p>" +
                                     $"<i><p>Please present this email when you arrive to the cinema to the our stuuf at the entrance to the auditorium.</p></i>" +

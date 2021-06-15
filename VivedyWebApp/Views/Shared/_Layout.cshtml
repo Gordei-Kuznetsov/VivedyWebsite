@@ -17,22 +17,21 @@
     </script>
     @Styles.Render("~/Content/css")
 </head>
-<!--class="ScrollHide"-->
 
 <body class="ScrollHide">
     <!-- Nav Bar start -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-            @*@{
+            @{
                 if (ViewBag.Title.Contains("Admin"))
                 {
-                    <div class="headersidebar" id="header">
+                    <div class="headersidebar mr-3" id="header">
                         <div class="header__toggle text-secondary">
                             <i class="fas fa-bars" id="header-toggle"></i>
                         </div>
                     </div>
                 }
-            }*@
+            }
             @Html.ActionLink("VIVEDY", "Index", "Home", new { area = "" }, new { @class = "navbar-brand phenomena" })
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,7 +56,53 @@
     </header>
     <!-- Nav Bar End-->
     <!-- Main Body start-->
-    @RenderBody()
+    @{
+        if (ViewBag.Title.Contains("Admin"))
+        {
+            <div class="body" id="body-pd">
+                <div class="l-navbar" id="nav-bar">
+                    <div class="navsidebar">
+                        <div class="nav__list">
+                            <a href="/Admin/Index" class="nav__link active">
+                                <i class="fas fa-home"></i>
+                                <span class="nav__name phenomenaSideBar">Home</span>
+                            </a>
+                            <a href="/AdminMovies/Index" class="nav__link">
+                                <i class="fas fa-film"></i>
+                                <span class="nav__name phenomenaSideBar">Movies</span>
+                            </a>
+                            <a href="/AdminRotations/Index" class="nav__link">
+                                <i class="fas fa-clock"></i>
+                                <span class="nav__name phenomenaSideBar">Rotaions</span>
+                            </a>
+                            <a href="/AdminBookings/Index" class="nav__link">
+                                <i class="fas fa-ticket-alt"></i>
+                                <span class="nav__name phenomenaSideBar">Bookings</span>
+                            </a>
+                            <a href="/AdminUsers/Index" class="nav__link">
+                                <i class="fas fa-users"></i>
+                                <span class="nav__name phenomenaSideBar">Users</span>
+                            </a>
+                            <a href="/Admin/BookingScanner" class="nav__link">
+                                <i class="fas fa-qrcode"></i>
+                                <span class="nav__name phenomenaSideBar">Scanner</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    @RenderBody()
+                </div>
+            </div>
+            @section Scripts{
+                @Scripts.Render("~/Scripts/AdminSideBar")
+            }
+        }
+        else
+        {
+            @RenderBody()
+        }
+    }
     <!-- Main Body End-->
     <!-- Footer start -->
     <footer class=" text-center">
@@ -70,7 +115,7 @@
         </div>
         <div class="text-center p-3">
             © 2021 Copyright:
-            @Html.ActionLink("Vivdey.com", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "text-light" })
+            @Html.ActionLink("Vivedy.azurewebsites.net", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "text-light" })
         </div>
     </footer>
     <!-- Footer End -->
