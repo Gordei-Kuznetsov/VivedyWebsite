@@ -21,7 +21,7 @@ function decode() {
     });
 }
 function sendDecodedResult(QRcontent) {
-    $.post("/Admin/VerifyBookings", { data: QRcontent }, function (result) {
+    $.post(`/Admin/VerifyBookings/?data=${QRcontent}`, "", (result) => {
         if (result.error == null) {
             if (result.verified) {
                 displayMessage("VERIFIED", "The booking is valid");

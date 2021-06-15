@@ -10,7 +10,7 @@ namespace VivedyWebApp
         {
             //Bundle with jquery scripts
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-3.4.1.slim.min.js"));
+                        "~/Scripts/jquery-3.6.0.min.js"));
 
             //Bundle with jquery scripts for field validations
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -31,8 +31,8 @@ namespace VivedyWebApp
                       "~/Scripts/popper.min.js"));
 
             //Bundle with zxing scripts
-            bundles.Add(new ScriptBundle("~/bundles/scanner").Include(
-                      "~/Scripts/bookingVerification.js"));
+            bundles.Add(new ScriptBundle("~/bundles/Scanner").Include(
+                      "~/Scripts/Scanner.js"));
 
             //Bundle with search and filters scripts
             bundles.Add(new ScriptBundle("~/bundles/searchAndFilters").Include(

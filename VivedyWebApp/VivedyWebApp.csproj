@@ -253,7 +253,8 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\AdminSideBar.js" />
-    <Content Include="Scripts\bookingVerification.js" />
+    <Content Include="Scripts\jquery-3.6.0.min.js" />
+    <Content Include="Scripts\Scanner.js" />
     <Content Include="Scripts\bootstrap-4.0.0.min.js" />
     <Content Include="fonts\Phenomena-Regular.ttf" />
     <Content Include="fonts\fa-brands-400.eot" />
@@ -337,6 +338,7 @@
     <Content Include="Views\Movies\BookingPay.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\BookingScanner.cshtml" />
+    <Content Include="Views\Accounts\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

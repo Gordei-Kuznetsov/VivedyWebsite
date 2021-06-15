@@ -22,7 +22,10 @@
                     <div class="row">
                         <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.StartTime) : </div>
                         <div class="mb-3 col-md-8 phenomena-sm" readonly>
-                            @Html.DisplayFor(model => model.StartTime)
+                            @{
+                                string startTime = Model.StartTime.ToString("dddd, dd MMMM yyyy HH:mm tt");
+                                @Html.DisplayFor(model => startTime)
+                            }
                         </div>
                     </div>
                     <div class="row">

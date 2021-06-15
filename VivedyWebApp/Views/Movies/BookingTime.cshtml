@@ -35,8 +35,8 @@
                                 {
                                     <button class="btn btn-danger m-1 align-items-center SubmitButton" style="width:100%; max-width:10rem;" id="@rotation.RotationId">
                                         <p class="mb-2 text-center">@rotation.StartTime.DayOfWeek</p>
-                                        <p class="mb-2 text-center">@rotation.StartTime.ToShortDateString()</p>
-                                        <p class="mb-2 text-center">@rotation.StartTime.TimeOfDay</p>
+                                        <p class="mb-2 text-center">@rotation.StartTime.ToString("dd MMMM yyyy")</p>
+                                        <p class="mb-2 text-center">@rotation.StartTime.ToString("hh:mm tt")</p>
                                     </button>
                                 }
                             </div>

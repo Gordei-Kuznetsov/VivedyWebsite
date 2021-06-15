@@ -207,7 +207,7 @@ namespace VivedyWebApp.Controllers
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Accounts", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 string subject = "Password Resetting";
-                string mailbody = "Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to reset password for your account on <a href=\"vivedy.azurewebsites.net/Home/Index\">vivedy.azurewebsites.net</a>.";
+                string mailbody = "<b>Hi " + user.Name + "</b><br/>Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to reset password for your account on <a href=\"vivedy.azurewebsites.net/Home/Index\">vivedy.azurewebsites.net</a>.";
                 EmailService mailService = new EmailService();
                 await mailService.SendAsync(user.Email, subject, mailbody);
                 return RedirectToAction("ForgotPasswordConfirmation", "Accounts");
@@ -288,6 +288,7 @@ namespace VivedyWebApp.Controllers
         /// </summary>
         public ActionResult Index(AccountsMessageId? message)
         {
+
             //Adding message to display on the Account page
             ViewBag.StatusMessage =
                 message == AccountsMessageId.ChangePasswordSuccess ? "Your password has been changed."
@@ -305,6 +306,37 @@ namespace VivedyWebApp.Controllers
             };
             return View(model);
         }
+        /// <summary>
+        /// GET request action for Delete page
+        /// </summary>
+        public ActionResult Delete()
+        {
+            var userId = User.Identity.GetUserId();
+            var user = UserManager.FindById(userId);
+            var model = new IndexViewModel
+            {
+                Name = user.Name,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+            };
+            return View(model);
+        }
+
+        /// <summary>
+        /// POST request action for Delete page
+        /// </summary>
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed()
+        {
+            var userId = User.Identity.GetUserId();
+            var user = UserManager.FindById(userId);
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            //The role is automatically removed by the UserManager
+            await UserManager.DeleteAsync(user);
+            return RedirectToAction("Index", "Home");
+        }
+
 
         /// <summary>
         /// GET request action for ChangeEmail page
@@ -342,7 +374,7 @@ namespace VivedyWebApp.Controllers
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     string subject = "Email Confirmation";
-                    string mailbody = "You have changed your email address on our website.<br/>Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
+                    string mailbody = "<b>Hi " + user.Name + "</b><br/>You have changed your email address on our website.<br/>Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
                     EmailService mailService = new EmailService();
                     await mailService.SendAsync(user.Email, subject, mailbody);
                     AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);

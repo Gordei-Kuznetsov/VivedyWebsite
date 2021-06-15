@@ -1,0 +1,46 @@
+﻿@model VivedyWebApp.Models.IndexViewModel
+
+@{
+    ViewBag.Title = "Delete Account";
+}
+
+@using (Html.BeginForm("Delete", "Accounts", null, FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        <div class="containerOne">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card text-center">
+                        <h1 class="phenomena">DELETING YOUR ACCOUNT</h1>
+                        <div class="card-header">
+                            <h4 class="phenomena">Are you sure you want to delete your account witht the following details?</h4>
+                        </div>
+                        <div class="card-header">
+                            <p class=""><b class="text-danger">User name:</b> @Model.Name</p>
+                        </div>
+                        <div class="card-header">
+                            <p class=""><b class="text-danger">Email:</b> @Model.Email</p>
+                        </div>
+                        <div class="card-header">
+                            <p class=""><b class="text-danger">Phone Number:</b> @Model.PhoneNumber</p>
+                        </div>
+                        <div class="card-header">
+                            <h4 class="phenomena text-danger">WARNING</h4>
+                            <h5 class="phenomena text-danger">This action is irreversable. Once deleted, the account cannot be restored.</h5>
+                        </div>
+                        <div class="card-header justify-content-center">
+                            <input type="submit" value="Delete" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm" />
+                        </div>
+                        <div>
+                            @Html.ActionLink("Back to My Account", "Index", "Accounts", routeValues: null, htmlAttributes: new { @class = "text-link phenomena-sm" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
