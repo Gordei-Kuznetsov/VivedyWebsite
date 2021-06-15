@@ -21,7 +21,7 @@
         <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
             <thead>
                 <tr class="text-center ">
-                    <th scope="col" style="width:100px">
+                    <th scope="col">
                         @Html.DisplayNameFor(model => model.RotationId)
                     </th>
                     <th scope="col">
@@ -39,7 +39,7 @@
                 @foreach (var item in Model)
                 {
                     <tr class="text-center">
-                        <td style="width:100px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
+                        <td>
                             @Html.DisplayFor(modelItem => item.RotationId)
                         </td>
                         <td class="StartTime">
