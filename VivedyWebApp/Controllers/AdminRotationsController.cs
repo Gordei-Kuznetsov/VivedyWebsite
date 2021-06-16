@@ -76,15 +76,15 @@ namespace VivedyWebApp.Controllers
                 };
                 db.Rotations.Add(rotation);
                 //Generating rotations
-                if (newRotation.GenerateRotations && newRotation.StartDay != null)
+                if (newRotation.GenerateRotations)
                 {
-                    for(int i = 0; i < 7; i++)
+                    for(int i = 1; i < 7; i++)
                     {
-                        //A rotation for each day starting from the newRotation.StartDay at the same time of the day
+                        //A rotation for each day starting from the newRotation.StartTime at the same time of the day
                         Rotation autoRotation = new Rotation
                         {
                             RotationId = Guid.NewGuid().ToString(),
-                            StartTime = newRotation.StartDay.AddDays(i),
+                            StartTime = newRotation.StartTime.AddDays(i),
                             MovieId = newRotation.MovieId
                         };
                         db.Rotations.Add(autoRotation);
