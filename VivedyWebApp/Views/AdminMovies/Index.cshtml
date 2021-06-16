@@ -16,7 +16,7 @@
     </nav>
     <div class="white-bg-color">
         <a class="btn btn-danger  phenomena-sm " href="/AdminMovies/Create">ADD <i class="fas fa-plus"></i></a>
-        <input type="text" class="mb-3 float-right" id="Search" placeholder="Search..">
+        <input type="text" class="mb-3 float-right" id="Search" placeholder="Search by name...">
         <br>
         <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
             <thead >
@@ -56,7 +56,7 @@
                         <td style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
                             @Html.DisplayFor(modelItem => item.MovieId)
                         </td>
-                        <td class="Movies">
+                        <td class="movieName">
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
@@ -99,12 +99,12 @@
         rowslist = document.getElementById("myList").getElementsByTagName("tr");
         for (let i = 0; i < rowslist.length; i++) {
             rowslist[i].unmatched = false;
-            rowslist[i].MovieID = rowslist[i].getElementsByClassName("Movies")[0].innerHTML;
+            rowslist[i].movieName = rowslist[i].getElementsByClassName("movieName")[0].innerHTML;
         }
     }
     function SearchForMovie() {
         for (let i = 0; i < rowslist.length; i++) {
-            if (rowslist[i].MovieID.indexOf(Search.value) > -1) {
+            if (rowslist[i].movieName.indexOf(Search.value) > -1) {
                 rowslist[i].unmatched = false;
                 rowslist[i].style.display = "";
             }

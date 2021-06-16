@@ -16,7 +16,7 @@
     </nav>
     <div class="white-bg-color">
         <a class="btn btn-danger  phenomena-sm " href="/AdminRotations/Create">ADD <i class="fas fa-plus"></i></a>
-        <input type="date" class="mb-3 float-right" id="Search" pattern="(?:19|20)\[0-9\]{2}-(?:(?:0\[1-9\]|1\[0-2\])/(?:0\[1-9\]|1\[0-9\]|2\[0-9\])|(?:(?!02)(?:0\[1-9\]|1\[0-2\])/(?:30))|(?:(?:0\[13578\]|1\[02\])-31))">
+        <input type="text" class="mb-3 float-right" id="Search" placeholder="Search by Start Time...">
         <br>
         <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
             <thead>
@@ -42,7 +42,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.RotationId)
                         </td>
-                        <td class="StartTime">
+                        <td class="startTime">
                             @{
                                 string startTime = item.StartTime.ToString("dddd, dd MMMM yyyy HH:mm tt");
                                 @Html.DisplayFor(modelItem => startTime)
@@ -73,12 +73,12 @@
         rowslist = document.getElementById("myList").getElementsByTagName("tr");
         for (let i = 0; i < rowslist.length; i++) {
             rowslist[i].unmatched = false;
-            rowslist[i].StartTime = rowslist[i].getElementsByClassName("StartTime")[0].innerHTML;
+            rowslist[i].startTime = rowslist[i].getElementsByClassName("startTime")[0].innerHTML;
         }
     }
     function SearchForStartTime() {
         for (let i = 0; i < rowslist.length; i++) {
-            if (rowslist[i].StartTime.indexOf(Search.value) > -1) {
+            if (rowslist[i].startTime.indexOf(Search.value) > -1) {
                 rowslist[i].unmatched = false;
                 rowslist[i].style.display = "";
             }

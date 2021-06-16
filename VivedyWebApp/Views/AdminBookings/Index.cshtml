@@ -16,7 +16,7 @@
     </nav>
     <div class="white-bg-color">
         <a class="btn btn-danger  phenomena-sm " href="/AdminBookings/Create">ADD <i class="fas fa-plus"></i></a>
-        <input type="text" class="mb-3 float-right" id="Search" placeholder="Search..">
+        <input type="text" class="mb-3 float-right" id="Search" placeholder="Search by Email...">
         <br>
         <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
             <thead>
@@ -53,7 +53,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Seats)
                         </td>
-                        <td class="Booking">
+                        <td class="userEmail">
                             @Html.DisplayFor(modelItem => item.UserEmail)
                         </td>
                         <td>
@@ -84,12 +84,12 @@
         rowslist = document.getElementById("myList").getElementsByTagName("tr");
         for (let i = 0; i < rowslist.length; i++) {
             rowslist[i].unmatched = false;
-            rowslist[i].Booking = rowslist[i].getElementsByClassName("Booking")[0].innerHTML;
+            rowslist[i].userEmail = rowslist[i].getElementsByClassName("userEmail")[0].innerHTML;
         }
     }
     function SearchForBooking() {
         for (let i = 0; i < rowslist.length; i++) {
-            if (rowslist[i].Booking.indexOf(Search.value) > -1) {
+            if (rowslist[i].userEmail.indexOf(Search.value) > -1) {
                 rowslist[i].unmatched = false;
                 rowslist[i].style.display = "";
             }

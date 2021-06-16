@@ -16,7 +16,7 @@
     </nav>
     <div class="white-bg-color">
         <a class="btn btn-danger  phenomena-sm " href="/AdminUsers/Create">ADD <i class="fas fa-plus"></i></a>
-        <input type="search" class="mb-3 float-right" id="Search"  placeholder="Search by user email...">
+        <input type="search" class="mb-3  float-right" id="Search"  placeholder="Search by User Email...">
         <br>
         <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
             <thead>
@@ -60,7 +60,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
-                        <td class="UserEmail">
+                        <td class="userEmail">
                             @Html.DisplayFor(modelItem => item.Email, new { htmlAttributes = new { @class = "text-link" } })
                         </td>
                         <td>
@@ -100,7 +100,7 @@
         rowslist = document.getElementById("myTable").getElementsByTagName("tr");
         for (let i = 0; i < rowslist.length; i++) {
             rowslist[i].unmatched = false;
-            rowslist[i].userEmail = rowslist[i].getElementsByClassName("UserEmail")[0].getElementsByTagName("a")[0].innerHTML;
+            rowslist[i].userEmail = rowslist[i].getElementsByClassName("userEmail")[0].getElementsByTagName("a")[0].innerHTML;
         }
     }
     function SearchForUser() {

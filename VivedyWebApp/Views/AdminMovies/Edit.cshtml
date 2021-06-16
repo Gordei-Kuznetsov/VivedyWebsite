@@ -52,7 +52,7 @@
                 </div>
                 <div class="row">
                     <label class="col-3 phenomena-sm">@Html.LabelFor(model => model.Duration):</label>
-                    <div class="col-md-8 mb-3 phenomena-sm">
+                    <div class="mb-3 col-md-8 phenomena-sm">
                         @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
                     </div>
@@ -60,14 +60,14 @@
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Price) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.EditorFor(model => model.Price, new { @class = "col-md-12" })
+                        @Html.EditorFor(model => model.Price,new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.TrailerUrl) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.EditorFor(model => model.TrailerUrl, new { @class = "col-md-12" })
+                        @Html.EditorFor(model => model.TrailerUrl, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.TrailerUrl, "", new { @class = "text-danger" })
                     </div>
                 </div>
