@@ -2,25 +2,36 @@
     ViewBag.Title = "Admin | Scanner";
 }
 
-<main class="wrapper" style="padding-top:2em">
+<main class="containerOne">
     <section id="content">
-        <h2 id="totalPointsParagraph" style="text-align:center; text-transform: uppercase;">Scanner</h2>
+        <div class="mb-4 phenomena-sm">
+            <h1 class="display-5 text-center">SCANNER</h1>
+        </div>
         <video id="video" style="width: 100%; object-fit: cover;"></video>
-        <button class="btn btn-default" id="changeSourceButton" style="display: none; margin: 10px 0">
-            Change camera
-        </button>
-    </section>
-    <section id="myModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="text-center" id="modal-title"></h2>
-            </div>
-            <div class="modal-body">
-                <h4 class="text-center" id="modal-message"></h4>
-            </div>
-            <h4 class="text-center" style="padding-top: 150px;">Click anywhere to close</h4>
+        <div class="">
+            <button class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 phenomena-sm" id="changeSourceButton" style="display: none;">
+                <i class="fas fa-camera"></i>
+            </button>
         </div>
     </section>
+    <div id="myModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="myModalTitle" class="phenomena text-center"></h5>
+                </div>
+                <div class="mt-2 text-center" style="font-size: 5rem">
+                    <i id="modalIcon"></i>
+                </div>
+                <div class="modal-body">
+                    <p id="myModalBody" class=" phenomena text-center" style="color: black"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 @section Scripts{

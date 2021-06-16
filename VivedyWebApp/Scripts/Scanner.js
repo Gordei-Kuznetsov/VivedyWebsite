@@ -1,11 +1,9 @@
 ﻿let allowDecoding = true;
 let selectedDeviceId = 0;
 const codeReader = new ZXing.BrowserQRCodeReader();
-var modal = document.getElementById("myModal");
-modal.onclick = function () {
-    modal.style.display = "none";
+$('#myModal').on('hidden.bs.modal', function () {
     allowDecoding = true;
-}
+});
 
 function decode() {
     codeReader.decodeFromInputVideoDeviceContinuously(selectedDeviceId, 'video', (result) => {
@@ -15,7 +13,7 @@ function decode() {
                 sendDecodedResult(result.text.replace("VIVEDYBOOKING_", ""));
             }
             else {
-                displayMessage('Sorry', 'This is not a booking verification QR code');
+                displayMessage(false, 'Sorry', 'This is not a booking verification QR code');
             }
         }
     });
@@ -24,21 +22,34 @@ function sendDecodedResult(QRcontent) {
     $.post(`/Admin/VerifyBookings/?data=${QRcontent}`, "", (result) => {
         if (result.error == null) {
             if (result.verified) {
-                displayMessage("VERIFIED", "The booking is valid");
+                displayMessage(true, "VERIFIED", "The booking is valid");
             }
             else {
-                displayMessage("FAILED", "The booking is NOT valid");
+                displayMessage(false, "FAILED", "The booking is NOT valid");
             }
         }
         else {
-            displayMessage("ERROR", `Sorry there was an error proccesing the requst. Error message: ${result.error}`)
+            displayMessage(false, "ERROR", `Sorry there was an error proccesing the requst. Error message: ${result.error}`)
         }
     });
 }
-function displayMessage(title, message) {
-    document.getElementById("modal-title").innerHTML = title;
-    document.getElementById("modal-message").innerHTML = message;
-    modal.style.display = "block";
+function displayMessage(pass, title, body) {
+    let Title = document.getElementById("myModalTitle")
+    let Body = document.getElementById("myModalBody")
+    let Icon = document.getElementById("modalIcon")
+    Title.innerHTML = title;
+    Body.innerHTML = body;
+    if (pass) {
+        Title.style = "color: green";
+        Icon.classList = "fas fa-check";
+        Icon.style = "color: green";
+    }
+    else {
+        Title.style = "color: red";
+        Icon.classList = "fas fa-ban";
+        Icon.style = "color: red";
+    }
+    $('#myModal').modal('show');
 }
 window.addEventListener('load', function () {
     codeReader.getVideoInputDevices()
