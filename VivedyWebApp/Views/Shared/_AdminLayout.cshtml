@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title | Vivedy</title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J1N16DQMNK"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-J1N16DQMNK');
+    </script>
+    @Styles.Render("~/Content/css")
+</head>
+<body class="ScrollHide">
+    <!-- Nav Bar start -->
+    <header>
+        <div class="body" id="body-pd">
+            <div class="l-navbar" id="nav-bar">
+                <div class="headersidebar" style="top: 0;position: fixed;" id="header">
+                    <div class="header__toggle text-secondary">
+                        <i class="fas fa-bars" id="header-toggle"></i>
+                    </div>
+                </div>
+                <div class="navsidebar">
+                    <div class="nav__list">
+                        <a href="/Admin/Index" class="nav__link active">
+                            <i class="fas fa-home"></i>
+                            <span class="nav__name phenomenaSideBar">Home</span>
+                        </a>
+                        <a href="/AdminMovies/Index" class="nav__link">
+                            <i class="fas fa-film"></i>
+                            <span class="nav__name phenomenaSideBar">Movies</span>
+                        </a>
+                        <a href="/AdminRotations/Index" class="nav__link">
+                            <i class="fas fa-clock"></i>
+                            <span class="nav__name phenomenaSideBar">Rotations</span>
+                        </a>
+                        <a href="/AdminBookings/Index" class="nav__link">
+                            <i class="fas fa-ticket-alt"></i>
+                            <span class="nav__name phenomenaSideBar">Bookings</span>
+                        </a>
+                        <a href="/AdminUsers/Index" class="nav__link">
+                            <i class="fas fa-users"></i>
+                            <span class="nav__name phenomenaSideBar">Users</span>
+                        </a>
+                        <a href="/Admin/BookingScanner" class="nav__link">
+                            <i class="fas fa-qrcode"></i>
+                            <span class="nav__name phenomenaSideBar">Scanner</span>
+                        </a>
+                    </div>
+                    <a href="/Home/Index" class="nav__link">
+                        <i class="fas fa-arrow-alt-circle-left"></i>
+                        <span class="nav__name">Main Website</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Nav Bar End-->
+    <!-- Main Body start-->
+    @RenderBody()
+    <!-- Main Body End-->
+    <!-- Footer start -->
+    <footer class=" text-center">
+        <div class="container p-2">
+            <section>
+                <a><i class="fab fa-1x fa-facebook-f"></i></a>
+                <a><i class="fab fa-1x fa-twitter pr-3 pl-3"></i></a>
+                <a><i class="fab fa-1x fa-instagram"></i></a>
+            </section>
+        </div>
+        <div class="text-center p-3">
+            © 2021 Copyright:
+            @Html.ActionLink("Vivedy.azurewebsites.net", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "text-light" })
+        </div>
+    </footer>
+    <!-- Footer End -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/AdminSideBar")
+    @RenderSection("styles", required: false)
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

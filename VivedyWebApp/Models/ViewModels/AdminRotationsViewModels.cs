@@ -33,11 +33,5 @@ namespace VivedyWebApp.Models.ViewModels
         /// </summary>
         [Display(Name = "Auto-generate a week of rotations?")]
         public bool GenerateRotations { get; set; }
-
-        /// <summary>
-        /// Start time and day for auto-generating a week of rotations
-        /// </summary>
-        [Display(Name = "First day for the week and time")]
-        public System.DateTime StartDay { get; set; }
     }
 }

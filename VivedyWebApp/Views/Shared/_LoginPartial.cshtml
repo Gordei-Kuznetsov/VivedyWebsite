@@ -1,10 +1,9 @@
-﻿@using Microsoft.AspNet.Identity
-@if (Request.IsAuthenticated)
+﻿@if (Request.IsAuthenticated)
 {
     if (User.IsInRole("Admin"))
     {
         <li class="nav-item">
-            @Html.ActionLink("Admin", "Index", "AdminMovies", routeValues: null, htmlAttributes: new { id = "adminLink", @class = $"nav-link {(ViewBag.Title.Contains("Admin") ? "active" : null)}" })
+            @Html.ActionLink("Admin", "Index", "Admin", routeValues: null, htmlAttributes: new { id = "adminLink", @class = $"nav-link {(ViewBag.Title.Contains("Admin") ? "active" : null)}" })
         </li>
     }
     using (Html.BeginForm("LogOff", "Accounts", FormMethod.Post, new { id = "logoutForm" }))
@@ -21,10 +20,10 @@
 else
 {
     <li class="nav-item">
-        @Html.ActionLink("Register", "Register", "Accounts", routeValues: null, htmlAttributes: new { id = "registerLink", @class = $"nav-link {(ViewBag.Title == "Admin" ? "active" : null)}" })
+        @Html.ActionLink("Register", "Register", "Accounts", routeValues: null, htmlAttributes: new { id = "registerLink", @class = $"nav-link {(ViewBag.Title == "Register" ? "active" : null)}" })
     </li>
     <li class="nav-item">
-        @Html.ActionLink("Log in", "Login", "Accounts", routeValues: null, htmlAttributes: new { id = "loginLink", @class = $"nav-link {(ViewBag.Title == "Admin" ? "active" : null)}" })
+        @Html.ActionLink("Log in", "Login", "Accounts", routeValues: null, htmlAttributes: new { id = "loginLink", @class = $"nav-link {(ViewBag.Title == "Log in" ? "active" : null)}" })
     </li>
 }
 

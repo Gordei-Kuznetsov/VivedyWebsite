@@ -12262,6 +12262,44 @@ a {
 
 
 
+/* admin screen */
+.admin-desktop {
+    display: inline;
+}
+
+.admin-mobile {
+    display: none;
+}
+
+.admin-button {
+    display: inline;
+}
+
+.admin-button-row {
+    display: none;
+}
+
+@media screen and (max-width: 1024px) {
+    .admin-desktop {
+        display: none;
+    }
+
+    .admin-mobile {
+        display: inline;
+    }
+}
+@media screen and (max-width: 400px) {
+    .admin-button {
+        display: none;
+    }
+
+    .admin-button-row {
+        display: inline;
+    }
+}
+
+/* admin screen end*/
+
 
 
 

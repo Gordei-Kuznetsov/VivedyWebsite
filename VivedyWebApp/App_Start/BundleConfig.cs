@@ -23,8 +23,7 @@ namespace VivedyWebApp
 
             //Bundle with bootstrap and custom scripts
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap-4.0.0.min.js",
-                      "~/Scripts/navbarred.js"));
+                      "~/Scripts/bootstrap-4.0.0.min.js"));
 
             //Bundle with popper scripts
             bundles.Add(new ScriptBundle("~/bundles/popper").Include(
@@ -38,16 +37,18 @@ namespace VivedyWebApp
             bundles.Add(new ScriptBundle("~/bundles/searchAndFilters").Include(
                       "~/Scripts/searchAndfilter.js"));
 
+            //Admin Sidebar
+            bundles.Add(new ScriptBundle("~/bundles/AdminSideBar").Include(
+                      "~/Scripts/AdminSideBar.js"));
+
+            //Admin Sidebar
+            bundles.Add(new ScriptBundle("~/bundles/NavBarRed").Include(
+                      "~/Scripts/navbarred.js"));
+
             //Bundle with bootstrap and custom css files
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/vivedy-bootstrap.css",
                       "~/Content/all.min.css"));
-
-            //Admin Sidebar
-            bundles.Add(new ScriptBundle("~/Scripts/AdminSideBar").Include(
-                      "~/Scripts/AdminSideBar.js"));
-
-
         }
     }
 }
