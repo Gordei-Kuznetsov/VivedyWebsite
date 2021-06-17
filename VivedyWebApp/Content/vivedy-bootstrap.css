@@ -12307,31 +12307,71 @@ a {
 
 /* admin screen end*/
 
+.adminCard {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #161925;
+    background-clip: border-box;
+    border: 1px solid rgba(22, 25, 37, 0.125);
+    border-radius: 0.25rem;
+    margin: 5rem;
+    margin-left: 9rem;
+}
+
+.containerOneAdmin {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+    margin: 5rem;
+    margin-left: 9rem;
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
+    .adminCard {
+        margin-left: 5rem;
+    }
 
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-
+    .adminCard {
+        margin-left: 5rem;
+    }
+}
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
+    .adminCard {
+        margin-left: 9rem;
+    }
 
+}
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
+    .adminCard {
+        margin-left: 9rem;
+
+    }
 
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
+    .adminCard {
+        margin-left: 9rem;
+    }
 
 }
-
 
 
 
