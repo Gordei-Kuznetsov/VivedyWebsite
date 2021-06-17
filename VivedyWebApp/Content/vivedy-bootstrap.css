@@ -12248,7 +12248,7 @@ a {
 }
 
 /* ===== MEDIA QUERIES=====*/
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 600px) {
 
     .l-navbar {
         left: 0;
@@ -12342,7 +12342,7 @@ a {
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
     .adminCard {
-        margin-left: 5rem;
+        margin-left: 9rem;
     }
 }
 }
