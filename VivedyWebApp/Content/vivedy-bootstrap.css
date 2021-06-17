@@ -12322,18 +12322,19 @@ a {
 }
 
 .containerOneAdmin {
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    padding-top: 10rem;
-    padding-bottom: 10rem;
     margin: 5rem;
     margin-left: 9rem;
+    margin-top: 9rem;
+
 }
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
     .adminCard {
+        margin-left: 5rem;
+    }
+    .containerOneAdmin
+    {
         margin-left: 5rem;
     }
 
@@ -12344,12 +12345,18 @@ a {
     .adminCard {
         margin-left: 9rem;
     }
+    .containerOneAdmin {
+        margin-left: 9rem;
+    }
 }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
     .adminCard {
+        margin-left: 9rem;
+    }
+    .containerOneAdmin {
         margin-left: 9rem;
     }
 
@@ -12362,6 +12369,9 @@ a {
         margin-left: 9rem;
 
     }
+    .containerOneAdmin {
+        margin-left: 9rem;
+    }
 
 }
 
@@ -12370,9 +12380,25 @@ a {
     .adminCard {
         margin-left: 9rem;
     }
+    .containerOneAdmin {
+        margin-left: 9rem;
+    }
 
 }
 
+.navHambuguer {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    width: 68px
+}
 
+.headersidebarHamburger {
+    position: fixed;
+    z-index: 101;
+    align-content: center;
+    background-color: transparent;
+    padding: 1rem;
+}
 
 
