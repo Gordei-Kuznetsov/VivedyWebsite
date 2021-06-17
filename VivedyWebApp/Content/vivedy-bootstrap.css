@@ -11923,6 +11923,13 @@ button.bg-secondary:focus {
 .phenomena-sm {
     font-family: Phenomena;
 }
+.phenomena-sm-two {
+    font-family: Phenomena;
+    text-transform: uppercase;
+    font-weight: 800;
+    color: #a80000;
+    font-size: 2rem;
+}
 
 .phenomena {
     font-family: Phenomena;
@@ -12126,17 +12133,16 @@ a {
 
 /*===== HEADER =====*/
 .headersidebar {
-    width: 53px;
-    height: 3rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1rem;
-    background-color: #a80000;
+    background-color: transparent;
     z-index: 100;
     transition: .5s;
-    padding:1rem;
-}
+    padding: 1rem;
+    margin-left: 0.5rem;
+    width: 0px;
+}   
 
 .header__toggle {
     color: #161925;
@@ -12169,6 +12175,7 @@ a {
     transition: .5s;
     z-index: 100;
     padding: 7rem 1rem 0 0; /*Hight of side navbar*/
+    box-shadow: 4px 1px 7px rgb(0 0 0 / 30%);
 }
 
 .navsidebar {
@@ -12300,7 +12307,30 @@ a {
 
 /* admin screen end*/
 
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
 
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+
+}
 
 
 
