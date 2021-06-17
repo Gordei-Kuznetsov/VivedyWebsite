@@ -10557,7 +10557,8 @@ a.text-dark:hover, a.text-dark:focus {
     }
 
     .btn-primary:hover, .btn-primary:active:hover {
-        background-color: #0b0c12;
+        background-color: #A80000;
+        border-color: #a80000;
     }
 
     .btn-primary:active {
@@ -11921,6 +11922,10 @@ button.bg-secondary:focus {
 */
 
 .phenomena-sm {
+    font-family: Phenomena;
+}
+
+.phenomena-sm-three {
     font-family: Phenomena;
 }
 .phenomena-sm-two {

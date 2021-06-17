@@ -11,22 +11,14 @@
     <div class="jumbotron">
         <div class="row text-center">
             <div class="col-lg-9 col-sm-12 ">
-                <div class="card text-center mb-5">
-                    <div class="card-header">
-                        <ul class="nav nav-pills card-header-pills">
-                            <li class="nav-item">
-                                <div class="btn btn-danger" disabled>Time</div>
-                            </li>
-                            <li class="nav-item">
-                                <div class="nav-link">Seats</div>
-                            </li>
-                            <li class="nav-item">
-                                <div class="nav-link">Payment</div>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="text-center mb-5">
                     <div class="card-body align-self-center">
-                        <h5 class="card-title">Booking Times</h5>
+                        <h5 class="phenomena-sm-two">Booking Times</h5>
+                        <hr style="width:40%" />
+                        <div class="progress">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 25%;" aria-valuemin="0" aria-valuemax="100">25% Booking</div>
+                        </div>
+                        <hr style="width:40%" />
                         <p class="card-text">Select a time to watch your movie</p>
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="row mt-5">
@@ -49,17 +41,20 @@
                 <div class="card mb-5">
                     <img src="~/Content/Images/@Model.Movie.MovieId-VerticalPoster.png" class="card-img-top" alt="Movie Poster">
                     <div class="card-body">
-                        <h5 class="card-title">@Model.Movie.Name</h5>
-                        <p class="card-text"> Catoegry: <span class="badge badge-pill badge-secondary">@Model.Movie.Category</span></p>
-                        <p class="card-text"> Rating: <span class="badge badge-pill badge-danger"> +@Model.Movie.Rating</span></p>
-                        <p class="card-text">
+                        <hr />
+                        <h5 class="phenomena-sm-two mt-4 text-center">@Model.Movie.Name</h5>
+                        <hr />
+                        <div class="p-2 phenomena-sm"> Catoegry: <span class="badge badge-pill badge-secondary">@Model.Movie.Category</span></div>
+                        <div class="p-2 phenomena-sm"> Rating: <span class="badge badge-pill badge-danger"> +@Model.Movie.Rating</span></div>
+                        <div class="p-2 phenomena-sm">
                             Movie Duration: <span class="badge badge-pill badge-danger">
                                 @Model.Movie.Duration.Hours hr
                                 @Model.Movie.Duration.Minutes min
                             </span>
-                        </p>
+                        </div>
+                        <hr />
                         <p class="card-text">@Model.Movie.Description</p>
-                        <p class="Price"> <span style="color: #A80000;">Movie Price: </span>$@Model.Movie.Price</p>
+                        <div class="phenomena-sm-two"> Movie Price: <span style="color:white"> $@Model.Movie.Price </span></div>
                     </div>
                 </div>
             </div>
