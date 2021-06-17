@@ -5,7 +5,9 @@
 }
 
 <div class="jumbotron">
-    <h1 style="color: #a80000;" class="display-1 phenomena-sm-three mb-5 text-center">Movies</h1>
+    <h1 style="color: #a80000;" class="display-1 phenomena-sm-three mb-4 text-center">Movies</h1>
+
+    <!--
     <div class="container grey-bg-color mt-2 mb-5">
         <div class="row mt-2 md-2 justify-content-center">
             <input class="col-6 col-sm-8 col-xs-10" name="search" type="search" id="SearchFor" placeholder="Search up a movie" />
@@ -28,7 +30,7 @@
                             <option value="@category">@category</option>
                         }
                     </select>
-                    <button id="resetCategory" class="btn ml-2"><i class="fa fa-close"></i></button>
+                    <button id="resetCategory" class="btn mr-2 ml-2"><i class="fa fa-close"></i></button>
                 </div>
                 <div class="row">
                     <select class="col-6 col-sm-8 col-lg-3" name="ratingFilter" id="ratingFilter">
@@ -43,6 +45,37 @@
             </div>
         </div>
     </div>
+        -->
+
+    <div class="container mb-5">
+        <div class="row  card-body">
+            <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                <div class="phenomena-sm-two mr-3">Search</div>
+                <input class="w-100 p-2 " name="search" type="search" id="SearchFor" placeholder="Search movie name" />
+            </div>
+            <div class="col-lg-3 col-sm-12 d-flex justify-content-center">
+                <select class="pl-4 pr-4" name="categoryFilter" id="categoryFilter">
+                    <option id="emptyCategory" value="" selected disabled hidden> Categories</option>
+                    @foreach (string category in ViewBag.Categories)
+                    {
+                        <option value="@category">@category</option>
+                    }
+                </select>
+
+                <button style="border-radius: 0" id="resetCategory" class="btn btn-danger  pl-3 pr-3 p-2"><i class="fa fa-close"></i></button>
+            </div>
+            <div class="col-lg-3 col-sm-12 d-flex justify-content-center">
+                <select class="pl-4 pr-4" name="ratingFilter" id="ratingFilter">
+                    <option id="emptyRating" value="" selected disabled hidden>Ratings</option>
+                    @foreach (string rating in ViewBag.Ratings)
+                    {
+                        <option value="@rating">@rating</option>
+                    }
+                </select>
+                <button style="border-radius: 0" id="resetRating" class="btn btn-danger pl-3 pr-3 p-2"><i class="fa fa-close"></i></button>
+            </div>
+        </div>
+    </div>
 
 
     <div id="moviesList">
@@ -53,8 +86,8 @@
                     <div class="img-hover-zoom">
                         <a href="/Movies/Details?id=@item.MovieId">
                             <img style="max-height:20rem; min-height:42rem; object-fit:cover" class="fadeimage card-img-top"
-                                    src="/Content/Images/@item.MovieId-HorizontalPoster.png"
-                                    alt="Image Failed to load">
+                                 src="/Content/Images/@item.MovieId-HorizontalPoster.png"
+                                 alt="Image Failed to load">
                             <div class="middle">
                                 <div class="movietext">Click to Contuniue <i class="fas fa-external-link-alt"></i> </div>
                             </div>
