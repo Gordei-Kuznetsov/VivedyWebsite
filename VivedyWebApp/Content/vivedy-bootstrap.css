@@ -12027,28 +12027,31 @@ button.bg-secondary:focus {
 }
 /*Movies Page containers End*/
 
-@media (max-width: 360px) {
-    .phenomena2 {
-        font-size: 120px;
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .phenomena2{
+        font-size: 8rem;
     }
 }
 
-@media (max-width: 768px) {
-    .phenomena2 {
-        max-width: 140px;
-    }
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    
 }
 
-@media (max-width: 992px) {
-    .phenomena2 {
-        max-width: 160px;
-    }
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    
 }
 
-@media (max-width: 1200px) {
-    .phenomena2 {
-        max-width: 160px;
-    }
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+   
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    
 }
 
 
@@ -12336,11 +12339,12 @@ a {
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
     .adminCard {
-        margin-left: 5rem;
+        margin-left: 0rem;
+        margin: 15px;
     }
-    .containerOneAdmin
-    {
-        margin-left: 5rem;
+    .containerOneAdmin {
+        margin-left: 0rem;
+        margin: 15px;
     }
 
 }
