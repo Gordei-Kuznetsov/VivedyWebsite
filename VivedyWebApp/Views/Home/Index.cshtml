@@ -35,7 +35,7 @@
                     if (item == Model.First())
                     {
                         <div class="carousel-item active">
-                            <img style="height: auto;" class="d-block w-100" src="/Content/Images/@item.MovieId-HorizontalPoster.png" alt="Slide Failed">
+                            <img style="height:auto" class="d-block w-100" src="/Content/Images/@item.MovieId-HorizontalPoster.png" alt="Slide Failed">
                         </div>
                     }
                     else
@@ -71,7 +71,7 @@
                     <div class="card-body col-lg-3 col-sm-6 movieCard">
                         <div class="card">
                             <img src="/Content/Images/@item.MovieId-VerticalPoster.png"
-                                 class="card-img-top" style="height: auto; object-fit: cover" alt="Failed Img">
+                                 class="card-img-top" style="max-height:20rem; min-height:20rem; object-fit:cover" alt="Failed Img">
                             <div class="card">
                                 <a href="/Movies/Details?id=@item.MovieId" class="btn btn-primary">@item.Name</a>
                             </div>
