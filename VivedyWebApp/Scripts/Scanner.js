@@ -52,7 +52,7 @@ function displayMessage(pass, title, body) {
     $('#myModal').modal('show');
 }
 window.addEventListener('load', function () {
-    codeReader.getVideoInputDevices()
+    navigator.mediaDevices.enumerateDevices()
         .then((videoInputDevices) => {
             if (videoInputDevices.length >= 1) {
                 selectedDeviceId = videoInputDevices[0].deviceId
