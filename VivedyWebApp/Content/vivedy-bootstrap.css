@@ -12324,7 +12324,7 @@ a {
     display: none;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1472px) {
     .admin-desktop {
         display: none;
     }
@@ -12333,7 +12333,7 @@ a {
         display: inline;
     }
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 830px) {
     .admin-button {
         display: none;
     }
