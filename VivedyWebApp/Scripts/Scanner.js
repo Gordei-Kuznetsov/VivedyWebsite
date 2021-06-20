@@ -54,20 +54,22 @@ function displayMessage(pass, title, body) {
 window.addEventListener('load', function () {
     codeReader.getVideoInputDevices()
         .then((videoInputDevices) => {
-            if (videoInputDevices.length > 1) {
-                selectedDeviceId = videoInputDevices[preferredCamera].deviceId
-                document.getElementById('changeSourceButton').addEventListener('click', () => {
-                    if (selectedDeviceId == videoInputDevices[0].deviceId) {
-                        selectedDeviceId = videoInputDevices[1].deviceId;
-                    }
-                    else {
-                        selectedDeviceId = videoInputDevices[0].deviceId;
-                    }
-                    codeReader.reset();
-                    decode();
-                    allowDecoding = true;
-                });
-                document.getElementById('changeSourceButton').style.display = 'inline-block';
+            if (videoInputDevices.length >= 1) {
+                selectedDeviceId = videoInputDevices[0].deviceId
+                if (videoInputDevices.length > 1) {
+                    document.getElementById('changeSourceButton').addEventListener('click', () => {
+                        if (selectedDeviceId == videoInputDevices[0].deviceId) {
+                            selectedDeviceId = videoInputDevices[1].deviceId;
+                        }
+                        else {
+                            selectedDeviceId = videoInputDevices[0].deviceId;
+                        }
+                        codeReader.reset();
+                        decode();
+                        allowDecoding = true;
+                    });
+                    document.getElementById('changeSourceButton').style.display = 'inline-block';
+                }
             }
             else {
                 selectedDeviceId = (function () { return; })();
