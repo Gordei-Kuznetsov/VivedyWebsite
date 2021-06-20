@@ -12036,7 +12036,7 @@ button.bg-secondary:focus {
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
     .phenomena2{
-        font-size: 8rem;
+        font-size: 6rem;
     }
     .moviestextPhen {
         font-family: Phenomena;
