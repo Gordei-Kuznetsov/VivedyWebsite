@@ -12027,27 +12027,60 @@ button.bg-secondary:focus {
 }
 /*Movies Page containers End*/
 
-@media (max-width: 360px) {
-    .phenomena2 {
-        font-size: 120px;
+.moviestextPhen {
+    font-family: Phenomena;
+    font-weight: 900;
+    font-size: 2rem
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .phenomena2{
+        font-size: 8rem;
+    }
+    .moviestextPhen {
+        font-family: Phenomena;
+        font-weight:100;
+        font-size: 1rem;
     }
 }
 
-@media (max-width: 768px) {
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
     .phenomena2 {
-        max-width: 140px;
+        font-size: 8rem;
+    }
+    .moviestextPhen {
+        font-family: Phenomena;
+        font-weight: 100;
+        font-size: 1rem;
     }
 }
 
-@media (max-width: 992px) {
-    .phenomena2 {
-        max-width: 160px;
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .moviestextPhen {
+        font-family: Phenomena;
+        font-weight: 900;
+        font-size: 2rem
     }
 }
 
-@media (max-width: 1200px) {
-    .phenomena2 {
-        max-width: 160px;
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .moviestextPhen {
+        font-family: Phenomena;
+        font-weight: 900;
+        font-size: 2rem
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .moviestextPhen {
+        font-family: Phenomena;
+        font-weight: 900;
+        font-size: 2rem
     }
 }
 
@@ -12336,11 +12369,14 @@ a {
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
     .adminCard {
-        margin-left: 5rem;
+        margin-left: 0rem;
+        margin: 15px;
+        margin-top: 5rem;
     }
-    .containerOneAdmin
-    {
-        margin-left: 5rem;
+    .containerOneAdmin {
+        margin-left: 0rem;
+        margin: 15px;
+        margin-top: 5rem;
     }
 
 }
