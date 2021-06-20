@@ -12342,6 +12342,11 @@ a {
         display: inline;
     }
 }
+@media screen and (max-width: 425px) {
+    .admin-booking-date {
+        display:none;
+    }
+}
 
 /* admin screen end*/
 
