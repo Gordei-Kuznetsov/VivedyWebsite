@@ -12154,20 +12154,7 @@ button.bg-secondary:focus {
 /*===== GOOGLE FONTS =====*/
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
 
-/*===== BASE =====*/
-*, ::before, ::after {
-    box-sizing: border-box;
-}
 
-.body {
-    position: relative;
-    font-size: 1rem;
-    transition: .5s;
-}
-
-a {
-    text-decoration: none;
-}
 
 /*===== HEADER =====*/
 .headersidebar {
