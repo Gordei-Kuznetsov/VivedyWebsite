@@ -21,7 +21,7 @@
                     <th scope="col" >
                         @Html.DisplayNameFor(model => model.StartTime)
                     </th>
-                    <th scope="col" >
+                    <th scope="col" class="admin-display-sm-none">
                         @Html.DisplayNameFor(model => model.MovieId)
                     </th>
                     <th scope="col">
@@ -36,13 +36,13 @@
                         <td class="admin-display-cut">
                             @Html.DisplayFor(modelItem => item.RotationId)
                         </td>
-                        <td class="startTime ">
+                        <td class="startTime admin-display-set-width">
                             @{
                                 string startTime = item.StartTime.ToString("dddd, dd MMMM yyyy HH:mm tt");
                                 @Html.DisplayFor(modelItem => startTime)
                             }
                         </td>
-                        <td class="admin-display-cut">
+                        <td class="admin-display-cut admin-display-sm-none">
                             @Html.DisplayFor(modelItem => item.MovieId)
                         </td>
                         <td>

@@ -12356,6 +12356,14 @@ a {
         text-overflow: ellipsis;
     }
 }
+@media screen and (max-width: 380px) {
+    .admin-display-sm-none {
+        display: none;
+    }
+    .admin-display-set-width {
+        width: 70px;
+    }
+}
 
 /* admin screen end*/
 
