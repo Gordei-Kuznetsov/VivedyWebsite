@@ -12329,6 +12329,28 @@ button.bg-secondary:focus {
         display: inline;
     }
 }
+@media screen and (max-width: 660px) {
+    .admin-display-none {
+        display:none;
+    }
+    .admin-display-cut {
+        width: 95px;
+        display: block;
+        display: -webkit-box;
+        height: 2rem;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+@media screen and (max-width: 380px) {
+    .admin-display-sm-none {
+        display: none;
+    }
+    .admin-display-set-width {
+        width: 70px;
+    }
+}
 
 /* admin screen end*/
 
