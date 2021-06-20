@@ -8,58 +8,61 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="jumbotron">
-        <div class="row text-center">
-            <div class="col-lg-9 col-sm-12 ">
-                <div class="text-center mb-5">
-                    <div class="card-body align-self-center">
-                        <h5 class="phenomena-sm-two">Booking Times</h5>
-                        <hr style="width:40%" />
-                        <div class="progress">
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 33%;" aria-valuemin="0" aria-valuemax="100">33% Booking</div>
-                        </div>
-                        <hr style="width:40%" />
-                        <p class="card-text">Select a time to watch your movie</p>
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        <div class="row mt-5">
-                            <div class="">
-                                @foreach (var rotation in Model.AvailableRotations)
-                                {
-                                    <button class="btn btn-danger m-1 align-items-center SubmitButton" style="width:100%; max-width:10rem;" id="@rotation.RotationId">
-                                        <p class="mb-2 text-center">@rotation.StartTime.DayOfWeek</p>
-                                        <p class="mb-2 text-center">@rotation.StartTime.ToString("dd MMMM yyyy")</p>
-                                        <p class="mb-2 text-center">@rotation.StartTime.ToString("hh:mm tt")</p>
-                                    </button>
-                                }
-                            </div>
-                            @Html.HiddenFor(m => m.SelectedRotationId)
-                        </div>
+<div class="jumbotron">
+    <div class="row text-center">
+        <div class="col-lg-9 col-sm-12 ">
+            <div class="text-center mb-5">
+                <div class="card-body align-self-center">
+                    <h5 class="phenomena-sm-two">Booking Times</h5>
+                    <hr style="width:40%" />
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 33%;" aria-valuemin="0" aria-valuemax="100">33% Booking</div>
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-12">
-                <div class="card mb-5">
-                    <img src="~/Content/Images/@Model.Movie.MovieId-VerticalPoster.png" class="card-img-top" alt="Movie Poster">
-                    <div class="card-body">
-                        <hr />
-                        <h5 class="phenomena-sm-two mt-4 text-center">@Model.Movie.Name</h5>
-                        <hr />
-                        <div class="p-2 phenomena-sm"> Catoegry: <span class="badge badge-pill badge-secondary">@Model.Movie.Category</span></div>
-                        <div class="p-2 phenomena-sm"> Rating: <span class="badge badge-pill badge-danger"> +@Model.Movie.Rating</span></div>
-                        <div class="p-2 phenomena-sm">
-                            Movie Duration: <span class="badge badge-pill badge-danger">
-                                @Model.Movie.Duration.Hours hr
-                                @Model.Movie.Duration.Minutes min
-                            </span>
+                    <hr style="width:40%" />
+                    <p class="card-text">Select a time to watch your movie</p>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="row mt-5">
+                        <div class="">
+                            @foreach (var rotation in Model.AvailableRotations)
+                            {
+                                <button class="btn btn-danger m-1 align-items-center SubmitButton" style="width:100%; max-width:10rem;" id="@rotation.RotationId">
+                                    <p class="mb-2 text-center">@rotation.StartTime.DayOfWeek</p>
+                                    <p class="mb-2 text-center">@rotation.StartTime.ToString("dd MMMM yyyy")</p>
+                                    <p class="mb-2 text-center">@rotation.StartTime.ToString("hh:mm tt")</p>
+                                </button>
+                            }
                         </div>
-                        <hr />
-                        <p class="card-text">@Model.Movie.Description</p>
-                        <div class="phenomena-sm-two"> Movie Price: <span style="color:white"> $@Model.Movie.Price </span></div>
+                        @Html.HiddenFor(m => m.SelectedRotationId)
                     </div>
                 </div>
             </div>
         </div>
+        <div class="col-lg-3 col-sm-12">
+            <div class="card mb-5">
+                <img src="~/Content/Images/@Model.Movie.MovieId-VerticalPoster.png" class="card-img-top" alt="Movie Poster">
+                <div class="card-body">
+                    <hr />
+                    <h5 class="phenomena-sm-two mt-4 text-center">@Model.Movie.Name</h5>
+                    <hr />
+                    <div class="p-2 phenomena-sm"> Catoegry: <span class="badge badge-pill badge-secondary">@Model.Movie.Category</span></div>
+                    <div class="p-2 phenomena-sm"> Rating: <span class="badge badge-pill badge-danger"> +@Model.Movie.Rating</span></div>
+                    <div class="p-2 phenomena-sm">
+                        Movie Duration: <span class="badge badge-pill badge-danger">
+                            @Model.Movie.Duration.Hours hr
+                            @Model.Movie.Duration.Minutes min
+                        </span>
+                    </div>
+                    <hr />
+                    <p class="card-text">@Model.Movie.Description</p>
+                    <div class="phenomena-sm-two"> Movie Price: <span style="color:white"> $@Model.Movie.Price </span></div>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="row justify-content-center">
+        <a href="/Movies/Index" class="btn btn-danger ml-3 pl-4 pr-4 pb-2 pt-2">Go Back</a>
+    </div>
+</div>
     <script>
         window.onload = function () {
             let timeInput = document.getElementById("SelectedRotationId");
