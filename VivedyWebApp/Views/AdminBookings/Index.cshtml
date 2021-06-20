@@ -5,16 +5,10 @@
 }
 
 <div class="adminCard">
-    <nav class="nav nav-pills nav-fill  row no-gutters phenomena-sm" style="background-color: #a8000a; ">
-        <a class="nav-item nav-link raijaLink" href="/AdminMovies/Index">MOVIES</a>
-        <a class="nav-item nav-link raijaLink" 
-            style="background-color: #f0f0f0; color: #222; border-radius: 0rem; border-top: 5px solid #a8000a;">
-            BOOKINGS
-        </a>
-        <a class="nav-item nav-link raijaLink" href="/AdminRotations/Index">ROTATIONS</a>
-        <a class="nav-item nav-link raijaLink" href="/AdminUsers/Index">USERS </a>
-    </nav>
-    <div class="white-bg-color">
+    <div class=" mx-auto phenomena-sm display-3 text-center">
+        ADMIN BOOKINGS
+    </div>
+    <div class="white-bg-color admin-desktop">
         <a class="btn btn-danger  phenomena-sm " href="/AdminBookings/Create">ADD <i class="fas fa-plus"></i></a>
         <input type="text" class="mb-3 float-right" id="Search" placeholder="Search by Email...">
         <br>
@@ -27,7 +21,7 @@
                     <th scope="col">
                         @Html.DisplayNameFor(model => model.RotationId)
                     </th>
-                    <th scope="col">
+                    <th scope="col" style="width:95px;">
                         @Html.DisplayNameFor(model => model.Seats)
                     </th>
                     <th scope="col">
@@ -50,7 +44,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.RotationId)
                         </td>
-                        <td>
+                        <td style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
                             @Html.DisplayFor(modelItem => item.Seats)
                         </td>
                         <td class="userEmail">
@@ -69,6 +63,66 @@
                         </td>
                     </tr>
                 }
+            </tbody>
+        </table>
+    </div>
+    <div class="white-bg-color admin-mobile">
+        <a class="btn btn-danger  phenomena-sm " href="/AdminBookings/Create">ADD <i class="fas fa-plus"></i></a>
+        <input type="text" class="mb-3 float-right" id="Search" placeholder="Search by Email...">
+        <br>
+        <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
+            <thead>
+                <tr class="text-center ">
+                    <th scope="col" style="width:95px;">
+                        @Html.DisplayNameFor(model => model.BookingId)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.UserEmail)
+                    </th>
+                    <th scope="col" class="admin-display-none">
+                        @Html.DisplayNameFor(model => model.CreationDate)
+                    </th>
+                    <th scope="col">
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="myList">
+                @foreach (var item in Model) {
+                    <tr class="text-center">
+                        <td style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
+                            @Html.DisplayFor(modelItem => item.BookingId)
+                        </td>
+                        <td class="userEmail">
+                            @Html.DisplayFor(modelItem => item.UserEmail)
+                        </td>
+                        <td class="admin-display-none">
+                            @{
+                                string creationDate = item.CreationDate.ToString("dddd, dd MMMM yyyy HH:mm tt");
+                                @Html.DisplayFor(model => creationDate)
+                            }
+                        </td>
+                        <td>
+                            <div class="admin-button">
+                                    @Html.ActionLink("Edit", "Edit", "AdminBookings", routeValues: new { id = item.BookingId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                    @Html.ActionLink("Details", "Details", "AdminBookings", routeValues: new { id = item.BookingId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                    @Html.ActionLink("Delete", "Delete", "AdminBookings", routeValues: new { id = item.BookingId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                            </div>
+                            <div class="admin-button-row">
+                                <div class="row">
+                                    @Html.ActionLink("Edit", "Edit", "AdminBookings", routeValues: new { id = item.BookingId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                </div>
+                                <div class="row">
+                                    @Html.ActionLink("Details", "Details", "AdminBookings", routeValues: new { id = item.BookingId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                </div>
+                                <div class="row">
+                                    @Html.ActionLink("Delete", "Delete", "AdminBookings", routeValues: new { id = item.BookingId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                </div>
+                                  
+                            </div>                        
+                        </td>
+                    </tr>
+                  }
             </tbody>
         </table>
     </div>

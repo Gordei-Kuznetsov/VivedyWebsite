@@ -12036,7 +12036,7 @@ button.bg-secondary:focus {
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
     .phenomena2{
-        font-size: 8rem;
+        font-size: 6rem;
     }
     .moviestextPhen {
         font-family: Phenomena;
@@ -12048,7 +12048,7 @@ button.bg-secondary:focus {
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
     .phenomena2 {
-        font-size: 8rem;
+        font-size: 12rem;
     }
     .moviestextPhen {
         font-family: Phenomena;
@@ -12154,20 +12154,7 @@ button.bg-secondary:focus {
 /*===== GOOGLE FONTS =====*/
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
 
-/*===== BASE =====*/
-*, ::before, ::after {
-    box-sizing: border-box;
-}
 
-.body {
-    position: relative;
-    font-size: 1rem;
-    transition: .5s;
-}
-
-a {
-    text-decoration: none;
-}
 
 /*===== HEADER =====*/
 .headersidebar {
@@ -12324,7 +12311,7 @@ a {
     display: none;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1472px) {
     .admin-desktop {
         display: none;
     }
@@ -12333,13 +12320,35 @@ a {
         display: inline;
     }
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 830px) {
     .admin-button {
         display: none;
     }
 
     .admin-button-row {
         display: inline;
+    }
+}
+@media screen and (max-width: 660px) {
+    .admin-display-none {
+        display:none;
+    }
+    .admin-display-cut {
+        width: 95px;
+        display: block;
+        display: -webkit-box;
+        height: 2rem;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+@media screen and (max-width: 380px) {
+    .admin-display-sm-none {
+        display: none;
+    }
+    .admin-display-set-width {
+        width: 70px;
     }
 }
 

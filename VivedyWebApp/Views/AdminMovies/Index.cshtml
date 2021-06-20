@@ -4,90 +4,139 @@
     ViewBag.Title = "Admin | Movies";
 }
 
-<div class="adminCard">
-    <nav class="nav nav-pills nav-fill  row no-gutters phenomena-sm" style="background-color: #a8000a;">
-        <a class="nav-item nav-link raijaLink" 
-            style="background-color: #f0f0f0; color: #222; border-radius: 0rem; border-top: 5px solid #a8000a;">
-        MOVIES
-        </a>
-        <a class="nav-item nav-link raijaLink" href="/AdminBookings/Index">BOOKINGS</a>
-        <a class="nav-item nav-link raijaLink" href="/AdminRotations/Index">ROTATIONS</a>
-        <a class="nav-item nav-link raijaLink" href="/AdminUsers/Index">USERS </a>
-    </nav>
-    <div class="white-bg-color">
-        <a class="btn btn-danger  phenomena-sm " href="/AdminMovies/Create">ADD <i class="fas fa-plus"></i></a>
-        <input type="text" class="mb-3 float-right" id="Search" placeholder="Search by name...">
-        <br>
-        <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
-            <thead >
-                <tr class="text-center">
-                    <th scope="col" style="width:95px">
-                        @Html.DisplayNameFor(model => model.MovieId)
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.Rating)
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.Category)
-                    </th>
-                    <th scope="col" style="width:240px">
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.Duration)
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.Price)
-                    </th>
-                    <th scope="col"  style="width:150px">
-                        @Html.DisplayNameFor(model => model.TrailerUrl)
-                    </th>
-                    <th scope="col">
-
-                    </th>
-                </tr>
-            </thead>
-            <tbody  id="myList" style="height:30px">
-                @foreach (var item in Model) {
+    <div class="adminCard">
+        <div class=" mx-auto phenomena-sm display-3 text-center">
+            ADMIN MOVIES
+        </div>
+        <div class="white-bg-color admin-desktop">
+            <a class="btn btn-danger  phenomena-sm " href="/AdminMovies/Create">ADD <i class="fas fa-plus"></i></a>
+            <input type="text" class="mb-3 float-right" id="Search" placeholder="Search by name...">
+            <br>
+            <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
+                <thead>
                     <tr class="text-center">
-                        <td style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
-                            @Html.DisplayFor(modelItem => item.MovieId)
-                        </td>
-                        <td class="movieName">
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Rating)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Category)
-                        </td>
-                        <td style="width:240px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Duration)
-                        </td>
-                        <td>
-                            $@Html.DisplayFor(modelItem => item.Price)
-                        </td>
-                        <td  style="width:150px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
-                            @Html.DisplayFor(modelItem => item.TrailerUrl)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", "AdminMovies", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                            @Html.ActionLink("Details", "Details", "AdminMovies", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                            @Html.ActionLink("Delete", "Delete", "AdminMovies", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
-                        </td>
+                        <th scope="col" style="width:95px">
+                            @Html.DisplayNameFor(model => model.MovieId)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Rating)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Category)
+                        </th>
+                        <th scope="col" style="width:240px">
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Duration)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th scope="col" style="width:150px">
+                            @Html.DisplayNameFor(model => model.TrailerUrl)
+                        </th>
+                        <th scope="col">
+
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody id="myList" style="height:30px">
+                    @foreach (var item in Model)
+                    {
+                        <tr class="text-center">
+                            <td style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
+                                @Html.DisplayFor(modelItem => item.MovieId)
+                            </td>
+                            <td class="movieName">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Rating)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category)
+                            </td>
+                            <td style="width:240px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Duration)
+                            </td>
+                            <td>
+                                $@Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td style="width:150px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
+                                @Html.DisplayFor(modelItem => item.TrailerUrl)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", "AdminMovies", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                @Html.ActionLink("Details", "Details", "AdminMovies", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                @Html.ActionLink("Delete", "Delete", "AdminMovies", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="white-bg-color admin-mobile">
+            <a class="btn btn-danger  phenomena-sm " href="/AdminMovies/Create">ADD <i class="fas fa-plus"></i></a>
+            <input type="text" class="mb-3 float-right" id="Search" placeholder="Search by name...">
+            <br>
+            <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col" style="width:95px">
+                            @Html.DisplayNameFor(model => model.MovieId)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        
+                        <th scope="col">
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="myList" style="height:30px">
+                    @foreach (var item in Model)
+                    {
+                        <tr class="text-center">
+                            <td style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
+                                @Html.DisplayFor(modelItem => item.MovieId)
+                            </td>
+                            <td class="movieName">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            
+                            <td>
+                                <div class="admin-button">
+                                    @Html.ActionLink("Edit", "Edit", "AdminMovies", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                    @Html.ActionLink("Details", "Details", "AdminMovies", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                    @Html.ActionLink("Delete", "Delete", "AdminMovies", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                </div>
+                                <div class="admin-button-row">
+                                    <div class="row">
+                                        @Html.ActionLink("Edit", "Edit", "AdminMovies", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                    </div>
+                                    <div class="row">
+                                        @Html.ActionLink("Details", "Details", "AdminMovies", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                    </div>
+                                    <div class="row">
+                                        @Html.ActionLink("Delete", "Delete", "AdminMovies", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                    </div>
+                                  
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 <script>
     let Search;
     let rowslist = Array();
