@@ -5,15 +5,9 @@
 }
 
 <div class="adminCard">
-    <nav class="nav nav-pills nav-fill  row no-gutters phenomena-sm" style="background-color: #a8000a; ">
-        <a class="nav-item nav-link raijaLink " href="/AdminMovies/Index">MOVIES</a>
-        <a class="nav-item nav-link raijaLink" href="/AdminBookings/Index"> BOOKINGS </a>
-        <a class="nav-item nav-link raijaLink" 
-            style="background-color: #f0f0f0; color: #222; border-radius: 0rem; border-top: 5px solid #a8000a;">
-            ROTATIONS
-        </a>
-        <a class="nav-item nav-link raijaLink" href="/AdminUsers/Index">USERS </a>
-    </nav>
+    <div class=" mx-auto phenomena-sm display-3 text-center">
+        ADMIN ROTATIONS
+    </div>
     <div class="white-bg-color">
         <a class="btn btn-danger  phenomena-sm " href="/AdminRotations/Create">ADD <i class="fas fa-plus"></i></a>
         <input type="text" class="mb-3 float-right" id="Search" placeholder="Search by Start Time...">
@@ -21,13 +15,13 @@
         <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
             <thead>
                 <tr class="text-center ">
-                    <th scope="col">
+                    <th scope="col" >
                         @Html.DisplayNameFor(model => model.RotationId)
                     </th>
-                    <th scope="col">
+                    <th scope="col" >
                         @Html.DisplayNameFor(model => model.StartTime)
                     </th>
-                    <th scope="col">
+                    <th scope="col" >
                         @Html.DisplayNameFor(model => model.MovieId)
                     </th>
                     <th scope="col">
@@ -39,22 +33,36 @@
                 @foreach (var item in Model)
                 {
                     <tr class="text-center">
-                        <td>
+                        <td class="admin-display-cut">
                             @Html.DisplayFor(modelItem => item.RotationId)
                         </td>
-                        <td class="startTime">
+                        <td class="startTime ">
                             @{
                                 string startTime = item.StartTime.ToString("dddd, dd MMMM yyyy HH:mm tt");
                                 @Html.DisplayFor(modelItem => startTime)
                             }
                         </td>
-                        <td>
+                        <td class="admin-display-cut">
                             @Html.DisplayFor(modelItem => item.MovieId)
                         </td>
                         <td>
-                            @Html.ActionLink("Edit", "Edit", "AdminRotations", routeValues: new { id = item.RotationId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                            @Html.ActionLink("Details", "Details", "AdminRotations", routeValues: new { id = item.RotationId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                            @Html.ActionLink("Delete", "Delete", "AdminRotations", routeValues: new { id = item.RotationId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                            <div class="admin-button">
+                                @Html.ActionLink("Edit", "Edit", "AdminRotations", routeValues: new { id = item.RotationId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                @Html.ActionLink("Details", "Details", "AdminRotations", routeValues: new { id = item.RotationId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                @Html.ActionLink("Delete", "Delete", "AdminRotations", routeValues: new { id = item.RotationId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                            </div>
+                            <div class="admin-button-row">
+                                <div class="row">
+                                    @Html.ActionLink("Edit", "Edit", "AdminRotations", routeValues: new { id = item.RotationId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                </div>
+                                <div class="row">
+                                    @Html.ActionLink("Details", "Details", "AdminRotations", routeValues: new { id = item.RotationId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                </div>
+                                <div class="row">
+                                    @Html.ActionLink("Delete", "Delete", "AdminRotations", routeValues: new { id = item.RotationId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                </div>
+
+                            </div>
                         </td>
                     </tr>
                 }

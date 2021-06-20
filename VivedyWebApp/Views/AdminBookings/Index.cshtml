@@ -79,7 +79,7 @@
                     <th scope="col">
                         @Html.DisplayNameFor(model => model.UserEmail)
                     </th>
-                    <th scope="col" class="admin-booking-date">
+                    <th scope="col" class="admin-display-none">
                         @Html.DisplayNameFor(model => model.CreationDate)
                     </th>
                     <th scope="col">
@@ -96,7 +96,7 @@
                         <td class="userEmail">
                             @Html.DisplayFor(modelItem => item.UserEmail)
                         </td>
-                        <td class="admin-booking-date">
+                        <td class="admin-display-none">
                             @{
                                 string creationDate = item.CreationDate.ToString("dddd, dd MMMM yyyy HH:mm tt");
                                 @Html.DisplayFor(model => creationDate)

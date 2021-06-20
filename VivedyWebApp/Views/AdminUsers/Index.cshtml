@@ -92,10 +92,10 @@
                         <th scope="col" style="width:95px">
                             User @Html.DisplayNameFor(model => model.Id)
                         </th>
-                        <th scope="col">
+                        <th scope="col" class="admin-display-none">
                             @Html.DisplayNameFor(model => model.Name)
                         </th>
-                        <th scope="col">
+                        <th scope="col" >
                             @Html.DisplayNameFor(model => model.Email)
                         </th>
                         <th scope="col">
@@ -110,10 +110,10 @@
                             <td style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
                                 @Html.DisplayFor(modelItem => item.Id)
                             </td>
-                            <td>
+                            <td class="admin-display-none">
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
-                            <td class="userEmail">
+                            <td class="userEmail admin-display-cut">
                                 @Html.DisplayFor(modelItem => item.Email, new { htmlAttributes = new { @class = "text-link" } })
                             </td>
                             <td>
