@@ -250,6 +250,15 @@ namespace VivedyWebApp.Controllers
         }
 
         /// <summary>
+        /// GET request action for all Movies data for public api
+        /// </summary>
+        [AllowAnonymous]
+        public JsonResult All()
+        {
+            return Json(db.Movies.ToList());
+        }
+
+        /// <summary>
         /// Method for disposing ApplicationDbContext objects
         /// </summary>
         protected override void Dispose(bool disposing)
