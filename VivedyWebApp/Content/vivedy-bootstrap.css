@@ -10557,7 +10557,8 @@ a.text-dark:hover, a.text-dark:focus {
     }
 
     .btn-primary:hover, .btn-primary:active:hover {
-        background-color: #0b0c12;
+        background-color: #A80000;
+        border-color: #a80000;
     }
 
     .btn-primary:active {
@@ -11924,6 +11925,17 @@ button.bg-secondary:focus {
     font-family: Phenomena;
 }
 
+.phenomena-sm-three {
+    font-family: Phenomena;
+}
+.phenomena-sm-two {
+    font-family: Phenomena;
+    text-transform: uppercase;
+    font-weight: 800;
+    color: #a80000;
+    font-size: 2rem;
+}
+
 .phenomena {
     font-family: Phenomena;
     font-weight: 900;
@@ -12015,27 +12027,60 @@ button.bg-secondary:focus {
 }
 /*Movies Page containers End*/
 
-@media (max-width: 360px) {
-    .phenomena2 {
-        font-size: 120px;
+.moviestextPhen {
+    font-family: Phenomena;
+    font-weight: 900;
+    font-size: 2rem
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .phenomena2{
+        font-size: 6rem;
+    }
+    .moviestextPhen {
+        font-family: Phenomena;
+        font-weight:100;
+        font-size: 1rem;
     }
 }
 
-@media (max-width: 768px) {
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
     .phenomena2 {
-        max-width: 140px;
+        font-size: 12rem;
+    }
+    .moviestextPhen {
+        font-family: Phenomena;
+        font-weight: 100;
+        font-size: 1rem;
     }
 }
 
-@media (max-width: 992px) {
-    .phenomena2 {
-        max-width: 160px;
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .moviestextPhen {
+        font-family: Phenomena;
+        font-weight: 900;
+        font-size: 2rem
     }
 }
 
-@media (max-width: 1200px) {
-    .phenomena2 {
-        max-width: 160px;
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .moviestextPhen {
+        font-family: Phenomena;
+        font-weight: 900;
+        font-size: 2rem
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .moviestextPhen {
+        font-family: Phenomena;
+        font-weight: 900;
+        font-size: 2rem
     }
 }
 
@@ -12109,34 +12154,20 @@ button.bg-secondary:focus {
 /*===== GOOGLE FONTS =====*/
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
 
-/*===== BASE =====*/
-*, ::before, ::after {
-    box-sizing: border-box;
-}
 
-.body {
-    position: relative;
-    font-size: 1rem;
-    transition: .5s;
-}
-
-a {
-    text-decoration: none;
-}
 
 /*===== HEADER =====*/
 .headersidebar {
-    width: 53px;
-    height: 3rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1rem;
-    background-color: #a80000;
+    background-color: transparent;
     z-index: 100;
     transition: .5s;
-    padding:1rem;
-}
+    padding: 1rem;
+    margin-left: 0.5rem;
+    width: 0px;
+}   
 
 .header__toggle {
     color: #161925;
@@ -12169,6 +12200,7 @@ a {
     transition: .5s;
     z-index: 100;
     padding: 7rem 1rem 0 0; /*Hight of side navbar*/
+    box-shadow: 4px 1px 7px rgb(0 0 0 / 30%);
 }
 
 .navsidebar {
@@ -12241,7 +12273,7 @@ a {
 }
 
 /* ===== MEDIA QUERIES=====*/
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 600px) {
 
     .l-navbar {
         left: 0;
@@ -12279,7 +12311,7 @@ a {
     display: none;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1472px) {
     .admin-desktop {
         display: none;
     }
@@ -12288,7 +12320,7 @@ a {
         display: inline;
     }
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 830px) {
     .admin-button {
         display: none;
     }
@@ -12297,12 +12329,163 @@ a {
         display: inline;
     }
 }
+@media screen and (max-width: 660px) {
+    .admin-display-none {
+        display:none;
+    }
+    .admin-display-cut {
+        width: 95px;
+        display: block;
+        display: -webkit-box;
+        height: 2rem;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+@media screen and (max-width: 380px) {
+    .admin-display-sm-none {
+        display: none;
+    }
+    .admin-display-set-width {
+        width: 70px;
+    }
+}
 
 /* admin screen end*/
 
+.adminCard {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #161925;
+    background-clip: border-box;
+    border: 1px solid rgba(22, 25, 37, 0.125);
+    border-radius: 0.25rem;
+    margin: 5rem;
+    margin-left: 9rem;
+}
 
+.containerOneAdmin {
+    margin: 5rem;
+    margin-left: 9rem;
+    margin-top: 9rem;
 
+}
 
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .adminCard {
+        margin-left: 0rem;
+        margin: 15px;
+        margin-top: 5rem;
+    }
+    .containerOneAdmin {
+        margin-left: 0rem;
+        margin: 15px;
+        margin-top: 5rem;
+    }
 
+}
 
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .adminCard {
+        margin-left: 9rem;
+    }
+    .containerOneAdmin {
+        margin-left: 9rem;
+    }
+}
+}
 
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .adminCard {
+        margin-left: 9rem;
+    }
+    .containerOneAdmin {
+        margin-left: 9rem;
+    }
+
+}
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .adminCard {
+        margin-left: 9rem;
+
+    }
+    .containerOneAdmin {
+        margin-left: 9rem;
+    }
+
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .adminCard {
+        margin-left: 9rem;
+    }
+    .containerOneAdmin {
+        margin-left: 9rem;
+    }
+
+}
+
+.navHambuguer {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    width: 68px
+}
+
+.headersidebarHamburger {
+    position: fixed;
+    z-index: 101;
+    align-content: center;
+    background-color: transparent;
+    padding: 1rem;
+}
+
+.videoQrCode{
+    width:45rem;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .videoQrCode{
+        width:17rem;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .videoQrCode {
+        width: 30rem;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .videoQrCode {
+        width: 35rem;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .videoQrCode {
+        width: 45rem;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .videoQrCode {
+        width: 45rem;
+    }
+}

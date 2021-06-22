@@ -19,13 +19,17 @@
 <body class="ScrollHide">
     <!-- Nav Bar start -->
     <header>
+
+        <nav class="navHambuguer fixed-top">
+            <div class="headersidebar" id="header">
+                <div class="header__toggle text-secondary">
+                    <i class="fas fa-bars" id="header-toggle"></i>
+                </div>
+            </div>
+        </nav>
+
         <div class="body" id="body-pd">
             <div class="l-navbar" id="nav-bar">
-                <div class="headersidebar" style="top: 0;position: fixed;" id="header">
-                    <div class="header__toggle text-secondary">
-                        <i class="fas fa-bars" id="header-toggle"></i>
-                    </div>
-                </div>
                 <div class="navsidebar">
                     <div class="nav__list">
                         <a href="/Admin/Index" class="nav__link active">
@@ -48,15 +52,16 @@
                             <i class="fas fa-users"></i>
                             <span class="nav__name phenomenaSideBar">Users</span>
                         </a>
-                        <a href="/Admin/BookingScanner" class="nav__link">
+                        <a href="https://vivedy.azurewebsites.net/Admin/BookingScanner" class="nav__link">
                             <i class="fas fa-qrcode"></i>
                             <span class="nav__name phenomenaSideBar">Scanner</span>
                         </a>
+                        <a href="/Home/Index" class="nav__link">
+                            <i class="fas fa-arrow-alt-circle-left"></i>    
+                            <span class="nav__name">Main Website</span>
+                        </a>
                     </div>
-                    <a href="/Home/Index" class="nav__link">
-                        <i class="fas fa-arrow-alt-circle-left"></i>
-                        <span class="nav__name">Main Website</span>
-                    </a>
+                  
                 </div>
             </div>
         </div>
@@ -66,19 +71,9 @@
     @RenderBody()
     <!-- Main Body End-->
     <!-- Footer start -->
-    <footer class=" text-center">
-        <div class="container p-2">
-            <section>
-                <a><i class="fab fa-1x fa-facebook-f"></i></a>
-                <a><i class="fab fa-1x fa-twitter pr-3 pl-3"></i></a>
-                <a><i class="fab fa-1x fa-instagram"></i></a>
-            </section>
-        </div>
-        <div class="text-center p-3">
-            © 2021 Copyright:
-            @Html.ActionLink("Vivedy.azurewebsites.net", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "text-light" })
-        </div>
-    </footer>
+
+  <!--REMOVED-->
+
     <!-- Footer End -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
