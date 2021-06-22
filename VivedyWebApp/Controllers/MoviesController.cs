@@ -255,7 +255,7 @@ namespace VivedyWebApp.Controllers
         [AllowAnonymous]
         public JsonResult All()
         {
-            return Json(db.Movies.ToList());
+            return Json(db.Movies.ToList(), JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
