@@ -7,13 +7,13 @@ namespace VivedyWebApp.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class EditCinemasModel : IMigrationMetadata
+    public sealed partial class AddedCinemaModel : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(EditCinemasModel));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedCinemaModel));
         
         string IMigrationMetadata.Id
         {
-            get { return "202106220114305_EditCinemasModel"; }
+            get { return "202106220134273_AddedCinemaModel"; }
         }
         
         string IMigrationMetadata.Source

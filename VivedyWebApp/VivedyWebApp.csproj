@@ -227,9 +227,9 @@
     <Compile Include="Migrations\202106012140087_EditedModels.Designer.cs">
       <DependentUpon>202106012140087_EditedModels.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202106220114305_EditCinemasModel.cs" />
-    <Compile Include="Migrations\202106220114305_EditCinemasModel.Designer.cs">
-      <DependentUpon>202106220114305_EditCinemasModel.cs</DependentUpon>
+    <Compile Include="Migrations\202106220134273_AddedCinemaModel.cs" />
+    <Compile Include="Migrations\202106220134273_AddedCinemaModel.Designer.cs">
+      <DependentUpon>202106220134273_AddedCinemaModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Cinema.cs" />
@@ -394,8 +394,8 @@
     <EmbeddedResource Include="Migrations\202106012140087_EditedModels.resx">
       <DependentUpon>202106012140087_EditedModels.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202106220114305_EditCinemasModel.resx">
-      <DependentUpon>202106220114305_EditCinemasModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202106220134273_AddedCinemaModel.resx">
+      <DependentUpon>202106220134273_AddedCinemaModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

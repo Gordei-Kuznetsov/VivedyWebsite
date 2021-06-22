@@ -68,6 +68,9 @@ namespace VivedyWebApp.Models
         [Required]
         [Url]
         public string TrailerUrl { get; set; }
-        
+
+        /*[Display(Name = "Viewer Rating")]
+        [Required]
+        public string ViewerRating { get; set; }*/
     }
 }

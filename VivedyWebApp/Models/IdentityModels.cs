@@ -62,5 +62,10 @@ namespace VivedyWebApp.Models
         /// </summary>
         public DbSet<Rotation> Rotations { get; set; }
 
+        /// <summary>
+        /// Field for Cinemas in the ApplicationDbContext
+        /// </summary>
+        public DbSet<Cinema> Cinemas { get; set; }
+
     }
 }
