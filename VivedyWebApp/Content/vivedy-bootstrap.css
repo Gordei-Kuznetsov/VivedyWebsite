@@ -12489,3 +12489,46 @@ button.bg-secondary:focus {
         width: 45rem;
     }
 }
+
+.gray-box {
+    content: "";
+    background-color: gray;
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+    margin: 0.5rem;
+    text-align: center;
+    border-radius: 2px;
+}
+
+.gray-box-taken {
+    background-color: transparent;
+    border: 1px solid grey;
+    border-radius: 2px;
+    color: white;
+    content: "";
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+    margin: 0.5rem;
+}
+
+.gray-box-select {
+    background-color: green;
+    border-radius: 2px;
+    color: white;
+    content: "";
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+    margin: 0.5rem;
+    box-shadow: rgba(8, 253, 28, 0.15) 0px 15px 25px;
+}
+
+.gray-box:hover {
+    background-color: rgb(88, 88, 88);
+    color: white;
+}
+.seatNumber {
+    padding-top: 3px;
+}
