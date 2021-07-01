@@ -12505,7 +12505,7 @@ button.bg-secondary:focus {
     background-color: transparent;
     border: 1px solid grey;
     border-radius: 2px;
-    color: white;
+    color: grey;
     content: "";
     width: 2rem;
     height: 2rem;
@@ -12514,7 +12514,7 @@ button.bg-secondary:focus {
 }
 
 .gray-box-select {
-    background-color: green;
+    background-color: #A80000;
     border-radius: 2px;
     color: white;
     content: "";
@@ -12522,7 +12522,7 @@ button.bg-secondary:focus {
     height: 2rem;
     position: relative;
     margin: 0.5rem;
-    box-shadow: rgba(8, 253, 28, 0.15) 0px 15px 25px;
+    box-shadow: rgba(168, 0, 0, 0.15) 0px 15px 25px;
 }
 
 .gray-box:hover {
