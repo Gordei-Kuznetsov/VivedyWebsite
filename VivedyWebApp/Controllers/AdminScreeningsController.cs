@@ -13,9 +13,9 @@ using VivedyWebApp.Models.ViewModels;
 namespace VivedyWebApp.Controllers
 {
     /// <summary>
-    /// Application Admin Controller for Rotations
+    /// Application Admin Controller for Screenings
     /// </summary>
-    public class AdminRotationsController : Controller
+    public class AdminScreeningsController : Controller
     {
         /// <summary>
         /// ApplicationDbContext instance
@@ -28,7 +28,7 @@ namespace VivedyWebApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Index()
         {
-            return View(await db.Rotations.ToListAsync());
+            return View(await db.Screenings.ToListAsync());
         }
 
         /// <summary>
@@ -41,12 +41,12 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Models.Rotation rotation = await db.Rotations.FindAsync(id);
-            if (rotation == null)
+            Models.Screening screening = await db.Screenings.FindAsync(id);
+            if (screening == null)
             {
                 return HttpNotFound();
             }
-            return View(rotation);
+            return View(screening);
         }
 
         /// <summary>
@@ -64,37 +64,37 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Create(AdminRotationsCreateViewModel newRotation)
+        public async Task<ActionResult> Create(AdminScreeningsCreateViewModel newScreening)
         {
             if (ModelState.IsValid)
             {
-                Rotation rotation = new Rotation
+                Screening screening = new Screening
                 {
-                    RotationId = Guid.NewGuid().ToString(),
-                    StartTime = newRotation.StartTime,
-                    MovieId = newRotation.MovieId
+                    ScreeningId = Guid.NewGuid().ToString(),
+                    StartTime = newScreening.StartTime,
+                    MovieId = newScreening.MovieId
                 };
-                db.Rotations.Add(rotation);
-                //Generating rotations
-                if (newRotation.GenerateRotations)
+                db.Screenings.Add(screening);
+                //Generating Screenings
+                if (newScreening.GenerateScreenings)
                 {
                     for(int i = 1; i < 7; i++)
                     {
-                        //A rotation for each day starting from the newRotation.StartTime at the same time of the day
-                        Rotation autoRotation = new Rotation
+                        //A Screening for each day starting from the newScreening.StartTime at the same time of the day
+                        Screening autoScreening = new Screening
                         {
-                            RotationId = Guid.NewGuid().ToString(),
-                            StartTime = newRotation.StartTime.AddDays(i),
-                            MovieId = newRotation.MovieId
+                            ScreeningId = Guid.NewGuid().ToString(),
+                            StartTime = newScreening.StartTime.AddDays(i),
+                            MovieId = newScreening.MovieId
                         };
-                        db.Rotations.Add(autoRotation);
+                        db.Screenings.Add(autoScreening);
                     }
                 }
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            return View(newRotation);
+            return View(newScreening);
         }
 
         /// <summary>
@@ -107,12 +107,12 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Rotation rotation = await db.Rotations.FindAsync(id);
-            if (rotation == null)
+            Screening screening = await db.Screenings.FindAsync(id);
+            if (screening == null)
             {
                 return HttpNotFound();
             }
-            return View(rotation);
+            return View(screening);
         }
 
         /// <summary>
@@ -121,13 +121,13 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Edit(Rotation rotation)
+        public async Task<ActionResult> Edit(Screening screening)
         {
             if (!ModelState.IsValid)
             {
-                return View(rotation);
+                return View(screening);
             }
-            db.Entry(rotation).State = EntityState.Modified;
+            db.Entry(screening).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -142,12 +142,12 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Rotation rotation = await db.Rotations.FindAsync(id);
-            if (rotation == null)
+            Screening screening = await db.Screenings.FindAsync(id);
+            if (screening == null)
             {
                 return HttpNotFound();
             }
-            return View(rotation);
+            return View(screening);
         }
 
         /// <summary>
@@ -158,8 +158,8 @@ namespace VivedyWebApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
-            Rotation rotation = await db.Rotations.FindAsync(id);
-            db.Rotations.Remove(rotation);
+            Screening screening = await db.Screenings.FindAsync(id);
+            db.Screenings.Remove(screening);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }

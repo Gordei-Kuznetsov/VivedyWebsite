@@ -1,4 +1,4 @@
-﻿@model VivedyWebApp.Models.MoviesBookingSeatsViewModel
+﻿@model VivedyWebApp.Models.ViewModels.MoviesBookingSeatsViewModel
 
 @{
     ViewBag.Title = "Booking Seats";
@@ -95,7 +95,7 @@
         -->
                         @Html.HiddenFor(m => m.SelectedSeats)
                         @Html.ValidationMessageFor(m => m.SelectedSeats, "", new { @class = "text-danger", id = "ValMessageSpanForSeats" })
-                        @Html.HiddenFor(m => m.SelectedRotationId)
+                        @Html.HiddenFor(m => m.SelectedScreeningId)
                         <div class="align-self-center">
                             <div class="row text-center mt-4">
                                 <div class="col-12">

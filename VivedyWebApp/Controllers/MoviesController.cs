@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using VivedyWebApp.Models;
 using Microsoft.AspNet.Identity;
+using VivedyWebApp.Models.ViewModels;
 
 namespace VivedyWebApp.Controllers
 {
@@ -87,16 +88,16 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //Getting available rotations for the movie
-            List<Rotation> rotations = await db.Rotations.Where(rotation => rotation.MovieId == id).ToListAsync();
-            if (rotations.Count == 0)
+            //Getting available Screenings for the movie
+            List<Screening> screenings = await db.Screenings.Where(screening => screening.MovieId == id).ToListAsync();
+            if (screenings.Count == 0)
             {
-                //If no rotaions found then send back to the Movies/Details page with a message
-                ViewBag.ErrorMessage = "No rotations found for this movie.";
+                //If no Screenings found then send back to the Movies/Details page with a message
+                ViewBag.ErrorMessage = "No screenings found for this movie.";
                 return RedirectToAction("Details", "Movies", routeValues: new { id = id });
             }
-            MoviesBookingTimeViewModel model = new MoviesBookingTimeViewModel { 
-                AvailableRotations = rotations, 
+            MoviesBookingTimeViewModel model = new MoviesBookingTimeViewModel {
+                AvailableScreenings = screenings, 
                 Movie = await db.Movies.FindAsync(id) 
             };
             return View(model);
@@ -115,14 +116,14 @@ namespace VivedyWebApp.Controllers
                 return View(timeModel);
             }
             MoviesBookingSeatsViewModel seatsModel = new MoviesBookingSeatsViewModel {
-                SelectedRotationId = timeModel.SelectedRotationId,
+                SelectedScreeningId = timeModel.SelectedScreeningId,
                 //Getting the movie from db to avoid depending on the object being sent through the request
-                Movie = db.Movies.Find(db.Rotations.Find(timeModel.SelectedRotationId).MovieId), 
+                Movie = db.Movies.Find(db.Screenings.Find(timeModel.SelectedScreeningId).MovieId), 
                 OccupiedSeats = new List<int>(),
                 SelectedSeats = ""
             };
-            //Getting all bookings for the rotaion to later get all occupied saets from them
-            List<Booking> bookings = db.Bookings.Where(booking => booking.RotationId == timeModel.SelectedRotationId).ToList();
+            //Getting all bookings for the Screening to later get all occupied saets from them
+            List<Booking> bookings = db.Bookings.Where(booking => booking.ScreeningId == timeModel.SelectedScreeningId).ToList();
             if(bookings != null)
             {
                 //Getting a list of all occupied  seats
@@ -156,10 +157,10 @@ namespace VivedyWebApp.Controllers
                 if (seat != null && seat != "" ) { selectedSeats.Add(Convert.ToInt32(seat)); }
             }
             //Getting the movie from db to avoid depending on the object being sent through the request
-            Movie movie = db.Movies.Find(db.Rotations.Find(seatsModel.SelectedRotationId).MovieId);
+            Movie movie = db.Movies.Find(db.Screenings.Find(seatsModel.SelectedScreeningId).MovieId);
             MoviesBookingPayViewModel payModel = new MoviesBookingPayViewModel { 
-                SelectedSeats = seatsModel.SelectedSeats, 
-                SelectedRotationId = seatsModel.SelectedRotationId, 
+                SelectedSeats = seatsModel.SelectedSeats,
+                SelectedScreeningId = seatsModel.SelectedScreeningId, 
                 Movie = movie,
                 TotalPrice = selectedSeats.Count() * movie.Price
             };
@@ -184,7 +185,7 @@ namespace VivedyWebApp.Controllers
                 Seats = payModel.SelectedSeats,
                 CreationDate = DateTime.Now,
                 UserEmail = payModel.Email,
-                RotationId = payModel.SelectedRotationId
+                ScreeningId = payModel.SelectedScreeningId
             };
             db.Bookings.Add(booking);
             int result = db.SaveChanges();
@@ -202,11 +203,11 @@ namespace VivedyWebApp.Controllers
                 string dataToEncode = "{\"bookingId\":\"" + booking.BookingId + "\",\"email\":\"" + booking.UserEmail + "\"}";
                 var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(dataToEncode);
                 string qrCodeData = "VIVEDYBOOKING_" + Convert.ToBase64String(plainTextBytes);
-                Rotation rotation = db.Rotations.Find(payModel.SelectedRotationId);
-                Movie movie = db.Movies.Find(rotation.MovieId);
+                Screening screening = db.Screenings.Find(payModel.SelectedScreeningId);
+                Movie movie = db.Movies.Find(screening.MovieId);
                 string subject = "Booking Confirmation";
-                ApplicationUser User = db.Users.Where(user => user.Email == payModel.Email).First();
-                string greeting = User != null ? "<b>Hi " + User.Name + "</b><br/>" : "";
+                List<ApplicationUser> Users = db.Users.Where(user => user.Email == payModel.Email).ToList();
+                string greeting = Users.Count() > 0 ? "<b>Hi " + Users[0].Name + "</b><br/>" : "";
                 //Generating an HTML body for the email
                 string mailbody = $"<div id=\"mainEmailContent\" style=\"-webkit-text-size-adjust: 100%; font-family: Verdana,sans-serif;\">" +
                                     $"<img style=\"display: block; margin-left: auto; margin-right: auto; height: 3rem; width: 3rem;\" src=\"http://vivedy.azurewebsites.net/favicon.ico\">" +
@@ -216,8 +217,8 @@ namespace VivedyWebApp.Controllers
                                     $"<i><p>Please present this email when you arrive to the cinema to the our stuuf at the entrance to the auditorium.</p></i>" +
                                     $"<div style=\"box-sizing: inherit; padding: 0.01em 16px; margin-top: 16px; margin-bottom: 16px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);\">" +
                                         $"<h3>{movie.Name}</h3>" +
-                                        $"<h4><b>Date:</b> {rotation.StartTime.ToString("dd MMMM yyyy")}</h4>" +
-                                        $"<h4><b>Time:</b> {rotation.StartTime.ToString("hh:mm tt")}</h4>" +
+                                        $"<h4><b>Date:</b> {screening.StartTime.ToString("dd MMMM yyyy")}</h4>" +
+                                        $"<h4><b>Time:</b> {screening.StartTime.ToString("hh:mm tt")}</h4>" +
                                         $"<h4><b>Your seats:</b> </h4>" +
                                         $"<ul>" +
                                             $"{htmlSeats}" +

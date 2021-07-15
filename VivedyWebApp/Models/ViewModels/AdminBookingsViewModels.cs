@@ -34,12 +34,12 @@ namespace VivedyWebApp.Models.ViewModels
         public string UserEmail { get; set; }
 
         /// <summary>
-        /// Rotation that is booked
+        /// Screening that is booked
         /// </summary>
-        [Display(Name = "Rotation Id")]
-        [ForeignKey("Rotation")]
+        [Display(Name = "Screening Id")]
+        [ForeignKey("Screening")]
         [Required]
-        public string RotationId { get; set; }
-        public Rotation Rotation { get; set; }
+        public string ScreeningId { get; set; }
+        public Screening Screening { get; set; }
     }
 }

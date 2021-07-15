@@ -1,4 +1,4 @@
-﻿@model VivedyWebApp.Models.MoviesBookingTimeViewModel
+﻿@model VivedyWebApp.Models.ViewModels.MoviesBookingTimeViewModel
 
 @{
     ViewBag.Title = "Booking Time";
@@ -23,16 +23,16 @@
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="row mt-5">
                         <div class="">
-                            @foreach (var rotation in Model.AvailableRotations)
+                            @foreach (var screening in Model.AvailableScreenings)
                             {
-                                <button class="btn btn-danger m-1 align-items-center SubmitButton" style="width:100%; max-width:10rem;" id="@rotation.RotationId">
-                                    <p class="mb-2 text-center">@rotation.StartTime.DayOfWeek</p>
-                                    <p class="mb-2 text-center">@rotation.StartTime.ToString("dd MMMM yyyy")</p>
-                                    <p class="mb-2 text-center">@rotation.StartTime.ToString("hh:mm tt")</p>
+                                <button class="btn btn-danger m-1 align-items-center SubmitButton" style="width:100%; max-width:10rem;" id="@screening.ScreeningId">
+                                    <p class="mb-2 text-center">@screening.StartTime.DayOfWeek</p>
+                                    <p class="mb-2 text-center">@screening.StartTime.ToString("dd MMMM yyyy")</p>
+                                    <p class="mb-2 text-center">@screening.StartTime.ToString("hh:mm tt")</p>
                                 </button>
                             }
                         </div>
-                        @Html.HiddenFor(m => m.SelectedRotationId)
+                        @Html.HiddenFor(m => m.SelectedScreeningId)
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@
 </div>
     <script>
         window.onload = function () {
-            let timeInput = document.getElementById("SelectedRotationId");
+            let timeInput = document.getElementById("SelectedScreeningId");
             let timesList = document.getElementsByClassName("SubmitButton");
             for (let i = 0; i < timesList.length; i++) {
                 timesList[i].onclick = function () {

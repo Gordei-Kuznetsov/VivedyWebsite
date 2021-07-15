@@ -1,22 +1,22 @@
-﻿@model IEnumerable<VivedyWebApp.Models.Rotation>
+﻿@model IEnumerable<VivedyWebApp.Models.Screening>
 
 @{
-    ViewBag.Title = "Admin | Rotaions";
+    ViewBag.Title = "Admin | Screenings";
 }
 
 <div class="adminCard">
     <div class=" mx-auto phenomena-sm display-3 text-center">
-        ADMIN ROTATIONS
+        ADMIN SCREENINGS
     </div>
     <div class="white-bg-color">
-        <a class="btn btn-danger  phenomena-sm " href="/AdminRotations/Create">ADD <i class="fas fa-plus"></i></a>
+        <a class="btn btn-danger  phenomena-sm " href="/AdminScreenings/Create">ADD <i class="fas fa-plus"></i></a>
         <input type="text" class="mb-3 float-right" id="Search" placeholder="Search by Start Time...">
         <br>
         <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
             <thead>
                 <tr class="text-center ">
                     <th scope="col" >
-                        @Html.DisplayNameFor(model => model.RotationId)
+                        @Html.DisplayNameFor(model => model.ScreeningId)
                     </th>
                     <th scope="col" >
                         @Html.DisplayNameFor(model => model.StartTime)
@@ -34,7 +34,7 @@
                 {
                     <tr class="text-center">
                         <td class="admin-display-cut">
-                            @Html.DisplayFor(modelItem => item.RotationId)
+                            @Html.DisplayFor(modelItem => item.ScreeningId)
                         </td>
                         <td class="startTime admin-display-set-width">
                             @{
@@ -47,19 +47,19 @@
                         </td>
                         <td>
                             <div class="admin-button">
-                                @Html.ActionLink("Edit", "Edit", "AdminRotations", routeValues: new { id = item.RotationId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                                @Html.ActionLink("Details", "Details", "AdminRotations", routeValues: new { id = item.RotationId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                                @Html.ActionLink("Delete", "Delete", "AdminRotations", routeValues: new { id = item.RotationId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                @Html.ActionLink("Edit", "Edit", "AdminScreenings", routeValues: new { id = item.ScreeningId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                @Html.ActionLink("Details", "Details", "AdminScreenings", routeValues: new { id = item.ScreeningId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                @Html.ActionLink("Delete", "Delete", "AdminScreenings", routeValues: new { id = item.ScreeningId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                             </div>
                             <div class="admin-button-row">
                                 <div class="row">
-                                    @Html.ActionLink("Edit", "Edit", "AdminRotations", routeValues: new { id = item.RotationId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                    @Html.ActionLink("Edit", "Edit", "AdminScreenings", routeValues: new { id = item.ScreeningId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                                 </div>
                                 <div class="row">
-                                    @Html.ActionLink("Details", "Details", "AdminRotations", routeValues: new { id = item.RotationId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                    @Html.ActionLink("Details", "Details", "AdminScreenings", routeValues: new { id = item.ScreeningId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                                 </div>
                                 <div class="row">
-                                    @Html.ActionLink("Delete", "Delete", "AdminRotations", routeValues: new { id = item.RotationId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                    @Html.ActionLink("Delete", "Delete", "AdminScreenings", routeValues: new { id = item.ScreeningId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                                 </div>
 
                             </div>

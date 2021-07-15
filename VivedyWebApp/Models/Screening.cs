@@ -8,27 +8,27 @@ using System.Web;
 namespace VivedyWebApp.Models
 {
     /// <summary>
-    /// Rotation model
+    /// Screening model
     /// </summary>
-    public class Rotation
+    public class Screening
     {
         /// <summary>
-        /// Rotation GIUD
+        /// Screening GIUD
         /// </summary>
-        [Display(Name = "Rotaion Id")]
+        [Display(Name = "Screening Id")]
         [Key]
         [Required]
-        public string RotationId { get; set; }
+        public string ScreeningId { get; set; }
 
         /// <summary>
-        /// Rotation start date and time
+        /// Screening start date and time
         /// </summary>
         [Display(Name = "Start Time")]
         [Required]
         public System.DateTime StartTime { get; set; }
 
         /// <summary>
-        /// ID of the movie for which the rotations is created
+        /// ID of the movie for which the Screenings is created
         /// </summary>
         [Display(Name = "Movie Id")]
         [ForeignKey ("Movie")]

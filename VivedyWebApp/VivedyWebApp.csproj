@@ -180,7 +180,7 @@
     <Compile Include="Controllers\AdminBookingsController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AdminMoviesController.cs" />
-    <Compile Include="Controllers\AdminRotationsController.cs" />
+    <Compile Include="Controllers\AdminScreeningsController.cs" />
     <Compile Include="Controllers\AdminUsersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
@@ -231,18 +231,23 @@
     <Compile Include="Migrations\202106220134273_AddedCinemaModel.Designer.cs">
       <DependentUpon>202106220134273_AddedCinemaModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202107151124158_RenamedRotationsToScreenings.cs" />
+    <Compile Include="Migrations\202107151124158_RenamedRotationsToScreenings.Designer.cs">
+      <DependentUpon>202107151124158_RenamedRotationsToScreenings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AppDbContext.cs" />
     <Compile Include="Models\Cinema.cs" />
     <Compile Include="Models\ViewModels\AccountsViewModels.cs" />
     <Compile Include="Models\Booking.cs" />
     <Compile Include="Models\ViewModels\AdminBookingsViewModels.cs" />
     <Compile Include="Models\ViewModels\AdminMoviesViewModels.cs" />
-    <Compile Include="Models\ViewModels\AdminRotationsViewModels.cs" />
+    <Compile Include="Models\ViewModels\AdminScreeningViewModels.cs" />
     <Compile Include="Models\ViewModels\AdminUsersViewModels.cs" />
     <Compile Include="Models\ViewModels\MoviesViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Movie.cs" />
-    <Compile Include="Models\Rotation.cs" />
+    <Compile Include="Models\Screening.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -326,11 +331,11 @@
     <Content Include="Views\AdminBookings\Details.cshtml" />
     <Content Include="Views\AdminBookings\Edit.cshtml" />
     <Content Include="Views\AdminBookings\Index.cshtml" />
-    <Content Include="Views\AdminRotations\Create.cshtml" />
-    <Content Include="Views\AdminRotations\Delete.cshtml" />
-    <Content Include="Views\AdminRotations\Details.cshtml" />
-    <Content Include="Views\AdminRotations\Edit.cshtml" />
-    <Content Include="Views\AdminRotations\Index.cshtml" />
+    <Content Include="Views\AdminScreenings\Create.cshtml" />
+    <Content Include="Views\AdminScreenings\Delete.cshtml" />
+    <Content Include="Views\AdminScreenings\Details.cshtml" />
+    <Content Include="Views\AdminScreenings\Edit.cshtml" />
+    <Content Include="Views\AdminScreenings\Index.cshtml" />
     <Content Include="Views\AdminUsers\Create.cshtml" />
     <Content Include="Views\AdminUsers\Delete.cshtml" />
     <Content Include="Views\AdminUsers\Details.cshtml" />
@@ -396,6 +401,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202106220134273_AddedCinemaModel.resx">
       <DependentUpon>202106220134273_AddedCinemaModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107151124158_RenamedRotationsToScreenings.resx">
+      <DependentUpon>202107151124158_RenamedRotationsToScreenings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

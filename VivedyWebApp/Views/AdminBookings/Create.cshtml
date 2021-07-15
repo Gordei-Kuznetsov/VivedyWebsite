@@ -14,10 +14,10 @@
             <div class="border-bottom">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="row">
-                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.RotationId) : </div>
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.ScreeningId) : </div>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.EditorFor(model => model.RotationId, new { htmlAttributes = new { @class = "col-md-12" } })
-                        @Html.ValidationMessageFor(model => model.RotationId, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.ScreeningId, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.ValidationMessageFor(model => model.ScreeningId, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="row">

@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -29,43 +28,5 @@ namespace VivedyWebApp.Models
             // Add custom user claims here
             return userIdentity;
         }
-    }
-
-    /// <summary>
-    /// Application's database context class
-    /// </summary>
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
-    {
-
-        public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
-        {
-        }
-
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
-
-        /// <summary>
-        /// Field for Movies in the ApplicationDbContext
-        /// </summary>
-        public DbSet<Movie> Movies { get; set; }
-
-        /// <summary>
-        /// Field for Bookings in the ApplicationDbContext
-        /// </summary>
-        public DbSet<Booking> Bookings { get; set; }
-        
-        /// <summary>
-        /// Field for Rotations in the ApplicationDbContext
-        /// </summary>
-        public DbSet<Rotation> Rotations { get; set; }
-
-        /// <summary>
-        /// Field for Cinemas in the ApplicationDbContext
-        /// </summary>
-        public DbSet<Cinema> Cinemas { get; set; }
-
     }
 }

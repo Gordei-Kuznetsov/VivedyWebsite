@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace VivedyWebApp.Models
+namespace VivedyWebApp.Models.ViewModels
 {
     /// <summary>
     /// Model specificly used for getting booking time on Movies/BookingTime page
@@ -12,15 +12,15 @@ namespace VivedyWebApp.Models
     public class MoviesBookingTimeViewModel
     {
         /// <summary>
-        /// Rotations available for the selected movie
+        /// Screenings available for the selected movie
         /// </summary>
-        public List<Rotation> AvailableRotations { get; set; }
+        public List<Screening> AvailableScreenings { get; set; }
 
         /// <summary>
-        /// ID of the selected rotation
+        /// ID of the selected Screening
         /// </summary>
         [Required]
-        public string SelectedRotationId { get; set; }
+        public string SelectedScreeningId { get; set; }
 
         /// <summary>
         /// Movie selected for the booking
@@ -34,14 +34,14 @@ namespace VivedyWebApp.Models
     public class MoviesBookingSeatsViewModel
     {
         /// <summary>
-        /// ID of the selected rotation
+        /// ID of the selected Screening
         /// </summary>
-        [Display(Name = "Selected Rotation Id")]
+        [Display(Name = "Selected Screening Id")]
         [Required]
-        public string SelectedRotationId { get; set; }
+        public string SelectedScreeningId { get; set; }
 
         /// <summary>
-        /// Seats occupied for this rotation
+        /// Seats occupied for this Screening
         /// </summary>
         public List<int> OccupiedSeats { get; set; }
 
@@ -64,14 +64,14 @@ namespace VivedyWebApp.Models
     public class MoviesBookingPayViewModel
     {
         /// <summary>
-        /// ID of the selected rotation
+        /// ID of the selected Screening
         /// </summary>
-        [Display(Name = "Selected Rotation Id")]
+        [Display(Name = "Selected Screening Id")]
         [Required]
-        public string SelectedRotationId { get; set; }
+        public string SelectedScreeningId { get; set; }
 
         /// <summary>
-        /// Seats selected for the booking
+        /// Seats selected for the Screening
         /// </summary>
         [Display(Name = "Selected Seats")]
         [Required]

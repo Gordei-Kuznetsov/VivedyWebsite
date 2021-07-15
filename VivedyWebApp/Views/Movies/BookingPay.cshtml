@@ -1,4 +1,4 @@
-﻿@model VivedyWebApp.Models.MoviesBookingPayViewModel
+﻿@model VivedyWebApp.Models.ViewModels.MoviesBookingPayViewModel
 
 @{
     ViewBag.Title = "Booking Payment";
@@ -72,7 +72,7 @@
                             <div class="text-center mt-5 mb-5">
                                 You will recieve your tickets in the email your provide.
                             </div>
-                            @Html.HiddenFor(m => m.SelectedRotationId)
+                            @Html.HiddenFor(m => m.SelectedScreeningId)
                             @Html.HiddenFor(m => m.SelectedSeats)
                             @Html.HiddenFor(m => m.TotalPrice)
                         </div>

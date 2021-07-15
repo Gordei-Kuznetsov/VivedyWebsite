@@ -8,19 +8,19 @@ using System.Web;
 namespace VivedyWebApp.Models.ViewModels
 {
     /// <summary>
-    /// Model specificly used for creating new Rotation on AdminRotations/Create page
+    /// Model specificly used for creating new Screening on AdminScreenings/Create page
     /// </summary>
-    public class AdminRotationsCreateViewModel
+    public class AdminScreeningsCreateViewModel
     {
         /// <summary>
-        /// Start day and time for the rotation
+        /// Start day and time for the Screening
         /// </summary>
         [Display(Name = "Start Day and Time")]
         [Required]
         public System.DateTime StartTime { get; set; }
 
         /// <summary>
-        /// ID of the movie for which the rotations is created
+        /// ID of the movie for which the Screening is created
         /// </summary>
         [Display(Name = "Movie Id")]
         [ForeignKey("Movie")]
@@ -29,9 +29,9 @@ namespace VivedyWebApp.Models.ViewModels
         public Movie Movie { get; set; }
 
         /// <summary>
-        /// Boolean indicating whether a week of rotations is auto-generated
+        /// Boolean indicating whether a week of Screenings is auto-generated
         /// </summary>
-        [Display(Name = "Auto-generate a week of rotations?")]
-        public bool GenerateRotations { get; set; }
+        [Display(Name = "Auto-generate a week of screenings?")]
+        public bool GenerateScreenings { get; set; }
     }
 }

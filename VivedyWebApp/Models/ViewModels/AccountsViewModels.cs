@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 
-namespace VivedyWebApp.Models
+namespace VivedyWebApp.Models.ViewModels
 {
     /// <summary>
     /// Model used on Login page
