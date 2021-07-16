@@ -51,8 +51,8 @@ namespace VivedyWebApp.Controllers
                      Name = user.Name,
                      UserName = user.UserName,
                      Id = user.Id,
-                     //Getting the role for each user
-                     Role = UserManager.GetRoles(user.Id).First(),
+                     //Getting the roles for each user
+                     Role = UserManager.GetRoles(user.Id).ToList().ToString(),
                      PhoneNumberConfirmed = user.PhoneNumberConfirmed,
                      PhoneNumber  = user.PhoneNumber,
                      EmailConfirmed = user.EmailConfirmed,
@@ -83,7 +83,7 @@ namespace VivedyWebApp.Controllers
                 UserName = applicationUser.UserName,
                 Id = applicationUser.Id,
                 //Updating the role
-                Role = UserManager.GetRoles(applicationUser.Id).First(),
+                Role = UserManager.GetRoles(applicationUser.Id).ToList().ToString(),
                 PhoneNumberConfirmed = applicationUser.PhoneNumberConfirmed,
                 PhoneNumber = applicationUser.PhoneNumber,
                 EmailConfirmed = applicationUser.EmailConfirmed,
@@ -170,7 +170,7 @@ namespace VivedyWebApp.Controllers
                 UserName = applicationUser.UserName,
                 Id = applicationUser.Id,
                 //Getting the role
-                Role = UserManager.GetRoles(applicationUser.Id).First(),
+                Role = UserManager.GetRoles(applicationUser.Id).ToList().ToString(),
                 PhoneNumberConfirmed = applicationUser.PhoneNumberConfirmed,
                 PhoneNumber = applicationUser.PhoneNumber,
                 EmailConfirmed = applicationUser.EmailConfirmed,
@@ -225,7 +225,7 @@ namespace VivedyWebApp.Controllers
                 UserName = applicationUser.UserName,
                 Id = applicationUser.Id,
                 //Getting the role
-                Role = UserManager.GetRoles(applicationUser.Id).First(),
+                Role = UserManager.GetRoles(applicationUser.Id).ToList().ToString(),
                 PhoneNumberConfirmed = applicationUser.PhoneNumberConfirmed,
                 PhoneNumber = applicationUser.PhoneNumber,
                 EmailConfirmed = applicationUser.EmailConfirmed,
