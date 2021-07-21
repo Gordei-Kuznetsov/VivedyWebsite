@@ -4,7 +4,7 @@
     ViewBag.Title = "Delete Screening";
 }
 
-@using (Html.BeginForm("Delete", "Admin/Screenings", null, FormMethod.Post, new { role = "form" }))
+@using (Html.BeginForm("Delete", "Screenings", null, FormMethod.Post, new { role = "form" }))
 {
     @Html.AntiForgeryToken()
 

@@ -4,7 +4,7 @@
     ViewBag.Title = "Delete User";
 }
 
-@using (Html.BeginForm("Delete", "Admin/Users", null, FormMethod.Post, new { role = "form" }))
+@using (Html.BeginForm("Delete", "Users", null, FormMethod.Post, new { role = "form" }))
 {
     @Html.AntiForgeryToken()
 

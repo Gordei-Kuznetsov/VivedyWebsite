@@ -4,7 +4,7 @@
     ViewBag.Title = "Create Screening";
 }
 
-@using (Html.BeginForm("Create", "Admin/Screenings", null, FormMethod.Post, new { role = "form" }))
+@using (Html.BeginForm("Create", "Screenings", null, FormMethod.Post, new { role = "form" }))
 {
     @Html.AntiForgeryToken()
     

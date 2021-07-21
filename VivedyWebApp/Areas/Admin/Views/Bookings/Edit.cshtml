@@ -4,7 +4,7 @@
     ViewBag.Title = "Edit Booking";
 }
 
-@using (Html.BeginForm("Edit", "Admin/Bookings", null, FormMethod.Post, new { role = "form" }))
+@using (Html.BeginForm("Edit", "Bookings", null, FormMethod.Post, new { role = "form" }))
 {
     @Html.AntiForgeryToken()
 

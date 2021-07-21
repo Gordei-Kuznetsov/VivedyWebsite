@@ -4,7 +4,7 @@
     ViewBag.Title = "Edit Movie";
 }
 
-@using (Html.BeginForm("Edit", "Admin/Movies", null, FormMethod.Post, new { role = "form", enctype = "multipart/form-data"  }))
+@using (Html.BeginForm("Edit", "Movies", null, FormMethod.Post, new { role = "form", enctype = "multipart/form-data"  }))
 {
     @Html.AntiForgeryToken()
     

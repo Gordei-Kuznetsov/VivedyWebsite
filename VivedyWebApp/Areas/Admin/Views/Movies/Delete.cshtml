@@ -4,7 +4,7 @@
     ViewBag.Title = "Delete Movie";
 }
 
-@using (Html.BeginForm("Delete", "Admin/Movies", null, FormMethod.Post, new { role = "form" }))
+@using (Html.BeginForm("Delete", "Movies", null, FormMethod.Post, new { role = "form" }))
 {
     @Html.AntiForgeryToken()
 
