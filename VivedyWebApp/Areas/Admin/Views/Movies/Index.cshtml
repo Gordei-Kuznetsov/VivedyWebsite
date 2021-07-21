@@ -1,0 +1,166 @@
+﻿@model IEnumerable<VivedyWebApp.Models.Movie>
+
+@{
+    ViewBag.Title = "Movies";
+}
+
+    <div class="adminCard">
+        <div class=" mx-auto phenomena-sm display-3 text-center">
+            MOVIES
+        </div>
+        <div class="white-bg-color admin-desktop">
+            <a class="btn btn-danger  phenomena-sm " href="/Admin/Movies/Create">ADD <i class="fas fa-plus"></i></a>
+            <input type="text" class="mb-3 float-right" id="Search" placeholder="Search by name...">
+            <br>
+            <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col" style="width:95px">
+                            @Html.DisplayNameFor(model => model.MovieId)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Rating)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Category)
+                        </th>
+                        <th scope="col" style="width:240px">
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Duration)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th scope="col" style="width:150px">
+                            @Html.DisplayNameFor(model => model.TrailerUrl)
+                        </th>
+                        <th scope="col">
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="myList" style="height:30px">
+                    @foreach (var item in Model)
+                    {
+                        <tr class="text-center">
+                            <td style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
+                                @Html.DisplayFor(modelItem => item.MovieId)
+                            </td>
+                            <td class="movieName">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Rating)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category)
+                            </td>
+                            <td style="width:240px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Duration)
+                            </td>
+                            <td>
+                                $@Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td style="width:150px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
+                                @Html.DisplayFor(modelItem => item.TrailerUrl)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                @Html.ActionLink("Details", "Details", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="white-bg-color admin-mobile">
+            <a class="btn btn-danger  phenomena-sm " href="/Admin/Movies/Create">ADD <i class="fas fa-plus"></i></a>
+            <input type="text" class="mb-3 float-right" id="Search" placeholder="Search by name...">
+            <br>
+            <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col" style="width:95px">
+                            @Html.DisplayNameFor(model => model.MovieId)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        
+                        <th scope="col">
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="myList" style="height:30px">
+                    @foreach (var item in Model)
+                    {
+                        <tr class="text-center">
+                            <td style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
+                                @Html.DisplayFor(modelItem => item.MovieId)
+                            </td>
+                            <td class="movieName">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            
+                            <td>
+                                <div class="admin-button">
+                                    @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                    @Html.ActionLink("Details", "Details", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                    @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                </div>
+                                <div class="admin-button-row">
+                                    <div class="row">
+                                        @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                    </div>
+                                    <div class="row">
+                                        @Html.ActionLink("Details", "Details", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                    </div>
+                                    <div class="row">
+                                        @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                    </div>
+                                  
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+<script>
+    let Search;
+    let rowslist = Array();
+
+    window.onload = function () {
+        Search = document.getElementById("Search");
+        Search.oninput = SearchForMovie;
+
+        rowslist = document.getElementById("myList").getElementsByTagName("tr");
+        for (let i = 0; i < rowslist.length; i++) {
+            rowslist[i].unmatched = false;
+            rowslist[i].movieName = rowslist[i].getElementsByClassName("movieName")[0].innerHTML;
+        }
+    }
+    function SearchForMovie() {
+        for (let i = 0; i < rowslist.length; i++) {
+            if (rowslist[i].movieName.indexOf(Search.value) > -1) {
+                rowslist[i].unmatched = false;
+                rowslist[i].style.display = "";
+            }
+            else {
+                rowslist[i].unmatched = true;
+                rowslist[i].style.display = "none";
+            }
+        };
+    }
+</script>

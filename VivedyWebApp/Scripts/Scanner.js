@@ -19,7 +19,7 @@ function decode() {
     });
 }
 function sendDecodedResult(QRcontent) {
-    $.post(`/Admin/VerifyBookings/?data=${QRcontent}`, "", (result) => {
+    $.post(`/Admin/Home/VerifyBookings/?data=${QRcontent}`, "", (result) => {
         if (result.error == null) {
             if (result.verified) {
                 displayMessage(true, "VERIFIED", "The booking is valid");

@@ -2,15 +2,15 @@
 {
     if (User.IsInRole("Admin"))
     {
-        <li class="nav-item">
-            @Html.ActionLink("Admin", "Index", "Admin", routeValues: null, htmlAttributes: new { id = "adminLink", @class = $"nav-link {(ViewBag.Title.Contains("Admin") ? "active" : null)}" })
-        </li>
+    <li class="nav-item">
+        <a class="nav-link" id = "adminLink" href="/Admin/Home/Index">Admin</a>
+    </li>
     }
     using (Html.BeginForm("LogOff", "Accounts", FormMethod.Post, new { id = "logoutForm" }))
     {
         @Html.AntiForgeryToken()
         <li class="nav-item">
-            <a class="nav-link @(ViewBag.Title == "Log off" ? "active" : null)" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+            <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
         </li>
     }
     <li class="nav-item">
