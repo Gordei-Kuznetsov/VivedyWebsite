@@ -32,12 +32,5 @@ namespace VivedyWebApp.Models
         [Display(Name = "Cinema Address")]
         [Required]
         public string Address { get; set; }
-
-        /// <summary>
-        /// Layout of seats in the cinema
-        /// </summary>
-        [Display(Name = "Seats Layout")]
-        [Required]
-        public string SeatsLayout { get; set; }
     }
 }

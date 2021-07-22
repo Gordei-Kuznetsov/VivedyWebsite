@@ -39,5 +39,9 @@ namespace VivedyWebApp.Models
         /// </summary>
         public DbSet<Cinema> Cinemas { get; set; }
 
+        /// <summary>
+        /// Field for Rooms in the ApplicationDbContext
+        /// </summary>
+        public DbSet<Room> Rooms { get; set; }
     }
 }

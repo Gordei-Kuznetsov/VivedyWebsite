@@ -236,9 +236,14 @@
     <Compile Include="Migrations\202107151124158_RenamedRotationsToScreenings.Designer.cs">
       <DependentUpon>202107151124158_RenamedRotationsToScreenings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202107220818333_AddedRoomsAndRoomsFkAndUserRating.cs" />
+    <Compile Include="Migrations\202107220818333_AddedRoomsAndRoomsFkAndUserRating.Designer.cs">
+      <DependentUpon>202107220818333_AddedRoomsAndRoomsFkAndUserRating.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppDbContext.cs" />
     <Compile Include="Models\Cinema.cs" />
+    <Compile Include="Models\Room.cs" />
     <Compile Include="Models\ViewModels\AccountsViewModels.cs" />
     <Compile Include="Models\Booking.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\BookingsViewModels.cs" />
@@ -409,6 +414,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202107151124158_RenamedRotationsToScreenings.resx">
       <DependentUpon>202107151124158_RenamedRotationsToScreenings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107220818333_AddedRoomsAndRoomsFkAndUserRating.resx">
+      <DependentUpon>202107220818333_AddedRoomsAndRoomsFkAndUserRating.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

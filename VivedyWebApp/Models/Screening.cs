@@ -35,5 +35,14 @@ namespace VivedyWebApp.Models
         [Required]
         public string MovieId { get; set; }
         public Movie Movie { get; set; }
+
+        /// <summary>
+        /// ID of the room where the screening is happeneing
+        /// </summary>
+        [Display(Name = "Room Id")]
+        [ForeignKey("Room")]
+        [Required]
+        public string RoomId { get; set; }
+        public Room Room { get; set; }
     }
 }

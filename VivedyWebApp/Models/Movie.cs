@@ -34,6 +34,14 @@ namespace VivedyWebApp.Models
         public int Rating { get; set; }
 
         /// <summary>
+        /// Movie user rating
+        /// </summary>
+        [Display(Name = "User Rating")]
+        [Range(1, 5)]
+        [Required]
+        public int UserRating { get; set; }
+
+        /// <summary>
         /// Movie category/genre
         /// </summary>
         [Display(Name = "Category")]
