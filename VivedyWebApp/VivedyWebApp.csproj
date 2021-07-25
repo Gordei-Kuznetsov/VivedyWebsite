@@ -187,6 +187,7 @@
     <Compile Include="Areas\Admin\Controllers\MoviesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ScreeningsController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Controllers\BookingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -254,7 +255,7 @@
     <Compile Include="Areas\Admin\Models\ViewModels\MoviesViewModels.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\ScreeningViewModels.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\UsersViewModels.cs" />
-    <Compile Include="Models\ViewModels\MoviesViewModels.cs" />
+    <Compile Include="Models\ViewModels\BookingsViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Screening.cs" />
@@ -342,7 +343,7 @@
     <Content Include="Views\Home\Privacy.cshtml" />
     <Content Include="Views\Movies\Details.cshtml" />
     <Content Include="Views\Movies\Index.cshtml" />
-    <Content Include="Views\Movies\BookingConfirmation.cshtml" />
+    <Content Include="Views\Bookings\BookingConfirmation.cshtml" />
     <Content Include="Views\Accounts\ResetPassword.cshtml" />
     <Content Include="Views\Accounts\ResetPasswordConfirmation.cshtml" />
     <Content Include="Areas\Admin\Views\Movies\Create.cshtml" />
@@ -367,9 +368,9 @@
     <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Accounts\ChangeEmail.cshtml" />
-    <Content Include="Views\Movies\BookingTime.cshtml" />
-    <Content Include="Views\Movies\BookingSeats.cshtml" />
-    <Content Include="Views\Movies\BookingPay.cshtml" />
+    <Content Include="Views\Bookings\BookingTime.cshtml" />
+    <Content Include="Views\Bookings\BookingSeats.cshtml" />
+    <Content Include="Views\Bookings\BookingPay.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Home\BookingScanner.cshtml" />
     <Content Include="Views\Accounts\Delete.cshtml" />

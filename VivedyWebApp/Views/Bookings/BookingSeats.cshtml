@@ -1,10 +1,10 @@
-﻿@model VivedyWebApp.Models.ViewModels.MoviesBookingSeatsViewModel
+﻿@model VivedyWebApp.Models.ViewModels.BookingSeatsViewModel
 
 @{
-    ViewBag.Title = "Booking Seats";
+    ViewBag.Title = "Seats";
 }
 
-@using (Html.BeginForm("BookingSeats", "Movies", FormMethod.Post, htmlAttributes: new { role = "form", id="seatsForm", onsubmit="return validateTheForm()" }))
+@using (Html.BeginForm("Seats", "Bookings", FormMethod.Post, htmlAttributes: new { role = "form", id="seatsForm", onsubmit="return validateTheForm()" }))
 {
     @Html.AntiForgeryToken()
 
@@ -13,26 +13,26 @@
             <div class="col-lg-9 col-sm-12 ">
                 <div class=" text-center mb-5">
                     <!--
-    <div class="card-header">
-        <ul class="nav nav-pills card-header-pills">
-            <li class="nav-item">
-                <div class="nav-link">Time</div>
-            </li>
-            <li class="nav-item">
-                <div class="btn btn-danger" disabled>Seats</div>
-            </li>
-            <li class="nav-item">
-                <div class="nav-link">Payment</div>
-            </li>
+                    <div class="card-header">
+                        <ul class="nav nav-pills card-header-pills">
+                            <li class="nav-item">
+                                <div class="nav-link">Time</div>
+                            </li>
+                            <li class="nav-item">
+                                <div class="btn btn-danger" disabled>Seats</div>
+                            </li>
+                            <li class="nav-item">
+                                <div class="nav-link">Payment</div>
+                            </li>
 
-        </ul>
-    </div>
-        -->
+                        </ul>
+                    </div>
+                    -->
                     <div class="card-body align-self-center">
                         <h5 class="phenomena-sm-two">Seats</h5>
                         <hr style="width:40%" />
                         <div class="progress">
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 66%;" aria-valuemin="0" aria-valuemax="100">66% Seats</div>
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 66%;" aria-valuemin="0" aria-valuemax="100">33% Seats</div>
                         </div>
                         <hr style="width:40%" />
                         <p class="card-text">Select your seats</p>
@@ -60,39 +60,39 @@
                             </div>
                         }
                         <!--
-                            <div class="row">
-                                <div class="gray-box">
-                                    <p class="seatNumber">1</p>
-                                </div>
-                                <div class="gray-box">
-                                    <p class="seatNumber">2</p>
-                                </div>
-                                <div class="gray-box">
-                                    <p class="seatNumber">3</p>
-                                </div>
-                                <div class="gray-box">
-                                    <p class="seatNumber">4</p>
-                                </div>
-                                <div class="gray-box">
-                                    <p class="seatNumber">5</p>
-                                </div>
-                                <div class="gray-box">
-                                    <p class="seatNumber">6</p>
-                                </div>
-                                <div class="gray-box">
-                                    <p class="seatNumber">7</p>
-                                </div>
-                                <div class="gray-box">
-                                    <p class="seatNumber">8</p>
-                                </div>
-                                <div class="gray-box-select">
-                                    <p class="seatNumber">9</p>
-                                </div>
-                                <div class="gray-box-taken">
-                                    <p class="seatNumber">10</p>
-                                </div>
+                        <div class="row">
+                            <div class="gray-box">
+                                <p class="seatNumber">1</p>
                             </div>
-        -->
+                            <div class="gray-box">
+                                <p class="seatNumber">2</p>
+                            </div>
+                            <div class="gray-box">
+                                <p class="seatNumber">3</p>
+                            </div>
+                            <div class="gray-box">
+                                <p class="seatNumber">4</p>
+                            </div>
+                            <div class="gray-box">
+                                <p class="seatNumber">5</p>
+                            </div>
+                            <div class="gray-box">
+                                <p class="seatNumber">6</p>
+                            </div>
+                            <div class="gray-box">
+                                <p class="seatNumber">7</p>
+                            </div>
+                            <div class="gray-box">
+                                <p class="seatNumber">8</p>
+                            </div>
+                            <div class="gray-box-select">
+                                <p class="seatNumber">9</p>
+                            </div>
+                            <div class="gray-box-taken">
+                                <p class="seatNumber">10</p>
+                            </div>
+                        </div>
+                        -->
                         @Html.HiddenFor(m => m.SelectedSeats)
                         @Html.ValidationMessageFor(m => m.SelectedSeats, "", new { @class = "text-danger", id = "ValMessageSpanForSeats" })
                         @Html.HiddenFor(m => m.SelectedScreeningId)

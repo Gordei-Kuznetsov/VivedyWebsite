@@ -1,10 +1,10 @@
-﻿@model VivedyWebApp.Models.ViewModels.MoviesBookingPayViewModel
+﻿@model VivedyWebApp.Models.ViewModels.BookingPayViewModel
 
 @{
-    ViewBag.Title = "Booking Payment";
+    ViewBag.Title = "Payment";
 }
 
-@using (Html.BeginForm("BookingPay", "Movies", FormMethod.Post, htmlAttributes: new { role = "form" }))
+@using (Html.BeginForm("Pay", "Bookings", FormMethod.Post, htmlAttributes: new { role = "form" }))
 {
     @Html.AntiForgeryToken()
 
@@ -18,7 +18,7 @@
                         </div>
                         <hr style="width:40%" />
                         <div class="progress">
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuemin="0" aria-valuemax="100">100% Payment</div>
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuemin="0" aria-valuemax="100">66% Payment</div>
                         </div>
                         <hr style="width:40%" />
                         <div class="text-center align-self-center mt-5">

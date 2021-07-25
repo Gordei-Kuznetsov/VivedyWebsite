@@ -9,7 +9,7 @@ namespace VivedyWebApp.Models.ViewModels
     /// <summary>
     /// Model specificly used for getting booking time on Movies/BookingTime page
     /// </summary>
-    public class MoviesBookingTimeViewModel
+    public class BookingTimeViewModel
     {
         /// <summary>
         /// Screenings available for the selected movie
@@ -31,7 +31,7 @@ namespace VivedyWebApp.Models.ViewModels
     /// <summary>
     /// Model specificly used for getting booking seats on Movies/BookingSeats page
     /// </summary>
-    public class MoviesBookingSeatsViewModel
+    public class BookingSeatsViewModel
     {
         /// <summary>
         /// ID of the selected Screening
@@ -61,7 +61,7 @@ namespace VivedyWebApp.Models.ViewModels
     /// <summary>
     /// Model specificly used for getting booking payment details on Movies/BookingPay page
     /// </summary>
-    public class MoviesBookingPayViewModel
+    public class BookingPayViewModel
     {
         /// <summary>
         /// ID of the selected Screening
