@@ -177,6 +177,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\CinemasController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RoomsController.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\CinemasViewModels.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\RoomsViewModels.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Areas\Admin\Controllers\BookingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
@@ -289,6 +293,16 @@
     <Content Include="Areas\Admin\Views\Shared\Error.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Lockout.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Cinemas\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Cinemas\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Cinemas\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Cinemas\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Cinemas\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Rooms\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Rooms\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Rooms\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Rooms\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Rooms\Index.cshtml" />
     <None Include="Properties\PublishProfiles\vivedy - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

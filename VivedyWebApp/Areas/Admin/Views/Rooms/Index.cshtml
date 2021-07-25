@@ -1,12 +1,12 @@
-﻿@model IEnumerable<VivedyWebApp.Models.Screening>
+﻿@model IEnumerable<VivedyWebApp.Models.Room>
 
 @{
-    ViewBag.Title = "Screenings";
+    ViewBag.Title = "Cinemas";
 }
 
 <div class="adminCard">
     <div class=" mx-auto phenomena-sm display-3 text-center">
-        SCREENINGS
+        CINEMAS
     </div>
     <div class="white-bg-color">
         <a class="btn btn-danger  phenomena-sm " href="/Admin/Screenings/Create">ADD <i class="fas fa-plus"></i></a>
@@ -16,16 +16,13 @@
             <thead>
                 <tr class="text-center ">
                     <th scope="col">
-                        @Html.DisplayNameFor(model => model.ScreeningId)
+                        @Html.DisplayNameFor(model => model.CinemaId)
                     </th>
                     <th scope="col">
-                        @Html.DisplayNameFor(model => model.StartTime)
+                        @Html.DisplayNameFor(model => model.Name)
                     </th>
                     <th scope="col">
-                        @Html.DisplayNameFor(model => model.MovieId)
-                    </th>
-                    <th scope="col" class="admin-display-sm-none">
-                        @Html.DisplayNameFor(model => model.RoomId)
+                        @Html.DisplayNameFor(model => model.Address)
                     </th>
                     <th scope="col">
 
@@ -37,35 +34,29 @@
                 {
                     <tr class="text-center">
                         <td class="admin-display-cut">
-                            @Html.DisplayFor(modelItem => item.ScreeningId)
+                            @Html.DisplayFor(modelItem => item.CinemaId)
                         </td>
-                        <td class="startTime admin-display-set-width">
-                            @{
-                                string startTime = item.StartTime.ToString("dddd, dd MMMM yyyy HH:mm tt");
-                                @Html.DisplayFor(modelItem => startTime)
-                            }
+                        <td class="name admin-display-set-width">
+                            @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td class="admin-display-cut admin-display-sm-none">
-                            @Html.DisplayFor(modelItem => item.MovieId)
-                        </td>
-                        <td class="admin-display-cut admin-display-sm-none">
-                            @Html.DisplayFor(modelItem => item.RoomId)
+                            @Html.DisplayFor(modelItem => item.Address)
                         </td>
                         <td>
                             <div class="admin-button">
-                                @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.ScreeningId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                                @Html.ActionLink("Details", "Details", routeValues: new { id = item.ScreeningId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                                @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.ScreeningId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.CinemaId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                @Html.ActionLink("Details", "Details", routeValues: new { id = item.CinemaId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.CinemaId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                             </div>
                             <div class="admin-button-row">
                                 <div class="row">
-                                    @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.ScreeningId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                    @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.CinemaId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                                 </div>
                                 <div class="row">
-                                    @Html.ActionLink("Details", "Details", routeValues: new { id = item.ScreeningId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                    @Html.ActionLink("Details", "Details", routeValues: new { id = item.CinemaId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                                 </div>
                                 <div class="row">
-                                    @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.ScreeningId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                    @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.CinemaId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                                 </div>
 
                             </div>
@@ -87,7 +78,7 @@
         rowslist = document.getElementById("myList").getElementsByTagName("tr");
         for (let i = 0; i < rowslist.length; i++) {
             rowslist[i].unmatched = false;
-            rowslist[i].startTime = rowslist[i].getElementsByClassName("startTime")[0].innerHTML;
+            rowslist[i].startTime = rowslist[i].getElementsByClassName("name")[0].innerHTML;
         }
     }
     function SearchForStartTime() {

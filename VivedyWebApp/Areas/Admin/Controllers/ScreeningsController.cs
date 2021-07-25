@@ -73,7 +73,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 {
                     ScreeningId = Guid.NewGuid().ToString(),
                     StartTime = newScreening.StartTime,
-                    MovieId = newScreening.MovieId
+                    MovieId = newScreening.MovieId,
+                    RoomId = newScreening.RoomId
                 };
                 db.Screenings.Add(screening);
                 //Generating Screenings
@@ -86,7 +87,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                         {
                             ScreeningId = Guid.NewGuid().ToString(),
                             StartTime = newScreening.StartTime.AddDays(i),
-                            MovieId = newScreening.MovieId
+                            MovieId = newScreening.MovieId,
+                            RoomId = newScreening.RoomId
                         };
                         db.Screenings.Add(autoScreening);
                     }

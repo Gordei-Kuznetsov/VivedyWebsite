@@ -28,6 +28,13 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.UserRating) : </div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        @Html.EditorFor(model => model.UserRating, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.ValidationMessageFor(model => model.UserRating, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Category) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
                         @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "col-md-12" } })

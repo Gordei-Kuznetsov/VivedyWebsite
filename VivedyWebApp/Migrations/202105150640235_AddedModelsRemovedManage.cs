@@ -13,15 +13,12 @@ namespace VivedyWebApp.Migrations
                     {
                         BookingId = c.String(nullable: false, maxLength: 128),
                         CreationDate = c.DateTime(nullable: false),
-                        MovieId = c.String(maxLength: 128),
                         RotationId = c.String(maxLength: 128),
                         UserId = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.BookingId)
-                .ForeignKey("dbo.Movies", t => t.MovieId)
                 .ForeignKey("dbo.Rotations", t => t.RotationId)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId)
-                .Index(t => t.MovieId)
                 .Index(t => t.RotationId)
                 .Index(t => t.UserId);
             
@@ -58,11 +55,9 @@ namespace VivedyWebApp.Migrations
             DropForeignKey("dbo.Bookings", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Bookings", "RotationId", "dbo.Rotations");
             DropForeignKey("dbo.Rotations", "MovieId", "dbo.Movies");
-            DropForeignKey("dbo.Bookings", "MovieId", "dbo.Movies");
             DropIndex("dbo.Rotations", new[] { "MovieId" });
             DropIndex("dbo.Bookings", new[] { "UserId" });
             DropIndex("dbo.Bookings", new[] { "RotationId" });
-            DropIndex("dbo.Bookings", new[] { "MovieId" });
             DropTable("dbo.Rotations");
             DropTable("dbo.Movies");
             DropTable("dbo.Bookings");

@@ -29,6 +29,12 @@
                     @Html.DisplayFor(model => model.MovieId)
                 </div>
             </div>
+            <div class="row">
+                <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.RoomId) :</div>
+                <div class="mb-3 col-md-8 phenomena-sm">
+                    @Html.DisplayFor(model => model.RoomId)
+                </div>
+            </div>
         </div>
         <div class="row">
             @Html.ActionLink("Edit", "Edit", new { id = Model.ScreeningId }, new { @class = "btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 ml-4 mr-4 phenomena-sm" })

@@ -10,7 +10,7 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
 {
 
     /// <summary>
-    /// Model specificly used for creating new Booking on AdminBookings/Create page
+    /// Model specificly used for creating new Booking on Admin/Bookings/Create page
     /// </summary>
     public class BookingsNewViewModel
     {

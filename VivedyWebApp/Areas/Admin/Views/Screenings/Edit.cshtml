@@ -33,6 +33,13 @@
                         @Html.ValidationMessageFor(model => model.MovieId, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.RoomId) :</div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        @Html.EditorFor(model => model.RoomId, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.ValidationMessageFor(model => model.RoomId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
             <div class="row">
                     <input value="Save" type="submit" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3  ml-3 mr-4 phenomena-sm">

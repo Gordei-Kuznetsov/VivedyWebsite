@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.MovieId) : </div>
                     <div class="mb-3 col-md-8 phenomena-sm" readonly>
-                        @Html.EditorFor(model => model.MovieId, new { htmlAttributes = new { @class = "col-md-12",  @readonly = "true" } })
+                        @Html.EditorFor(model => model.MovieId, new { htmlAttributes = new { @class = "col-md-12", @readonly = "true" } })
                         @Html.ValidationMessageFor(model => model.MovieId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -33,6 +33,14 @@
 
                         @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.UserRating) :</div>
+                    <div class=" mb-3 col-md-8 phenomena-sm">
+
+                        @Html.EditorFor(model => model.UserRating, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.ValidationMessageFor(model => model.UserRating, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="row">
@@ -60,7 +68,7 @@
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Price) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.EditorFor(model => model.Price,new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -74,7 +82,7 @@
                 <div class="row">
                     <div class="col-md-3 col-sm-12 phenomena-sm">Reupload @Html.LabelFor(model => model.HorizontalImage)?</div>
                     <div class="mb-3 col-sm-12 col-md-8 phenomena-sm">
-                        <input accept="image/png" class="col-md-12" data-val-file="The field Horizontal Poster must be a file." 
+                        <input accept="image/png" class="col-md-12" data-val-file="The field Horizontal Poster must be a file."
                                id="HorizontalImage" name="HorizontalImage" type="file" value="">
                         @Html.ValidationMessageFor(model => model.HorizontalImage, "", new { @class = "text-danger" })
                     </div>
@@ -82,7 +90,7 @@
                 <div class="row">
                     <div class="col-md-3 col-sm-12 phenomena-sm">Reupload @Html.LabelFor(model => model.VerticalImage)?</div>
                     <div class="mb-3 col-md-8 phenomena-sm col-sm-12">
-                        <input accept="image/png" class="col-md-12" data-val-file="The field Vertical Poster must be a file." 
+                        <input accept="image/png" class="col-md-12" data-val-file="The field Vertical Poster must be a file."
                                id="VerticalImage" name="VerticalImage" type="file" value="">
                         @Html.ValidationMessageFor(model => model.VerticalImage, "", new { @class = "text-danger" })
                     </div>

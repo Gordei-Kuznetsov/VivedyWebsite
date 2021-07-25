@@ -7,7 +7,7 @@ using System.Web;
 namespace VivedyWebApp.Areas.Admin.Models.ViewModels
 {
     /// <summary>
-    /// Model specificly used for creating new User on AdminUsers/Create page
+    /// Model specificly used for creating new User on Admin/Users/Create page
     /// </summary>
     public class UsersCreateViewModel
     {

@@ -7,7 +7,7 @@ using System.Web;
 namespace VivedyWebApp.Areas.Admin.Models.ViewModels
 {
     /// <summary>
-    /// Model specificly used for creating new Movie on AdminMovies/Create page
+    /// Model specificly used for creating new Movie on Admin/Movies/Create page
     /// </summary>
     public class MoviesCreateViewModel
     {
@@ -24,6 +24,14 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         [Display(Name = "Rating")]
         [Required]
         public int Rating { get; set; }
+
+        /// <summary>
+        /// Movie user rating
+        /// </summary>
+        [Display(Name = "User Rating")]
+        [Range(1,5)]
+        [Required]
+        public int UserRating { get; set; }
 
         /// <summary>
         /// Movie category/genre
@@ -109,6 +117,13 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         [Display(Name = "Rating")]
         [Required]
         public int Rating { get; set; }
+
+        /// <summary>
+        /// Movie user rating
+        /// </summary>
+        [Display(Name = "User Rating")]
+        [Required]
+        public int UserRating { get; set; }
 
         /// <summary>
         /// Movie category

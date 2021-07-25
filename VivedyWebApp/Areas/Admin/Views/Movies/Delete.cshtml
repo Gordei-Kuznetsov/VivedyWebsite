@@ -31,6 +31,12 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.UserRating) : </div>
+                    <div class="mb-3 col-md-8 phenomena-sm" readonly>
+                        @Html.DisplayFor(model => model.UserRating)
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.Category) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
                         @Html.DisplayFor(model => model.Category)

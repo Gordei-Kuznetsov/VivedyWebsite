@@ -9,7 +9,7 @@ using VivedyWebApp.Models;
 namespace VivedyWebApp.Areas.Admin.Models.ViewModels
 {
     /// <summary>
-    /// Model specificly used for creating new Screening on AdminScreenings/Create page
+    /// Model specificly used for creating new Screening on Admin/Screenings/Create page
     /// </summary>
     public class ScreeningsCreateViewModel
     {
@@ -28,6 +28,15 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         [Required]
         public string MovieId { get; set; }
         public Movie Movie { get; set; }
+
+        /// <summary>
+        /// ID of the room where the screening is happening
+        /// </summary>
+        [Display(Name = "Room Id")]
+        [ForeignKey("Room")]
+        [Required]
+        public string RoomId { get; set; }
+        public Room Room { get; set; }
 
         /// <summary>
         /// Boolean indicating whether a week of Screenings is auto-generated

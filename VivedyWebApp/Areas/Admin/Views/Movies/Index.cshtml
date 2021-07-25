@@ -25,6 +25,9 @@
                             @Html.DisplayNameFor(model => model.Rating)
                         </th>
                         <th scope="col">
+                            @Html.DisplayNameFor(model => model.UserRating)
+                        </th>
+                        <th scope="col">
                             @Html.DisplayNameFor(model => model.Category)
                         </th>
                         <th scope="col" style="width:240px">
@@ -56,6 +59,9 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Rating)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserRating)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Category)
