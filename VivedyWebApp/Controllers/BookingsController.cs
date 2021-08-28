@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -17,33 +19,33 @@ namespace VivedyWebApp.Controllers
     public class BookingsController : Controller
     {
         /// <summary>
-        /// ApplicationDbContext instance
+        /// The entities manager instance
         /// </summary>
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly Entities Helper = new Entities();
 
         /// <summary>
         /// GET request action for Time page
         /// </summary>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> Time(string id)
+        public ActionResult Time(string movieId, string cinemaId)
         {
-            if (id == null)
+            if (movieId == null || cinemaId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             //Getting available Screenings for the movie
-            List<Screening> screenings = await db.Screenings.Where(screening => screening.MovieId == id).ToListAsync();
+            List<Screening> screenings = Helper.GetScreeningsForMovieInCinema(movieId, cinemaId);
             if (screenings.Count == 0)
             {
                 //If no Screenings found then send back to the Movies/Details page with a message
-                ViewBag.ErrorMessage = "No screenings found for this movie.";
-                return RedirectToAction("Details", "Movies", routeValues: new { id = id });
+                ViewBag.ErrorMessage = "No screenings found for this movie in the selected cinema.";
+                return RedirectToAction("Details", "Movies", routeValues: new { id = movieId });
             }
             BookingTimeViewModel model = new BookingTimeViewModel
             {
                 AvailableScreenings = screenings,
-                Movie = await db.Movies.FindAsync(id)
+                Movie = Helper.Movies.Details(movieId)
             };
             return View(model);
         }
@@ -51,36 +53,23 @@ namespace VivedyWebApp.Controllers
         /// <summary>
         /// POST request action for Time page
         /// </summary>
-        [HttpPost]
+        [HttpGet]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ViewResult Time(BookingTimeViewModel timeModel)
+        public ActionResult Seats(string id)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return View(timeModel);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             BookingSeatsViewModel seatsModel = new BookingSeatsViewModel
             {
-                SelectedScreeningId = timeModel.SelectedScreeningId,
+                SelectedScreeningId = id,
                 //Getting the movie from db to avoid depending on the object being sent through the request
-                Movie = db.Movies.Find(db.Screenings.Find(timeModel.SelectedScreeningId).MovieId),
-                OccupiedSeats = new List<int>(),
+                Movie = Helper.Movies.Details(Helper.Screenings.Details(id).MovieId),
+                OccupiedSeats = Helper.Bookings.GetSeatsForScreening(id),
                 SelectedSeats = ""
             };
-            //Getting all bookings for the Screening to later get all occupied saets from them
-            List<Booking> bookings = db.Bookings.Where(booking => booking.ScreeningId == timeModel.SelectedScreeningId).ToList();
-            if (bookings != null)
-            {
-                //Getting a list of all occupied  seats
-                foreach (Booking booking in bookings)
-                {
-                    foreach (string seat in booking.Seats.Split(','))
-                    {
-                        if (seat != null && seat != "") { seatsModel.OccupiedSeats.Add(Convert.ToInt32(seat)); }
-                    }
-                }
-            }
             return View("Seats", seatsModel);
         }
 
@@ -96,20 +85,20 @@ namespace VivedyWebApp.Controllers
             {
                 return View(seatsModel);
             }
-            //Parsing the SelectedSeats string into a list
-            List<int> selectedSeats = new List<int>();
-            foreach (string seat in seatsModel.SelectedSeats.Split(','))
-            {
-                if (seat != null && seat != "") { selectedSeats.Add(Convert.ToInt32(seat)); }
-            }
+            List<int> selectedSeats = Helper.Bookings.ConvertSeatsToIntList(seatsModel.SelectedSeats);
             //Getting the movie from db to avoid depending on the object being sent through the request
-            Movie movie = db.Movies.Find(db.Screenings.Find(seatsModel.SelectedScreeningId).MovieId);
+            Movie movie = Helper.Movies.Details(Helper.Screenings.Details(seatsModel.SelectedScreeningId).MovieId);
+            //If user is logged in, then take their email and pass to the model
+            ApplicationUser user = User.Identity.IsAuthenticated
+                ? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId())
+                : null;
             BookingPayViewModel payModel = new BookingPayViewModel
             {
                 SelectedSeats = seatsModel.SelectedSeats,
                 SelectedScreeningId = seatsModel.SelectedScreeningId,
                 Movie = movie,
-                TotalPrice = selectedSeats.Count() * movie.Price
+                TotalPrice = selectedSeats.Count() * movie.Price,
+                Email = (user != null) ? user.Email : ""
             };
             return View("Pay", payModel);
         }
@@ -120,65 +109,26 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ViewResult> Pay(BookingPayViewModel payModel)
+        public ViewResult Pay(BookingPayViewModel payModel)
         {
             if (!ModelState.IsValid)
             {
                 return View(payModel);
             }
+            Screening screening = Helper.Screenings.GetDetailsWithMovie(payModel.SelectedScreeningId);
+            List<string> seats = Helper.Bookings.ConvertSeatsToStringList(payModel.SelectedSeats);
             Booking booking = new Booking
             {
-                BookingId = Guid.NewGuid().ToString(),
                 Seats = payModel.SelectedSeats,
-                CreationDate = DateTime.Now,
+                PayedAmout = seats.Count * screening.Movie.Price,
                 UserEmail = payModel.Email,
-                ScreeningId = payModel.SelectedScreeningId
+                ScreeningId = screening.Id
             };
-            db.Bookings.Add(booking);
-            int result = db.SaveChanges();
-            if (result > 0)
+            
+            Booking newBooking = Helper.Bookings.CreateFrom(booking);
+            if (newBooking != null)
             {
-                //Sending the email with the tickets to the email address provided
-                //Will later be moved to the a method of EmailService class
-                string htmlSeats = "";
-                foreach (string seat in payModel.SelectedSeats.Split(','))
-                {
-                    if (seat != null && seat != "") { htmlSeats += $"<li>{seat}</li>"; }
-                }
-                //Generating content to put into the QR code for later validation
-                //Includes BookingId and UserEmail
-                string dataToEncode = "{\"bookingId\":\"" + booking.BookingId + "\",\"email\":\"" + booking.UserEmail + "\"}";
-                var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(dataToEncode);
-                string qrCodeData = "VIVEDYBOOKING_" + Convert.ToBase64String(plainTextBytes);
-                Screening screening = db.Screenings.Find(payModel.SelectedScreeningId);
-                Movie movie = db.Movies.Find(screening.MovieId);
-                string subject = "Booking Confirmation";
-                List<ApplicationUser> Users = db.Users.Where(user => user.Email == payModel.Email).ToList();
-                string greeting = Users.Count() > 0 ? "<b>Hi " + Users[0].Name + "</b><br/>" : "";
-                //Generating an HTML body for the email
-                string mailbody = $"<div id=\"mainEmailContent\" style=\"-webkit-text-size-adjust: 100%; font-family: Verdana,sans-serif;\">" +
-                                    $"<img style=\"display: block; margin-left: auto; margin-right: auto; height: 3rem; width: 3rem;\" src=\"http://vivedy.azurewebsites.net/favicon.ico\">" +
-                                    greeting +
-                                    $"<b><h2 style=\"text-align: center;\">Thank you for purchasing tickets at our website!</h2></b>" +
-                                    $"<p>Below are details of your purchase.</p>" +
-                                    $"<i><p>Please present this email when you arrive to the cinema to the our stuuf at the entrance to the auditorium.</p></i>" +
-                                    $"<div style=\"box-sizing: inherit; padding: 0.01em 16px; margin-top: 16px; margin-bottom: 16px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);\">" +
-                                        $"<h3>{movie.Name}</h3>" +
-                                        $"<h4><b>Date:</b> {screening.StartTime.ToString("dd MMMM yyyy")}</h4>" +
-                                        $"<h4><b>Time:</b> {screening.StartTime.ToString("hh:mm tt")}</h4>" +
-                                        $"<h4><b>Your seats:</b> </h4>" +
-                                        $"<ul>" +
-                                            $"{htmlSeats}" +
-                                        $"</ul>" +
-                                        $"<h4><b>Total amount paid:</b> ${payModel.TotalPrice}</h4>" +
-                                        $"<br>" +
-                                        $"<img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://api.qrserver.com/v1/create-qr-code/?size=250&bgcolor=255-255-255&color=9-10-15&qzone=0&data=" + qrCodeData + "\" alt=\"Qrcode\">" +
-                                        $"<br>" +
-                                    $"</div>" +
-                                    $"<p>Go to our <a href=\"vivedy.azurewebsites.net\">website</a> to find more movies!</p>" +
-                                  $"</div>";
-                EmailService mailService = new EmailService();
-                await mailService.SendAsync(payModel.Email, subject, mailbody);
+                Helper.Bookings.SendBookingConfirmationEmail(newBooking);
                 return View("Confirmation");
             }
             else

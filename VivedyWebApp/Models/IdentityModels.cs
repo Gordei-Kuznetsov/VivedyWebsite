@@ -18,6 +18,7 @@ namespace VivedyWebApp.Models
         /// User name
         /// </summary>
         [Required]
+        [MaxLength(20)]
         [DisplayName("User Name")]
         public string Name { get; set; }
 

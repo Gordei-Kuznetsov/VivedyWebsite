@@ -1,4 +1,4 @@
-﻿@model VivedyWebApp.Models.Movie
+﻿@model VivedyWebApp.Models.ViewModels.MoviesDetailsViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -9,40 +9,52 @@
     {
         <h2 class="text-danger text-center">@ViewBag.ErrorMessage</h2>
     }
-        <div class="row">
-            <div class="col-lg-5">
-                <div class="card">
-                    <iframe style=" min-height: 420px;" src="@Model.TrailerUrl"
-                            title="YouTube video player" frameborder="0" allowfullscreen></iframe>
-                    <!--Add [?autoplay=1&mute=1] to the end of the link for it to auto play and on mute-->
-                </div>
-            </div>
-            <div class="col-lg-7">
-                <div style="height:100%" class="card">
-                    <div class="row p-3">
-                        <div class="col-lg-8 col-sm-12">
-                            <h5 style="color: #A80000;" class="phenomena-sm-two mt-4 text-center">@Model.Name</h5>
-                            <hr style="width:100%" />
-                            <div class="row m-1 justify-content-center">
-                                <div class="p-2 phenomena-sm"> Catoegry: <span class="badge badge-pill badge-secondary">@Model.Category</span> <span></span> </div>
-                                <div class="p-2 phenomena-sm"> Rating: <span class="badge badge-pill badge-danger"> +@Model.Rating</span></div>
-                                <div class="p-2 phenomena-sm"> Movie Duration: <span class="badge badge-pill badge-danger"> @Model.Duration.Hours hr @Model.Duration.Minutes min </span></div>
-                                <div class="p-2 phenomena-sm"> User Rating: <span class="badge badge-pill badge-danger"> @Model.UserRating</span></div>
-                            </div>
-                            <hr />
-                            <div style="color: #A80000;" class="font-weight-bold p-2"> MOVIE DESCRIPTION:</div>
-                            <div class="card-text pl-2">@Model.Description</div>
-                        </div>
-                        <div class="col-lg-4 col-sm-12">
-                            <div style="height:100%" class="text-center card-body">
-                                <span style="color: #A80000;" class="phenomena-sm-two mb-1">Movie Price </span>
-                                <div class="phenomenaThree mt-3 mb-5">$@Model.Price</div>
-                                <a href="/Movies/BookingTime?id=@Model.MovieId" class="btn btn-danger pl-4 pr-4">Book Now</a>
-                            </div>
-                        </div>
-                    </div>
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="card">
+                <iframe style=" min-height: 420px;" src="@Model.Movie.TrailerUrl"
+                        title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+                <!--Add [?autoplay=1&mute=1] to the end of the link for it to auto play and on mute-->
             </div>
         </div>
+        <div class="col-lg-7">
+            <div style="height:100%" class="card">
+                <div class="row p-3">
+                    <div class="col-lg-8 col-sm-12">
+                        <h5 style="color: #A80000;" class="phenomena-sm-two mt-4 text-center">@Model.Movie.Name</h5>
+                        <hr style="width:100%" />
+                        <div class="row m-1 justify-content-center">
+                            <div class="p-2 phenomena-sm"> Catoegry: <span class="badge badge-pill badge-secondary">@Model.Movie.Category</span> <span></span> </div>
+                            <div class="p-2 phenomena-sm"> Rating: <span class="badge badge-pill badge-danger"> +@Model.Movie.Rating</span></div>
+                            <div class="p-2 phenomena-sm"> Movie Duration: <span class="badge badge-pill badge-danger"> @Model.Movie.Duration.Hours hr @Model.Movie.Duration.Minutes min </span></div>
+                            <div class="p-2 phenomena-sm"> User Rating: <span class="badge badge-pill badge-danger"> @Model.Movie.ViewerRating</span></div>
+                        </div>
+                        <hr />
+                        <div style="color: #A80000;" class="font-weight-bold p-2"> MOVIE DESCRIPTION:</div>
+                        <div class="card-text pl-2">@Model.Movie.Description</div>
+                    </div>
+                    <div class="col-lg-4 col-sm-12">
+                        <div style="height:100%" class="text-center card-body">
+                            <span style="color: #A80000;" class="phenomena-sm-two mb-1">Ticket Price </span>
+                            <div class="phenomenaThree mt-3 mb-5">$@Model.Movie.Price</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <h5 style="color: #A80000;" class="phenomena-sm-two text-center">Book now</h5>
+        @foreach (var cinema in Model.Cinemas)
+        {
+            @{ 
+                string href = "/Movies/BookingTime?movieId=" + Model.Movie.Id + "&cinemaId=" + cinema.Id;
+            }
+            <a href="@href" class="btn btn-danger m-1 align-items-center" style="width:100%; max-width:10rem;">
+                <p class="mb-2 text-center">@cinema.Name</p>
+                <p class="mb-2 text-center">@cinema.Address</p>
+            </a>
+        }
     </div>
     <div class="row mt-5 justify-content-center">
         <a href="/Movies/Index" class="btn btn-danger ml-3 pl-4 pr-4 pb-2 pt-2">Go Back</a>

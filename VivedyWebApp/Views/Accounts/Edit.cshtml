@@ -1,0 +1,66 @@
+﻿@model VivedyWebApp.Models.ViewModels.EditViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+@using (Html.BeginForm("Edit", "Accounts", FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="containerOne">
+        <div class="grey-bg-color mx-auto" style="max-width:36rem;">
+            <div class="mb-5 mt-4 phenomena-sm border-bottom ">
+                <h1 class="display-5">EDIT YOUR ACCOUNT DETAILS</h1>
+            </div>
+
+            <div class="pb-2 mb-2 phenomena-sm">
+                <div class="row">
+                    <div class="col-3">
+                        @Html.LabelFor(m => m.Name, new { @class = "phenomena-sm" }) :
+                    </div>
+                    <div class="col-9">
+                        @Html.EditorFor(m => m.Name, new { style = "width:100%", @class = "mb-3" })
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger phenomena-sm text-center" })
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        @Html.LabelFor(m => m.Email, new { @class = "phenomena-sm" }) :
+                    </div>
+                    <div class="col-9">
+                        @Html.DisplayFor(m => m.Email, new { @class = "phenomena-sm" })
+                        <a href="/Accounts/ChangeEmail" class="text-danger phenomena-sm">Change</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        @Html.LabelFor(m => m.PhoneNumber, new { @class = "phenomena-sm" }) :
+                    </div>
+                    <div class="col-9">
+                        @Html.DisplayFor(m => m.PhoneNumber, new { @class = "phenomena-sm" })
+                        <a href="/Accounts/ChangePhone" class="text-danger phenomena-sm">Change</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 phenomena-sm">
+                        Password :
+                    </div>
+                    <div class="col-9 phenomena-sm">
+                        *****
+                        <a href="/Accounts/ChangePassword" class="text-danger phenomena-sm">Change</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col ">
+                    <input type="submit" value="Save" class="btn btn-danger mt-3 phenomena-sm " style="width: 80%">
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

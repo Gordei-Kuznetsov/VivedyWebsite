@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using VivedyWebApp.Models.ViewModels;
 using VivedyWebApp.Models;
 
 namespace VivedyWebApp.Controllers
@@ -12,21 +16,25 @@ namespace VivedyWebApp.Controllers
     /// <summary>
     /// Application Home Controller
     /// </summary>
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         /// <summary>
-        /// ApplicationDbContext instance
+        /// The entities manager instance
         /// </summary>
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly Entities Helper = new Entities();
 
         /// <summary>
         /// GET request action for Index page
         /// </summary>
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            //Sending only top 4 movies to the home page
-            var movies = await db.Movies.ToListAsync();
-            return View(movies.Take(4));
+            MoviesViewModel model = new MoviesViewModel
+            {
+                ComingSoonMovies = Helper.Movies.GetAllCommingSoon(),
+                TopMovies = Helper.Movies.GetTop(4)
+            };
+            return View(model);
         }
 
         /// <summary>
@@ -43,17 +51,6 @@ namespace VivedyWebApp.Controllers
         public ActionResult Privacy()
         {
             return View();
-        }
-        /// <summary>
-        /// Method for disposing ApplicationDbContext objects
-        /// </summary>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

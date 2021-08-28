@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using VivedyWebApp.Models;
 
 namespace VivedyWebApp.Areas.Admin.Models.ViewModels
 {
@@ -14,60 +15,85 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         /// <summary>
         /// Movie name
         /// </summary>
-        [Display(Name = "Name")]
         [Required]
+        [Display(Name = "Name")]
+        [MaxLength(64)]
         public string Name { get; set; }
 
         /// <summary>
         /// Movie rating
         /// </summary>
-        [Display(Name = "Rating")]
         [Required]
+        [Range(0, 21)]
+        [Display(Name = "Rating")]
         public int Rating { get; set; }
 
         /// <summary>
         /// Movie user rating
         /// </summary>
-        [Display(Name = "User Rating")]
-        [Range(1,5)]
         [Required]
-        public int UserRating { get; set; }
+        [Range(0, 5)]
+        [Display(Name = "Viewer Rating")]
+        public float ViewerRating { get; set; }
 
         /// <summary>
         /// Movie category/genre
         /// </summary>
-        [Display(Name = "Category")]
         [Required]
+        [MaxLength(16)]
+        [Display(Name = "Category")]
         public string Category { get; set; }
 
         /// <summary>
         /// Movie description
         /// </summary>
-        [Display(Name = "Description")]
         [Required]
+        [MaxLength(500)]
+        [Display(Name = "Description")]
         public string Description { get; set; }
 
         /// <summary>
         /// Movie duration
         /// </summary>
-        [Display(Name = "Duration")]
         [Required]
+        [DataType(DataType.Time)]
+        [Display(Name = "Duration")]
         public TimeSpan Duration { get; set; }
 
         /// <summary>
         /// Movie price
         /// </summary>
-        [Display(Name = "Price")]
         [Required]
-        public int Price { get; set; }
+        [Range(0, 30)]
+        [Display(Name = "Price")]
+        public float Price { get; set; }
 
         /// <summary>
         /// Movie trailer url
         /// </summary>
-        [Display(Name = "Trailer URL")]
         [Required]
         [Url]
+        [MaxLength(41)]
+        [RegularExpression(@"^https:\/\/(?:www\.)?youtube.com\/embed\/[A-z0-9]+")]
+        [Display(Name = "Trailer URL")]
         public string TrailerUrl { get; set; }
+
+
+        /// <summary>
+        /// Movie release date
+        /// </summary>
+        [Required]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Release Date")]
+        public DateTime ReleaseDate { get; set; }
+
+        /// <summary>
+        /// Movie closing date
+        /// </summary>
+        [Required]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Closing Date")]
+        public DateTime ClosingDate { get; set; }
 
         /// <summary>
         /// Field used for uploading image for movie's horizontal poster to be used on Home and Movies pages
@@ -75,9 +101,9 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         /// Only PNG images are accepted.
         /// </remarks>
         /// </summary>
-        [Display(Name = "Horizontal Poster")]
-        [DataType(DataType.Upload)]
         [Required]
+        [DataType(DataType.Upload)]
+        [Display(Name = "Horizontal Poster")]
         public HttpPostedFileBase HorizontalImage {get;set;}
 
         /// <summary>
@@ -86,93 +112,23 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         /// Only PNG images are accepted.
         /// </remarks>
         /// </summary>
-        [Display(Name = "Vertical Poster")]
-        [DataType(DataType.Upload)]
         [Required]
+        [DataType(DataType.Upload)]
+        [Display(Name = "Vertical Poster")]
         public HttpPostedFileBase VerticalImage { get; set; }
     }
 
     /// <summary>
     /// Model which includes all Movie model's fields plus Vertical and Horizontal Image fileds
     /// </summary>
-    public class MoviesViewModel
+    public class MoviesAdminViewModel : MoviesCreateViewModel
     {
         /// <summary>
         /// Movie GUID
         /// </summary>
-        [Display(Name = "Movie Id")]
         [Required]
-        public string MovieId { get; set; }
-
-        /// <summary>
-        /// Movie name
-        /// </summary>
-        [Display(Name = "Name")]
-        [Required]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Movie rating
-        /// </summary>
-        [Display(Name = "Rating")]
-        [Required]
-        public int Rating { get; set; }
-
-        /// <summary>
-        /// Movie user rating
-        /// </summary>
-        [Display(Name = "User Rating")]
-        [Required]
-        public int UserRating { get; set; }
-
-        /// <summary>
-        /// Movie category
-        /// </summary>
-        [Display(Name = "Category")]
-        [Required]
-        public string Category { get; set; }
-
-        /// <summary>
-        /// Movie description
-        /// </summary>
-        [Display(Name = "Description")]
-        [Required]
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Movie duration
-        /// </summary>
-        [Display(Name = "Duration")]
-        [Required]
-        public TimeSpan Duration { get; set; }
-
-        /// <summary>
-        /// Movie price
-        /// </summary>
-        [Display(Name = "Price")]
-        [Required]
-        public int Price { get; set; }
-
-        /// <summary>
-        /// Movie trailer url
-        /// </summary>
-        [Display(Name = "Trailer URL")]
-        [Required]
-        [Url]
-        public string TrailerUrl { get; set; }
-
-        /// <summary>
-        /// Field used for uploading image for movie's horizontal poster
-        /// </summary>
-        [Display(Name = "Horizontal Poster")]
-        [DataType(DataType.Upload)]
-        public HttpPostedFileBase HorizontalImage { get; set; }
-
-        /// <summary>
-        /// Field used for uploading image for movie's vertical poster
-        /// </summary>
-        [Display(Name = "Vertical Poster")]
-        [DataType(DataType.Upload)]
-        public HttpPostedFileBase VerticalImage { get; set; }
+        [MaxLength(36)]
+        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        public string Id { get; set; }
     }
 }

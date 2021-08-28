@@ -1,0 +1,127 @@
+﻿@model VivedyWebApp.Models.ViewModels.BookingPayViewModel
+
+@{
+    ViewBag.Title = "Payment";
+}
+
+@using (Html.BeginForm("Pay", "Bookings", FormMethod.Post, htmlAttributes: new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="jumbotron">
+        <div class="row text-center">
+            <div class="col-lg-9 col-sm-12 ">
+                <div class=" text-center mb-5">
+                    <div class="align-self-center">
+                        <div class="">
+                            <h1 class=" phenomena-sm-two text-center mt-3 mb-3">Enter your Payment details</h1>
+                        </div>
+                        <hr style="width:40%" />
+                        <div class="progress">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuemin="0" aria-valuemax="100">66% Payment</div>
+                        </div>
+                        <hr style="width:40%" />
+                        <div class="text-center align-self-center mt-5">
+                            <br />
+                            <div class="row ">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="col-3">
+                                    @Html.LabelFor(m => m.Email, new { @class = "phenomena-sm m-3" })
+                                </div>
+                                <div class="col-9">
+                                    @Html.TextBoxFor(m => m.Email, new { style = "width:90%", @class = "m-3" })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    @Html.LabelFor(m => m.CardNumber, new { @class = "phenomena-sm m-3" })
+                                </div>
+                                <div class="col-9">
+                                    @Html.TextBoxFor(m => m.CardNumber, new { style = "width:90%", @class = "m-3" })
+                                    @Html.ValidationMessageFor(m => m.CardNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    @Html.LabelFor(m => m.CCV, new { @class = "phenomena-sm m-3" })
+                                </div>
+                                <div class="col-9">
+                                    @Html.TextBoxFor(m => m.CCV, new { style = "width:90%", @class = "m-3" })
+                                    @Html.ValidationMessageFor(m => m.CCV, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    @Html.LabelFor(m => m.ExpDate, new { @class = "phenomena-sm m-3" })
+                                </div>
+                                <div class="col-9">
+                                    @Html.TextBoxFor(m => m.ExpDate, new { style = "width:90%", @class = "m-3" })
+                                    @Html.ValidationMessageFor(m => m.ExpDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    @Html.LabelFor(m => m.CardHolder, new { @class = "phenomena-sm m-3" })
+                                </div>
+                                <div class="col-9">
+                                    @Html.TextBoxFor(m => m.CardHolder, new { style = "width:90%", @class = "m-3" })
+                                    @Html.ValidationMessageFor(m => m.CardHolder, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="text-center mt-5 mb-5">
+                                You will recieve your tickets in the email your provide.
+                            </div>
+                            @Html.HiddenFor(m => m.SelectedScreeningId)
+                            @Html.HiddenFor(m => m.SelectedSeats)
+                        </div>
+                        <div class="align-self-center">
+                            <div class="row text-center">
+                                <div class="col-12">
+                                    <hr style="width:40%" />
+                                    <div class=" phenomena-sm ">
+                                        <input type="submit" value="Complete Payment"
+                                               class="btn btn-danger pl-4 pr-4 pb-2 pt-2 phenomena-sm ">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-12">
+                <div class="card mb-3">
+                    <div class="cardy">
+                        <div class="phenomena-sm-two"> Total Price: </div>
+                        <div class="phenomenaThree" style="color:white"> $@Model.TotalPrice </div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="card mb-5">
+                        <img src="~/Content/Images/@Model.Movie.Id-VerticalPoster.png" class="card-img-top" alt="Movie Poster">
+                        <div class="card-body">
+                            <hr />
+                            <h5 class="phenomena-sm-two mt-4 text-center">@Model.Movie.Name</h5>
+                            <hr />
+                            <div class="p-2 phenomena-sm"> Catoegry: <span class="badge badge-pill badge-secondary">@Model.Movie.Category</span></div>
+                            <div class="p-2 phenomena-sm"> Rating: <span class="badge badge-pill badge-danger"> +@Model.Movie.Rating</span></div>
+                            <div class="p-2 phenomena-sm">
+                                Movie Duration: <span class="badge badge-pill badge-danger">
+                                    @Model.Movie.Duration.Hours hr
+                                    @Model.Movie.Duration.Minutes min
+                                </span>
+                            </div>
+                            <div class="p-2 phenomena-sm"> User Rating: <span class="badge badge-pill badge-danger"> @Model.Movie.ViewerRating</span></div>
+                            <hr />
+                            <p class="card-text">@Model.Movie.Description</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

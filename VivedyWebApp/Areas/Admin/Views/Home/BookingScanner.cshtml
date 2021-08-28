@@ -1,4 +1,6 @@
-﻿@{
+﻿@model VivedyWebApp.Areas.Admin.Models.ViewModels.HomeViewModel
+
+@{
     ViewBag.Title = "Scanner";
 }
 
@@ -7,6 +9,15 @@
         <div class="mb-4 mt-4">
             <div class="text-center phenomena-sm-two"> QR-CODE SCANNER</div>
             <hr style="width:60vw"/>
+        </div>
+        <div class="mb-4 mt-4">
+            <div class="row">
+                <div class="col-3 phenomena-sm">Please select current screening</div>
+                <div class="mb-3 col-md-8 phenomena-sm">
+                    @Html.DropDownList("ScreeningId", Model.Screenings, "Please select", new { @class = "col-md-12" })
+                    @Html.ValidationMessageFor(model => model.ScreeningId, "", new { @class = "text-danger" })
+                </div>
+            </div>
         </div>
         <div class="vidQrScabbercontainer">
             <video id="video" class="videoQrCode"></video>

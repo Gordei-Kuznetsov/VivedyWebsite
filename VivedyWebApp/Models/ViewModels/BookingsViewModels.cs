@@ -17,12 +17,6 @@ namespace VivedyWebApp.Models.ViewModels
         public List<Screening> AvailableScreenings { get; set; }
 
         /// <summary>
-        /// ID of the selected Screening
-        /// </summary>
-        [Required]
-        public string SelectedScreeningId { get; set; }
-
-        /// <summary>
         /// Movie selected for the booking
         /// </summary>
         public Movie Movie { get; set; }
@@ -36,8 +30,10 @@ namespace VivedyWebApp.Models.ViewModels
         /// <summary>
         /// ID of the selected Screening
         /// </summary>
-        [Display(Name = "Selected Screening Id")]
         [Required]
+        [MaxLength(36)]
+        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        [Display(Name = "Selected Screening Id")]
         public string SelectedScreeningId { get; set; }
 
         /// <summary>
@@ -48,8 +44,9 @@ namespace VivedyWebApp.Models.ViewModels
         /// <summary>
         /// Seats selected for the booking
         /// </summary>
+        [Required]
+        [MaxLength(64, ErrorMessage = "Sorry but you can book maximum 16 seats")]
         [Display(Name = "Selected Seats")]
-        [Required(ErrorMessage = "Please select a seat")]
         public string SelectedSeats { get; set; }
 
         /// <summary>
@@ -66,58 +63,64 @@ namespace VivedyWebApp.Models.ViewModels
         /// <summary>
         /// ID of the selected Screening
         /// </summary>
-        [Display(Name = "Selected Screening Id")]
         [Required]
+        [MaxLength(36)]
+        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        [Display(Name = "Selected Screening Id")]
         public string SelectedScreeningId { get; set; }
 
         /// <summary>
         /// Seats selected for the Screening
         /// </summary>
-        [Display(Name = "Selected Seats")]
         [Required]
+        [MaxLength(64, ErrorMessage = "Sorry but you can book maximum 16 seats")]
+        [Display(Name = "Selected Seats")]
         public string SelectedSeats { get; set; }
 
         /// <summary>
         /// Email assotiated with the booking
         /// </summary>
-        [Display(Name = "Email")]
         [Required]
         [EmailAddress]
+        [Display(Name = "Email")]
         public string Email { get; set; }
 
         /// <summary>
         /// Card number for the payment
         /// </summary>
-        [Display(Name = "Card Number")]
         [Required]
         [DataType(DataType.CreditCard)]
+        [Display(Name = "Card Number")]
         public string CardNumber { get; set; }
 
         /// <summary>
         /// Card CCV number for the payment
         /// </summary>
-        [Display(Name = "CCV")]
         [Required]
-        public int CCV { get; set; }
+        [Display(Name = "CCV")]
+        [MaxLength(3)]
+        public string CCV { get; set; }
 
         /// <summary>
         /// Card expiry date for the payment
         /// </summary>
-        [Display(Name = "Expiry Date")]
         [Required]
+        [MaxLength(5)]
+        [Display(Name = "Expiry Date")]
         public string ExpDate { get; set; }
 
         /// <summary>
         /// Card holder's name for the payment
         /// </summary>
-        [Display(Name = "Card Holder's Name")]
         [Required]
+        [MaxLength(50)]
+        [Display(Name = "Card Holder's Name")]
         public string CardHolder { get; set; }
 
         /// <summary>
         /// Total price for the booking
         /// </summary>
-        public int TotalPrice { get; set; }
+        public float TotalPrice { get; set; }
 
         /// <summary>
         /// Movie selected for the booking

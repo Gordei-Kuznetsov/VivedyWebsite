@@ -12,19 +12,21 @@ using Microsoft.AspNet.Identity.Owin;
 using VivedyWebApp.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using VivedyWebApp.Areas.Admin.Models.ViewModels;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace VivedyWebApp.Areas.Admin.Controllers
 {
     /// <summary>
     /// Application Admin Controller for ApplicationUsers
     /// </summary>
+    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
-        private ApplicationUserManager _userManager;
-
         /// <summary>
         /// UserManager instance
         /// </summary>
+        private ApplicationUserManager _userManager;
+
         public ApplicationUserManager UserManager
         {
             get
@@ -40,66 +42,54 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Index page
         /// </summary>
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            List<ApplicationUser> allUsers = await UserManager.Users.ToListAsync();
-            List<UsersViewModel> allViewModels = new List<UsersViewModel>();
-            foreach(ApplicationUser user in allUsers)
+            List<ApplicationUser> users = UserManager.Users.ToList();
+            List<UsersViewModel> models = new List<UsersViewModel>();
+            foreach(ApplicationUser user in users)
             {
-                allViewModels.Add(new UsersViewModel
+                models.Add(new UsersViewModel
                 {
-                     Name = user.Name,
-                     UserName = user.UserName,
-                     Id = user.Id,
-                     //Getting the roles for each user
-                     Role = UserManager.GetRoles(user.Id).ToList().ToString(),
-                     PhoneNumberConfirmed = user.PhoneNumberConfirmed,
-                     PhoneNumber  = user.PhoneNumber,
-                     EmailConfirmed = user.EmailConfirmed,
-                     Email = user.Email
+                    Id = user.Id,
+                    Name = user.Name,
+                    Email = user.Email,
+                    EmailConfirmed = user.EmailConfirmed,
+                    PhoneNumber = user.PhoneNumber,
+                    PhoneNumberConfirmed = user.PhoneNumberConfirmed,
+                    Role = user.Roles.First().ToString(),
+                    UserName = user.UserName
                 });
-            };
-            return View(allViewModels);
+            }
+            return View(models);
         }
 
         /// <summary>
         /// GET request action for Details page
         /// </summary>
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Details(string id)
+        public ActionResult Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser applicationUser = await UserManager.FindByIdAsync(id);
-            if (applicationUser == null)
+            ApplicationUser user = UserManager.FindById(id);
+            if (user == null)
             {
                 return HttpNotFound();
             }
-            UsersViewModel model = new UsersViewModel
-            {
-                Name = applicationUser.Name,
-                UserName = applicationUser.UserName,
-                Id = applicationUser.Id,
-                //Updating the role
-                Role = UserManager.GetRoles(applicationUser.Id).ToList().ToString(),
-                PhoneNumberConfirmed = applicationUser.PhoneNumberConfirmed,
-                PhoneNumber = applicationUser.PhoneNumber,
-                EmailConfirmed = applicationUser.EmailConfirmed,
-                Email = applicationUser.Email
-            };
-            return View(model);
+            return View(user);
         }
 
         /// <summary>
         /// GET request action for Create page
         /// </summary>
-        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
-            return View();
+            UsersCreateViewModel model = new UsersCreateViewModel()
+            {
+                Roles = GetRoleSelectListItems()
+            };
+            return View(model);
         }
 
         /// <summary>
@@ -107,8 +97,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Create(UsersCreateViewModel newUser)
+        public ActionResult Create(UsersCreateViewModel newUser)
         {
             if (ModelState.IsValid)
             {
@@ -118,7 +107,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                     Name = newUser.Name,
                     PhoneNumber = newUser.PhoneNumber,
                 };
-                var result = await UserManager.CreateAsync(user, newUser.Password);
+                var result = UserManager.Create(user, newUser.Password);
                 if (result.Succeeded)
                 {
                     var currentUser = UserManager.FindByEmail(user.Email);
@@ -126,26 +115,27 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                     switch (newUser.Role) 
                     {
                         case "Admin":
+                            if(UserManager.IsInRole(currentUser.Id, "Visitor"))
+                            {
+                                UserManager.RemoveFromRole(currentUser.Id, "Visitor");
+                            }
                             UserManager.AddToRole(currentUser.Id, "Admin");
                             break;
                         case "Visitor":
                         default:
+                            if (UserManager.IsInRole(currentUser.Id, "Admin"))
+                            {
+                                UserManager.RemoveFromRole(currentUser.Id, "Admin");
+                            }
                             UserManager.AddToRole(currentUser.Id, "Visitor");
                             break;
                     }
-
-                    //Sending the email to the user to confirm the email address
-                    //Will later be moved to the a method of EmailService class
-                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    string subject = "Email Confirmation";
-                    string mailbody = "<b>Hi " + user.Name + "</b><br/>Thank you for regestering on our website. Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
-                    EmailService mailService = new EmailService();
-                    await mailService.SendAsync(user.Email, subject, mailbody);
+                    string securityCode = UserManager.GenerateEmailConfirmationToken(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
+                    UserManager.SendRegisterEmailTo(user, callbackUrl);
                     return RedirectToAction("Index");
                 }
             }
-
             // If we got this far, something failed, redisplay form
             return View(newUser);
         }
@@ -153,29 +143,28 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Edit page
         /// </summary>
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Edit(string id)
+        public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser applicationUser = await UserManager.FindByIdAsync(id);
-            if (applicationUser == null)
+            ApplicationUser user = UserManager.FindById(id);
+            if (user == null)
             {
                 return HttpNotFound();
             }
-            UsersViewModel model = new UsersViewModel
+            UsersViewModel model = new UsersViewModel()
             {
-                Name = applicationUser.Name,
-                UserName = applicationUser.UserName,
-                Id = applicationUser.Id,
-                //Getting the role
-                Role = UserManager.GetRoles(applicationUser.Id).ToList().ToString(),
-                PhoneNumberConfirmed = applicationUser.PhoneNumberConfirmed,
-                PhoneNumber = applicationUser.PhoneNumber,
-                EmailConfirmed = applicationUser.EmailConfirmed,
-                Email = applicationUser.Email
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                EmailConfirmed = user.EmailConfirmed,
+                PhoneNumber = user.PhoneNumber,
+                PhoneNumberConfirmed = user.PhoneNumberConfirmed,
+                Role = user.Roles.First().ToString(),
+                UserName = user.UserName,
+                Roles = GetRoleSelectListItems(user.Roles.First().ToString())
             };
             return View(model);
         }
@@ -185,21 +174,44 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(UsersViewModel model)
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser applicationUser = UserManager.FindById(model.Id);
-                applicationUser.Name = model.Name;
-                applicationUser.UserName = model.UserName;
+                ApplicationUser user = UserManager.FindById(model.Id);
+                user.Name = model.Name;
+                if(user.PhoneNumber != model.PhoneNumber)
+                {
+                    user.PhoneNumber = model.PhoneNumber;
+                }
+                UserManager.Update(user);
+                if (user.Email != model.Email)
+                {
+                    user.UserName = model.UserName;
+                    UserManager.SetEmail(user.Id, model.Email);
+                    string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
+                    UserManager.SendChangedEmailEmailTo(user, callbackUrl);
+                }
                 //Updating the role
-                UserManager.AddToRole(model.Id, model.Role);
-                applicationUser.PhoneNumberConfirmed = model.PhoneNumberConfirmed;
-                applicationUser.PhoneNumber = model.PhoneNumber;
-                applicationUser.EmailConfirmed = model.EmailConfirmed;
-                applicationUser.Email = model.Email;
-                await UserManager.UpdateAsync(applicationUser);
+                switch (model.Role)
+                {
+                    case "Admin":
+                        if (UserManager.IsInRole(user.Id, "Visitor"))
+                        {
+                            UserManager.RemoveFromRole(user.Id, "Visitor");
+                        }
+                        UserManager.AddToRole(user.Id, "Admin");
+                        break;
+                    case "Visitor":
+                    default:
+                        if (UserManager.IsInRole(user.Id, "Admin"))
+                        {
+                            UserManager.RemoveFromRole(user.Id, "Admin");
+                        }
+                        UserManager.AddToRole(user.Id, "Visitor");
+                        break;
+                }
                 return RedirectToAction("Index");
             }
             return View(model);
@@ -208,29 +220,27 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Delete page
         /// </summary>
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Delete(string id)
+        public ActionResult Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser applicationUser = await UserManager.FindByIdAsync(id);
-            if (applicationUser == null)
+            ApplicationUser user = UserManager.FindById(id);
+            if (user == null)
             {
                 return HttpNotFound();
             }
-            UsersViewModel model = new UsersViewModel
+            UsersViewModel model = new UsersViewModel()
             {
-                Name = applicationUser.Name,
-                UserName = applicationUser.UserName,
-                Id = applicationUser.Id,
-                //Getting the role
-                Role = UserManager.GetRoles(applicationUser.Id).ToList().ToString(),
-                PhoneNumberConfirmed = applicationUser.PhoneNumberConfirmed,
-                PhoneNumber = applicationUser.PhoneNumber,
-                EmailConfirmed = applicationUser.EmailConfirmed,
-                Email = applicationUser.Email
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                EmailConfirmed = user.EmailConfirmed,
+                PhoneNumber = user.PhoneNumber,
+                PhoneNumberConfirmed = user.PhoneNumberConfirmed,
+                Role = user.Roles.First().ToString(),
+                UserName = user.UserName
             };
             return View(model);
         }
@@ -241,11 +251,11 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(string id)
         {
-            ApplicationUser applicationUser = await UserManager.FindByIdAsync(id);
+            ApplicationUser user = UserManager.FindById(id);
             //The role is automatically removed by the UserManager
-            await UserManager.DeleteAsync(applicationUser);
+            UserManager.Delete(user);
             return RedirectToAction("Index");
         }
 
@@ -264,6 +274,37 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             }
 
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Returns List of items for dropdown with roles
+        /// </summary>
+        public List<SelectListItem> GetRoleSelectListItems(string selectedRole = null)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            List<IdentityRole> roles = db.Roles.ToList();
+            List<SelectListItem> items = new List<SelectListItem>();
+            foreach (IdentityRole role in roles)
+            {
+                if(selectedRole == null)
+                {
+                    items.Add(new SelectListItem()
+                    {
+                        Value = role.Id,
+                        Text = role.Name
+                    });
+                }
+                else
+                {
+                    items.Add(new SelectListItem()
+                    {
+                        Value = role.Id,
+                        Text = role.Name,
+                        Selected = (selectedRole == role.Name)? true : false
+                    });
+                }
+            }
+            return items;
         }
     }
 }

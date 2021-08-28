@@ -15,9 +15,6 @@
             <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
                 <thead>
                     <tr class="text-center">
-                        <th scope="col" style="width:95px">
-                            @Html.DisplayNameFor(model => model.MovieId)
-                        </th>
                         <th scope="col">
                             @Html.DisplayNameFor(model => model.Name)
                         </th>
@@ -25,7 +22,7 @@
                             @Html.DisplayNameFor(model => model.Rating)
                         </th>
                         <th scope="col">
-                            @Html.DisplayNameFor(model => model.UserRating)
+                            @Html.DisplayNameFor(model => model.ViewerRating)
                         </th>
                         <th scope="col">
                             @Html.DisplayNameFor(model => model.Category)
@@ -43,6 +40,12 @@
                             @Html.DisplayNameFor(model => model.TrailerUrl)
                         </th>
                         <th scope="col">
+                            @Html.DisplayNameFor(model => model.ReleaseDate)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.ClosingDate)
+                        </th>
+                        <th scope="col">
 
                         </th>
                     </tr>
@@ -51,9 +54,6 @@
                     @foreach (var item in Model)
                     {
                         <tr class="text-center">
-                            <td style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
-                                @Html.DisplayFor(modelItem => item.MovieId)
-                            </td>
                             <td class="movieName">
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
@@ -61,7 +61,7 @@
                                 @Html.DisplayFor(modelItem => item.Rating)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.UserRating)
+                                @Html.DisplayFor(modelItem => item.ViewerRating)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Category)
@@ -78,10 +78,22 @@
                             <td style="width:150px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
                                 @Html.DisplayFor(modelItem => item.TrailerUrl)
                             </td>
+                            <td class="startTime admin-display-set-width">
+                                @{
+                                    string releaseDate = item.ReleaseDate.ToString("dddd, dd MMMM yyyy HH:mm tt");
+                                    @Html.DisplayFor(modelItem => releaseDate)
+                                }
+                            </td>
+                            <td class="startTime admin-display-set-width">
+                                @{
+                                    string closingDate = item.ClosingDate.ToString("dddd, dd MMMM yyyy HH:mm tt");
+                                    @Html.DisplayFor(modelItem => closingDate)
+                                }
+                            </td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                                @Html.ActionLink("Details", "Details", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                                @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                @Html.ActionLink("Details", "Details", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                             </td>
                         </tr>
                     }
@@ -96,12 +108,11 @@
                 <thead>
                     <tr class="text-center">
                         <th scope="col" style="width:95px">
-                            @Html.DisplayNameFor(model => model.MovieId)
-                        </th>
-                        <th scope="col">
                             @Html.DisplayNameFor(model => model.Name)
                         </th>
-                        
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Duration)
+                        </th>
                         <th scope="col">
 
                         </th>
@@ -111,28 +122,27 @@
                     @foreach (var item in Model)
                     {
                         <tr class="text-center">
-                            <td style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
-                                @Html.DisplayFor(modelItem => item.MovieId)
-                            </td>
-                            <td class="movieName">
+                            <td class="movieName" style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
-                            
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Duration)
+                            </td>
                             <td>
                                 <div class="admin-button">
-                                    @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                                    @Html.ActionLink("Details", "Details", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                                    @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                    @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                    @Html.ActionLink("Details", "Details", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                    @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                                 </div>
                                 <div class="admin-button-row">
                                     <div class="row">
-                                        @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                        @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                                     </div>
                                     <div class="row">
-                                        @Html.ActionLink("Details", "Details", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                        @Html.ActionLink("Details", "Details", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                                     </div>
                                     <div class="row">
-                                        @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                        @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                                     </div>
                                   
                                 </div>

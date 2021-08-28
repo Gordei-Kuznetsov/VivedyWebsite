@@ -1,4 +1,4 @@
-﻿@model IEnumerable<VivedyWebApp.Models.Movie>
+﻿@model VivedyWebApp.Models.ViewModels.MoviesViewModel
 @{
     ViewBag.Title = "Home";
 }
@@ -17,7 +17,7 @@
     <div class="jumbotron-fluid" style="margin-left: 2rem; margin-right: 2rem;">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
-                @for (int count = 0; count < Model.Count(); count++)
+                @for (int count = 0; count < Model.TopMovies.Count(); count++)
                 {
                     if (count == 0)
                     {
@@ -30,18 +30,18 @@
                 }
             </ol>
             <div class="carousel-inner">
-                @foreach (var item in Model)
+                @foreach (var item in Model.TopMovies)
                 {
-                    if (item == Model.First())
+                    if (item == Model.TopMovies.First())
                     {
                         <div class="carousel-item active">
-                            <img style="height:auto" class="d-block w-100" src="/Content/Images/@item.MovieId-HorizontalPoster.png" alt="Slide Failed">
+                            <img style="height:auto" class="d-block w-100" src="/Content/Images/@item.Id-HorizontalPoster.png" alt="Slide Failed">
                         </div>
                     }
                     else
                     {
                         <div class="carousel-item">
-                            <img style="height: auto;" class="d-block w-100" src="/Content/Images/@item.MovieId-HorizontalPoster.png" alt="Slide Failed">
+                            <img style="height: auto;" class="d-block w-100" src="/Content/Images/@item.Id-HorizontalPoster.png" alt="Slide Failed">
                         </div>
                     }
                 }
@@ -60,20 +60,19 @@
         <div class="container">
             <div class="row">
                 <div class="container">
-                    <h1 style="color: #a80000;" class="display-1 phenomena-sm-three mb-5 text-center">TOP MOVIES</h1>
-                    <p class="ml-3 mb-4 text-center">Current Movies being sold</p>
+                    <h1 style="color: #a80000;" class="display-1 phenomena-sm-three mb-5 text-center">COMMING SOON</h1>
                     <hr class="" style="width: 40vh;">
                 </div>
             </div>
             <div class="row mt-5">
-                @foreach (var item in Model)
+                @foreach (var item in Model.ComingSoonMovies)
                 {
                     <div class="card-body col-lg-3 col-sm-6 movieCard">
                         <div class="card">
-                            <img src="/Content/Images/@item.MovieId-VerticalPoster.png"
+                            <img src="/Content/Images/@item.Id-VerticalPoster.png"
                                  class="card-img-top" style="max-height:20rem; min-height:20rem; object-fit:cover" alt="Failed Img">
                             <div class="card">
-                                <a href="/Movies/Details?id=@item.MovieId" class="btn btn-primary">@item.Name</a>
+                                <a href="/Movies/Details?id=@item.Id" class="btn btn-primary">@item.Name</a>
                             </div>
                         </div>
                         <div style="display: none" class="movieName">@item.Name</div>

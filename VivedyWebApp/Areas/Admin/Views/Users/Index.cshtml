@@ -15,9 +15,6 @@
             <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
                 <thead>
                     <tr class="text-center ">
-                        <th scope="col" style="width:95px">
-                            User @Html.DisplayNameFor(model => model.Id)
-                        </th>
                         <th scope="col">
                             @Html.DisplayNameFor(model => model.Name)
                         </th>
@@ -30,8 +27,8 @@
                         <th scope="col">
                             @Html.DisplayNameFor(model => model.PhoneNumber)
                         </th>
-                        <th scope="col" >
-                            Phone Confirmed
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
                         </th>
                         <th scope="col">
                             @Html.DisplayNameFor(model => model.Role)
@@ -48,9 +45,6 @@
                     @foreach (var item in Model)
                     {
                         <tr class="text-center">
-                            <td style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
-                                @Html.DisplayFor(modelItem => item.Id)
-                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
@@ -89,14 +83,14 @@
             <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
                 <thead>
                     <tr class="text-center ">
-                        <th scope="col" class="admin-display-sm-none" style="width:95px">
-                            User @Html.DisplayNameFor(model => model.Id)
-                        </th>
                         <th scope="col" class="admin-display-none">
                             @Html.DisplayNameFor(model => model.Name)
                         </th>
-                        <th scope="col" >
+                        <th scope="col">
                             @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.PhoneNumber)
                         </th>
                         <th scope="col">
 
@@ -107,14 +101,14 @@
                     @foreach (var item in Model)
                     {
                         <tr class="text-center">
-                            <td class="admin-display-sm-none" style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
-                                @Html.DisplayFor(modelItem => item.Id)
-                            </td>
                             <td class="admin-display-none">
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
-                            <td class="userEmail ">
+                            <td class="userEmail">
                                 @Html.DisplayFor(modelItem => item.Email, new { htmlAttributes = new { @class = "text-link" } })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PhoneNumber)
                             </td>
                             <td>
                                 <div class="admin-button">

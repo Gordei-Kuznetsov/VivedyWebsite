@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using VivedyWebApp.Areas.Admin.Models.ViewModels;
 using VivedyWebApp.Models;
 
 namespace VivedyWebApp.Areas.Admin.Controllers
@@ -15,9 +16,9 @@ namespace VivedyWebApp.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         /// <summary>
-        /// ApplicationDbContext instance
+        /// The entities manager instance
         /// </summary>
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly Entities Helper = new Entities();
 
         /// <summary>
         /// GET request action for Index page
@@ -34,7 +35,11 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult BookingScanner()
         {
-            return View();
+            HomeViewModel model = new HomeViewModel()
+            {
+                Screenings = Helper.GetScreeningSelectListItems()
+            };
+            return View(model);
         }
 
         /// <summary>
@@ -42,18 +47,17 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public JsonResult VerifyBookings(string data)
+        public JsonResult VerifyBookings(string data, string screeningId)
         {
-            if (data == null)
+            if (data == null || screeningId == null)
             {
                 return Json(new VerifyBookingsResult("HTTP 400: Bad request"), JsonRequestBehavior.AllowGet);
             }
-            VerifyBookingsJsonResult bookingObject;
+            string bookingId;
             try
             {
                 byte[] decodedData = Convert.FromBase64String(data);
-                string decodedString = Encoding.UTF8.GetString(decodedData);
-                bookingObject = JsonConvert.DeserializeObject<VerifyBookingsJsonResult>(decodedString);
+                bookingId = Encoding.UTF8.GetString(decodedData);
             }
             catch
             {
@@ -61,19 +65,17 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             }
             try
             {
-                Booking booking = db.Bookings.Find(bookingObject.bookingId);
-                if(booking == null)
+                var result = new VerifyBookingsResult();
+                Booking booking = Helper.Bookings.Details(bookingId);
+                if(booking == null || screeningId != booking.ScreeningId)
                 {
-                    return Json(new VerifyBookingsResult(false), JsonRequestBehavior.AllowGet);
-                }
-                if(booking.UserEmail != bookingObject.email)
-                {
-                    return Json(new VerifyBookingsResult(false), JsonRequestBehavior.AllowGet);
+                    result.verified = false;
                 }
                 else
                 {
-                    return Json(new VerifyBookingsResult(true), JsonRequestBehavior.AllowGet);
+                    result.verified = true;
                 }
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch
             {
@@ -111,33 +113,6 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             /// Field for any error messages that occure during the request proccesing
             /// </summary>
             public string error;
-        }
-
-        /// <summary>
-        /// Class for the result of converting requested data to VerifyBookings api action from Json 
-        /// </summary>
-        private class VerifyBookingsJsonResult
-        {
-            public VerifyBookingsJsonResult(string bookingId, string email)
-            {
-                this.email = email;
-                this.bookingId = bookingId;
-            }
-
-            public VerifyBookingsJsonResult()
-            {
-
-            }
-
-            /// <summary>
-            /// Field for the booking GUID
-            /// </summary>
-            public string bookingId;
-
-            /// <summary>
-            /// Field for the email of the user who made the booking
-            /// </summary>
-            public string email;
         }
     }
 }

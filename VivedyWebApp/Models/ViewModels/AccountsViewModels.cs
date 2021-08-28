@@ -13,8 +13,8 @@ namespace VivedyWebApp.Models.ViewModels
         /// User email
         /// </summary>
         [Required]
-        [Display(Name = "Email")]
         [EmailAddress]
+        [Display(Name = "Email")]
         public string Email { get; set; }
 
         /// <summary>
@@ -41,6 +41,7 @@ namespace VivedyWebApp.Models.ViewModels
         /// Name to register the user under
         /// </summary>
         [Required]
+        [MaxLength(20)]
         [Display(Name = "Name")]
         public string Name { get; set; }
 
@@ -135,22 +136,57 @@ namespace VivedyWebApp.Models.ViewModels
         /// <summary>
         /// User name
         /// </summary>
+        [Display(Name = "User name")]
         public string Name { get; set; }
 
         /// <summary>
         /// User email
         /// </summary>
+        [Display(Name = "Email")]
         public string Email { get; set; }
 
         /// <summary>
         /// User phone number
         /// </summary>
+        [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
 
         /// <summary>
         /// Boolean indicating wether the browser that passed the verification is remembered
         /// </summary>
         public bool BrowserRemembered { get; set; }
+
+        /// <summary>
+        /// List of bookings that the user has made
+        /// </summary>
+        public List<Booking> Bookings { get; set; }
+    }
+
+    /// <summary>
+    /// Model used on Edit page
+    /// </summary>
+    public class EditViewModel
+    {
+        /// <summary>
+        /// User name
+        /// </summary>
+        [Required]
+        [Display(Name = "User name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// User email
+        /// </summary>
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        /// <summary>
+        /// User phone number
+        /// </summary>
+        [Phone]
+        [Display(Name = "Phone number")]
+        public string PhoneNumber { get; set; }
     }
 
     /// <summary>

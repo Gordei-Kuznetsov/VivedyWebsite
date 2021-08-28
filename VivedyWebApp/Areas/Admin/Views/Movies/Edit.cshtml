@@ -1,25 +1,19 @@
-﻿@model VivedyWebApp.Areas.Admin.Models.ViewModels.MoviesViewModel
+﻿@model VivedyWebApp.Areas.Admin.Models.ViewModels.MoviesAdminViewModel
 
 @{
     ViewBag.Title = "Edit Movie";
 }
 
-@using (Html.BeginForm("Edit", "Movies", null, FormMethod.Post, new { role = "form", enctype = "multipart/form-data"  }))
+@using (Html.BeginForm("Edit", "Movies", null, FormMethod.Post, new { role = "form", enctype = "multipart/form-data", @class="vivedy-form-boi" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="containerOneAdmin">
         <div class="white-bg-color mx-auto text-dark " style="max-width: 750px; border: 0.5rem solid #a8000a;">
             <div class="mb-5 mt-4 phenomena-sm border-bottom border-dark " style="color: #a8000a"><h1 class="display-5">EDIT MOVIE</h1></div>
             <div class="border-bottom">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="row">
-                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.MovieId) : </div>
-                    <div class="mb-3 col-md-8 phenomena-sm" readonly>
-                        @Html.EditorFor(model => model.MovieId, new { htmlAttributes = new { @class = "col-md-12", @readonly = "true" } })
-                        @Html.ValidationMessageFor(model => model.MovieId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+                @Html.HiddenFor(model => model.Id)
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Name) : </div>
                     <div class="mb-3 col-md-8 phenomena-sm">
@@ -36,11 +30,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.UserRating) :</div>
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.ViewerRating) :</div>
                     <div class=" mb-3 col-md-8 phenomena-sm">
 
-                        @Html.EditorFor(model => model.UserRating, new { htmlAttributes = new { @class = "col-md-12" } })
-                        @Html.ValidationMessageFor(model => model.UserRating, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.ViewerRating, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.ValidationMessageFor(model => model.ViewerRating, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="row">
@@ -79,10 +73,24 @@
                         @Html.ValidationMessageFor(model => model.TrailerUrl, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.ReleaseDate) :</div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        @Html.EditorFor(model => model.ReleaseDate, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.ValidationMessageFor(model => model.ReleaseDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.ClosingDate) :</div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        @Html.EditorFor(model => model.ClosingDate, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.ValidationMessageFor(model => model.ClosingDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-3 col-sm-12 phenomena-sm">Reupload @Html.LabelFor(model => model.HorizontalImage)?</div>
                     <div class="mb-3 col-sm-12 col-md-8 phenomena-sm">
-                        <input accept="image/png" class="col-md-12" data-val-file="The field Horizontal Poster must be a file."
+                        <input accept="image/png" class="col-md-12 vivedy-hoz-image" data-val-file="The field Horizontal Poster must be a file."
                                id="HorizontalImage" name="HorizontalImage" type="file" value="">
                         @Html.ValidationMessageFor(model => model.HorizontalImage, "", new { @class = "text-danger" })
                     </div>
@@ -90,14 +98,14 @@
                 <div class="row">
                     <div class="col-md-3 col-sm-12 phenomena-sm">Reupload @Html.LabelFor(model => model.VerticalImage)?</div>
                     <div class="mb-3 col-md-8 phenomena-sm col-sm-12">
-                        <input accept="image/png" class="col-md-12" data-val-file="The field Vertical Poster must be a file."
+                        <input accept="image/png" class="col-md-12 vivedy-vet-image" data-val-file="The field Vertical Poster must be a file."
                                id="VerticalImage" name="VerticalImage" type="file" value="">
                         @Html.ValidationMessageFor(model => model.VerticalImage, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
             <div class="row">
-                    <input type="submit" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 ml-3 phenomena-sm" value="Save">
+
             </div>
             <div class="row">
                 @Html.ActionLink("Back to List", "Index", routeValues: null, htmlAttributes: new { @class = "mt-3 text-link phenomena-sm ml-5" })
@@ -106,6 +114,106 @@
     </div>
 }
 
+<button class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3  mr-4 phenomena-sm vivedy-submit-button">Save</button>
+
+<div class="canvas-dumpspace" hidden>
+
+</div>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+
+        let readFileToDataURI = function (file) {
+            return new Promise((resolve, reject) => {
+                let fr = new FileReader();
+                fr.readAsDataURL(file);
+
+                fr.addEventListener("load", (e) => {
+                    resolve(fr.result)
+                });
+
+                fr.addEventListener("error", (e) => {
+                    reject(fr.error, e);
+                });
+            });
+        };
+
+        let canvasCanvas = document.querySelector(".canvas-dumpspace");
+        let verticalFILE = document.querySelector("input.vivedy-vet-image");
+        let horizontalFILE = document.querySelector("input.vivedy-hoz-image");
+
+        let resizeImage = async function (file, resolution) {
+            return new Promise(async (resolve, reject) => {
+                let dataURI = await readFileToDataURI(file);
+
+                let canvas = document.createElement("canvas");
+                let image = document.createElement("img");
+
+                canvas.width = resolution.w;
+                canvas.height = resolution.h;
+
+                image.addEventListener("load", () => {
+                    let nw = image.naturalWidth;
+                    let nh = image.naturalHeight;
+
+                    if (nw == canvas.width && nh == canvas.height) {
+                        canvas.remove();
+                        image.remove();
+                        resolve(file);
+                        return;
+                    }
+
+                    let ctx = canvas.getContext("2d");
+
+                    if (nw / nh < canvas.width / canvas.height) {
+                        let newHeight = Math.floor(canvas.width * nh / nw);
+                        let offset = Math.floor((newHeight - canvas.height) / 2);
+                        ctx.drawImage(image, 0, offset * -1, canvas.width, newHeight);
+                    } else {
+                        let newWidth = Math.floor(canvas.height * nw / nh);
+                        let offset = Math.floor((newWidth - canvas.width) / 2);
+                        ctx.drawImage(image, offset * -1, 0, newWidth, canvas.height);
+                    }
+
+                    canvas.toBlob((blob) => {
+                        let file = new File([blob], "coolfile.png", { type: "image/png" } );
+
+                        canvas.remove();
+                        image.remove();
+                        resolve(file);
+                    }, "image/png", 0.9);
+
+
+                });
+
+                image.src = dataURI;
+                canvasCanvas.append(canvas, image);
+            });
+        };
+
+        document.querySelector("button.vivedy-submit-button").addEventListener("click", async () => {
+            let doThings = true;
+
+            let vetFile = verticalFILE.files[0];
+            let hozFile = horizontalFILE.files[0];
+
+            let newVFile = await resizeImage(vetFile, { w: 600, h: 800 });
+            let newHFile = await resizeImage(hozFile, { w: 1920, h: 900 });
+
+            let vDataTransfer = new DataTransfer();
+            vDataTransfer.items.add(newVFile);
+            verticalFILE.files = vDataTransfer.files;
+
+            let hDataTransfer = new DataTransfer();
+            hDataTransfer.items.add(newHFile);
+            horizontalFILE.files = hDataTransfer.files;
+
+            if (doThings) {
+                document.querySelector(".vivedy-form-boi").submit();
+            }
+        });
+
+    </script>
 }

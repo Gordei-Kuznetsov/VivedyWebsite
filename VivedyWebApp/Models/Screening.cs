@@ -10,38 +10,35 @@ namespace VivedyWebApp.Models
     /// <summary>
     /// Screening model
     /// </summary>
-    public class Screening
+    public class Screening : BaseModel
     {
-        /// <summary>
-        /// Screening GIUD
-        /// </summary>
-        [Display(Name = "Screening Id")]
-        [Key]
-        [Required]
-        public string ScreeningId { get; set; }
-
         /// <summary>
         /// Screening start date and time
         /// </summary>
-        [Display(Name = "Start Time")]
         [Required]
-        public System.DateTime StartTime { get; set; }
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Start Time")]
+        public DateTime StartTime { get; set; }
 
         /// <summary>
         /// ID of the movie for which the Screenings is created
         /// </summary>
-        [Display(Name = "Movie Id")]
         [ForeignKey ("Movie")]
         [Required]
+        [MaxLength(36)]
+        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        [Display(Name = "Movie Id")]
         public string MovieId { get; set; }
         public Movie Movie { get; set; }
 
         /// <summary>
         /// ID of the room where the screening is happeneing
         /// </summary>
-        [Display(Name = "Room Id")]
         [ForeignKey("Room")]
         [Required]
+        [MaxLength(36)]
+        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        [Display(Name = "Room Id")]
         public string RoomId { get; set; }
         public Room Room { get; set; }
     }

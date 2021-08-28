@@ -84,16 +84,16 @@
             <div class="container mb-5 movieCard">
                 <div class="card topborder mb-3">
                     <div class="img-hover-zoom">
-                        <a href="/Movies/Details?id=@item.MovieId">
+                        <a href="/Movies/Details?id=@item.Id">
                             <img style="object-fit:cover; height: auto;" class="fadeimage card-img-top moviestextPhen"
-                                 src="/Content/Images/@item.MovieId-HorizontalPoster.png"
+                                 src="/Content/Images/@item.Id-HorizontalPoster.png"
                                  alt="Image Failed to load">
                             <div class="middle">
                                 <div class="movietext">Click to Contuniue <i class="fas fa-external-link-alt"></i> </div>
                             </div>
                         </a>
                     </div>
-                    <a class="overridehover" href="/Movies/Details?id=@item.MovieId">
+                    <a class="overridehover" href="/Movies/Details?id=@item.Id">
                         <div class="card-body text-center">
                             <p class="text-uppercase font-weight-bold moviestextPhen mb-0"> @item.Name </p>
                         </div>

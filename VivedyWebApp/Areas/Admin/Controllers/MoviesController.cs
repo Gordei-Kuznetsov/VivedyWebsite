@@ -17,33 +17,32 @@ namespace VivedyWebApp.Areas.Admin.Controllers
     /// <summary>
     /// Application Admin Controller for Movies
     /// </summary>
+    [Authorize(Roles = "Admin")]
     public class MoviesController : Controller
     {
         /// <summary>
-        /// ApplicationDbContext instance
+        /// The entities manager instance
         /// </summary>
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly Entities Helper = new Entities();
 
         /// <summary>
         /// GET request action for Index page
         /// </summary>
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            return View(await db.Movies.ToListAsync());
+            return View(Helper.Movies.AllToList());
         }
 
         /// <summary>
         /// GET request action for Details page
         /// </summary>
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Details(string id)
+        public ActionResult Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie movie = await db.Movies.FindAsync(id);
+            Movie movie = Helper.Movies.Details(id);
             if (movie == null)
             {
                 return HttpNotFound();
@@ -54,7 +53,6 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Create page
         /// </summary>
-        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -65,75 +63,70 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Create(MoviesCreateViewModel newMovie)
+        public ActionResult Create(MoviesCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
-                Movie movie = new Movie
+                Movie movie = new Movie()
                 {
-                    MovieId = Guid.NewGuid().ToString(),
-                    Name = newMovie.Name,
-                    Rating = newMovie.Rating,
-                    UserRating = newMovie.UserRating,
-                    Category = newMovie.Category,
-                    Description = newMovie.Description,
-                    Duration = newMovie.Duration,
-                    Price = newMovie.Price,
-                    TrailerUrl = newMovie.TrailerUrl
+                    Name = model.Name,
+                    Rating = model.Rating,
+                    ViewerRating = model.ViewerRating,
+                    Category = model.Category,
+                    Description = model.Description,
+                    Duration = model.Duration,
+                    Price = model.Price,
+                    TrailerUrl = model.TrailerUrl,
+                    ReleaseDate = model.ReleaseDate,
+                    ClosingDate = model.ClosingDate
                 };
-                db.Movies.Add(movie);
-                await db.SaveChangesAsync();
+                Helper.Movies.CreateFrom(movie);
                 //Saving the images uploaded for the posters
-                if(newMovie.HorizontalImage != null)
+                if(model.HorizontalImage != null)
                 {
                     //Saving horizontal poster
-                    string fileName = movie.MovieId + "-HorizontalPoster.png";
+                    string fileName = movie.Id + "-HorizontalPoster.png";
                     var imagePath = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
-                    newMovie.HorizontalImage.SaveAs(imagePath);
+                    model.HorizontalImage.SaveAs(imagePath);
                 }
-                if(newMovie.VerticalImage != null)
+                if(model.VerticalImage != null)
                 {
                     //Saving vertical poster
-                    string fileName = movie.MovieId + "-VerticalPoster.png";
+                    string fileName = movie.Id + "-VerticalPoster.png";
                     var imagePath = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
-                    newMovie.VerticalImage.SaveAs(imagePath);
+                    model.VerticalImage.SaveAs(imagePath);
                 }
                 return RedirectToAction("Index");
             }
-
-            return View(newMovie);
+            return View(model);
         }
 
         /// <summary>
         /// GET request action for Edit page
         /// </summary>
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Edit(string id)
+        public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie movie = await db.Movies.FindAsync(id);
+            Movie movie = Helper.Movies.Details(id);
             if (movie == null)
             {
                 return HttpNotFound();
             }
-            
-            MoviesViewModel model = new MoviesViewModel
+            MoviesAdminViewModel model = new MoviesAdminViewModel
             {
-                MovieId = movie.MovieId,
                 Name = movie.Name,
                 Rating = movie.Rating,
-                UserRating = movie.UserRating,
+                ViewerRating = movie.ViewerRating,
                 Category = movie.Category,
                 Description = movie.Description,
                 Duration = movie.Duration,
                 Price = movie.Price,
                 TrailerUrl = movie.TrailerUrl,
-                //Not sending the name of the saved poster images yet
-                //Will be added later
+                ReleaseDate = movie.ReleaseDate,
+                ClosingDate = movie.ClosingDate
             };
             return View(model);
         }
@@ -143,31 +136,30 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Edit(MoviesViewModel model)
+        public ActionResult Edit(MoviesAdminViewModel model)
         {
             if (ModelState.IsValid)
             {
-                Movie movie = new Movie
+                Movie movie = new Movie()
                 {
-                    MovieId = model.MovieId,
+                    Id = model.Id,
                     Name = model.Name,
                     Rating = model.Rating,
-                    UserRating = model.UserRating,
+                    ViewerRating = model.ViewerRating,
                     Category = model.Category,
                     Description = model.Description,
                     Duration = model.Duration,
                     Price = model.Price,
-                    TrailerUrl = model.TrailerUrl
+                    TrailerUrl = model.TrailerUrl,
+                    ReleaseDate = model.ReleaseDate,
+                    ClosingDate = model.ClosingDate
                 };
-                db.Entry(movie).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-
+                Helper.Movies.Edit(movie);
                 //Saving the images for the posters if re-uploaded 
                 if (model.HorizontalImage != null)
                 {
                     //Deleting existing one
-                    string path = Server.MapPath("/Content/Images/" + model.MovieId + "-HorizontalPoster.png");
+                    string path = Server.MapPath("/Content/Images/" + movie.Id + "-HorizontalPoster.png");
                     FileInfo fi = new FileInfo(path);
                     if (fi.Exists)
                     {
@@ -179,7 +171,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 if (model.VerticalImage != null)
                 {
                     //Deleting existing one
-                    string path = Server.MapPath("/Content/Images/" + model.MovieId + "-VerticalPoster.png");
+                    string path = Server.MapPath("/Content/Images/" + movie.Id + "-VerticalPoster.png");
                     FileInfo fi = new FileInfo(path);
                     if (fi.Exists)
                     {
@@ -196,14 +188,13 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Delete page
         /// </summary>
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Delete(string id)
+        public ActionResult Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie movie = await db.Movies.FindAsync(id);
+            Movie movie = Helper.Movies.Details(id);
             if (movie == null)
             {
                 return HttpNotFound();
@@ -216,12 +207,9 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(string id)
         {
-            Movie movie = await db.Movies.FindAsync(id);
-            db.Movies.Remove(movie);
-            await db.SaveChangesAsync();
+            Helper.Movies.Delete(id);
             //Deleting poster images
             //Deleting horizontal poster
             string path = Server.MapPath("/Content/Images/" + id + "-HorizontalPoster.png");
@@ -238,18 +226,6 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 fi.Delete();
             }
             return RedirectToAction("Index");
-        }
-
-        /// <summary>
-        /// Method for disposing ApplicationDbContext objects
-        /// </summary>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

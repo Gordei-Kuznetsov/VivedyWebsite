@@ -16,33 +16,32 @@ namespace VivedyWebApp.Areas.Admin.Controllers
     /// <summary>
     /// Application Admin Controller for Screenings
     /// </summary>
+    [Authorize(Roles = "Admin")]
     public class ScreeningsController : Controller
     {
         /// <summary>
-        /// ApplicationDbContext instance
+        /// The entities manager instance
         /// </summary>
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly Entities Helper = new Entities();
 
         /// <summary>
         /// GET request action for Index page
         /// </summary>
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            return View(await db.Screenings.ToListAsync());
+            return View(Helper.Screenings.AllToList());
         }
 
         /// <summary>
         /// GET request action for Details page
         /// </summary>
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Details(string id)
+        public ActionResult Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = await db.Screenings.FindAsync(id);
+            Screening screening = Helper.Screenings.Details(id);
             if (screening == null)
             {
                 return HttpNotFound();
@@ -53,10 +52,14 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Create page
         /// </summary>
-        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
-            return View();
+            ScreeningsCreateViewModel model = new ScreeningsCreateViewModel()
+            {
+                Movies = Helper.GetMovieSelectListItems(),
+                Rooms = Helper.GetRoomSelectListItems()
+            };
+            return View(model);
         }
 
         /// <summary>
@@ -64,58 +67,67 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Create(ScreeningsCreateViewModel newScreening)
+        public ActionResult Create(ScreeningsCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
                 Screening screening = new Screening
                 {
-                    ScreeningId = Guid.NewGuid().ToString(),
-                    StartTime = newScreening.StartTime,
-                    MovieId = newScreening.MovieId,
-                    RoomId = newScreening.RoomId
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = model.StartTime,
+                    MovieId = model.MovieId,
+                    RoomId = model.RoomId
                 };
-                db.Screenings.Add(screening);
+                Helper.Screenings.Create(screening);
                 //Generating Screenings
-                if (newScreening.GenerateScreenings)
+                //Later will be replaced with the generaion from list of days and list of times
+                if (model.GenerateScreenings)
                 {
+                    List<Screening> screenings = new List<Screening>();
                     for(int i = 1; i < 7; i++)
                     {
                         //A Screening for each day starting from the newScreening.StartTime at the same time of the day
                         Screening autoScreening = new Screening
                         {
-                            ScreeningId = Guid.NewGuid().ToString(),
-                            StartTime = newScreening.StartTime.AddDays(i),
-                            MovieId = newScreening.MovieId,
-                            RoomId = newScreening.RoomId
+                            Id = Guid.NewGuid().ToString(),
+                            StartTime = screening.StartTime.AddDays(i),
+                            MovieId = screening.MovieId,
+                            RoomId = screening.RoomId
                         };
-                        db.Screenings.Add(autoScreening);
+                        screenings.Add(autoScreening);
                     }
+                    Helper.Screenings.SaveRange(screenings);
                 }
-                await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            return View(newScreening);
+            return View(model);
         }
 
         /// <summary>
         /// GET request action for Edit page
         /// </summary>
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Edit(string id)
+        public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = await db.Screenings.FindAsync(id);
+            Screening screening = Helper.Screenings.Details(id);
             if (screening == null)
             {
                 return HttpNotFound();
             }
-            return View(screening);
+            ScreeningsViewModel model = new ScreeningsViewModel()
+            {
+                Id = screening.Id,
+                StartTime = screening.StartTime,
+                MovieId = screening.MovieId,
+                RoomId = screening.MovieId,
+                Movies = Helper.GetMovieSelectListItems(),
+                Rooms = Helper.GetRoomSelectListItems()
+            };
+            return View(model);
         }
 
         /// <summary>
@@ -123,29 +135,33 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Edit(Screening screening)
+        public ActionResult Edit(ScreeningsViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(screening);
+                return View(model);
             }
-            db.Entry(screening).State = EntityState.Modified;
-            await db.SaveChangesAsync();
+            Screening screening = new Screening()
+            {
+                Id = model.Id,
+                StartTime = model.StartTime,
+                MovieId = model.MovieId,
+                RoomId = model.RoomId
+            };
+            Helper.Screenings.Edit(screening);
             return RedirectToAction("Index");
         }
 
         /// <summary>
         /// GET request action for Delete page
         /// </summary>
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Delete(string id)
+        public ActionResult Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = await db.Screenings.FindAsync(id);
+            Screening screening = Helper.Screenings.Details(id);
             if (screening == null)
             {
                 return HttpNotFound();
@@ -158,25 +174,10 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(string id)
         {
-            Screening screening = await db.Screenings.FindAsync(id);
-            db.Screenings.Remove(screening);
-            await db.SaveChangesAsync();
+            Helper.Screenings.Delete(id);
             return RedirectToAction("Index");
-        }
-
-        /// <summary>
-        /// Method for disposing ApplicationDbContext objects
-        /// </summary>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

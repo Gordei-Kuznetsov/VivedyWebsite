@@ -9,28 +9,22 @@ namespace VivedyWebApp.Models
     /// <summary>
     /// Cinema model
     /// </summary>
-    public class Cinema
+    public class Cinema : BaseModel
     {
-        /// <summary>
-        /// Cinema GUID
-        /// </summary>
-        [Display(Name = "Cinema Id")]
-        [Key]
-        [Required]
-        public string CinemaId { get; set; }
-
         /// <summary>
         /// Cinema Name
         /// </summary>
-        [Display(Name = "Cinema Name")]
         [Required]
+        [MaxLength(20)]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
         /// <summary>
         /// Cinema physical address
         /// </summary>
-        [Display(Name = "Cinema Address")]
         [Required]
+        [MaxLength(80)]
+        [Display(Name = "Address")]
         public string Address { get; set; }
     }
 }

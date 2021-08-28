@@ -6,7 +6,6 @@
 <div>
     <div class="containerOne">
         <div class="row">
-
             <div class="col-lg-7 col-sm-12 text-center mt-4">
                 <h1 class="phenomena">Your</h1>
                 <h5 class="phenomenaThree" style="color: #ae0000"> VIVEDY</h5>
@@ -21,19 +20,38 @@
                         <p class=""><b class="text-danger">Phone Number:</b> @Model.PhoneNumber</p>
                     </div>
                     <div class="card-header">
-                        <p class=""><b class="text-danger">Password:</b></p>
-                        <b>@Html.ActionLink("[Change Password]", "ChangePassword")</b>
+                        <p class=""><b class="text-danger">Email:</b> @Model.Email</p>
                     </div>
                     <div class="card-header">
-                        <p class=""><b class="text-danger">Email:</b> @Model.Email</p>
-                        <b>@Html.ActionLink("[Change Email]", "ChangeEmail")</b>
+                        <a class="btn btn-danger mt-3 phenomena-sm text-center" href="/Accounts/Edit">Edit Details</a>
                     </div>
                     <div class="card-header">
                         <b>@Html.ActionLink("[Delete Your Account]", "Delete")</b>
                     </div>
-
                 </div>
             </div>
+        </div>
+        <div class="row">
+            <div class="container">
+                <h1 style="color: #a80000;" class="display-1 phenomena-sm-three mb-5 text-center">YOUR CURRENT BOOKINGS</h1>
+                <hr class="" style="width: 40vh;">
+            </div>
+        </div>
+        <div class="row mt-5">
+            @foreach (var booking in Model.Bookings)
+            {
+                <div class="card-body col-lg-3 col-sm-6 movieCard phenomena">
+                    <div class="card">
+                        <img src="/Content/Images/@booking.Screening.Movie.Id.-VerticalPoster.png"
+                             class="card-img-top" style="max-height:20rem; min-height:20rem; object-fit:cover" alt="Failed Img">
+                    </div>
+                    <p>@booking.Screening.Movie.Name</p>
+                    <p>at @booking.Screening.Room.Cinema.Name</p>
+                    <p>in @booking.Screening.Room.Name</p>
+                    <p>at @booking.Screening.StartTime.ToString("dddd, dd MMMM yyyy HH:mm")</p>
+                    <p>in @booking.Seats</p>
+                </div>
+            }
         </div>
     </div>
 </div>

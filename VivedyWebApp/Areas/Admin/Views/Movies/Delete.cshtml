@@ -12,12 +12,7 @@
         <div class="white-bg-color mx-auto text-dark"style="max-width: 750px; border: 0.5rem solid #a8000a;">
             <div class="mb-5 mt-4 phenomena-sm border-bottom border-dark " style="color: #a8000a"><h1 class="display-5">DELETE MOVIE</h1></div>
             <div class="border-bottom">
-                <div class="row">
-                    <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.MovieId) : </div>
-                    <div class="mb-3 col-md-8 phenomena-sm" readonly>
-                        @Html.DisplayFor(model => model.MovieId)
-                    </div>
-                </div>
+                @Html.HiddenFor(model => model.Id)
                 <div class="row">
                     <div class="col-3 phenomena-sm">User @Html.DisplayNameFor(model => model.Name) : </div>
                     <div class="mb-3 col-md-8 phenomena-sm" readonly>
@@ -31,9 +26,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.UserRating) : </div>
+                    <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.ViewerRating) : </div>
                     <div class="mb-3 col-md-8 phenomena-sm" readonly>
-                        @Html.DisplayFor(model => model.UserRating)
+                        @Html.DisplayFor(model => model.ViewerRating)
                     </div>
                 </div>
                 <div class="row">
@@ -66,6 +61,30 @@
                     <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.TrailerUrl):</div>
                     <div class="col-md-8 mb-3 phenomena-sm text-link">
                         @Html.DisplayFor(model => model.TrailerUrl)
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.ReleaseDate):</div>
+                    <div class="col-md-8 mb-3 phenomena-sm text-link">
+                        @Html.DisplayFor(model => model.ReleaseDate.ToString("dddd, dd MMMM yyyy HH:mm tt"))
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.ClosingDate):</div>
+                    <div class="col-md-8 mb-3 phenomena-sm text-link">
+                        @Html.DisplayFor(model => model.ClosingDate.ToString("dddd, dd MMMM yyyy HH:mm tt"))
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-3 phenomena-sm">Horizontal Image :</div>
+                    <div class="col-md-8 mb-3 phenomena-sm">
+                        <a href="~/Content/Images/@Model.Id-HorizontalImage.png" target="_blank" class="text-link">@Model.Id-HorizontalImage.png</a>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-3 phenomena-sm">Vertical Image :</div>
+                    <div class="col-md-8 mb-3 phenomena-sm">
+                        <a href="~/Content/Images/@Model.Id-VerticalImage.png" target="_blank" class="text-link">@Model.Id-VerticalImage.png</a>
                     </div>
                 </div>
             </div>

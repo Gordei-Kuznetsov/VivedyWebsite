@@ -49,6 +49,11 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Linq.Expressions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Linq.Expressions.4.3.0\lib\net463\System.Linq.Expressions.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
@@ -173,14 +178,14 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\ServicesConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\CinemasController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoomsController.cs" />
-    <Compile Include="Areas\Admin\Models\ViewModels\CinemasViewModels.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\HomeViewModels.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\RoomsViewModels.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Areas\Admin\Controllers\BookingsController.cs" />
@@ -194,65 +199,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105112349590_InitialCreate.cs" />
-    <Compile Include="Migrations\202105112349590_InitialCreate.Designer.cs">
-      <DependentUpon>202105112349590_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105150640235_AddedModelsRemovedManage.cs" />
-    <Compile Include="Migrations\202105150640235_AddedModelsRemovedManage.Designer.cs">
-      <DependentUpon>202105150640235_AddedModelsRemovedManage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105182302105_ModifiedKeyAttributes.cs" />
-    <Compile Include="Migrations\202105182302105_ModifiedKeyAttributes.Designer.cs">
-      <DependentUpon>202105182302105_ModifiedKeyAttributes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105201119301_ChagedBookingModel.cs" />
-    <Compile Include="Migrations\202105201119301_ChagedBookingModel.Designer.cs">
-      <DependentUpon>202105201119301_ChagedBookingModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105260803403_ModifiedBookingModel.cs" />
-    <Compile Include="Migrations\202105260803403_ModifiedBookingModel.Designer.cs">
-      <DependentUpon>202105260803403_ModifiedBookingModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105260815513_ModifiedBookingModelAgain.cs" />
-    <Compile Include="Migrations\202105260815513_ModifiedBookingModelAgain.Designer.cs">
-      <DependentUpon>202105260815513_ModifiedBookingModelAgain.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105272246149_AddedKeys.cs" />
-    <Compile Include="Migrations\202105272246149_AddedKeys.Designer.cs">
-      <DependentUpon>202105272246149_AddedKeys.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105272309428_RemovedRotationField.cs" />
-    <Compile Include="Migrations\202105272309428_RemovedRotationField.Designer.cs">
-      <DependentUpon>202105272309428_RemovedRotationField.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202106010046370_AddedNameToUserModel.cs" />
-    <Compile Include="Migrations\202106010046370_AddedNameToUserModel.Designer.cs">
-      <DependentUpon>202106010046370_AddedNameToUserModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202106012140087_EditedModels.cs" />
-    <Compile Include="Migrations\202106012140087_EditedModels.Designer.cs">
-      <DependentUpon>202106012140087_EditedModels.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202106220134273_AddedCinemaModel.cs" />
-    <Compile Include="Migrations\202106220134273_AddedCinemaModel.Designer.cs">
-      <DependentUpon>202106220134273_AddedCinemaModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202107151124158_RenamedRotationsToScreenings.cs" />
-    <Compile Include="Migrations\202107151124158_RenamedRotationsToScreenings.Designer.cs">
-      <DependentUpon>202107151124158_RenamedRotationsToScreenings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202107220818333_AddedRoomsAndRoomsFkAndUserRating.cs" />
-    <Compile Include="Migrations\202107220818333_AddedRoomsAndRoomsFkAndUserRating.Designer.cs">
-      <DependentUpon>202107220818333_AddedRoomsAndRoomsFkAndUserRating.cs</DependentUpon>
+    <Compile Include="Migrations\202108280648337_InitialCreate.cs" />
+    <Compile Include="Migrations\202108280648337_InitialCreate.Designer.cs">
+      <DependentUpon>202108280648337_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppDbContext.cs" />
+    <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Cinema.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\ViewModels\AccountsViewModels.cs" />
     <Compile Include="Models\Booking.cs" />
-    <Compile Include="Areas\Admin\Models\ViewModels\BookingsViewModels.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\MoviesViewModels.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\ScreeningViewModels.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\UsersViewModels.cs" />
@@ -260,6 +217,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Screening.cs" />
+    <Compile Include="Models\ViewModels\MoviesViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -344,7 +302,7 @@
     <Content Include="Views\Home\Privacy.cshtml" />
     <Content Include="Views\Movies\Details.cshtml" />
     <Content Include="Views\Movies\Index.cshtml" />
-    <Content Include="Views\Bookings\BookingConfirmation.cshtml" />
+    <Content Include="Views\Bookings\Confirmation.cshtml" />
     <Content Include="Views\Accounts\ResetPassword.cshtml" />
     <Content Include="Views\Accounts\ResetPasswordConfirmation.cshtml" />
     <Content Include="Areas\Admin\Views\Movies\Create.cshtml" />
@@ -352,10 +310,8 @@
     <Content Include="Areas\Admin\Views\Movies\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Movies\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Movies\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Bookings\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Bookings\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Bookings\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\Bookings\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Bookings\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Screenings\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Screenings\Delete.cshtml" />
@@ -369,13 +325,14 @@
     <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Accounts\ChangeEmail.cshtml" />
-    <Content Include="Views\Bookings\BookingTime.cshtml" />
-    <Content Include="Views\Bookings\BookingSeats.cshtml" />
-    <Content Include="Views\Bookings\BookingPay.cshtml" />
+    <Content Include="Views\Bookings\Time.cshtml" />
+    <Content Include="Views\Bookings\Seats.cshtml" />
+    <Content Include="Views\Bookings\Pay.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Home\BookingScanner.cshtml" />
     <Content Include="Views\Accounts\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Accounts\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -395,44 +352,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202105112349590_InitialCreate.resx">
-      <DependentUpon>202105112349590_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105150640235_AddedModelsRemovedManage.resx">
-      <DependentUpon>202105150640235_AddedModelsRemovedManage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105182302105_ModifiedKeyAttributes.resx">
-      <DependentUpon>202105182302105_ModifiedKeyAttributes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105201119301_ChagedBookingModel.resx">
-      <DependentUpon>202105201119301_ChagedBookingModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105260803403_ModifiedBookingModel.resx">
-      <DependentUpon>202105260803403_ModifiedBookingModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105260815513_ModifiedBookingModelAgain.resx">
-      <DependentUpon>202105260815513_ModifiedBookingModelAgain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105272246149_AddedKeys.resx">
-      <DependentUpon>202105272246149_AddedKeys.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105272309428_RemovedRotationField.resx">
-      <DependentUpon>202105272309428_RemovedRotationField.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202106010046370_AddedNameToUserModel.resx">
-      <DependentUpon>202106010046370_AddedNameToUserModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202106012140087_EditedModels.resx">
-      <DependentUpon>202106012140087_EditedModels.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202106220134273_AddedCinemaModel.resx">
-      <DependentUpon>202106220134273_AddedCinemaModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202107151124158_RenamedRotationsToScreenings.resx">
-      <DependentUpon>202107151124158_RenamedRotationsToScreenings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202107220818333_AddedRoomsAndRoomsFkAndUserRating.resx">
-      <DependentUpon>202107220818333_AddedRoomsAndRoomsFkAndUserRating.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202108280648337_InitialCreate.resx">
+      <DependentUpon>202108280648337_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

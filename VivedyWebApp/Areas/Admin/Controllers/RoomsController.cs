@@ -11,14 +11,21 @@ using VivedyWebApp.Areas.Admin.Models.ViewModels;
 
 namespace VivedyWebApp.Areas.Admin.Controllers
 {
+    /// <summary>
+    /// Application Admin Controller for Rooms
+    /// </summary>
+    [Authorize(Roles = "Admin")]
     public class RoomsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        /// <summary>
+        /// The entities manager instance
+        /// </summary>
+        private readonly Entities Helper = new Entities();
 
         // GET: Admin/Rooms
         public ActionResult Index()
         {
-            return View(db.Rooms.ToList());
+            return View(Helper.Rooms.AllToList());
         }
 
         // GET: Admin/Rooms/Details/5
@@ -28,7 +35,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Room room = db.Rooms.Find(id);
+            Room room = Helper.Rooms.Details(id);
             if (room == null)
             {
                 return HttpNotFound();
@@ -39,7 +46,11 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         // GET: Admin/Rooms/Create
         public ActionResult Create()
         {
-            return View();
+            RoomsCreateViewModel model = new RoomsCreateViewModel()
+            {
+                Cinemas = Helper.GetCinemaSelectListItems()
+            };
+            return View(model);
         }
 
         // POST: Admin/Rooms/Create
@@ -49,15 +60,13 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                Room room = new Room
+                Room room = new Room()
                 {
-                    RoomId = Guid.NewGuid().ToString(),
                     Name = model.Name,
                     SeatsLayout = model.SeatsLayout,
                     CinemaId = model.CinemaId
                 };
-                db.Rooms.Add(room);
-                db.SaveChanges();
+                Helper.Rooms.CreateFrom(room);
                 return RedirectToAction("Index");
             }
             return View(model);
@@ -70,26 +79,39 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Room room = db.Rooms.Find(id);
+            Room room = Helper.Rooms.Details(id);
             if (room == null)
             {
                 return HttpNotFound();
             }
-            return View(room);
+            RoomsViewModel model = new RoomsViewModel()
+            {
+                Id = room.Id,
+                Name = room.Name,
+                SeatsLayout = room.SeatsLayout,
+                Cinemas = Helper.GetCinemaSelectListItems()
+            };
+            return View(model);
         }
 
         // POST: Admin/Rooms/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Room room)
+        public ActionResult Edit(RoomsViewModel model)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(room).State = EntityState.Modified;
-                db.SaveChanges();
+                Room room = new Room()
+                {
+                    Id = model.Id,
+                    Name = model.Name,
+                    SeatsLayout = model.SeatsLayout,
+                    CinemaId = model.CinemaId
+                };
+                Helper.Rooms.Edit(room);
                 return RedirectToAction("Index");
             }
-            return View(room);
+            return View(model);
         }
 
         // GET: Admin/Rooms/Delete/5
@@ -99,7 +121,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Room room = db.Rooms.Find(id);
+            Room room = Helper.Rooms.Details(id);
             if (room == null)
             {
                 return HttpNotFound();
@@ -112,19 +134,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Room room = db.Rooms.Find(id);
-            db.Rooms.Remove(room);
-            db.SaveChanges();
+            Helper.Rooms.Delete(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

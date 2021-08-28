@@ -11,14 +11,21 @@ using VivedyWebApp.Areas.Admin.Models.ViewModels;
 
 namespace VivedyWebApp.Areas.Admin.Controllers
 {
+    /// <summary>
+    /// Application Admin Controller for Cinemas
+    /// </summary>
+    [Authorize(Roles = "Admin")]
     public class CinemasController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        /// <summary>
+        /// The entities manager instance
+        /// </summary>
+        private readonly Entities Helper = new Entities();
 
         // GET: Admin/Cinemas
         public ActionResult Index()
         {
-            return View(db.Cinemas.ToList());
+            return View(Helper.Cinemas.AllToList());
         }
 
         // GET: Admin/Cinemas/Details/5
@@ -28,7 +35,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cinema cinema = db.Cinemas.Find(id);
+            Cinema cinema = Helper.Cinemas.Details(id);
             if (cinema == null)
             {
                 return HttpNotFound();
@@ -45,22 +52,14 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         //POST: Admin/Cinemas/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CinemasCreateViewModel model)
+        public ActionResult Create([Bind(Exclude = "Id")] Cinema cinema)
         {
             if (ModelState.IsValid)
             {
-                Cinema cinema = new Cinema
-                {
-                    CinemaId = Guid.NewGuid().ToString(),
-                    Name = model.Name,
-                    Address = model.Address
-                };
-                db.Cinemas.Add(cinema);
-                db.SaveChanges();
+                Helper.Cinemas.CreateFrom(cinema);
                 return RedirectToAction("Index");
             }
-
-            return View(model);
+            return View(cinema);
         }
 
         // GET: Admin/Cinemas/Edit/5
@@ -70,7 +69,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cinema cinema = db.Cinemas.Find(id);
+            Cinema cinema = Helper.Cinemas.Details(id);
             if (cinema == null)
             {
                 return HttpNotFound();
@@ -85,8 +84,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(cinema).State = EntityState.Modified;
-                db.SaveChanges();
+                Helper.Cinemas.Edit(cinema);
                 return RedirectToAction("Index");
             }
             return View(cinema);
@@ -99,7 +97,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cinema cinema = db.Cinemas.Find(id);
+            Cinema cinema = Helper.Cinemas.Details(id);
             if (cinema == null)
             {
                 return HttpNotFound();
@@ -112,19 +110,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Cinema cinema = db.Cinemas.Find(id);
-            db.Cinemas.Remove(cinema);
-            db.SaveChanges();
+            Helper.Cinemas.Delete(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

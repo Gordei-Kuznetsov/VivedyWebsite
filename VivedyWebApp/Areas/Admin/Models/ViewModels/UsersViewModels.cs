@@ -3,36 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace VivedyWebApp.Areas.Admin.Models.ViewModels
 {
     /// <summary>
     /// Model specificly used for creating new User on Admin/Users/Create page
     /// </summary>
-    public class UsersCreateViewModel
+    public class UsersCreateViewModel : BaseUsersViewModel
     {
-        /// <summary>
-        /// User name
-        /// </summary>
-        [Required]
-        [Display(Name = "User Name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// User email
-        /// </summary>
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
-        /// <summary>
-        /// User phone number
-        /// </summary>
-        [Phone]
-        [Display(Name = "Phone Number")]
-        public string PhoneNumber { get; set; }
-
         /// <summary>
         /// User passwsord
         /// </summary>
@@ -47,34 +26,53 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         /// </summary>
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
-        /// <summary>
-        /// Role assigned to the user
-        /// </summary>
-        [Required]
-        [Display(Name = "Role")]
-        public string Role { get; set; }
     }
 
     /// <summary>
     /// Model which has all ApplicationUser model's fields plus the user role
     /// </summary>
-    public class UsersViewModel
+    public class UsersViewModel : BaseUsersViewModel
     {
         /// <summary>
         /// User GUID
         /// </summary>
         [Required]
+        [MaxLength(36)]
+        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
         [Display(Name = "Id")]
         public string Id { get; set; }
 
         /// <summary>
+        /// Boolean indicating wether the email ahs been confirmaed
+        /// </summary>
+        [Required]
+        [Display(Name = "Email Conmfirmed")]
+        public bool EmailConfirmed { get; set; }
+
+        /// <summary>
+        /// Boolean indicating wether the phone number has been confirmed
+        /// </summary>
+        [Required]
+        [Display(Name = "Phone Number Confirmed")]
+        public bool PhoneNumberConfirmed { get; set; }
+
+        /// <summary>
+        /// User username
+        /// </summary>
+        [Display(Name = "User Name")]
+        public string UserName { get; set; }
+    }
+
+    public class BaseUsersViewModel
+    {
+        /// <summary>
         /// User name
         /// </summary>
         [Required]
-        [Display(Name = "Name")]
+        [MaxLength(20)]
+        [Display(Name = "User Name")]
         public string Name { get; set; }
 
         /// <summary>
@@ -86,13 +84,6 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         public string Email { get; set; }
 
         /// <summary>
-        /// Boolean indicating wether the email ahs been confirmaed
-        /// </summary>
-        [Required]
-        [Display(Name = "Email Conmfirmed")]
-        public bool EmailConfirmed { get; set; }
-
-        /// <summary>
         /// User phone number
         /// </summary>
         [Phone]
@@ -100,25 +91,12 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         public string PhoneNumber { get; set; }
 
         /// <summary>
-        /// Boolean indicating wether the phone number has been confirmed
+        /// Role assigned to the user
         /// </summary>
         [Required]
-        [Display(Name = "Phone Number Confirmed")]
-        public bool PhoneNumberConfirmed { get; set; }
-
-        /// <summary>
-        /// Role assigned to user
-        /// </summary>
-        [Required]
+        [MaxLength(7)]
         [Display(Name = "Role")]
         public string Role { get; set; }
-
-        /// <summary>
-        /// User username
-        /// </summary>
-        [Required]
-        [Compare("Email", ErrorMessage = "The Email and User Name do not match.")]
-        [Display(Name = "User Name")]
-        public string UserName { get; set; }
+        public List<SelectListItem> Roles = new List<SelectListItem>();
     }
 }

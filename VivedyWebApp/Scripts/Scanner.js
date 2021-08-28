@@ -1,5 +1,7 @@
-﻿let allowDecoding = true;
+﻿let allowDecoding = false;
 let selectedDeviceId = 0;
+let ScreeningSelect = $('#ScreeningId')
+$('#ScreeningId').change( function () { allowDecoding = true; } )
 const codeReader = new ZXing.BrowserQRCodeReader();
 $('#myModal').on('hidden.bs.modal', function () {
     allowDecoding = true;
@@ -19,7 +21,7 @@ function decode() {
     });
 }
 function sendDecodedResult(QRcontent) {
-    $.post(`/Admin/Home/VerifyBookings/?data=${QRcontent}`, "", (result) => {
+    $.post(`/Admin/Home/VerifyBookings/?data=${QRcontent}&screeningId=${ScreeningSelect.options[ScreeningSelect.selectedIndex].value}`, "", (result) => {
         if (result.error == null) {
             if (result.verified) {
                 displayMessage(true, "VERIFIED", "The booking is valid");

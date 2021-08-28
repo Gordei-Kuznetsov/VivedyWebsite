@@ -1,7 +1,7 @@
-﻿@model IEnumerable<VivedyWebApp.Models.Room>
+﻿@model IEnumerable<VivedyWebApp.Models.Cinema>
 
 @{
-    ViewBag.Title = "Rooms";
+    ViewBag.Title = "Cinemas";
 }
 
 <div class="adminCard">
@@ -9,23 +9,17 @@
         ROOMS
     </div>
     <div class="white-bg-color">
-        <a class="btn btn-danger  phenomena-sm " href="/Admin/Screenings/Create">ADD <i class="fas fa-plus"></i></a>
+        <a class="btn btn-danger  phenomena-sm " href="/Admin/Cinemas/Create">ADD <i class="fas fa-plus"></i></a>
         <input type="text" class="mb-3 float-right" id="Search" placeholder="Search by Start Time...">
         <br>
         <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
             <thead>
                 <tr class="text-center ">
                     <th scope="col">
-                        @Html.DisplayNameFor(model => model.RoomId)
-                    </th>
-                    <th scope="col">
                         @Html.DisplayNameFor(model => model.Name)
                     </th>
                     <th scope="col">
-                        @Html.DisplayNameFor(model => model.SeatsLayout)
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.CinemaId)
+                        @Html.DisplayNameFor(model => model.Address)
                     </th>
                     <th scope="col">
 
@@ -36,33 +30,27 @@
                 @foreach (var item in Model)
                 {
                     <tr class="text-center">
-                        <td class="admin-display-cut">
-                            @Html.DisplayFor(modelItem => item.RoomId)
-                        </td>
                         <td class="name admin-display-set-width">
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td class="admin-display-set-width">
-                            @Html.DisplayFor(modelItem => item.SeatsLayout)
-                        </td>
-                        <td class="admin-display-cut admin-display-sm-none">
-                            @Html.DisplayFor(modelItem => item.CinemaId)
+                            @Html.DisplayFor(modelItem => item.Address)
                         </td>
                         <td>
                             <div class="admin-button">
-                                @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.RoomId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                                @Html.ActionLink("Details", "Details", routeValues: new { id = item.RoomId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
-                                @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.RoomId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                @Html.ActionLink("Details", "Details", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" }) |
+                                @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                             </div>
                             <div class="admin-button-row">
                                 <div class="row">
-                                    @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.RoomId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                    @Html.ActionLink("Edit", "Edit", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                                 </div>
                                 <div class="row">
-                                    @Html.ActionLink("Details", "Details", routeValues: new { id = item.RoomId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                    @Html.ActionLink("Details", "Details", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                                 </div>
                                 <div class="row">
-                                    @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.RoomId }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
+                                    @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                                 </div>
 
                             </div>

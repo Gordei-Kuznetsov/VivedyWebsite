@@ -10,43 +10,47 @@ namespace VivedyWebApp.Models
     /// <summary>
     /// Booking model
     /// </summary>
-    public class Booking
+    public class Booking : BaseModel
     {
-        /// <summary>
-        /// Booking GUID
-        /// </summary>
-        [Key]
-        [Required]
-        [Display(Name = "Booking Id")]
-        public string BookingId { get; set; }
-
         /// <summary>
         /// Selected seats for the booking
         /// </summary>
-        [Display(Name = "Seats")]
         [Required]
+        [MaxLength(64)]
+        [Display(Name = "Seats")]
         public string Seats { get; set; }
 
         /// <summary>
-        /// Date and time when the booking was created
+        /// Amount paid for the booking
         /// </summary>
-        [Display(Name = "Creation Date")]
         [Required]
-        public System.DateTime CreationDate { get; set; }
+        [Display(Name = "Payed Amout")]
+        public float PayedAmout { get; set; }
 
         /// <summary>
         /// Email assosiated with the booking
         /// </summary>
-        [Display(Name = "User Email")]
         [Required]
+        [EmailAddress]
+        [MaxLength(64)]
+        [Display(Name = "User Email")]
         public string UserEmail { get; set; }
+
+        /// <summary>
+        /// Datetime when the booking has been scanned and verified
+        /// </summary>
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Verification time")]
+        public string VerificationTime { get; set; }
 
         /// <summary>
         /// Screening that is booked
         /// </summary>
-        [Display(Name = "Screening Id")]
         [ForeignKey("Screening")]
         [Required]
+        [MaxLength(36)]
+        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        [Display(Name = "Screening Id")]
         public string ScreeningId { get; set; }
         public Screening Screening { get; set; }
     }
