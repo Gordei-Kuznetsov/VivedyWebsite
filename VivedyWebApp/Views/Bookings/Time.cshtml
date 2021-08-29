@@ -4,8 +4,6 @@
     ViewBag.Title = "Time";
 }
 
-@Html.AntiForgeryToken()
-
 <div class="jumbotron">
     <div class="row text-center">
         <div class="col-lg-9 col-sm-12 ">
@@ -51,7 +49,7 @@
                     <div class="p-2 phenomena-sm"> User Rating: <span class="badge badge-pill badge-danger"> @Model.Movie.ViewerRating</span></div>
                     <hr />
                     <p class="card-text">@Model.Movie.Description</p>
-                    <div class="phenomena-sm-two"> Movie Price: <span style="color:white"> $@Model.Movie.Price </span></div>
+                    <div class="phenomena-sm-two"> Ticket Price: <span style="color:white"> $@Model.Movie.Price </span></div>
                 </div>
             </div>
         </div>

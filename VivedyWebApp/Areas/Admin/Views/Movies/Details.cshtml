@@ -63,13 +63,19 @@
             <div class="row ">
                 <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.ReleaseDate):</div>
                 <div class="col-md-8 mb-3 phenomena-sm">
-                    @Html.DisplayFor(model => model.ReleaseDate.ToString("dddd, dd MMMM yyyy HH:mm tt"), new { @class = "text-link" })
+                    @{
+                        string releaseDate = Model.ReleaseDate.ToString("dddd, dd MMMM yyyy HH:mm tt"); 
+                    }
+                    @Html.DisplayFor(model => releaseDate, new { @class = "text-link" })
                 </div>
             </div>
             <div class="row ">
                 <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.ClosingDate):</div>
                 <div class="col-md-8 mb-3 phenomena-sm">
-                    @Html.DisplayFor(model => model.ClosingDate.ToString("dddd, dd MMMM yyyy HH:mm tt"), new { @class = "text-link" })
+                    @{
+                        string closingDate = Model.ClosingDate.ToString("dddd, dd MMMM yyyy HH:mm tt");
+                    }
+                    @Html.DisplayFor(model => closingDate, new { @class = "text-link" })
                 </div>
             </div>
             <div class="row ">

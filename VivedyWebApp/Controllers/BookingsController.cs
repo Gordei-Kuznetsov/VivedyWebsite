@@ -55,7 +55,6 @@ namespace VivedyWebApp.Controllers
         /// </summary>
         [HttpGet]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public ActionResult Seats(string id)
         {
             if (id == null)

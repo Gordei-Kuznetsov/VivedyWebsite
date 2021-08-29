@@ -78,7 +78,10 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                     MovieId = model.MovieId,
                     RoomId = model.RoomId
                 };
-                Helper.Screenings.Create(screening);
+                if (!Helper.Screenings.AnyOverlapWith(screening))
+                {
+                    Helper.Screenings.Create(screening);
+                }
                 //Generating Screenings
                 //Later will be replaced with the generaion from list of days and list of times
                 if (model.GenerateScreenings)
@@ -94,7 +97,10 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                             MovieId = screening.MovieId,
                             RoomId = screening.RoomId
                         };
-                        screenings.Add(autoScreening);
+                        if (!Helper.Screenings.AnyOverlapWith(screening))
+                        {
+                            screenings.Add(autoScreening);
+                        }
                     }
                     Helper.Screenings.SaveRange(screenings);
                 }

@@ -29,7 +29,7 @@ namespace VivedyWebApp.Controllers
         /// </summary>
         public ActionResult Index()
         {
-            List<Movie> movies = Helper.Movies.GetAllNotClosed();
+            List<Movie> movies = Helper.Movies.GetAllReleased().OrderByDescending(m => m.ViewerRating).ToList();
             ViewBag.Categories = Helper.Movies.GetAllCategories();
             ViewBag.Ratings = Helper.Movies.GetAllRatingss();
             return View(movies);

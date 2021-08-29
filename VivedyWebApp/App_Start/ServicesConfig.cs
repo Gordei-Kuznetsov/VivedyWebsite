@@ -120,34 +120,34 @@ namespace VivedyWebApp
         /// <summary>
         /// Sends a 'register' email to the user with a security check callback url
         /// </summary>
-        public async void SendRegisterEmailTo(ApplicationUser user, string callbackUrl)
+        public void SendRegisterEmailTo(ApplicationUser user, string callbackUrl)
         {
             string subject = "Email Confirmation";
             string mailbody = "<b>Hi " + user.Name + "</b><br/>Thank you for regestering on our website. Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
             EmailService mailService = new EmailService();
-            await mailService.SendAsync(user.Email, subject, mailbody);
+            mailService.SendAsync(user.Email, subject, mailbody);
         }
 
         /// <summary>
         /// Sends a 'forgot password' email to the user with a security check callback url
         /// </summary>
-        public async void SendForgotPasswordEmailTo(ApplicationUser user, string callbackUrl)
+        public void SendForgotPasswordEmailTo(ApplicationUser user, string callbackUrl)
         {
             string subject = "Password Resetting";
             string mailbody = "<b>Hi " + user.Name + "</b><br/>Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to reset password for your account on <a href=\"vivedy.azurewebsites.net/Home/Index\">vivedy.azurewebsites.net</a>.";
             EmailService mailService = new EmailService();
-            await mailService.SendAsync(user.Email, subject, mailbody);
+            mailService.SendAsync(user.Email, subject, mailbody);
         }
 
         /// <summary>
         /// Sends a 'changes email' email to the user with a security check callback url
         /// </summary>
-        public async void SendChangedEmailEmailTo(ApplicationUser user, string callbackUrl)
+        public void SendChangedEmailEmailTo(ApplicationUser user, string callbackUrl)
         {
             string subject = "Email Confirmation";
             string mailbody = "<b>Hi " + user.Name + "</b><br/>You have changed your email address on our website.<br/>Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
             EmailService mailService = new EmailService();
-            await mailService.SendAsync(user.Email, subject, mailbody);
+            mailService.SendAsync(user.Email, subject, mailbody);
         }
     }
 
@@ -325,7 +325,7 @@ namespace VivedyWebApp
         /// </summary>
         public List<Movie> GetTop(int x)
         {
-            return GetAllNotClosed().OrderBy(m => m.ViewerRating).Take(x).ToList();
+            return GetAllNotClosed().OrderByDescending(m => m.ViewerRating).Take(x).ToList();
         }
 
         /// <summary>
@@ -387,10 +387,7 @@ namespace VivedyWebApp
         /// </summary>
         public Screening GetDetailsWithMovie(string id)
         {
-            return (from scr in dbSet
-                    join m in db.Movies on scr.MovieId equals m.Id
-                    where scr.Id == id
-                    select scr).FirstOrDefault();
+            return dbSet.Where(s => s.Id == id).Include(s => s.Movie).FirstOrDefault();
         }
 
         /// <summary>
@@ -538,7 +535,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Sends a 'booking confirmation' email for the booking
         /// </summary>
-        public async void SendBookingConfirmationEmail(Booking booking)
+        public void SendBookingConfirmationEmail(Booking booking)
         {
             string htmlSeats = "";
             List<string> seats = ConvertSeatsToStringList(booking.Seats);
@@ -583,7 +580,7 @@ namespace VivedyWebApp
                                 $"<p>Go to our <a href=\"vivedy.azurewebsites.net\">website</a> to find more movies!</p>" +
                               $"</div>";
             EmailService mailService = new EmailService();
-            await mailService.SendAsync(booking.UserEmail, subject, mailbody);
+            mailService.SendAsync(booking.UserEmail, subject, mailbody);
         }
 
         /// <summary>
@@ -647,7 +644,7 @@ namespace VivedyWebApp
         public List<Screening> GetScreeningsForMovieInCinema(string movieId, string cinemaId)
         {
             List<Screening> screenings = (from scr in db.Screenings
-                                          join room in db.Rooms on scr.Id equals room.Id
+                                          join room in db.Rooms on scr.RoomId equals room.Id
                                           where scr.MovieId == movieId 
                                           && room.CinemaId == cinemaId
                                           select scr).ToList();
@@ -659,7 +656,7 @@ namespace VivedyWebApp
         /// </summary>
         public List<SelectListItem> GetMovieSelectListItems()
         {
-            List<Movie> movies = Movies.GetAllNotClosed();
+            List<Movie> movies = Movies.GetAllNotClosed().OrderByDescending(m => m.ViewerRating).ToList();
             List<SelectListItem> items = new List<SelectListItem>();
             foreach(Movie movie in movies)
             {
@@ -677,14 +674,12 @@ namespace VivedyWebApp
         /// </summary>
         public List<SelectListItem> GetRoomSelectListItems()
         {
-            var rooms = (from room in db.Rooms
-                         join cinema in db.Cinemas on room.CinemaId equals cinema.Id
-                         orderby room.Name, cinema.Name
-                         group room by room.CinemaId);
+            List<Room> rooms = db.Rooms.Include(r => r.Cinema).OrderBy(r => r.Name).OrderBy(r => r.Cinema.Name).ToList();
+            var groups = rooms.GroupBy(r => r.CinemaId);
             List<SelectListItem> items = new List<SelectListItem>();
-            foreach (var group in rooms)
+            foreach (var group in groups)
             {
-                var roomsGroup = new SelectListGroup() { Name = group.First().Cinema.Name };
+                var roomsGroup = new SelectListGroup() { Name = rooms.Find(r => r.CinemaId == group.Key).Cinema.Name };
                 foreach (var room in group)
                 {
                     items.Add(new SelectListItem()
@@ -721,16 +716,20 @@ namespace VivedyWebApp
         /// </summary>
         public List<SelectListItem> GetScreeningSelectListItems()
         {
-            var screenings = (from s in db.Screenings
-                           join m in db.Movies on s.MovieId equals m.Id
-                           join r in db.Rooms on s.RoomId equals r.Id
-                           join c in db.Cinemas on r.CinemaId equals c.Id
-                           orderby m.Name, c.Name, r.Name, s.StartTime
-                           group s by s.Movie.Name);
+            var screenings = db.Screenings
+                .Include(s => s.Movie)
+                .Include(s => s.Room)
+                .Include(s => s.Room.Cinema)
+                .OrderBy(s => s.Movie.Name)
+                .OrderBy(s => s.Room.Cinema.Name)
+                .OrderBy(s => s.Room.Name)
+                .OrderBy(s => s.StartTime)
+                .ToList();
+            var groups = screenings.GroupBy(s => s.MovieId);
             List<SelectListItem> items = new List<SelectListItem>();
-            foreach (var group in screenings)
+            foreach (var group in groups)
             {
-                var roomsGroup = new SelectListGroup() { Name = group.First().Movie.Name };
+                var roomsGroup = new SelectListGroup() { Name = screenings.Find(s => s.MovieId == group.Key).Movie.Name };
                 foreach (var screening in group)
                 {
                     items.Add(new SelectListItem()

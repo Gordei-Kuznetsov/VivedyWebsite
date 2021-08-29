@@ -203,6 +203,10 @@
     <Compile Include="Migrations\202108280648337_InitialCreate.Designer.cs">
       <DependentUpon>202108280648337_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202108290601556_ChabgedBookingVerTimeToDateTime.cs" />
+    <Compile Include="Migrations\202108290601556_ChabgedBookingVerTimeToDateTime.Designer.cs">
+      <DependentUpon>202108290601556_ChabgedBookingVerTimeToDateTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppDbContext.cs" />
     <Compile Include="Models\BaseModel.cs" />
@@ -354,6 +358,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202108280648337_InitialCreate.resx">
       <DependentUpon>202108280648337_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108290601556_ChabgedBookingVerTimeToDateTime.resx">
+      <DependentUpon>202108290601556_ChabgedBookingVerTimeToDateTime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -25,6 +25,10 @@ namespace VivedyWebApp.Controllers
         /// </summary>
         private readonly Entities Helper = new Entities();
 
+        public AccountsController()
+        {
+        }
+
         public AccountsController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
             UserManager = userManager;

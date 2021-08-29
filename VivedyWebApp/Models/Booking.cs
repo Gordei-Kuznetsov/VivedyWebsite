@@ -41,7 +41,7 @@ namespace VivedyWebApp.Models
         /// </summary>
         [DataType(DataType.DateTime)]
         [Display(Name = "Verification time")]
-        public string VerificationTime { get; set; }
+        public DateTime? VerificationTime { get; set; }
 
         /// <summary>
         /// Screening that is booked

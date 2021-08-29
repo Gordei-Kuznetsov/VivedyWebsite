@@ -47,9 +47,7 @@
         <h5 style="color: #A80000;" class="phenomena-sm-two text-center">Book now</h5>
         @foreach (var cinema in Model.Cinemas)
         {
-            @{ 
-                string href = "/Movies/BookingTime?movieId=" + Model.Movie.Id + "&cinemaId=" + cinema.Id;
-            }
+            string href = "/Bookings/Time?movieId=" + Model.Movie.Id + "&cinemaId=" + cinema.Id;
             <a href="@href" class="btn btn-danger m-1 align-items-center" style="width:100%; max-width:10rem;">
                 <p class="mb-2 text-center">@cinema.Name</p>
                 <p class="mb-2 text-center">@cinema.Address</p>

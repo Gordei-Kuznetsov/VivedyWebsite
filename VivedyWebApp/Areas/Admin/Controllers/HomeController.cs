@@ -67,12 +67,14 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 var result = new VerifyBookingsResult();
                 Booking booking = Helper.Bookings.Details(bookingId);
-                if(booking == null || screeningId != booking.ScreeningId)
+                if(booking == null || screeningId != booking.ScreeningId || booking.VerificationTime != null)
                 {
                     result.verified = false;
                 }
                 else
                 {
+                    booking.VerificationTime = DateTime.Now;
+                    Helper.Bookings.Edit(booking);
                     result.verified = true;
                 }
                 return Json(result, JsonRequestBehavior.AllowGet);

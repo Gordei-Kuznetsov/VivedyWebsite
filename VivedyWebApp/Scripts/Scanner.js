@@ -1,7 +1,7 @@
 ﻿let allowDecoding = false;
 let selectedDeviceId = 0;
-let ScreeningSelect = $('#ScreeningId')
-$('#ScreeningId').change( function () { allowDecoding = true; } )
+let ScreeningSelect = document.getElementById("ScreeningId")
+ScreeningSelect.onchange = function () { allowDecoding = true; }
 const codeReader = new ZXing.BrowserQRCodeReader();
 $('#myModal').on('hidden.bs.modal', function () {
     allowDecoding = true;
