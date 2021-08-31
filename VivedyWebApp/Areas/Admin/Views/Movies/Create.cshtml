@@ -124,6 +124,24 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     <script>
+        let canvasCanvas = document.querySelector(".canvas-dumpspace");
+        let verticalFILE = document.querySelector("input.vivedy-vet-image");
+        let horizontalFILE = document.querySelector("input.vivedy-hoz-image");
+        let validYoutubeUrl = false;
+
+        document.getElementById("TrailerUrl").onchange = function (e) {
+            let url = e.target.value;
+            let id = url.split('v=')[1];
+            let ampersandPosition = id.indexOf('&');
+            if(ampersandPosition != -1) {
+              id = id.substring(0, ampersandPosition);
+            }
+		    var img = new Image();
+		    img.src = "http://img.youtube.com/vi/" + id + "/mqdefault.jpg";
+		    img.onload = function () {
+                validYoutubeUrl = (this.width === 120);
+		    }
+        }
 
         let readFileToDataURI = function (file) {
             return new Promise((resolve, reject) => {
@@ -139,10 +157,6 @@
                 });
             });
         };
-
-        let canvasCanvas = document.querySelector(".canvas-dumpspace");
-        let verticalFILE = document.querySelector("input.vivedy-vet-image");
-        let horizontalFILE = document.querySelector("input.vivedy-hoz-image");
 
         let resizeImage = async function (file, resolution) {
             return new Promise(async (resolve, reject) => {
@@ -194,25 +208,25 @@
         };
 
         document.querySelector("button.vivedy-submit-button").addEventListener("click", async () => {
-            let doThings = true;
-
-            let vetFile = verticalFILE.files[0];
-            let hozFile = horizontalFILE.files[0];
-
-            let newVFile = await resizeImage(vetFile, { w: 600, h: 800 });
-            let newHFile = await resizeImage(hozFile, { w: 1920, h: 900 });
-
-            let vDataTransfer = new DataTransfer();
-            vDataTransfer.items.add(newVFile);
-            verticalFILE.files = vDataTransfer.files;
-
-            let hDataTransfer = new DataTransfer();
-            hDataTransfer.items.add(newHFile);
-            horizontalFILE.files = hDataTransfer.files;
-
-            if (doThings) {
-                document.querySelector(".vivedy-form-boi").submit();
+            if (!validYoutubeUrl) {
+                alert("Invalid Trailer Url. The video does not exist. Please select a different video.")
+                return;
             }
+            if (verticalFILE.value) {
+                let vetFile = verticalFILE.files[0];
+                let newVFile = await resizeImage(vetFile, { w: 600, h: 800 });
+                let vDataTransfer = new DataTransfer();
+                vDataTransfer.items.add(newVFile);
+                verticalFILE.files = vDataTransfer.files;
+            }
+            if (horizontalFILE.value) {
+                let hozFile = horizontalFILE.files[0];
+                let newHFile = await resizeImage(hozFile, { w: 1920, h: 900 });
+                let hDataTransfer = new DataTransfer();
+                hDataTransfer.items.add(newHFile);
+                horizontalFILE.files = hDataTransfer.files;
+            }
+            document.querySelector(".vivedy-form-boi").submit();
         });
 
     </script>

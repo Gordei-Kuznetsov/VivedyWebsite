@@ -337,6 +337,15 @@ namespace VivedyWebApp
         }
 
         /// <summary>
+        /// Checks if the movie has already been released
+        /// </summary>
+        public bool IsReleased(string id)
+        {
+            Movie movie = Details(id);
+            return movie.ReleaseDate <= DateTime.Now && movie.ClosingDate > DateTime.Now;
+        }
+
+        /// <summary>
         /// Override of the base CreateFrom method. Rounds up Price and ViewerRating
         /// </summary>
         public override Movie CreateFrom(Movie entity)
@@ -455,6 +464,15 @@ namespace VivedyWebApp
             else {
                 return false; 
             }
+        }
+
+        /// <summary>
+        /// Checks if the screening starts after the movie's release
+        /// </summary>
+        public bool IsAfterMovieRelease(Screening screening)
+        {
+            screening.Movie = db.Movies.Find(screening.MovieId);
+            return screening.StartTime >= screening.Movie.ReleaseDate;
         }
     }
 
@@ -592,6 +610,14 @@ namespace VivedyWebApp
             return base.CreateFrom(entity);
         }
 
+        /// <summary>
+        /// Checks if any of the selected seats overlap with already booked seats        
+        /// </summary>
+        public bool AnySeatsOverlapWith(List<int> seats, string id)
+        {
+            List<int> allSeats = GetSeatsForScreening(id);
+            return allSeats.Intersect(seats).Any();
+        }
     }
 
     public class Entities

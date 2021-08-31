@@ -73,12 +73,11 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 Screening screening = new Screening
                 {
-                    Id = Guid.NewGuid().ToString(),
                     StartTime = model.StartTime,
                     MovieId = model.MovieId,
                     RoomId = model.RoomId
                 };
-                if (!Helper.Screenings.AnyOverlapWith(screening))
+                if (Helper.Screenings.IsAfterMovieRelease(screening) && !Helper.Screenings.AnyOverlapWith(screening))
                 {
                     Helper.Screenings.Create(screening);
                 }

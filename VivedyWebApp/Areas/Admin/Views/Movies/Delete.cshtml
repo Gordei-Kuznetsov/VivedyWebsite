@@ -60,7 +60,7 @@
                 <div class="row ">
                     <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.TrailerUrl):</div>
                     <div class="col-md-8 mb-3 phenomena-sm text-link">
-                        @Html.DisplayFor(model => model.TrailerUrl)
+                        <a href="@Model.TrailerUrl" target="_blank">@Model.TrailerUrl</a>
                     </div>
                 </div>
                 <div class="row ">
@@ -84,13 +84,13 @@
                 <div class="row ">
                     <div class="col-3 phenomena-sm">Horizontal Image :</div>
                     <div class="col-md-8 mb-3 phenomena-sm">
-                        <a href="~/Content/Images/@Model.Id-HorizontalImage.png" target="_blank" class="text-link">@Model.Id-HorizontalImage.png</a>
+                        <a href="~/Content/Images/@Model.Id-HorizontalPoster.png" target="_blank" class="text-link">@Model.Id-HorizontalPoster.png</a>
                     </div>
                 </div>
                 <div class="row ">
                     <div class="col-3 phenomena-sm">Vertical Image :</div>
                     <div class="col-md-8 mb-3 phenomena-sm">
-                        <a href="~/Content/Images/@Model.Id-VerticalImage.png" target="_blank" class="text-link">@Model.Id-VerticalImage.png</a>
+                        <a href="~/Content/Images/@Model.Id-VerticalPoster.png" target="_blank" class="text-link">@Model.Id-VerticalPoster.png</a>
                     </div>
                 </div>
             </div>

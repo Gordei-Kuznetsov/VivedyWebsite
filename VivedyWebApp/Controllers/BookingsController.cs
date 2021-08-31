@@ -35,7 +35,11 @@ namespace VivedyWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             //Getting available Screenings for the movie
-            List<Screening> screenings = Helper.GetScreeningsForMovieInCinema(movieId, cinemaId);
+            List<Screening> screenings = new List<Screening>();
+            if (Helper.Movies.IsReleased(movieId))
+            {
+                screenings = Helper.GetScreeningsForMovieInCinema(movieId, cinemaId);
+            }
             if (screenings.Count == 0)
             {
                 //If no Screenings found then send back to the Movies/Details page with a message
@@ -61,15 +65,20 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BookingSeatsViewModel seatsModel = new BookingSeatsViewModel
+            Screening screening = Helper.Screenings.GetDetailsWithMovie(id);
+            if(Helper.Movies.IsReleased(screening.Movie) && screening.StartTime > DateTime.Now)
             {
-                SelectedScreeningId = id,
-                //Getting the movie from db to avoid depending on the object being sent through the request
-                Movie = Helper.Movies.Details(Helper.Screenings.Details(id).MovieId),
-                OccupiedSeats = Helper.Bookings.GetSeatsForScreening(id),
-                SelectedSeats = ""
-            };
-            return View("Seats", seatsModel);
+                BookingSeatsViewModel seatsModel = new BookingSeatsViewModel
+                {
+                    SelectedScreeningId = id,
+                    //Getting the movie from db to avoid depending on the object being sent through the request
+                    Movie = Helper.Movies.Details(Helper.Screenings.Details(id).MovieId),
+                    OccupiedSeats = Helper.Bookings.GetSeatsForScreening(id),
+                    SelectedSeats = ""
+                };
+                return View("Seats", seatsModel);
+            }
+            return HttpNotFound();
         }
 
         /// <summary>
@@ -85,21 +94,25 @@ namespace VivedyWebApp.Controllers
                 return View(seatsModel);
             }
             List<int> selectedSeats = Helper.Bookings.ConvertSeatsToIntList(seatsModel.SelectedSeats);
-            //Getting the movie from db to avoid depending on the object being sent through the request
-            Movie movie = Helper.Movies.Details(Helper.Screenings.Details(seatsModel.SelectedScreeningId).MovieId);
-            //If user is logged in, then take their email and pass to the model
-            ApplicationUser user = User.Identity.IsAuthenticated
-                ? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId())
-                : null;
-            BookingPayViewModel payModel = new BookingPayViewModel
+            Screening screening = Helper.Screenings.GetDetailsWithMovie(seatsModel.SelectedScreeningId);
+            if(Helper.Bookings.AnySeatsOverlapWith(selectedSeats, seatsModel.SelectedScreeningId) 
+                && Helper.Movies.IsReleased(screening.Movie) && screening.StartTime > DateTime.Now)
             {
-                SelectedSeats = seatsModel.SelectedSeats,
-                SelectedScreeningId = seatsModel.SelectedScreeningId,
-                Movie = movie,
-                TotalPrice = selectedSeats.Count() * movie.Price,
-                Email = (user != null) ? user.Email : ""
-            };
-            return View("Pay", payModel);
+                //If user is logged in, then take their email and pass to the model
+                ApplicationUser user = User.Identity.IsAuthenticated
+                    ? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId())
+                    : null;
+                BookingPayViewModel payModel = new BookingPayViewModel
+                {
+                    SelectedSeats = seatsModel.SelectedSeats,
+                    SelectedScreeningId = seatsModel.SelectedScreeningId,
+                    Movie = screening.Movie,
+                    TotalPrice = selectedSeats.Count() * screening.Movie.Price,
+                    Email = (user != null) ? user.Email : ""
+                };
+                return View("Pay", payModel);
+            }
+            return View(seatsModel);
         }
 
         /// <summary>
@@ -114,27 +127,32 @@ namespace VivedyWebApp.Controllers
             {
                 return View(payModel);
             }
+            List<int> seats = Helper.Bookings.ConvertSeatsToIntList(payModel.SelectedSeats);
             Screening screening = Helper.Screenings.GetDetailsWithMovie(payModel.SelectedScreeningId);
-            List<string> seats = Helper.Bookings.ConvertSeatsToStringList(payModel.SelectedSeats);
-            Booking booking = new Booking
+            if (Helper.Bookings.AnySeatsOverlapWith(seats, payModel.SelectedScreeningId)
+                && Helper.Movies.IsReleased(screening.Movie) && screening.StartTime > DateTime.Now)
             {
-                Seats = payModel.SelectedSeats,
-                PayedAmout = seats.Count * screening.Movie.Price,
-                UserEmail = payModel.Email,
-                ScreeningId = screening.Id
-            };
-            
-            Booking newBooking = Helper.Bookings.CreateFrom(booking);
-            if (newBooking != null)
-            {
-                Helper.Bookings.SendBookingConfirmationEmail(newBooking);
-                return View("Confirmation");
+                Booking booking = new Booking
+                {
+                    Seats = payModel.SelectedSeats,
+                    PayedAmout = seats.Count * screening.Movie.Price,
+                    UserEmail = payModel.Email,
+                    ScreeningId = screening.Id
+                };
+
+                Booking newBooking = Helper.Bookings.CreateFrom(booking);
+                if (newBooking != null)
+                {
+                    Helper.Bookings.SendBookingConfirmationEmail(newBooking);
+                    return View("Confirmation");
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "There was a problem processing your booking.";
+                    return View("Error");
+                }
             }
-            else
-            {
-                ViewBag.ErrorMessage = "There was a problem processing your booking.";
-                return View("Error");
-            }
+            return View(payModel);
         }
 
         /// <summary>
