@@ -65,40 +65,44 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(MoviesCreateViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                Movie movie = new Movie()
-                {
-                    Name = model.Name,
-                    Rating = model.Rating,
-                    ViewerRating = model.ViewerRating,
-                    Category = model.Category,
-                    Description = model.Description,
-                    Duration = model.Duration,
-                    Price = model.Price,
-                    TrailerUrl = model.TrailerUrl,
-                    ReleaseDate = model.ReleaseDate,
-                    ClosingDate = model.ClosingDate
-                };
-                Helper.Movies.CreateFrom(movie);
-                //Saving the images uploaded for the posters
-                if(model.HorizontalImage != null)
-                {
-                    //Saving horizontal poster
-                    string fileName = movie.Id + "-HorizontalPoster.png";
-                    var imagePath = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
-                    model.HorizontalImage.SaveAs(imagePath);
-                }
-                if(model.VerticalImage != null)
-                {
-                    //Saving vertical poster
-                    string fileName = movie.Id + "-VerticalPoster.png";
-                    var imagePath = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
-                    model.VerticalImage.SaveAs(imagePath);
-                }
-                return RedirectToAction("Index");
+                return View(model);
             }
-            return View(model);
+            Movie movie = new Movie()
+            {
+                Name = model.Name,
+                Rating = model.Rating,
+                ViewerRating = model.ViewerRating,
+                Category = model.Category,
+                Description = model.Description,
+                Duration = model.Duration,
+                Price = model.Price,
+                TrailerUrl = model.TrailerUrl,
+                ReleaseDate = model.ReleaseDate,
+                ClosingDate = model.ClosingDate
+            };
+            if(movie.ReleaseDate >= movie.ClosingDate)
+            {
+                return View(model);
+            }
+            Helper.Movies.CreateFrom(movie);
+            //Saving the images uploaded for the posters
+            if(model.HorizontalImage != null)
+            {
+                //Saving horizontal poster
+                string fileName = movie.Id + "-HorizontalPoster.png";
+                var imagePath = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
+                model.HorizontalImage.SaveAs(imagePath);
+            }
+            if(model.VerticalImage != null)
+            {
+                //Saving vertical poster
+                string fileName = movie.Id + "-VerticalPoster.png";
+                var imagePath = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
+                model.VerticalImage.SaveAs(imagePath);
+            }
+            return RedirectToAction("Index");
         }
 
         /// <summary>
@@ -138,51 +142,58 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(MoviesAdminViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                Movie movie = new Movie()
-                {
-                    Id = model.Id,
-                    Name = model.Name,
-                    Rating = model.Rating,
-                    ViewerRating = model.ViewerRating,
-                    Category = model.Category,
-                    Description = model.Description,
-                    Duration = model.Duration,
-                    Price = model.Price,
-                    TrailerUrl = model.TrailerUrl,
-                    ReleaseDate = model.ReleaseDate,
-                    ClosingDate = model.ClosingDate
-                };
-                Helper.Movies.Edit(movie);
-                //Saving the images for the posters if re-uploaded 
-                if (model.HorizontalImage != null)
-                {
-                    //Deleting existing one
-                    string path = Server.MapPath("/Content/Images/" + movie.Id + "-HorizontalPoster.png");
-                    FileInfo fi = new FileInfo(path);
-                    if (fi.Exists)
-                    {
-                        fi.Delete();
-                    }
-                    //Saving horizontal poster
-                    model.HorizontalImage.SaveAs(path);
-                }
-                if (model.VerticalImage != null)
-                {
-                    //Deleting existing one
-                    string path = Server.MapPath("/Content/Images/" + movie.Id + "-VerticalPoster.png");
-                    FileInfo fi = new FileInfo(path);
-                    if (fi.Exists)
-                    {
-                        fi.Delete();
-                    }
-                    //Saving vertical poster
-                    model.VerticalImage.SaveAs(path);
-                }
-                return RedirectToAction("Index");
+                return View(model);
             }
-            return View(model);
+            Movie movie = Helper.Movies.Details(model.Id);
+            if(movie == null)
+            {
+                return View(model);
+            }
+            movie.Name = model.Name;
+            movie.Rating = model.Rating;
+            movie.ViewerRating = model.ViewerRating;
+            movie.Category = model.Category;
+            movie.Description = model.Description;
+            movie.Duration = model.Duration;
+            movie.Price = model.Price;
+            movie.TrailerUrl = model.TrailerUrl;
+            movie.ReleaseDate = model.ReleaseDate;
+            movie.ClosingDate = model.ClosingDate;
+
+            if (movie.ReleaseDate >= movie.ClosingDate)
+            {
+                return View(model);
+            }
+
+            Helper.Movies.Edit(movie);
+            //Saving the images for the posters if re-uploaded 
+            if (model.HorizontalImage != null)
+            {
+                //Deleting existing one
+                string path = Server.MapPath("/Content/Images/" + movie.Id + "-HorizontalPoster.png");
+                FileInfo fi = new FileInfo(path);
+                if (fi.Exists)
+                {
+                    fi.Delete();
+                }
+                //Saving horizontal poster
+                model.HorizontalImage.SaveAs(path);
+            }
+            if (model.VerticalImage != null)
+            {
+                //Deleting existing one
+                string path = Server.MapPath("/Content/Images/" + movie.Id + "-VerticalPoster.png");
+                FileInfo fi = new FileInfo(path);
+                if (fi.Exists)
+                {
+                    fi.Delete();
+                }
+                //Saving vertical poster
+                model.VerticalImage.SaveAs(path);
+            }
+            return RedirectToAction("Index");
         }
 
         /// <summary>
@@ -209,7 +220,17 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Movie room = Helper.Movies.Details(id);
+            if (room == null)
+            {
+                return HttpNotFound();
+            }
             Helper.Movies.Delete(id);
+
             //Deleting poster images
             //Deleting horizontal poster
             string path = Server.MapPath("/Content/Images/" + id + "-HorizontalPoster.png");

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<VivedyWebApp.Models.Movie>
+﻿@model VivedyWebApp.Models.ViewModels.MoviesViewModel
 
 @{
     ViewBag.Title = "Movies";
@@ -6,47 +6,6 @@
 
 <div class="jumbotron">
     <h1 style="color: #a80000;" class="display-1 phenomena-sm-three mb-4 text-center">Movies</h1>
-
-    <!--
-    <div class="container grey-bg-color mt-2 mb-5">
-        <div class="row mt-2 md-2 justify-content-center">
-            <input class="col-6 col-sm-8 col-xs-10" name="search" type="search" id="SearchFor" placeholder="Search up a movie" />
-        </div>
-        <div class="row mt-2 md-2">
-            <div class="col-5">
-                <div class="d-flex flex-row-reverse">
-                    <label for="categoryFilter">Categories:</label>
-                </div>
-                <div class="d-flex flex-row-reverse">
-                    <label for="ratingFilter">Ratings:</label>
-                </div>
-            </div>
-            <div class="col-7">
-                <div class="row">
-                    <select class="col-6 col-sm-8 col-lg-3" name="categoryFilter" id="categoryFilter">
-                        <option id="emptyCategory" value="" selected disabled hidden></option>
-                        @foreach (string category in ViewBag.Categories)
-                        {
-                            <option value="@category">@category</option>
-                        }
-                    </select>
-                    <button id="resetCategory" class="btn mr-2 ml-2"><i class="fa fa-close"></i></button>
-                </div>
-                <div class="row">
-                    <select class="col-6 col-sm-8 col-lg-3" name="ratingFilter" id="ratingFilter">
-                        <option id="emptyRating" value="" selected disabled hidden></option>
-                        @foreach (string rating in ViewBag.Ratings)
-                        {
-                            <option value="@rating">@rating</option>
-                        }
-                    </select>
-                    <button id="resetRating" class="btn ml-2"><i class="fa fa-close"></i></button>
-                </div>
-            </div>
-        </div>
-    </div>
-        -->
-
     <div class="container mb-5">
         <div class="row  card-body">
             <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
@@ -54,24 +13,11 @@
                 <input class="w-100 p-2 " name="search" type="search" id="SearchFor" placeholder="Search movie name" />
             </div>
             <div class="col-lg-3 col-sm-12 d-flex justify-content-center">
-                <select class="pl-4 pr-4" name="categoryFilter" id="categoryFilter">
-                    <option id="emptyCategory" value="" selected disabled hidden> Categories</option>
-                    @foreach (string category in ViewBag.Categories)
-                    {
-                        <option value="@category">@category</option>
-                    }
-                </select>
-
+                @Html.DropDownList("Category", Model.Categories, new { @class = "pl-4 pr-4" })
                 <button style="border-radius: 0" id="resetCategory" class="btn btn-danger  pl-3 pr-3 p-2"><i class="fa fa-close"></i></button>
             </div>
             <div class="col-lg-3 col-sm-12 d-flex justify-content-center">
-                <select class="pl-4 pr-4" name="ratingFilter" id="ratingFilter">
-                    <option id="emptyRating" value="" selected disabled hidden>Ratings</option>
-                    @foreach (string rating in ViewBag.Ratings)
-                    {
-                        <option value="@rating">@rating</option>
-                    }
-                </select>
+                @Html.DropDownList("Rating", Model.Ratings, new { @class = "pl-4 pr-4" })
                 <button style="border-radius: 0" id="resetRating" class="btn btn-danger pl-3 pr-3 p-2"><i class="fa fa-close"></i></button>
             </div>
         </div>
@@ -79,7 +25,7 @@
 
 
     <div id="moviesList">
-        @foreach (var item in Model)
+        @foreach (var item in Model.Movies)
         {
             <div class="container mb-5 movieCard">
                 <div class="card topborder mb-3">

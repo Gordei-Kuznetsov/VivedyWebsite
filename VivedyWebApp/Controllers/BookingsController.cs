@@ -34,11 +34,17 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            Movie movie = Helper.Movies.Details(movieId);
+            Cinema cinema = Helper.Cinemas.Details(cinemaId);
+            if( movie == null || cinema == null)
+            {
+                return HttpNotFound();
+            }
             //Getting available Screenings for the movie
             List<Screening> screenings = new List<Screening>();
-            if (Helper.Movies.IsReleased(movieId))
+            if (movie.ClosingDate > DateTime.Now)
             {
-                screenings = Helper.GetScreeningsForMovieInCinema(movieId, cinemaId);
+                screenings = Helper.Screenings.GetAllForMovieInCinema(movieId, cinemaId);
             }
             if (screenings.Count == 0)
             {
@@ -49,7 +55,7 @@ namespace VivedyWebApp.Controllers
             BookingTimeViewModel model = new BookingTimeViewModel
             {
                 AvailableScreenings = screenings,
-                Movie = Helper.Movies.Details(movieId)
+                Movie = movie
             };
             return View(model);
         }
@@ -65,20 +71,23 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = Helper.Screenings.GetDetailsWithMovie(id);
-            if(Helper.Movies.IsReleased(screening.Movie) && screening.StartTime > DateTime.Now)
+            Screening screening = Helper.Screenings.DetailsWithMovie(id);
+            if(screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartTime > DateTime.Now)
             {
                 BookingSeatsViewModel seatsModel = new BookingSeatsViewModel
                 {
                     SelectedScreeningId = id,
                     //Getting the movie from db to avoid depending on the object being sent through the request
-                    Movie = Helper.Movies.Details(Helper.Screenings.Details(id).MovieId),
+                    Movie = screening.Movie,
                     OccupiedSeats = Helper.Bookings.GetSeatsForScreening(id),
                     SelectedSeats = ""
                 };
                 return View("Seats", seatsModel);
             }
-            return HttpNotFound();
+            else
+            {
+                return HttpNotFound();
+            }
         }
 
         /// <summary>
@@ -94,9 +103,9 @@ namespace VivedyWebApp.Controllers
                 return View(seatsModel);
             }
             List<int> selectedSeats = Helper.Bookings.ConvertSeatsToIntList(seatsModel.SelectedSeats);
-            Screening screening = Helper.Screenings.GetDetailsWithMovie(seatsModel.SelectedScreeningId);
-            if(Helper.Bookings.AnySeatsOverlapWith(selectedSeats, seatsModel.SelectedScreeningId) 
-                && Helper.Movies.IsReleased(screening.Movie) && screening.StartTime > DateTime.Now)
+            Screening screening = Helper.Screenings.DetailsWithMovie(seatsModel.SelectedScreeningId);
+            if (screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartTime > DateTime.Now
+                && Helper.Bookings.AnySeatsOverlapWith(selectedSeats, screening.Id))
             {
                 //If user is logged in, then take their email and pass to the model
                 ApplicationUser user = User.Identity.IsAuthenticated
@@ -128,9 +137,9 @@ namespace VivedyWebApp.Controllers
                 return View(payModel);
             }
             List<int> seats = Helper.Bookings.ConvertSeatsToIntList(payModel.SelectedSeats);
-            Screening screening = Helper.Screenings.GetDetailsWithMovie(payModel.SelectedScreeningId);
-            if (Helper.Bookings.AnySeatsOverlapWith(seats, payModel.SelectedScreeningId)
-                && Helper.Movies.IsReleased(screening.Movie) && screening.StartTime > DateTime.Now)
+            Screening screening = Helper.Screenings.DetailsWithMovie(payModel.SelectedScreeningId);
+            if (screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartTime > DateTime.Now
+                && Helper.Bookings.AnySeatsOverlapWith(seats, screening.Id))
             {
                 Booking booking = new Booking
                 {
@@ -143,7 +152,7 @@ namespace VivedyWebApp.Controllers
                 Booking newBooking = Helper.Bookings.CreateFrom(booking);
                 if (newBooking != null)
                 {
-                    Helper.Bookings.SendBookingConfirmationEmail(newBooking);
+                    Helper.Bookings.SendConfirmationEmail(newBooking);
                     return View("Confirmation");
                 }
                 else

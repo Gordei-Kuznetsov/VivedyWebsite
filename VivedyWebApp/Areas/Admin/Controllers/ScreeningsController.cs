@@ -56,8 +56,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             ScreeningsCreateViewModel model = new ScreeningsCreateViewModel()
             {
-                Movies = Helper.GetMovieSelectListItems(),
-                Rooms = Helper.GetRoomSelectListItems()
+                Movies = Helper.Movies.GetSelectListItems(),
+                Rooms = Helper.Rooms.GetSelectListItems()
             };
             return View(model);
         }
@@ -69,44 +69,55 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ScreeningsCreateViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                Screening screening = new Screening
-                {
-                    StartTime = model.StartTime,
-                    MovieId = model.MovieId,
-                    RoomId = model.RoomId
-                };
-                if (Helper.Screenings.IsAfterMovieRelease(screening) && !Helper.Screenings.AnyOverlapWith(screening))
-                {
-                    Helper.Screenings.Create(screening);
-                }
-                //Generating Screenings
-                //Later will be replaced with the generaion from list of days and list of times
-                if (model.GenerateScreenings)
-                {
-                    List<Screening> screenings = new List<Screening>();
-                    for(int i = 1; i < 7; i++)
-                    {
-                        //A Screening for each day starting from the newScreening.StartTime at the same time of the day
-                        Screening autoScreening = new Screening
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            StartTime = screening.StartTime.AddDays(i),
-                            MovieId = screening.MovieId,
-                            RoomId = screening.RoomId
-                        };
-                        if (!Helper.Screenings.AnyOverlapWith(screening))
-                        {
-                            screenings.Add(autoScreening);
-                        }
-                    }
-                    Helper.Screenings.SaveRange(screenings);
-                }
-                return RedirectToAction("Index");
-            }
+            // Method needs improvement for cases when a screening cannot be creaed
+            // Either terminate the process or return a message with the results
 
-            return View(model);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            Screening screening = new Screening
+            {
+                Id = Guid.NewGuid().ToString(),
+                StartTime = model.StartTime,
+                MovieId = model.MovieId,
+                RoomId = model.RoomId
+            };
+            Movie movie = Helper.Movies.Details(screening.MovieId);
+            Room room = Helper.Rooms.Details(model.RoomId);
+            if (movie == null || room == null)
+            {
+                return View(model);
+            }
+            List<Screening> screenings = new List<Screening>();
+            if (Helper.Screenings.IsDuringMovieShowing(screening, movie) && !Helper.Screenings.AnyOverlapWith(screening))
+            {
+                screenings.Add(screening);
+            }
+            //Generating Screenings
+            //Later will be replaced with the generaion from list of days and list of times
+            if (model.GenerateScreenings)
+            {
+                for (int i = 1; i < 7; i++)
+                {
+                    //A Screening for each day starting from the newScreening.StartTime at the same time of the day
+                    Screening genScreening = new Screening
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        StartTime = screening.StartTime.AddDays(i),
+                        MovieId = screening.MovieId,
+                        RoomId = screening.RoomId
+                    };
+                    //Doesn't have to be chacked against other generated screenings as they are at different days anyway
+                    if (Helper.Screenings.IsDuringMovieShowing(genScreening, movie) && !Helper.Screenings.AnyOverlapWith(genScreening))
+                    {
+                        screenings.Add(genScreening);
+                    }
+                }
+            }
+            Helper.Screenings.SaveRange(screenings);
+            return RedirectToAction("Index");
+            
         }
 
         /// <summary>
@@ -129,8 +140,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 StartTime = screening.StartTime,
                 MovieId = screening.MovieId,
                 RoomId = screening.MovieId,
-                Movies = Helper.GetMovieSelectListItems(),
-                Rooms = Helper.GetRoomSelectListItems()
+                Movies = Helper.Movies.GetSelectListItems(),
+                Rooms = Helper.Rooms.GetSelectListItems()
             };
             return View(model);
         }
@@ -146,15 +157,22 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return View(model);
             }
-            Screening screening = new Screening()
+            Screening screening = Helper.Screenings.DetailsWithMovie(model.Id);
+            if (screening == null)
             {
-                Id = model.Id,
-                StartTime = model.StartTime,
-                MovieId = model.MovieId,
-                RoomId = model.RoomId
-            };
-            Helper.Screenings.Edit(screening);
-            return RedirectToAction("Index");
+                return HttpNotFound();
+            }
+            screening.Id = model.Id;
+            screening.StartTime = model.StartTime;
+            screening.MovieId = model.MovieId;
+            screening.RoomId = model.RoomId;
+            if (Helper.Screenings.IsDuringMovieShowing(screening, screening.Movie) && !Helper.Screenings.AnyOverlapWith(screening))
+            {
+                //possibly send notifying email to customers that there are changes
+                Helper.Screenings.Edit(screening);
+                return RedirectToAction("Index");
+            }
+            return View(model);
         }
 
         /// <summary>
@@ -181,6 +199,15 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Screening screening = Helper.Screenings.Details(id);
+            if (screening == null)
+            {
+                return HttpNotFound();
+            }
             Helper.Screenings.Delete(id);
             return RedirectToAction("Index");
         }

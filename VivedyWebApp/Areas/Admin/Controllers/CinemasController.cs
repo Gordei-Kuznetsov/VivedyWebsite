@@ -80,14 +80,19 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         // POST: Admin/Cinemas/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Cinema cinema)
+        public ActionResult Edit(Cinema model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                Helper.Cinemas.Edit(cinema);
-                return RedirectToAction("Index");
+                return View(model);
             }
-            return View(cinema);
+            Cinema cinema = Helper.Cinemas.Details(model.Id);
+            if(cinema == null)
+            {
+                return View(model);
+            }
+            Helper.Cinemas.Edit(cinema);
+            return RedirectToAction("Index");
         }
 
         // GET: Admin/Cinemas/Delete/5
@@ -110,6 +115,15 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Cinema cinema = Helper.Cinemas.Details(id);
+            if (cinema == null)
+            {
+                return HttpNotFound();
+            }
             Helper.Cinemas.Delete(id);
             return RedirectToAction("Index");
         }

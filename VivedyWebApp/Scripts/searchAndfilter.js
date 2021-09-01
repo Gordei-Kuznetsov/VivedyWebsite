@@ -5,8 +5,8 @@ let items = Array();
 
 window.onload = function () {
     movieSearch = document.getElementById("SearchFor");
-    categoryDropdown = document.getElementById("categoryFilter");
-    ratingDropdown = document.getElementById("ratingFilter");
+    categoryDropdown = document.getElementById("Category");
+    ratingDropdown = document.getElementById("Rating");
     movieSearch.oninput = SearchForMovie;
     categoryDropdown.oninput = CategorySelectionChange;
     ratingDropdown.oninput = RatingSelectionChange;
@@ -34,6 +34,7 @@ window.onload = function () {
         RatingReset();
     }
 }
+
 function SearchForMovie() {
     for (let i = 0; i < items.length; i++) {
         if (items[i].innerText.toUpperCase().indexOf(movieSearch.value.toUpperCase()) > -1) {
@@ -49,8 +50,6 @@ function SearchForMovie() {
             items[i].unmatched = true;
             items[i].style.display = "none";
         }
-
-
     };
 }
 function CategorySelectionChange() {
@@ -62,6 +61,7 @@ function CategorySelectionChange() {
     }
     filterCategory(selected);
 }
+
 function RatingSelectionChange() {
     var selected = [];
     for (var option of ratingDropdown.options) {
@@ -71,6 +71,7 @@ function RatingSelectionChange() {
     }
     filterRating(selected);
 }
+
 function filterCategory(categories) {
     for (let j = 0; j < categories.length; j++) {
         for (let i = 0; i < items.length; i++) {

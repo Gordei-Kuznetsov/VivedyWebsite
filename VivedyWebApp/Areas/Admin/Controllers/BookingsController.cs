@@ -73,7 +73,16 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Helper.Bookings.Delete(id);
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Booking booking = Helper.Bookings.Details(id);
+            if (booking == null)
+            {
+                return HttpNotFound();
+            }
+            Helper.Cinemas.Delete(id);
             return RedirectToAction("Index");
         }
     }

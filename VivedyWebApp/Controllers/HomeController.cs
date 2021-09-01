@@ -29,10 +29,10 @@ namespace VivedyWebApp.Controllers
         /// </summary>
         public ActionResult Index()
         {
-            MoviesViewModel model = new MoviesViewModel
+            MoviesHomeViewModel model = new MoviesHomeViewModel()
             {
-                ComingSoonMovies = Helper.Movies.GetAllCommingSoon(),
-                TopMovies = Helper.Movies.GetTop(4)
+                ComingSoonMovies = Helper.Movies.GetAllComming(),
+                TopMovies = Helper.Movies.GetTopNotClosed(4)
             };
             return View(model);
         }

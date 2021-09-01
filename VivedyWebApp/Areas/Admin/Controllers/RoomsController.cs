@@ -48,7 +48,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             RoomsCreateViewModel model = new RoomsCreateViewModel()
             {
-                Cinemas = Helper.GetCinemaSelectListItems()
+                Cinemas = Helper.Cinemas.GetSelectListItems()
             };
             return View(model);
         }
@@ -58,14 +58,19 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(RoomsCreateViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                Room room = new Room()
-                {
-                    Name = model.Name,
-                    SeatsLayout = model.SeatsLayout,
-                    CinemaId = model.CinemaId
-                };
+                return View(model);
+            }
+            Room room = new Room()
+            {
+                Name = model.Name,
+                SeatsLayout = model.SeatsLayout,
+                CinemaId = model.CinemaId
+            };
+            Cinema cinema = Helper.Cinemas.Details(model.CinemaId);
+            if (cinema != null)
+            {
                 Helper.Rooms.CreateFrom(room);
                 return RedirectToAction("Index");
             }
@@ -89,7 +94,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 Id = room.Id,
                 Name = room.Name,
                 SeatsLayout = room.SeatsLayout,
-                Cinemas = Helper.GetCinemaSelectListItems()
+                Cinemas = Helper.Cinemas.GetSelectListItems()
             };
             return View(model);
         }
@@ -99,15 +104,18 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(RoomsViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                Room room = new Room()
-                {
-                    Id = model.Id,
-                    Name = model.Name,
-                    SeatsLayout = model.SeatsLayout,
-                    CinemaId = model.CinemaId
-                };
+                return View(model);
+            }
+            Room room = Helper.Rooms.Details(model.Id);
+            Cinema cinema = Helper.Cinemas.Details(model.CinemaId);
+            if (room != null || cinema != null)
+            {
+                room.Name = model.Name;
+                room.SeatsLayout = model.SeatsLayout;
+                room.CinemaId = model.CinemaId;
+
                 Helper.Rooms.Edit(room);
                 return RedirectToAction("Index");
             }
@@ -134,6 +142,15 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Room room = Helper.Rooms.Details(id);
+            if (room == null)
+            {
+                return HttpNotFound();
+            }
             Helper.Rooms.Delete(id);
             return RedirectToAction("Index");
         }

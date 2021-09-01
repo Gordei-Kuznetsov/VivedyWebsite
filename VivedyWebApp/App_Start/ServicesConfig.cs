@@ -255,44 +255,64 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns a List of all categories of existing movies
         /// </summary>
-        public List<string> GetAllCategories()
+        public List<SelectListItem> GetCategoriesSelectListItems()
         {
             List<string> categories = (from movie in dbSet
-                                       orderby movie.Category 
+                                       orderby movie.Category
                                        group movie by movie.Category into movies
                                        select movies.FirstOrDefault().Category).ToList();
-            return categories;
+            List<SelectListItem> items = new List<SelectListItem>();
+            foreach (string category in categories)
+            {
+                items.Add(new SelectListItem()
+                {
+                    Value = category,
+                    Text = category
+                });
+            }
+            items.Add(new SelectListItem()
+            {
+                Value = "Category",
+                Text = "Category",
+                Disabled = true,
+                Selected = true
+            });
+            return items;
+
         }
 
         /// <summary>
         /// Returns a List of all ratings of existing movies
         /// </summary>
-        public List<string> GetAllRatingss()
+        public List<SelectListItem> GetRatingsSelectListItems()
         {
             List<int> ratings = (from movie in dbSet
                                        orderby movie.Rating
                                        group movie by movie.Rating into movies
                                        select movies.FirstOrDefault().Rating).ToList();
-            List<string> mappedRatings = new List<string>();
+            List<SelectListItem> items = new List<SelectListItem>();
             foreach (int rating in ratings)
             {
-                string r = "+" + rating;
-                if (mappedRatings.Contains(r))
+                items.Add(new SelectListItem()
                 {
-                    continue;
-                }
-                else
-                {
-                    mappedRatings.Add(r);
-                }
+                    Value = "+" + rating,
+                    Text = "+" + rating
+                });
             }
-            return mappedRatings;
+            items.Add(new SelectListItem()
+            {
+                Value = "Rating",
+                Text = "Rating",
+                Disabled = true,
+                Selected = true
+            });
+            return items;
         }
 
         /// <summary>
         /// Returns a List of all currently resealed movies
         /// </summary>
-        public List<Movie> GetAllReleased()
+        public List<Movie> GetAllShowing()
         {
             return dbSet.Where(
                 m => m.ReleaseDate <= DateTime.Now
@@ -303,7 +323,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns a List of all not yet resealed movies
         /// </summary>
-        public List<Movie> GetAllCommingSoon()
+        public List<Movie> GetAllComming()
         {
             return dbSet.Where(
                 m => m.ReleaseDate > DateTime.Now)
@@ -315,34 +335,15 @@ namespace VivedyWebApp
         /// </summary>
         public List<Movie> GetAllNotClosed()
         {
-            return dbSet.Where(
-                m => m.ClosingDate > DateTime.Now)
-                .ToList();
+            return dbSet.Where(m => m.ClosingDate > DateTime.Now).ToList();
         }
 
         /// <summary>
         /// Returns a List of top x current movies based on Viewer Rating
         /// </summary>
-        public List<Movie> GetTop(int x)
+        public List<Movie> GetTopNotClosed(int x)
         {
             return GetAllNotClosed().OrderByDescending(m => m.ViewerRating).Take(x).ToList();
-        }
-
-        /// <summary>
-        /// Checks if the movie has already been released
-        /// </summary>
-        public bool IsReleased(Movie movie)
-        {
-            return movie.ReleaseDate <= DateTime.Now && movie.ClosingDate > DateTime.Now;
-        }
-
-        /// <summary>
-        /// Checks if the movie has already been released
-        /// </summary>
-        public bool IsReleased(string id)
-        {
-            Movie movie = Details(id);
-            return movie.ReleaseDate <= DateTime.Now && movie.ClosingDate > DateTime.Now;
         }
 
         /// <summary>
@@ -353,6 +354,44 @@ namespace VivedyWebApp
             entity.Price = (float)Math.Round(entity.Price, 2);
             entity.ViewerRating = (float)Math.Round(entity.ViewerRating, 1);
             return base.CreateFrom(entity);
+        }
+
+        /// <summary>
+        /// Returns List of items for dropdown with movies
+        /// </summary>
+        public List<SelectListItem> GetSelectListItems()
+        {
+            List<Movie> movies = GetAllNotClosed().OrderByDescending(m => m.ViewerRating).ToList();
+            List<SelectListItem> items = new List<SelectListItem>();
+            foreach (Movie movie in movies)
+            {
+                items.Add(new SelectListItem()
+                {
+                    Value = movie.Id,
+                    Text = movie.Name
+                });
+            }
+            return items;
+        }
+
+        /// <summary>
+        /// Returns all cinemas for the movie with the Id
+        /// </summary>
+        public List<Cinema> GetCinemasForMovie(string id)
+        {
+            List<Cinema> cinemas = (from room in
+                                        (from scr in
+                                                (from scr in db.Screenings
+                                                 where scr.MovieId == id
+                                                 group scr by scr.RoomId into scrs
+                                                 select scrs.FirstOrDefault())
+                                         join room in db.Rooms on scr.RoomId equals room.Id
+                                         group room by room.CinemaId into rooms
+                                         select rooms.FirstOrDefault())
+                                    join cinema in db.Cinemas on room.CinemaId equals cinema.Id
+                                    orderby cinema.Name
+                                    select cinema).ToList();
+            return cinemas;
         }
     }
 
@@ -366,35 +405,22 @@ namespace VivedyWebApp
         }
         
         /// <summary>
-        /// Saves a range of screenings
-        /// </summary>
-        public int SaveRange(List<Screening> range)
-        {
-            db.Screenings.AddRange(range);
-            int saved = db.SaveChanges();
-            return saved;
-        }
-
-        /// <summary>
-        /// Reutrns all Screenings for a movie with the id
-        /// </summary>
-        public List<Screening> GetAllForMovie(string id)
-        {
-            return dbSet.Where(s => s.MovieId == id).ToList();
-        }
-
-        /// <summary>
         /// Reutrns all Screenings which are yet to be shown
         /// </summary>
         public List<Screening> GetAllComming()
         {
-            return dbSet.Where(s =>s.StartTime > DateTime.Now).ToList();
+            DateTime now = DateTime.Now;
+            List<Screening> screenings = (from s in dbSet
+                                          join m in db.Movies on s.MovieId equals m.Id
+                                          where m.ClosingDate > now && s.StartTime > now
+                                          select s).ToList();
+            return screenings;
         }
 
         /// <summary>
         /// Returns the screeening with the movie attached to it
         /// </summary>
-        public Screening GetDetailsWithMovie(string id)
+        public Screening DetailsWithMovie(string id)
         {
             return dbSet.Where(s => s.Id == id).Include(s => s.Movie).FirstOrDefault();
         }
@@ -419,9 +445,18 @@ namespace VivedyWebApp
                     });
                 }
             }
-            dbSet.AddRange(screenings);
+            return (SaveRange(screenings) > 0) ? screenings : null;
+        }
+
+        /// <summary>
+        /// Saves a range of screenings
+        /// </summary>
+        public int SaveRange(List<Screening> range)
+        {
+
+            db.Screenings.AddRange(range);
             int saved = db.SaveChanges();
-            return (saved == 1) ? screenings : null;
+            return saved;
         }
 
         /// <summary>
@@ -469,10 +504,60 @@ namespace VivedyWebApp
         /// <summary>
         /// Checks if the screening starts after the movie's release
         /// </summary>
-        public bool IsAfterMovieRelease(Screening screening)
+        public bool IsDuringMovieShowing(Screening screening, Movie movie = null)
         {
-            screening.Movie = db.Movies.Find(screening.MovieId);
-            return screening.StartTime >= screening.Movie.ReleaseDate;
+            screening.Movie = movie == null ? db.Movies.Find(screening.MovieId) : movie;
+            return screening.StartTime < screening.Movie.ReleaseDate
+                && (screening.StartTime + screening.Movie.Duration) < screening.Movie.ClosingDate;
+        }
+
+        /// <summary>
+        /// Returns List of items for dropdown with screenigns grouped by movie name
+        /// </summary>
+        public List<SelectListItem> GetSelectListItems()
+        {
+            DateTime now = DateTime.Now;
+            var screenings = dbSet
+                .Include(s => s.Movie)
+                .Include(s => s.Room)
+                .Include(s => s.Room.Cinema)
+                .Where(s => s.Movie.ClosingDate > now && s.StartTime > now)
+                .OrderBy(s => s.Movie.Name)
+                .OrderBy(s => s.Room.Cinema.Name)
+                .OrderBy(s => s.Room.Name)
+                .OrderBy(s => s.StartTime)
+                .ToList();
+            var groups = screenings.GroupBy(s => s.MovieId);
+            List<SelectListItem> items = new List<SelectListItem>();
+            foreach (var group in groups)
+            {
+                var roomsGroup = new SelectListGroup() { Name = screenings.Find(s => s.MovieId == group.Key).Movie.Name };
+                foreach (var screening in group)
+                {
+                    items.Add(new SelectListItem()
+                    {
+                        Value = screening.Id,
+                        Text = screening.Room.Cinema.Name + " | " + screening.Room.Name + " | " + screening.StartTime.ToString("dd/MM/yy H:mm"),
+                        Group = roomsGroup
+                    });
+                }
+            }
+            return items;
+        }
+
+        /// <summary>
+        /// Returns all screenings for the movie which are in a selected cinema
+        /// </summary>
+        public List<Screening> GetAllForMovieInCinema(string movieId, string cinemaId)
+        {
+            DateTime now = DateTime.Now;
+            List<Screening> screenings = (from scr in dbSet
+                                          join room in db.Rooms on scr.RoomId equals room.Id
+                                          where scr.MovieId == movieId
+                                          && room.CinemaId == cinemaId
+                                          && scr.StartTime > now
+                                          select scr).ToList();
+            return screenings;
         }
     }
 
@@ -490,13 +575,14 @@ namespace VivedyWebApp
         /// </summary>
         public List<Booking> GetAllComingForUser(string email)
         {
+            DateTime now = DateTime.Now;
             return (from b in dbSet
                     join s in db.Screenings on b.ScreeningId equals s.Id
                     join m in db.Movies on s.MovieId equals m.Id
                     join r in db.Rooms on s.RoomId equals r.Id
                     join c in db.Cinemas on r.CinemaId equals c.Id
                     where b.UserEmail == email
-                    && s.StartTime > DateTime.Now
+                    && s.StartTime > now
                     select b).ToList();
         }
 
@@ -535,29 +621,15 @@ namespace VivedyWebApp
             }
             return result;
         }
-
-        /// <summary>
-        /// Converts the seats from a Booking.Seats into a list if int
-        /// <returns>List of int</returns>
-        /// </summary>
-        public List<string> ConvertSeatsToStringList(string seats)
-        {
-            List<string> result = new List<string>();
-            foreach (string seat in seats.Split(','))
-            {
-                if (seat != null && seat != "") { result.Add(seat); }
-            }
-            return result;
-        }
         
         /// <summary>
         /// Sends a 'booking confirmation' email for the booking
         /// </summary>
-        public void SendBookingConfirmationEmail(Booking booking)
+        public void SendConfirmationEmail(Booking booking)
         {
             string htmlSeats = "";
-            List<string> seats = ConvertSeatsToStringList(booking.Seats);
-            foreach (string seat in seats)
+            List<int> seats = ConvertSeatsToIntList(booking.Seats);
+            foreach (int seat in seats)
             {
                 htmlSeats += $"<li>{seat}</li>";
             }
@@ -568,9 +640,7 @@ namespace VivedyWebApp
 
             //Generating content to put into the QR code for later validation
             //Includes booking Id and UserEmail
-            string dataToEncode = booking.Id;
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(dataToEncode);
-            string qrCodeData = "VIVEDYBOOKING_" + Convert.ToBase64String(plainTextBytes);
+            string qrCodeData = "VIVEDYBOOKING_" + booking.Id;
             string subject = "Booking Confirmation";
             List<ApplicationUser> Users = db.Users.Where(user => user.Email == booking.UserEmail).ToList();
             string greeting = Users.Count() > 0 ? "<b>Hi " + Users[0].Name + "</b><br/>" : "";
@@ -620,87 +690,21 @@ namespace VivedyWebApp
         }
     }
 
-    public class Entities
+    public class RoomsManager : GenericManager<Room>
     {
-        public Entities()
-        {
-            db = new ApplicationDbContext();
-            Movies = new MoviesManager(db);
-            Screenings = new ScreeningsManager(db);
-            Bookings = new BookingsManager(db);
-            Cinemas = new GenericManager<Cinema>(db);
-            Rooms = new GenericManager<Room>(db);
-        }
-
-        private readonly ApplicationDbContext db;
-
-        public readonly MoviesManager Movies;
-
-        public readonly ScreeningsManager Screenings;
-
-        public readonly BookingsManager Bookings;
-
-        public readonly GenericManager<Cinema> Cinemas;
-
-        public readonly GenericManager<Room> Rooms;
-
         /// <summary>
-        /// Returns all cinemas for the movie with the Id
+        /// Constructor for cases when a RoomsManager object is initialized as a DataManager member
         /// </summary>
-        public List<Cinema> GetCinemasForMovie(string id)
+        public RoomsManager(ApplicationDbContext db) : base(db)
         {
-            List<Cinema> cinemas = (from room in 
-                                        (from scr in 
-                                                (from scr in db.Screenings
-                                                where scr.MovieId == id 
-                                                group scr by scr.RoomId into scrs
-                                                select scrs.FirstOrDefault())
-                                            join room in db.Rooms on scr.RoomId equals room.Id 
-                                            group room by room.CinemaId into rooms 
-                                            select rooms.FirstOrDefault())
-                                    join cinema in db.Cinemas on room.CinemaId equals cinema.Id
-                                    orderby cinema.Name
-                                    select cinema).ToList();
-            return cinemas;
-        }
-
-        /// <summary>
-        /// Returns all screenings for the movie which are in a selected cinema
-        /// </summary>
-        public List<Screening> GetScreeningsForMovieInCinema(string movieId, string cinemaId)
-        {
-            List<Screening> screenings = (from scr in db.Screenings
-                                          join room in db.Rooms on scr.RoomId equals room.Id
-                                          where scr.MovieId == movieId 
-                                          && room.CinemaId == cinemaId
-                                          select scr).ToList();
-            return screenings;
-        }
-
-        /// <summary>
-        /// Returns List of items for dropdown with movies
-        /// </summary>
-        public List<SelectListItem> GetMovieSelectListItems()
-        {
-            List<Movie> movies = Movies.GetAllNotClosed().OrderByDescending(m => m.ViewerRating).ToList();
-            List<SelectListItem> items = new List<SelectListItem>();
-            foreach(Movie movie in movies)
-            {
-                items.Add(new SelectListItem()
-                {
-                    Value = movie.Id,
-                    Text = movie.Name
-                });
-            }
-            return items;
         }
 
         /// <summary>
         /// Returns List of items for dropdown with rooms grouped by cinemas
         /// </summary>
-        public List<SelectListItem> GetRoomSelectListItems()
+        public List<SelectListItem> GetSelectListItems()
         {
-            List<Room> rooms = db.Rooms.Include(r => r.Cinema).OrderBy(r => r.Name).OrderBy(r => r.Cinema.Name).ToList();
+            List<Room> rooms = dbSet.Include(r => r.Cinema).OrderBy(r => r.Name).OrderBy(r => r.Cinema.Name).ToList();
             var groups = rooms.GroupBy(r => r.CinemaId);
             List<SelectListItem> items = new List<SelectListItem>();
             foreach (var group in groups)
@@ -718,13 +722,23 @@ namespace VivedyWebApp
             }
             return items;
         }
+    }
+
+    public class CinemasManager : GenericManager<Cinema>
+    {
+        /// <summary>
+        /// Constructor for cases when a CinemasManager object is initialized as a DataManager member
+        /// </summary>
+        public CinemasManager(ApplicationDbContext db) : base(db)
+        {
+        }
 
         /// <summary>
         /// Returns List of items for dropdown with cinemas
         /// </summary>
-        public List<SelectListItem> GetCinemaSelectListItems()
+        public List<SelectListItem> GetSelectListItems()
         {
-            List<Cinema> cinemas = db.Cinemas.ToList();
+            List<Cinema> cinemas = AllToList();
             List<SelectListItem> items = new List<SelectListItem>();
             foreach (Cinema cinema in cinemas)
             {
@@ -736,37 +750,30 @@ namespace VivedyWebApp
             }
             return items;
         }
+    }
 
-        /// <summary>
-        /// Returns List of items for dropdown with screenigns grouped by movie name
-        /// </summary>
-        public List<SelectListItem> GetScreeningSelectListItems()
+    public class Entities
+    {
+        public Entities()
         {
-            var screenings = db.Screenings
-                .Include(s => s.Movie)
-                .Include(s => s.Room)
-                .Include(s => s.Room.Cinema)
-                .OrderBy(s => s.Movie.Name)
-                .OrderBy(s => s.Room.Cinema.Name)
-                .OrderBy(s => s.Room.Name)
-                .OrderBy(s => s.StartTime)
-                .ToList();
-            var groups = screenings.GroupBy(s => s.MovieId);
-            List<SelectListItem> items = new List<SelectListItem>();
-            foreach (var group in groups)
-            {
-                var roomsGroup = new SelectListGroup() { Name = screenings.Find(s => s.MovieId == group.Key).Movie.Name };
-                foreach (var screening in group)
-                {
-                    items.Add(new SelectListItem()
-                    {
-                        Value = screening.Id,
-                        Text = screening.Room.Cinema.Name + " | " + screening.Room.Name + " | " + screening.StartTime.ToString("dd/MM/yy H:mm"),
-                        Group = roomsGroup
-                    });
-                }
-            }
-            return items;
+            db = new ApplicationDbContext();
+            Movies = new MoviesManager(db);
+            Screenings = new ScreeningsManager(db);
+            Bookings = new BookingsManager(db);
+            Cinemas = new CinemasManager(db);
+            Rooms = new RoomsManager(db);
         }
+
+        private readonly ApplicationDbContext db;
+
+        public readonly MoviesManager Movies;
+
+        public readonly ScreeningsManager Screenings;
+
+        public readonly BookingsManager Bookings;
+
+        public readonly CinemasManager Cinemas;
+
+        public readonly RoomsManager Rooms;
     }
 }

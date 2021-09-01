@@ -29,10 +29,13 @@ namespace VivedyWebApp.Controllers
         /// </summary>
         public ActionResult Index()
         {
-            List<Movie> movies = Helper.Movies.GetAllReleased().OrderByDescending(m => m.ViewerRating).ToList();
-            ViewBag.Categories = Helper.Movies.GetAllCategories();
-            ViewBag.Ratings = Helper.Movies.GetAllRatingss();
-            return View(movies);
+            MoviesViewModel model = new MoviesViewModel()
+            {
+                Movies = Helper.Movies.GetAllNotClosed().OrderByDescending(m => m.ViewerRating).ToList(),
+                Categories = Helper.Movies.GetCategoriesSelectListItems(),
+                Ratings = Helper.Movies.GetRatingsSelectListItems()
+            };
+            return View(model);
         }
 
         /// <summary>
@@ -53,7 +56,7 @@ namespace VivedyWebApp.Controllers
             MoviesDetailsViewModel model = new MoviesDetailsViewModel()
             {
                 Movie = movie,
-                Cinemas = Helper.GetCinemasForMovie(id)
+                Cinemas = Helper.Movies.GetCinemasForMovie(id)
             };
             return View(model);
         }

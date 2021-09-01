@@ -37,7 +37,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             HomeViewModel model = new HomeViewModel()
             {
-                Screenings = Helper.GetScreeningSelectListItems()
+                Screenings = Helper.Screenings.GetSelectListItems()
             };
             return View(model);
         }
@@ -47,21 +47,11 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public JsonResult VerifyBookings(string data, string screeningId)
+        public JsonResult VerifyBookings(string bookingId, string screeningId)
         {
-            if (data == null || screeningId == null)
+            if (bookingId == null || screeningId == null)
             {
                 return Json(new VerifyBookingsResult("HTTP 400: Bad request"), JsonRequestBehavior.AllowGet);
-            }
-            string bookingId;
-            try
-            {
-                byte[] decodedData = Convert.FromBase64String(data);
-                bookingId = Encoding.UTF8.GetString(decodedData);
-            }
-            catch
-            {
-                return Json(new VerifyBookingsResult("Internal error occured while decoding the requested QR code data."), JsonRequestBehavior.AllowGet);
             }
             try
             {

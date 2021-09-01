@@ -21,7 +21,7 @@ function decode() {
     });
 }
 function sendDecodedResult(QRcontent) {
-    $.post(`/Admin/Home/VerifyBookings/?data=${QRcontent}&screeningId=${ScreeningSelect.options[ScreeningSelect.selectedIndex].value}`, "", (result) => {
+    $.post(`/Admin/Home/VerifyBookings/?bookingId=${QRcontent}&screeningId=${ScreeningSelect.options[ScreeningSelect.selectedIndex].value}`, "", (result) => {
         if (result.error == null) {
             if (result.verified) {
                 displayMessage(true, "VERIFIED", "The booking is valid");
