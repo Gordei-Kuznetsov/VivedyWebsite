@@ -14,12 +14,19 @@ namespace VivedyWebApp.Models.ViewModels
         /// <summary>
         /// Screenings available for the selected movie
         /// </summary>
-        public List<Screening> AvailableScreenings { get; set; }
+        public List<ScreeningDetails> AvailableScreenings { get; set; }
 
         /// <summary>
         /// Movie selected for the booking
         /// </summary>
         public Movie Movie { get; set; }
+    }
+
+    public class ScreeningDetails
+    {
+        public string Id { get; set; }
+        public DateTime StartTime { get; set; }
+        public int BookedSeats { get; set; }
     }
 
     /// <summary>

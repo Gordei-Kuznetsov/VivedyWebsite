@@ -51,19 +51,19 @@ namespace VivedyWebApp.Migrations
             {
                 new Cinema()
                 {
-                    Id = "ba1c35e5-9c68-4459-901d-771d9ec59822",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Albany",
                     Address = "219 Don McKinnon Drive, Albany, Auckland 0632"
                 },
                 new Cinema()
                 {
-                    Id = "8f4a903b-5438-4570-84fd-76e414d6408c",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Newmarket",
                     Address = "64 Broadway, Newmarket, Auckland 1023"
                 },
                 new Cinema()
                 {
-                    Id = "79099ae1-1ed2-470c-bebe-87a74022a089",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Sylvia Park",
                     Address = "286 Mount Wellington Highway, Mount Wellington, Auckland 1060"
                 }
@@ -76,98 +76,98 @@ namespace VivedyWebApp.Migrations
                 // Sylvia Park
                 new Room()
                 {
-                    Id = "a66f342b-b765-46a1-9266-72a2afcae032",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Room 1",
                     SeatsLayout = "small",
-                    CinemaId = "79099ae1-1ed2-470c-bebe-87a74022a089"
+                    CinemaId = cinemas[2].Id
                 },
                 new Room()
                 {
-                    Id = "0a8a1b78-6ffb-43e2-bc85-d267c2f02f99",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Room 2",
                     SeatsLayout = "small",
-                    CinemaId = "79099ae1-1ed2-470c-bebe-87a74022a089"
+                    CinemaId = cinemas[2].Id
                 },
                 new Room()
                 {
-                    Id = "4093c20a-b6da-4364-9bb1-745287c404ed",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Room 3",
                     SeatsLayout = "medium",
-                    CinemaId = "79099ae1-1ed2-470c-bebe-87a74022a089"
+                    CinemaId = cinemas[2].Id
                 },
                 new Room()
                 {
-                    Id = "8fafec28-47fa-411e-b287-207d5eec4c20",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Room 4",
                     SeatsLayout = "medium",
-                    CinemaId = "79099ae1-1ed2-470c-bebe-87a74022a089"
+                    CinemaId = cinemas[2].Id
                 },
                 new Room()
                 {
-                    Id = "3b0df583-c92f-4687-9c6c-02fce865a4f3",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Room 5",
                     SeatsLayout = "medium",
-                    CinemaId = "79099ae1-1ed2-470c-bebe-87a74022a089"
+                    CinemaId = cinemas[2].Id
                 },
                 new Room()
                 {
-                    Id = "73c562cd-c5ae-4aed-a27d-e50d1d901d7a",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Room 6",
                     SeatsLayout = "large",
-                    CinemaId = "79099ae1-1ed2-470c-bebe-87a74022a089"
+                    CinemaId = cinemas[2].Id
                 },
 
                 // Newmarket
                 new Room()
                 {
-                    Id = "f451615e-41d7-4e40-ac35-8fcf9fb8d660",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Room 1",
                     SeatsLayout = "small",
-                    CinemaId = "8f4a903b-5438-4570-84fd-76e414d6408c"
+                    CinemaId = cinemas[1].Id
                 },
                 new Room()
                 {
-                    Id = "d29d43d3-04f6-4cda-9256-b36f4fa5cd61",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Room 2",
                     SeatsLayout = "medium",
-                    CinemaId = "8f4a903b-5438-4570-84fd-76e414d6408c"
+                    CinemaId = cinemas[1].Id
                 },
                 new Room()
                 {
-                    Id = "d8c2b980-5200-4bb7-b7d9-59c013c20411",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Room 3",
                     SeatsLayout = "medium",
-                    CinemaId = "8f4a903b-5438-4570-84fd-76e414d6408c"
+                    CinemaId = cinemas[1].Id
                 },
                 new Room()
                 {
-                    Id = "58e972d8-d905-4762-bb28-875ecffef345",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Room 4",
                     SeatsLayout = "large",
-                    CinemaId = "8f4a903b-5438-4570-84fd-76e414d6408c"
+                    CinemaId = cinemas[1].Id
                 },
 
                 // Albany
                 new Room()
                 {
-                    Id = "8927f698-ee9d-4490-862b-9dccab7f4703",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Room 1",
                     SeatsLayout = "small",
-                    CinemaId = "ba1c35e5-9c68-4459-901d-771d9ec59822"
+                    CinemaId = cinemas[0].Id
                 },
                 new Room()
                 {
-                    Id = "6af902ab-33e7-4bb8-85e5-ac0f50deb1a5",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Room 2",
                     SeatsLayout = "medium",
-                    CinemaId = "ba1c35e5-9c68-4459-901d-771d9ec59822"
+                    CinemaId = cinemas[0].Id
                 },
                 new Room()
                 {
-                    Id = "1f05b3f1-9905-4cc5-b3a3-38278fd75d01",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Room 3",
                     SeatsLayout = "medium",
-                    CinemaId = "ba1c35e5-9c68-4459-901d-771d9ec59822"
+                    CinemaId = cinemas[0].Id
                 }
             };
             _context.Rooms.AddRange(rooms);
@@ -324,150 +324,151 @@ namespace VivedyWebApp.Migrations
             {
                 new Screening()
                 {
-                    Id = "00933004-96cf-4d47-87fb-c4f9f9e1ad5e",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "f451615e-41d7-4e40-ac35-8fcf9fb8d660"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(1).AddHours(1),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[6].Id
                 },
                 new Screening()
                 {
-                    Id = "3e271e85-0620-4ff7-8480-55eeb8ccf499",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "6af902ab-33e7-4bb8-85e5-ac0f50deb1a5"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(1).AddHours(4),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[6].Id
                 },
                 new Screening()
                 {
-                    Id = "3fe390f2-239a-4124-9c3f-3be7851d4654",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "8927f698-ee9d-4490-862b-9dccab7f4703"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(2).AddHours(1),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[6].Id
                 },
                 new Screening()
                 {
-                    Id = "549979d3-0c79-46ab-bfe5-20a9663611f1",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "8927f698-ee9d-4490-862b-9dccab7f4703"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(2).AddHours(4),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[6].Id
                 },
                 new Screening()
                 {
-                    Id = "5fe26106-3d63-4782-b16b-6b50e8dc0785",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "6af902ab-33e7-4bb8-85e5-ac0f50deb1a5"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(3).AddHours(1),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[6].Id
                 },
                 new Screening()
                 {
-                    Id = "63ee0e82-9b91-407d-aad7-de9b69058af6",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "8927f698-ee9d-4490-862b-9dccab7f4703"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(3).AddHours(4),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[6].Id
                 },
                 new Screening()
                 {
-                    Id = "668f9f0c-0269-450e-989a-cc530f259948",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "f451615e-41d7-4e40-ac35-8fcf9fb8d660"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(4).AddHours(1),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[6].Id
                 },
                 new Screening()
                 {
-                    Id = "692b2906-b990-43db-8f93-9b2351e58f6d",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "6af902ab-33e7-4bb8-85e5-ac0f50deb1a5"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(1).AddHours(1),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[10].Id
                 },
                 new Screening()
                 {
-                    Id = "6a6652d2-ae03-42ad-9e7c-b58073334d43",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "6af902ab-33e7-4bb8-85e5-ac0f50deb1a5"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(1).AddHours(4),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[10].Id
                 },
                 new Screening()
                 {
-                    Id = "70adfc70-4460-4c3c-bcc4-c595c5f3482f",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "f451615e-41d7-4e40-ac35-8fcf9fb8d660"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(2).AddHours(1),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[10].Id
                 },
                 new Screening()
                 {
-                    Id = "79d47d94-3bf6-43ab-a457-79ece982c3e0",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "f451615e-41d7-4e40-ac35-8fcf9fb8d660"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(2).AddHours(4),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[10].Id
                 },
                 new Screening()
                 {
-                    Id = "86e2dde2-7387-4e36-a8d6-2f8cf880aa77",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "6af902ab-33e7-4bb8-85e5-ac0f50deb1a5"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(3).AddHours(1),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[10].Id
                 },
                 new Screening()
                 {
-                    Id = "936f8cdc-ce52-47d4-91bd-fe219e1218a0",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "8927f698-ee9d-4490-862b-9dccab7f4703"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(3).AddHours(4),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[10].Id
                 },
                 new Screening()
                 {
-                    Id = "988b7a58-6dc7-4b57-b830-08df1abd9314",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "6af902ab-33e7-4bb8-85e5-ac0f50deb1a5"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(4).AddHours(1),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[10].Id
                 },
                 new Screening()
                 {
-                    Id = "a8b63b1f-7f05-419c-908d-14f0e89428a3",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "8927f698-ee9d-4490-862b-9dccab7f4703"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(1).AddHours(1),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[9].Id
                 },
                 new Screening()
                 {
-                    Id = "bb74286a-7f77-445b-b100-978fc45f596d",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "f451615e-41d7-4e40-ac35-8fcf9fb8d660"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(1).AddHours(4),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[9].Id
                 },
                 new Screening()
                 {
-                    Id = "cec34da1-6d8d-439a-ab2d-f0b7c2b1be3c",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "8927f698-ee9d-4490-862b-9dccab7f4703"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(2).AddHours(1),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[9].Id
                 },
                 new Screening()
                 {
-                    Id = "e8185066-e649-48e6-acb8-10d09ca0a3e7",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "f451615e-41d7-4e40-ac35-8fcf9fb8d660"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(2).AddHours(4),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[9].Id
                 },
                 new Screening()
                 {
-                    Id = "ef2c13d7-1f61-470b-bb2d-8c0f00ad5bff",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "8927f698-ee9d-4490-862b-9dccab7f4703"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(3).AddHours(1),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[9].Id
+                },
+                
+                new Screening()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(3).AddHours(4),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[9].Id
                 },
                 new Screening()
                 {
-                    Id = "fe8ca752-cb77-4f71-9481-61c9c317ca75",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "f451615e-41d7-4e40-ac35-8fcf9fb8d660"
-                },
-                new Screening()
-                {
-                    Id = "ff6e1bbf-a81a-41fa-8ba9-a0e634fabd4b",
-                    StartTime = now.AddDays(2),
-                    MovieId = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
-                    RoomId = "6af902ab-33e7-4bb8-85e5-ac0f50deb1a5"
+                    Id = Guid.NewGuid().ToString(),
+                    StartTime = now.AddDays(4).AddHours(1),
+                    MovieId = movies[7].Id,
+                    RoomId = rooms[9].Id
                 }
             };
             _context.Screenings.AddRange(screenings);
@@ -477,20 +478,36 @@ namespace VivedyWebApp.Migrations
             {
                 new Booking()
                 {
-                    Id = "7b84fb9b-24c7-4687-b316-23f768ad4667",
+                    Id = Guid.NewGuid().ToString(),
                     Seats = "54,42,43,55,56,44,",
-                    PayedAmout = 126f,
+                    PayedAmout = 78f,
                     VerificationTime = now,
                     UserEmail = "vivedycinemas@gmail.com",
-                    ScreeningId = "3fe390f2-239a-4124-9c3f-3be7851d4654"
+                    ScreeningId = screenings[7].Id
                 },
                 new Booking()
                 {
-                    Id = "c169fef2-3080-4c12-a8e7-54d2fbb87d52",
+                    Id = Guid.NewGuid().ToString(),
                     Seats = "16,17,18,19,51,39,40,52,41,",
-                    PayedAmout = 189f,
+                    PayedAmout = 117f,
                     UserEmail = "vivedycinemas@gmail.com",
-                    ScreeningId = "3fe390f2-239a-4124-9c3f-3be7851d4654"
+                    ScreeningId = screenings[7].Id
+                },
+                new Booking()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Seats = "43,44,45,33,32",
+                    PayedAmout = 65f,
+                    UserEmail = "vivedycinemas@gmail.com",
+                    ScreeningId = screenings[8].Id
+                },
+                new Booking()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Seats = "21,22,23,24,25,",
+                    PayedAmout = 65f,
+                    UserEmail = "vivedycinemas@gmail.com",
+                    ScreeningId = screenings[8].Id
                 }
             };
             _context.Bookings.AddRange(bookings);

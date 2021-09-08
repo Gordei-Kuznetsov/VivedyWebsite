@@ -15,6 +15,7 @@ using Microsoft.Owin.Security;
 using VivedyWebApp.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using VivedyWebApp.Models.ViewModels;
 
 namespace VivedyWebApp
 {
@@ -546,18 +547,55 @@ namespace VivedyWebApp
         }
 
         /// <summary>
-        /// Returns all screenings for the movie which are in a selected cinema
+        /// Returns details for all screenings for the movie which are in a selected cinema (including booked seats)
         /// </summary>
-        public List<Screening> GetAllForMovieInCinema(string movieId, string cinemaId)
+        public List<ScreeningDetails> GetAllForMovieInCinema(string movieId, string cinemaId)
         {
             DateTime now = DateTime.Now;
-            List<Screening> screenings = (from scr in dbSet
-                                          join room in db.Rooms on scr.RoomId equals room.Id
-                                          where scr.MovieId == movieId
-                                          && room.CinemaId == cinemaId
-                                          && scr.StartTime > now
-                                          select scr).ToList();
-            return screenings;
+            List<Screening> screenings = (from s in db.Screenings
+                                         join r in db.Rooms on s.RoomId equals r.Id
+                                         where s.MovieId == movieId
+                                         && r.CinemaId == cinemaId
+                                         && s.StartTime > now
+                                         select s).ToList();
+            var bookings = (from b in db.Bookings
+                            join s in db.Screenings on b.ScreeningId equals s.Id
+                            join r in db.Rooms on s.RoomId equals r.Id
+                            where s.MovieId == movieId
+                            && r.CinemaId == cinemaId
+                            && s.StartTime > now
+                            group b by b.ScreeningId);
+            List<ScreeningDetails> list = new List<ScreeningDetails>();
+            for (int i = 0; i < screenings.Count(); i++)
+            {
+                int seats = 0;
+                foreach (var group in bookings)
+                {
+                    if (group.Key == screenings[i].Id)
+                    {
+                        foreach (var b in group)
+                        {
+                            seats += convCount(b.Seats);
+                        }
+                    }
+                }
+                list.Add(new ScreeningDetails
+                {
+                    Id = screenings[i].Id,
+                    StartTime = screenings[i].StartTime,
+                    BookedSeats = seats
+                });
+            }
+            return list;
+        }
+        private int convCount(string seats)
+        {
+            int result = 0;
+            foreach (string seat in seats.Split(','))
+            {
+                if (seat != null && seat != "") { result++; }
+            }
+            return result;
         }
     }
 

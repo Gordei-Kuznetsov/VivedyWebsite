@@ -36,16 +36,12 @@ namespace VivedyWebApp.Controllers
             }
             Movie movie = Helper.Movies.Details(movieId);
             Cinema cinema = Helper.Cinemas.Details(cinemaId);
-            if( movie == null || cinema == null)
+            if( movie == null || cinema == null || movie.ClosingDate < DateTime.Now)
             {
                 return HttpNotFound();
             }
             //Getting available Screenings for the movie
-            List<Screening> screenings = new List<Screening>();
-            if (movie.ClosingDate > DateTime.Now)
-            {
-                screenings = Helper.Screenings.GetAllForMovieInCinema(movieId, cinemaId);
-            }
+            List<ScreeningDetails> screenings = Helper.Screenings.GetAllForMovieInCinema(movieId, cinemaId);
             if (screenings.Count == 0)
             {
                 //If no Screenings found then send back to the Movies/Details page with a message
@@ -105,7 +101,7 @@ namespace VivedyWebApp.Controllers
             List<int> selectedSeats = Helper.Bookings.ConvertSeatsToIntList(seatsModel.SelectedSeats);
             Screening screening = Helper.Screenings.DetailsWithMovie(seatsModel.SelectedScreeningId);
             if (screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartTime > DateTime.Now
-                && Helper.Bookings.AnySeatsOverlapWith(selectedSeats, screening.Id))
+                && !Helper.Bookings.AnySeatsOverlapWith(selectedSeats, screening.Id))
             {
                 //If user is logged in, then take their email and pass to the model
                 ApplicationUser user = User.Identity.IsAuthenticated
@@ -139,7 +135,7 @@ namespace VivedyWebApp.Controllers
             List<int> seats = Helper.Bookings.ConvertSeatsToIntList(payModel.SelectedSeats);
             Screening screening = Helper.Screenings.DetailsWithMovie(payModel.SelectedScreeningId);
             if (screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartTime > DateTime.Now
-                && Helper.Bookings.AnySeatsOverlapWith(seats, screening.Id))
+                && !Helper.Bookings.AnySeatsOverlapWith(seats, screening.Id))
             {
                 Booking booking = new Booking
                 {
