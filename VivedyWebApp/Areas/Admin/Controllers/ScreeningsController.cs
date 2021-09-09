@@ -27,21 +27,21 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Index page
         /// </summary>
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View(Helper.Screenings.AllToList());
+            return View(await Helper.Screenings.AllToList());
         }
 
         /// <summary>
         /// GET request action for Details page
         /// </summary>
-        public ActionResult Details(string id)
+        public async Task<ActionResult> Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = Helper.Screenings.Details(id);
+            Screening screening = await Helper.Screenings.Details(id);
             if (screening == null)
             {
                 return HttpNotFound();
@@ -52,12 +52,12 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Create page
         /// </summary>
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
             ScreeningsCreateViewModel model = new ScreeningsCreateViewModel()
             {
-                Movies = Helper.Movies.GetSelectListItems(),
-                Rooms = Helper.Rooms.GetSelectListItems()
+                Movies = await Helper.Movies.GetSelectListItems(),
+                Rooms = await Helper.Rooms.GetSelectListItems()
             };
             return View(model);
         }
@@ -67,7 +67,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ScreeningsCreateViewModel model)
+        public async Task<ActionResult> Create(ScreeningsCreateViewModel model)
         {
             // Method needs improvement for cases when a screening cannot be creaed
             // Either terminate the process or return a message with the results
@@ -83,14 +83,15 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 MovieId = model.MovieId,
                 RoomId = model.RoomId
             };
-            Movie movie = Helper.Movies.Details(screening.MovieId);
-            Room room = Helper.Rooms.Details(model.RoomId);
+            Movie movie = await Helper.Movies.Details(screening.MovieId);
+            Room room = await Helper.Rooms.Details(model.RoomId);
             if (movie == null || room == null)
             {
                 return View(model);
             }
             List<Screening> screenings = new List<Screening>();
-            if (Helper.Screenings.IsDuringMovieShowing(screening, movie) && !Helper.Screenings.AnyOverlapWith(screening))
+            if (await Helper.Screenings.IsDuringMovieShowing(screening, movie) 
+                && !(await Helper.Screenings.AnyOverlapWith(screening, movie.Duration)))
             {
                 screenings.Add(screening);
             }
@@ -109,13 +110,14 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                         RoomId = screening.RoomId
                     };
                     //Doesn't have to be chacked against other generated screenings as they are at different days anyway
-                    if (Helper.Screenings.IsDuringMovieShowing(genScreening, movie) && !Helper.Screenings.AnyOverlapWith(genScreening))
+                    if (await Helper.Screenings.IsDuringMovieShowing(genScreening, movie) 
+                        && !(await Helper.Screenings.AnyOverlapWith(genScreening, movie.Duration)))
                     {
                         screenings.Add(genScreening);
                     }
                 }
             }
-            Helper.Screenings.SaveRange(screenings);
+            await Helper.Screenings.SaveRange(screenings);
             return RedirectToAction("Index");
             
         }
@@ -123,13 +125,13 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Edit page
         /// </summary>
-        public ActionResult Edit(string id)
+        public async Task<ActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = Helper.Screenings.Details(id);
+            Screening screening = await Helper.Screenings.Details(id);
             if (screening == null)
             {
                 return HttpNotFound();
@@ -140,8 +142,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 StartTime = screening.StartTime,
                 MovieId = screening.MovieId,
                 RoomId = screening.MovieId,
-                Movies = Helper.Movies.GetSelectListItems(),
-                Rooms = Helper.Rooms.GetSelectListItems()
+                Movies = await Helper.Movies.GetSelectListItems(),
+                Rooms = await Helper.Rooms.GetSelectListItems()
             };
             return View(model);
         }
@@ -151,13 +153,13 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ScreeningsViewModel model)
+        public async Task<ActionResult> Edit(ScreeningsViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            Screening screening = Helper.Screenings.DetailsWithMovie(model.Id);
+            Screening screening = await Helper.Screenings.DetailsWithMovie(model.Id);
             if (screening == null)
             {
                 return HttpNotFound();
@@ -166,10 +168,11 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             screening.StartTime = model.StartTime;
             screening.MovieId = model.MovieId;
             screening.RoomId = model.RoomId;
-            if (Helper.Screenings.IsDuringMovieShowing(screening, screening.Movie) && !Helper.Screenings.AnyOverlapWith(screening))
+            if (await Helper.Screenings.IsDuringMovieShowing(screening, screening.Movie) 
+                && !(await Helper.Screenings.AnyOverlapWith(screening, screening.Movie.Duration)))
             {
                 //possibly send notifying email to customers that there are changes
-                Helper.Screenings.Edit(screening);
+                await Helper.Screenings.Edit(screening);
                 return RedirectToAction("Index");
             }
             return View(model);
@@ -178,13 +181,13 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Delete page
         /// </summary>
-        public ActionResult Delete(string id)
+        public async Task<ActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = Helper.Screenings.Details(id);
+            Screening screening = await Helper.Screenings.Details(id);
             if (screening == null)
             {
                 return HttpNotFound();
@@ -197,18 +200,18 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public async Task<ActionResult> DeleteConfirmed(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = Helper.Screenings.Details(id);
+            Screening screening = await Helper.Screenings.Details(id);
             if (screening == null)
             {
                 return HttpNotFound();
             }
-            Helper.Screenings.Delete(id);
+            await Helper.Screenings.Delete(id);
             return RedirectToAction("Index");
         }
     }

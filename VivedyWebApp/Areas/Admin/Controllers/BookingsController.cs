@@ -27,21 +27,21 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Index page
         /// </summary>
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View(Helper.Bookings.AllToList());
+            return View(await Helper.Bookings.AllToList());
         }
 
         /// <summary>
         /// GET request action for Details page
         /// </summary>
-        public ActionResult Details(string id)
+        public async Task<ActionResult> Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Booking booking = Helper.Bookings.Details(id);
+            Booking booking = await Helper.Bookings.Details(id);
             if (booking == null)
             {
                 return HttpNotFound();
@@ -52,13 +52,13 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Delete page
         /// </summary>
-        public ActionResult Delete(string id)
+        public async Task<ActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Booking booking = Helper.Bookings.Details(id);
+            Booking booking = await Helper.Bookings.Details(id);
             if (booking == null)
             {
                 return HttpNotFound();
@@ -71,18 +71,18 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public async Task<ActionResult> DeleteConfirmed(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Booking booking = Helper.Bookings.Details(id);
+            Booking booking = await Helper.Bookings.Details(id);
             if (booking == null)
             {
                 return HttpNotFound();
             }
-            Helper.Cinemas.Delete(id);
+            await Helper.Cinemas.Delete(id);
             return RedirectToAction("Index");
         }
     }

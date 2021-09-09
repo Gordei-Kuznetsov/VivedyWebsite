@@ -27,13 +27,13 @@ namespace VivedyWebApp.Controllers
         /// <summary>
         /// GET request action for Index page
         /// </summary>
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             MoviesViewModel model = new MoviesViewModel()
             {
-                Movies = Helper.Movies.GetAllNotClosed().OrderByDescending(m => m.ViewerRating).ToList(),
-                Categories = Helper.Movies.GetCategoriesSelectListItems(),
-                Ratings = Helper.Movies.GetRatingsSelectListItems()
+                Movies = (await Helper.Movies.GetAllNotClosed()).OrderByDescending(m => m.ViewerRating).ToList(),
+                Categories = await Helper.Movies.GetCategoriesSelectListItems(),
+                Ratings = await Helper.Movies.GetRatingsSelectListItems()
             };
             return View(model);
         }
@@ -41,14 +41,14 @@ namespace VivedyWebApp.Controllers
         /// <summary>
         /// GET request action for Details page
         /// </summary>
-        public ActionResult Details(string id)
+        public async Task<ActionResult> Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Movie movie = Helper.Movies.Details(id);
+            Movie movie = await Helper.Movies.Details(id);
             if (movie == null)
             {
                 return HttpNotFound();
@@ -56,7 +56,7 @@ namespace VivedyWebApp.Controllers
             MoviesDetailsViewModel model = new MoviesDetailsViewModel()
             {
                 Movie = movie,
-                Cinemas = Helper.Movies.GetCinemasForMovie(id)
+                Cinemas = await Helper.Movies.GetCinemasForMovie(id)
             };
             return View(model);
         }
@@ -65,9 +65,9 @@ namespace VivedyWebApp.Controllers
         /// GET request action for all Movies data for public api
         /// </summary>
         [AllowAnonymous]
-        public JsonResult All()
+        public async Task<JsonResult> All()
         {
-            return Json(Helper.Movies.AllToList(), JsonRequestBehavior.AllowGet);
+            return Json(await Helper.Movies.AllToList(), JsonRequestBehavior.AllowGet);
         }
     }
 }

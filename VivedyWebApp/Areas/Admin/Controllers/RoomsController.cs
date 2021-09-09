@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using VivedyWebApp.Models;
 using VivedyWebApp.Areas.Admin.Models.ViewModels;
+using System.Threading.Tasks;
 
 namespace VivedyWebApp.Areas.Admin.Controllers
 {
@@ -29,13 +30,13 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         }
 
         // GET: Admin/Rooms/Details/5
-        public ActionResult Details(string id)
+        public async Task<ActionResult> Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Room room = Helper.Rooms.Details(id);
+            Room room = await Helper.Rooms.Details(id);
             if (room == null)
             {
                 return HttpNotFound();
@@ -44,11 +45,11 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         }
 
         // GET: Admin/Rooms/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
             RoomsCreateViewModel model = new RoomsCreateViewModel()
             {
-                Cinemas = Helper.Cinemas.GetSelectListItems()
+                Cinemas = await Helper.Cinemas.GetSelectListItems()
             };
             return View(model);
         }
@@ -56,7 +57,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         // POST: Admin/Rooms/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(RoomsCreateViewModel model)
+        public async Task<ActionResult> Create(RoomsCreateViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -68,23 +69,23 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 SeatsLayout = model.SeatsLayout,
                 CinemaId = model.CinemaId
             };
-            Cinema cinema = Helper.Cinemas.Details(model.CinemaId);
+            Cinema cinema = await Helper.Cinemas.Details(model.CinemaId);
             if (cinema != null)
             {
-                Helper.Rooms.CreateFrom(room);
+                await Helper.Rooms.CreateFrom(room);
                 return RedirectToAction("Index");
             }
             return View(model);
         }
 
         // GET: Admin/Rooms/Edit/5
-        public ActionResult Edit(string id)
+        public async Task<ActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Room room = Helper.Rooms.Details(id);
+            Room room = await Helper.Rooms.Details(id);
             if (room == null)
             {
                 return HttpNotFound();
@@ -94,7 +95,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 Id = room.Id,
                 Name = room.Name,
                 SeatsLayout = room.SeatsLayout,
-                Cinemas = Helper.Cinemas.GetSelectListItems()
+                Cinemas = await Helper.Cinemas.GetSelectListItems()
             };
             return View(model);
         }
@@ -102,34 +103,34 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         // POST: Admin/Rooms/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(RoomsViewModel model)
+        public async Task<ActionResult> Edit(RoomsViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            Room room = Helper.Rooms.Details(model.Id);
-            Cinema cinema = Helper.Cinemas.Details(model.CinemaId);
+            Room room = await Helper.Rooms.Details(model.Id);
+            Cinema cinema = await Helper.Cinemas.Details(model.CinemaId);
             if (room != null || cinema != null)
             {
                 room.Name = model.Name;
                 room.SeatsLayout = model.SeatsLayout;
                 room.CinemaId = model.CinemaId;
 
-                Helper.Rooms.Edit(room);
+                await Helper.Rooms.Edit(room);
                 return RedirectToAction("Index");
             }
             return View(model);
         }
 
         // GET: Admin/Rooms/Delete/5
-        public ActionResult Delete(string id)
+        public async Task<ActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Room room = Helper.Rooms.Details(id);
+            Room room = await Helper.Rooms.Details(id);
             if (room == null)
             {
                 return HttpNotFound();
@@ -140,18 +141,18 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         // POST: Admin/Rooms/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public async Task<ActionResult> DeleteConfirmed(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Room room = Helper.Rooms.Details(id);
+            Room room = await Helper.Rooms.Details(id);
             if (room == null)
             {
                 return HttpNotFound();
             }
-            Helper.Rooms.Delete(id);
+            await Helper.Rooms.Delete(id);
             return RedirectToAction("Index");
         }
     }

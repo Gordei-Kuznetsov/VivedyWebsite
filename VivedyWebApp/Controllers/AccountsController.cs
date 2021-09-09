@@ -81,7 +81,7 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace VivedyWebApp.Controllers
             //Handling situations when the user got to the Login page directly and there is no return url
             returnUrl = returnUrl ?? "/Home/Index";
 
-            var user = UserManager.FindByEmail(model.Email);
+            var user = await UserManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 ModelState.AddModelError("", "Invalid login attempt.");
@@ -102,7 +102,7 @@ namespace VivedyWebApp.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, change to shouldLockout: true
-                var result = SignInManager.PasswordSignIn(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+                var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
                 switch (result)
                 {
                     case SignInStatus.Success:
@@ -139,17 +139,17 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Name = model.Name, Email = model.Email, PhoneNumber = model.PhoneNumber };
-                var result = UserManager.Create(user, model.Password);
+                var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    var currentUser = UserManager.FindByEmail(user.Email);
-                    UserManager.AddToRole(currentUser.Id, "Visitor");
-                    string securityCode = UserManager.GenerateEmailConfirmationToken(user.Id);
+                    var currentUser = await UserManager.FindByEmailAsync(user.Email);
+                    await UserManager.AddToRoleAsync(currentUser.Id, "Visitor");
+                    string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
                     UserManager.SendRegisterEmailTo(currentUser, callbackUrl);
                     return RedirectToAction("Index", "Home");
@@ -165,14 +165,14 @@ namespace VivedyWebApp.Controllers
         /// GET request action for ConfirmEmail page
         /// </summary>
         [AllowAnonymous]
-        public ActionResult ConfirmEmail(string userId, string code)
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
             {
                 return View("Error");
             }
             //Confirming that the code is valid for the email
-            var result = UserManager.ConfirmEmail(userId, code);
+            var result = await UserManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
@@ -191,18 +191,18 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult ForgotPassword(ForgotPasswordViewModel model)
+        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = UserManager.FindByName(model.Email);
-                if (user == null || !UserManager.IsEmailConfirmed(user.Id))
+                var user = await UserManager.FindByNameAsync(model.Email);
+                if (user == null || !user.EmailConfirmed)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
                 }
                 //Sending email to the user with the link to ResetPassword page
-                string securityCode = UserManager.GeneratePasswordResetToken(user.Id);
+                string securityCode = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
                 UserManager.SendForgotPasswordEmailTo(user, callbackUrl);
                 return RedirectToAction("ForgotPasswordConfirmation", "Accounts");
@@ -236,20 +236,20 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult ResetPassword(ResetPasswordViewModel model)
+        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var user = UserManager.FindByName(model.Email);
+            var user = await UserManager.FindByNameAsync(model.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Accounts");
             }
 
-            var result = UserManager.ResetPassword(user.Id, model.Code, model.Password);
+            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Accounts");
@@ -283,7 +283,7 @@ namespace VivedyWebApp.Controllers
         /// GET request action for Index page
         /// </summary>
         [Authorize]
-        public ActionResult Index(AccountsMessageId? message)
+        public async Task<ActionResult> Index(AccountsMessageId? message)
         {
 
             //Adding message to display on the Account page
@@ -294,13 +294,13 @@ namespace VivedyWebApp.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
-            var user = UserManager.FindById(userId);
+            var user = await UserManager.FindByIdAsync(userId);
             var model = new IndexViewModel
             {
                 Name = user.Name,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                Bookings = Helper.Bookings.GetAllComingForUser(user.Email)
+                Bookings = await Helper.Bookings.GetAllComingForUser(user.Email)
             };
             return View(model);
         }
@@ -309,10 +309,10 @@ namespace VivedyWebApp.Controllers
         /// GET request action for Edit page
         /// </summary>
         [Authorize]
-        public ActionResult Edit()
+        public async Task<ActionResult> Edit()
         {
             var userId = User.Identity.GetUserId();
-            var user = UserManager.FindById(userId);
+            var user = await UserManager.FindByIdAsync(userId);
             EditViewModel model = new EditViewModel()
             {
                 Email = user.Email,
@@ -329,16 +329,16 @@ namespace VivedyWebApp.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EditViewModel model)
+        public async Task<ActionResult> Edit(EditViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
             var userId = User.Identity.GetUserId();
-            var user = UserManager.FindById(userId);
+            var user = await UserManager.FindByIdAsync(userId);
             user.Name = model.Name;
-            IdentityResult result = UserManager.Update(user);
+            IdentityResult result = await UserManager.UpdateAsync(user);
             if (result.Succeeded)
             {
                 return View("Index");
@@ -350,10 +350,10 @@ namespace VivedyWebApp.Controllers
         /// GET request action for Delete page
         /// </summary>
         [Authorize]
-        public ActionResult Delete()
+        public async Task<ActionResult> Delete()
         {
             var userId = User.Identity.GetUserId();
-            var user = UserManager.FindById(userId);
+            var user = await UserManager.FindByIdAsync(userId);
             var model = new IndexViewModel
             {
                 Name = user.Name,
@@ -369,13 +369,13 @@ namespace VivedyWebApp.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult DeleteConfirmed()
+        public async Task<ActionResult> DeleteConfirmed()
         {
             var userId = User.Identity.GetUserId();
-            var user = UserManager.FindById(userId);
+            var user = await UserManager.FindByIdAsync(userId);
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             //The role is automatically removed by the UserManager
-            UserManager.Delete(user);
+            await UserManager.DeleteAsync(user);
             return RedirectToAction("Index", "Home");
         }
 
@@ -395,13 +395,14 @@ namespace VivedyWebApp.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangeEmail(ChangeEmailViewModel model)
+        public async Task<ActionResult> ChangeEmail(ChangeEmailViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var userId = User.Identity.GetUserId();
+            var user = await UserManager.FindByIdAsync(userId);
             if (user != null)
             {
                 if (user.Email != model.OldEmail)
@@ -411,11 +412,11 @@ namespace VivedyWebApp.Controllers
                 //Saving the changes to the email
                 user.UserName = model.NewEmail;
                 UserManager.SetEmail(user.Id, model.NewEmail);
-                IdentityResult result = UserManager.Update(user);
+                IdentityResult result = await UserManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
                     //Sending email to the user confirming the email address change
-                    string securityCode = UserManager.GenerateEmailConfirmationToken(user.Id);
+                    string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
                     UserManager.SendChangedEmailEmailTo(user, callbackUrl);
                     AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
@@ -447,16 +448,17 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult ChangePassword(ChangePasswordViewModel model)
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var result = UserManager.ChangePassword(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            var userId = User.Identity.GetUserId();
+            var result = await UserManager.ChangePasswordAsync(userId, model.OldPassword, model.NewPassword);
             if (result.Succeeded)
             {
-                var user = UserManager.FindById(User.Identity.GetUserId());
+                var user = await UserManager.FindByIdAsync(userId);
                 if (user != null)
                 {
                     //Signing the user out so that they login with the new password

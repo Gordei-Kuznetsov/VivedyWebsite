@@ -28,21 +28,21 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Index page
         /// </summary>
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View(Helper.Movies.AllToList());
+            return View(await Helper.Movies.AllToList());
         }
 
         /// <summary>
         /// GET request action for Details page
         /// </summary>
-        public ActionResult Details(string id)
+        public async Task<ActionResult> Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie movie = Helper.Movies.Details(id);
+            Movie movie = await Helper.Movies.Details(id);
             if (movie == null)
             {
                 return HttpNotFound();
@@ -63,7 +63,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(MoviesCreateViewModel model)
+        public async Task<ActionResult> Create(MoviesCreateViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return View(model);
             }
-            Helper.Movies.CreateFrom(movie);
+            await Helper.Movies.CreateFrom(movie);
             //Saving the images uploaded for the posters
             if(model.HorizontalImage != null)
             {
@@ -108,13 +108,13 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Edit page
         /// </summary>
-        public ActionResult Edit(string id)
+        public async Task<ActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie movie = Helper.Movies.Details(id);
+            Movie movie = await Helper.Movies.Details(id);
             if (movie == null)
             {
                 return HttpNotFound();
@@ -140,13 +140,13 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(MoviesAdminViewModel model)
+        public async Task<ActionResult> Edit(MoviesAdminViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            Movie movie = Helper.Movies.Details(model.Id);
+            Movie movie = await Helper.Movies.Details(model.Id);
             if(movie == null)
             {
                 return View(model);
@@ -167,7 +167,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 return View(model);
             }
 
-            Helper.Movies.Edit(movie);
+            await Helper.Movies.Edit(movie);
             //Saving the images for the posters if re-uploaded 
             if (model.HorizontalImage != null)
             {
@@ -199,13 +199,13 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Delete page
         /// </summary>
-        public ActionResult Delete(string id)
+        public async Task<ActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie movie = Helper.Movies.Details(id);
+            Movie movie = await Helper.Movies.Details(id);
             if (movie == null)
             {
                 return HttpNotFound();
@@ -218,18 +218,18 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public async Task<ActionResult> DeleteConfirmed(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie room = Helper.Movies.Details(id);
+            Movie room = await Helper.Movies.Details(id);
             if (room == null)
             {
                 return HttpNotFound();
             }
-            Helper.Movies.Delete(id);
+            await Helper.Movies.Delete(id);
 
             //Deleting poster images
             //Deleting horizontal poster

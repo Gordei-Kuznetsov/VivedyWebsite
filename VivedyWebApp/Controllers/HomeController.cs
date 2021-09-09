@@ -27,12 +27,12 @@ namespace VivedyWebApp.Controllers
         /// <summary>
         /// GET request action for Index page
         /// </summary>
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             MoviesHomeViewModel model = new MoviesHomeViewModel()
             {
-                ComingSoonMovies = Helper.Movies.GetAllComming(),
-                TopMovies = Helper.Movies.GetTopNotClosed(4)
+                ComingSoonMovies = await Helper.Movies.GetAllComming(),
+                TopMovies = await Helper.Movies.GetTopNotClosed(4)
             };
             return View(model);
         }

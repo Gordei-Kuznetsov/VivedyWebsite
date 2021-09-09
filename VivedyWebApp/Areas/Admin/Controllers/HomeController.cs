@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using VivedyWebApp.Areas.Admin.Models.ViewModels;
@@ -33,11 +34,11 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// GET request action for Index page
         /// </summary>
         [Authorize(Roles = "Admin")]
-        public ActionResult BookingScanner()
+        public async Task<ActionResult> BookingScanner()
         {
             HomeViewModel model = new HomeViewModel()
             {
-                Screenings = Helper.Screenings.GetSelectListItems()
+                Screenings = await Helper.Screenings.GetSelectListItems()
             };
             return View(model);
         }
@@ -47,7 +48,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public JsonResult VerifyBookings(string bookingId, string screeningId)
+        public async Task<JsonResult> VerifyBookings(string bookingId, string screeningId)
         {
             if (bookingId == null || screeningId == null)
             {
@@ -56,7 +57,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             try
             {
                 var result = new VerifyBookingsResult();
-                Booking booking = Helper.Bookings.Details(bookingId);
+                Booking booking = await Helper.Bookings.Details(bookingId);
                 if(booking == null || screeningId != booking.ScreeningId || booking.VerificationTime != null)
                 {
                     result.verified = false;
@@ -64,7 +65,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 else
                 {
                     booking.VerificationTime = DateTime.Now;
-                    Helper.Bookings.Edit(booking);
+                    await Helper.Bookings.Edit(booking);
                     result.verified = true;
                 }
                 return Json(result, JsonRequestBehavior.AllowGet);

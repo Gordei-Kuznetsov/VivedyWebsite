@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using VivedyWebApp.Models;
 using VivedyWebApp.Areas.Admin.Models.ViewModels;
+using System.Threading.Tasks;
 
 namespace VivedyWebApp.Areas.Admin.Controllers
 {
@@ -23,19 +24,19 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         private readonly Entities Helper = new Entities();
 
         // GET: Admin/Cinemas
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View(Helper.Cinemas.AllToList());
+            return View(await Helper.Cinemas.AllToList());
         }
 
         // GET: Admin/Cinemas/Details/5
-        public ActionResult Details(string id)
+        public async Task<ActionResult> Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cinema cinema = Helper.Cinemas.Details(id);
+            Cinema cinema = await Helper.Cinemas.Details(id);
             if (cinema == null)
             {
                 return HttpNotFound();
@@ -52,24 +53,24 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         //POST: Admin/Cinemas/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Exclude = "Id")] Cinema cinema)
+        public async Task<ActionResult> Create([Bind(Exclude = "Id")] Cinema cinema)
         {
             if (ModelState.IsValid)
             {
-                Helper.Cinemas.CreateFrom(cinema);
+                await Helper.Cinemas.CreateFrom(cinema);
                 return RedirectToAction("Index");
             }
             return View(cinema);
         }
 
         // GET: Admin/Cinemas/Edit/5
-        public ActionResult Edit(string id)
+        public async Task<ActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cinema cinema = Helper.Cinemas.Details(id);
+            Cinema cinema = await Helper.Cinemas.Details(id);
             if (cinema == null)
             {
                 return HttpNotFound();
@@ -80,29 +81,29 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         // POST: Admin/Cinemas/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Cinema model)
+        public async Task<ActionResult> Edit(Cinema model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            Cinema cinema = Helper.Cinemas.Details(model.Id);
+            Cinema cinema = await Helper.Cinemas.Details(model.Id);
             if(cinema == null)
             {
                 return View(model);
             }
-            Helper.Cinemas.Edit(cinema);
+            await Helper.Cinemas.Edit(cinema);
             return RedirectToAction("Index");
         }
 
         // GET: Admin/Cinemas/Delete/5
-        public ActionResult Delete(string id)
+        public async Task<ActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cinema cinema = Helper.Cinemas.Details(id);
+            Cinema cinema = await Helper.Cinemas.Details(id);
             if (cinema == null)
             {
                 return HttpNotFound();
@@ -113,18 +114,18 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         // POST: Admin/Cinemas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public async Task<ActionResult> DeleteConfirmed(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cinema cinema = Helper.Cinemas.Details(id);
+            Cinema cinema = await Helper.Cinemas.Details(id);
             if (cinema == null)
             {
                 return HttpNotFound();
             }
-            Helper.Cinemas.Delete(id);
+            await Helper.Cinemas.Delete(id);
             return RedirectToAction("Index");
         }
     }

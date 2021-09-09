@@ -28,20 +28,20 @@ namespace VivedyWebApp.Controllers
         /// </summary>
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Time(string movieId, string cinemaId)
+        public async Task<ActionResult> Time(string movieId, string cinemaId)
         {
             if (movieId == null || cinemaId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie movie = Helper.Movies.Details(movieId);
-            Cinema cinema = Helper.Cinemas.Details(cinemaId);
+            Movie movie = await Helper.Movies.Details(movieId);
+            Cinema cinema = await Helper.Cinemas.Details(cinemaId);
             if( movie == null || cinema == null || movie.ClosingDate < DateTime.Now)
             {
                 return HttpNotFound();
             }
             //Getting available Screenings for the movie
-            List<ScreeningDetails> screenings = Helper.Screenings.GetAllForMovieInCinema(movieId, cinemaId);
+            List<ScreeningDetails> screenings = await Helper.Screenings.GetAllForMovieInCinema(movieId, cinemaId);
             if (screenings.Count == 0)
             {
                 //If no Screenings found then send back to the Movies/Details page with a message
@@ -61,13 +61,13 @@ namespace VivedyWebApp.Controllers
         /// </summary>
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Seats(string id)
+        public async Task<ActionResult> Seats(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = Helper.Screenings.DetailsWithMovie(id);
+            Screening screening = await Helper.Screenings.DetailsWithMovie(id);
             if(screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartTime > DateTime.Now)
             {
                 BookingSeatsViewModel seatsModel = new BookingSeatsViewModel
@@ -75,7 +75,7 @@ namespace VivedyWebApp.Controllers
                     SelectedScreeningId = id,
                     //Getting the movie from db to avoid depending on the object being sent through the request
                     Movie = screening.Movie,
-                    OccupiedSeats = Helper.Bookings.GetSeatsForScreening(id),
+                    OccupiedSeats = await Helper.Bookings.GetSeatsForScreening(id),
                     SelectedSeats = ""
                 };
                 return View("Seats", seatsModel);
@@ -92,20 +92,20 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ViewResult Seats(BookingSeatsViewModel seatsModel)
+        public async Task<ViewResult> Seats(BookingSeatsViewModel seatsModel)
         {
             if (!ModelState.IsValid)
             {
                 return View(seatsModel);
             }
             List<int> selectedSeats = Helper.Bookings.ConvertSeatsToIntList(seatsModel.SelectedSeats);
-            Screening screening = Helper.Screenings.DetailsWithMovie(seatsModel.SelectedScreeningId);
+            Screening screening = await Helper.Screenings.DetailsWithMovie(seatsModel.SelectedScreeningId);
             if (screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartTime > DateTime.Now
-                && !Helper.Bookings.AnySeatsOverlapWith(selectedSeats, screening.Id))
+                && !(await Helper.Bookings.AnySeatsOverlapWith(selectedSeats, screening.Id)))
             {
                 //If user is logged in, then take their email and pass to the model
                 ApplicationUser user = User.Identity.IsAuthenticated
-                    ? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId())
+                    ? await HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByIdAsync(User.Identity.GetUserId())
                     : null;
                 BookingPayViewModel payModel = new BookingPayViewModel
                 {
@@ -126,16 +126,16 @@ namespace VivedyWebApp.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ViewResult Pay(BookingPayViewModel payModel)
+        public async Task<ViewResult> Pay(BookingPayViewModel payModel)
         {
             if (!ModelState.IsValid)
             {
                 return View(payModel);
             }
             List<int> seats = Helper.Bookings.ConvertSeatsToIntList(payModel.SelectedSeats);
-            Screening screening = Helper.Screenings.DetailsWithMovie(payModel.SelectedScreeningId);
+            Screening screening = await Helper.Screenings.DetailsWithMovie(payModel.SelectedScreeningId);
             if (screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartTime > DateTime.Now
-                && !Helper.Bookings.AnySeatsOverlapWith(seats, screening.Id))
+                && !(await Helper.Bookings.AnySeatsOverlapWith(seats, screening.Id)))
             {
                 Booking booking = new Booking
                 {
@@ -145,7 +145,7 @@ namespace VivedyWebApp.Controllers
                     ScreeningId = screening.Id
                 };
 
-                Booking newBooking = Helper.Bookings.CreateFrom(booking);
+                Booking newBooking = await Helper.Bookings.CreateFrom(booking);
                 if (newBooking != null)
                 {
                     Helper.Bookings.SendConfirmationEmail(newBooking);
