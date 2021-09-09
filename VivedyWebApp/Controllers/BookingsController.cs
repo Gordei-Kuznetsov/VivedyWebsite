@@ -117,6 +117,8 @@ namespace VivedyWebApp.Controllers
                 };
                 return View("Pay", payModel);
             }
+            seatsModel.Movie = screening.Movie;
+            seatsModel.OccupiedSeats = await Helper.Bookings.GetSeatsForScreening(screening.Id);
             return View(seatsModel);
         }
 
@@ -157,6 +159,7 @@ namespace VivedyWebApp.Controllers
                     return View("Error");
                 }
             }
+            payModel.Movie = screening.Movie;
             return View(payModel);
         }
 

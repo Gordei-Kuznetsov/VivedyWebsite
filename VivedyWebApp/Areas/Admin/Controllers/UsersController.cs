@@ -97,22 +97,22 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(UsersCreateViewModel newUser)
+        public async Task<ActionResult> Create(UsersCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { 
-                    UserName = newUser.Email, 
-                    Email = newUser.Email,
-                    Name = newUser.Name,
-                    PhoneNumber = newUser.PhoneNumber,
+                    UserName = model.Email, 
+                    Email = model.Email,
+                    Name = model.Name,
+                    PhoneNumber = model.PhoneNumber,
                 };
-                var result = await UserManager.CreateAsync(user, newUser.Password);
+                var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     var currentUser = await UserManager.FindByEmailAsync(user.Email);
                     //Assigning the role
-                    switch (newUser.Role) 
+                    switch (model.Role) 
                     {
                         case "Admin":
                             if(await UserManager.IsInRoleAsync(currentUser.Id, "Visitor"))
@@ -137,7 +137,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 }
             }
             // If we got this far, something failed, redisplay form
-            return View(newUser);
+            model.Roles = await GetRoleSelectListItems();
+            return View(model);
         }
 
         /// <summary>
@@ -214,6 +215,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction("Index");
             }
+            ApplicationUser user = await UserManager.FindByIdAsync(model.Id);
+            model.Roles = await GetRoleSelectListItems(user.Roles.First().ToString());
             return View(model);
         }
 

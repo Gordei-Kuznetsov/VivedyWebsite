@@ -61,6 +61,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model.Cinemas = await Helper.Cinemas.GetSelectListItems();
                 return View(model);
             }
             Room room = new Room()
@@ -75,6 +76,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 await Helper.Rooms.CreateFrom(room);
                 return RedirectToAction("Index");
             }
+            model.Cinemas = await Helper.Cinemas.GetSelectListItems();
             return View(model);
         }
 
@@ -107,6 +109,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model.Cinemas = await Helper.Cinemas.GetSelectListItems();
                 return View(model);
             }
             Room room = await Helper.Rooms.Details(model.Id);
@@ -120,6 +123,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 await Helper.Rooms.Edit(room);
                 return RedirectToAction("Index");
             }
+            model.Cinemas = await Helper.Cinemas.GetSelectListItems();
             return View(model);
         }
 

@@ -74,6 +74,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
+                model.Movies = await Helper.Movies.GetSelectListItems();
+                model.Rooms = await Helper.Rooms.GetSelectListItems();
                 return View(model);
             }
             Screening screening = new Screening
@@ -87,6 +89,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             Room room = await Helper.Rooms.Details(model.RoomId);
             if (movie == null || room == null)
             {
+                model.Movies = await Helper.Movies.GetSelectListItems();
+                model.Rooms = await Helper.Rooms.GetSelectListItems();
                 return View(model);
             }
             List<Screening> screenings = new List<Screening>();
@@ -119,7 +123,6 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             }
             await Helper.Screenings.SaveRange(screenings);
             return RedirectToAction("Index");
-            
         }
 
         /// <summary>
@@ -157,6 +160,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model.Movies = await Helper.Movies.GetSelectListItems();
+                model.Rooms = await Helper.Rooms.GetSelectListItems();
                 return View(model);
             }
             Screening screening = await Helper.Screenings.DetailsWithMovie(model.Id);
@@ -175,6 +180,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 await Helper.Screenings.Edit(screening);
                 return RedirectToAction("Index");
             }
+            model.Movies = await Helper.Movies.GetSelectListItems();
+            model.Rooms = await Helper.Rooms.GetSelectListItems();
             return View(model);
         }
 
