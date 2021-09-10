@@ -24,9 +24,9 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         private readonly Entities Helper = new Entities();
 
         // GET: Admin/Rooms
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View(Helper.Rooms.AllToList());
+            return View(await Helper.Rooms.AllToListWithCinemas());
         }
 
         // GET: Admin/Rooms/Details/5
@@ -36,7 +36,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Room room = await Helper.Rooms.Details(id);
+            Room room = await Helper.Rooms.DetailsWithCinema(id);
             if (room == null)
             {
                 return HttpNotFound();
@@ -61,7 +61,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.Cinemas = await Helper.Cinemas.GetSelectListItems();
+                model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
                 return View(model);
             }
             Room room = new Room()
@@ -76,7 +76,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 await Helper.Rooms.CreateFrom(room);
                 return RedirectToAction("Index");
             }
-            model.Cinemas = await Helper.Cinemas.GetSelectListItems();
+            model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
             return View(model);
         }
 
@@ -97,7 +97,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 Id = room.Id,
                 Name = room.Name,
                 SeatsLayout = room.SeatsLayout,
-                Cinemas = await Helper.Cinemas.GetSelectListItems()
+                Cinemas = await Helper.Cinemas.GetSelectListItems(room.CinemaId)
             };
             return View(model);
         }
@@ -109,7 +109,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.Cinemas = await Helper.Cinemas.GetSelectListItems();
+                model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
                 return View(model);
             }
             Room room = await Helper.Rooms.Details(model.Id);
@@ -123,7 +123,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 await Helper.Rooms.Edit(room);
                 return RedirectToAction("Index");
             }
-            model.Cinemas = await Helper.Cinemas.GetSelectListItems();
+            model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
             return View(model);
         }
 
@@ -134,7 +134,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Room room = await Helper.Rooms.Details(id);
+            Room room = await Helper.Rooms.DetailsWithCinema(id);
             if (room == null)
             {
                 return HttpNotFound();

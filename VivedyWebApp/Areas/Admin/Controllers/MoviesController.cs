@@ -151,6 +151,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return View(model);
             }
+            //Possibly requires a check on all screenings
+            //As change in start date, close date, or duration can screw up timing
             movie.Name = model.Name;
             movie.Rating = model.Rating;
             movie.ViewerRating = model.ViewerRating;

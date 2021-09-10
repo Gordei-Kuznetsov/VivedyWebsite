@@ -40,10 +40,10 @@
                             }
                         </td>
                         <td class="admin-display-cut admin-display-sm-none">
-                            @Html.DisplayFor(modelItem => item.MovieId)
+                            @Html.ActionLink(item.Movie.Name, "Details", "Movies", routeValues: new { id = item.MovieId }, htmlAttributes: new { @class = "mt-3 text-link phenomena-sm ml-5" })
                         </td>
                         <td class="admin-display-cut admin-display-sm-none">
-                            @Html.DisplayFor(modelItem => item.RoomId)
+                            @Html.ActionLink(item.Room.Name, "Details", "Rooms", routeValues: new { id = item.RoomId }, htmlAttributes: new { @class = "mt-3 text-link phenomena-sm ml-5" })
                         </td>
                         <td>
                             <div class="admin-button">

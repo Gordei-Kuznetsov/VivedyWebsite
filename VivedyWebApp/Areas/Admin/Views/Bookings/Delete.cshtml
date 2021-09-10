@@ -16,7 +16,10 @@
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.ScreeningId) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.DisplayFor(model => model.ScreeningId)
+                        @{
+                            string scr = Model.Screening.Movie.Name + ", " + Model.Screening.StartTime.ToString("dddd, dd MMMM yyyy HH:mm tt");
+                            @Html.ActionLink(scr, "Details", "Screenings", routeValues: new { id = Model.ScreeningId }, htmlAttributes: new { @class = "mt-3 text-link phenomena-sm ml-5" })
+                        }
                     </div>
                 </div>
                 <div class="row">

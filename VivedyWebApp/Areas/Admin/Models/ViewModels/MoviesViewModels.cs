@@ -10,7 +10,66 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
     /// <summary>
     /// Model specificly used for creating new Movie on Admin/Movies/Create page
     /// </summary>
-    public class MoviesCreateViewModel
+    public class MoviesCreateViewModel : MoviesAdminBaseModel
+    {
+        /// <summary>
+        /// Field used for uploading image for movie's horizontal poster to be used on Home and Movies pages
+        /// <remarks>
+        /// Only PNG images are accepted.
+        /// </remarks>
+        /// </summary>
+        [Required]
+        [DataType(DataType.Upload)]
+        [Display(Name = "Horizontal Poster")]
+        public HttpPostedFileBase HorizontalImage {get;set;}
+
+        /// <summary>
+        /// Field used for uploading image for movie's vertical poster to be used on Home and Booking pages
+        /// <remarks>
+        /// Only PNG images are accepted.
+        /// </remarks>
+        /// </summary>
+        [Required]
+        [DataType(DataType.Upload)]
+        [Display(Name = "Vertical Poster")]
+        public HttpPostedFileBase VerticalImage { get; set; }
+    }
+
+    /// <summary>
+    /// Model which includes all Movie model's fields plus Vertical and Horizontal Image fileds
+    /// </summary>
+    public class MoviesAdminViewModel : MoviesAdminBaseModel
+    {
+        /// <summary>
+        /// Movie GUID
+        /// </summary>
+        [Required]
+        [MaxLength(36)]
+        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Field used for uploading image for movie's horizontal poster to be used on Home and Movies pages
+        /// <remarks>
+        /// Only PNG images are accepted.
+        /// </remarks>
+        /// </summary>
+        [DataType(DataType.Upload)]
+        [Display(Name = "Horizontal Poster")]
+        public HttpPostedFileBase HorizontalImage { get; set; }
+
+        /// <summary>
+        /// Field used for uploading image for movie's vertical poster to be used on Home and Booking pages
+        /// <remarks>
+        /// Only PNG images are accepted.
+        /// </remarks>
+        /// </summary>
+        [DataType(DataType.Upload)]
+        [Display(Name = "Vertical Poster")]
+        public HttpPostedFileBase VerticalImage { get; set; }
+    }
+
+    public class MoviesAdminBaseModel
     {
         /// <summary>
         /// Movie name
@@ -94,41 +153,5 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         [DataType(DataType.DateTime)]
         [Display(Name = "Closing Date")]
         public DateTime ClosingDate { get; set; }
-
-        /// <summary>
-        /// Field used for uploading image for movie's horizontal poster to be used on Home and Movies pages
-        /// <remarks>
-        /// Only PNG images are accepted.
-        /// </remarks>
-        /// </summary>
-        [Required]
-        [DataType(DataType.Upload)]
-        [Display(Name = "Horizontal Poster")]
-        public HttpPostedFileBase HorizontalImage {get;set;}
-
-        /// <summary>
-        /// Field used for uploading image for movie's vertical poster to be used on Home and Booking pages
-        /// <remarks>
-        /// Only PNG images are accepted.
-        /// </remarks>
-        /// </summary>
-        [Required]
-        [DataType(DataType.Upload)]
-        [Display(Name = "Vertical Poster")]
-        public HttpPostedFileBase VerticalImage { get; set; }
-    }
-
-    /// <summary>
-    /// Model which includes all Movie model's fields plus Vertical and Horizontal Image fileds
-    /// </summary>
-    public class MoviesAdminViewModel : MoviesCreateViewModel
-    {
-        /// <summary>
-        /// Movie GUID
-        /// </summary>
-        [Required]
-        [MaxLength(36)]
-        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
-        public string Id { get; set; }
     }
 }

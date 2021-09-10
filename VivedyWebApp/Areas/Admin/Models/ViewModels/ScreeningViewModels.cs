@@ -55,7 +55,7 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         [Required]
         [MaxLength(36)]
         [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
-        [Display(Name = "Movie Id")]
+        [Display(Name = "Movie")]
         public string MovieId { get; set; }
         public List<SelectListItem> Movies = new List<SelectListItem>();
 
@@ -65,7 +65,7 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         [Required]
         [MaxLength(36)]
         [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
-        [Display(Name = "Room Id")]
+        [Display(Name = "Room")]
         public string RoomId { get; set; }
         public List<SelectListItem> Rooms = new List<SelectListItem>();
     }

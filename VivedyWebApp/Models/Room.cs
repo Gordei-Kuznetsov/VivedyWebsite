@@ -35,7 +35,7 @@ namespace VivedyWebApp.Models
         [Required]
         [MaxLength(36)]
         [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
-        [Display(Name = "Cinema Id")]
+        [Display(Name = "Cinema")]
         public string CinemaId { get; set; }
         public Cinema Cinema { get; set; }
     }

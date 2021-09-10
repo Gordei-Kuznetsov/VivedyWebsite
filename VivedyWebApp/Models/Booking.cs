@@ -50,7 +50,7 @@ namespace VivedyWebApp.Models
         [Required]
         [MaxLength(36)]
         [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
-        [Display(Name = "Screening Id")]
+        [Display(Name = "Screening")]
         public string ScreeningId { get; set; }
         public Screening Screening { get; set; }
     }

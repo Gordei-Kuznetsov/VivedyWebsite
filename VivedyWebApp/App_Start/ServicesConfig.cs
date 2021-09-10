@@ -149,6 +149,35 @@ namespace VivedyWebApp
             EmailService mailService = new EmailService();
             mailService.Send(user.Email, subject, mailbody);
         }
+
+        /// <summary>
+        /// Returns List of items for dropdown with roles
+        /// </summary>
+        public async Task<List<SelectListItem>> GetRoleSelectListItems(string selectedRole = null)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            List<IdentityRole> roles = await db.Roles.ToListAsync();
+            List<SelectListItem> items = new List<SelectListItem>();
+            foreach (IdentityRole role in roles)
+            {
+                items.Add(new SelectListItem()
+                {
+                    Value = role.Name,
+                    Text = role.Name,
+                    Selected = (selectedRole != null && selectedRole == role.Name) ? true : false
+                });
+            }
+            return items;
+        }
+
+        /// <summary>
+        /// Returns the name of the role GetRoleName
+        /// </summary>
+        public string GetRoleName(string id)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            return db.Roles.Find(id).Name;
+        }
     }
 
     // Configure the application sign-in manager which is used in this application.
@@ -358,7 +387,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns List of items for dropdown with movies
         /// </summary>
-        public async Task<List<SelectListItem>> GetSelectListItems()
+        public async Task<List<SelectListItem>> GetSelectListItems(string select = null)
         {
             List<Movie> movies = await dbSet.Where(m => m.ClosingDate > DateTime.Now).OrderByDescending(m => m.ViewerRating).ToListAsync();
             List<SelectListItem> items = new List<SelectListItem>();
@@ -367,7 +396,8 @@ namespace VivedyWebApp
                 items.Add(new SelectListItem()
                 {
                     Value = movie.Id,
-                    Text = movie.Name
+                    Text = movie.Name,
+                    Selected = (select != null && select == movie.Id) ? true : false
                 });
             }
             return items;
@@ -417,11 +447,26 @@ namespace VivedyWebApp
         }
 
         /// <summary>
-        /// Returns the screeening with the movie attached to it
+        /// Returns all screenings with movies and rooms joined
+        /// </summary>
+        public async Task<List<Screening>> AllToListWithMoviesAndRooms() {
+            return await dbSet.Include(s => s.Movie).Include(s => s.Room).ToListAsync();
+        }
+
+        /// <summary>
+        /// Returns the screeening with the movie joined
         /// </summary>
         public async Task<Screening> DetailsWithMovie(string id)
         {
             return await dbSet.Where(s => s.Id == id).Include(s => s.Movie).FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Returns the screeening with the movie and room joined
+        /// </summary>
+        public async Task<Screening> DetailsWithMovieAndRoom(string id)
+        {
+            return await dbSet.Where(s => s.Id == id).Include(s => s.Movie).Include(s => s.Room).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -460,42 +505,47 @@ namespace VivedyWebApp
         /// <summary>
         /// Checks if the screening overlaps in time with any other screening in the room it is assigned to
         /// </summary>
-        public async Task<bool> AnyOverlapWith(Screening screening, TimeSpan duration)
+        public async Task<bool> NoneOverlapWith(Screening scr, TimeSpan duration)
         {
-            List<Screening> screenings = await dbSet.Where(s => s.RoomId == screening.RoomId)
-                                            .OrderBy(s => s.StartTime)
-                                            .ToListAsync();
-            if(screenings == null) 
-            { 
-                return false; 
-            }
-            DateTime originalFinishTime = screening.StartTime.Add(duration);
-            Screening nextScr = screenings.Find(s => originalFinishTime <= s.StartTime);
-            if(nextScr == null) 
-            { 
-                return false; 
-            }
-            Screening previousScr;
-            try
+            //all screenings in the room
+            List<Screening> screenings = await dbSet.Where(s => s.RoomId == scr.RoomId)
+                                                    .OrderBy(s => s.StartTime)
+                                                    .ToListAsync();
+            if (screenings == null)
             {
-                previousScr = screenings.ElementAt(screenings.IndexOf(nextScr) - 1);
+                //if no screenings then nothing can overlap
+                return true;
             }
-            catch (IndexOutOfRangeException)
+            //screening that starts closest to the comparing screening
+            Screening closestPrev = screenings.FindLast(s => s.StartTime <= scr.StartTime);
+            closestPrev.Movie = await db.Movies.FindAsync(closestPrev.MovieId);
+            if(closestPrev.StartTime.Add(closestPrev.Movie.Duration) > scr.StartTime)
             {
+                //if the previous screening ends after the comparing scr, then they overlap
                 return false;
             }
-            Movie previousMovie = await db.Movies.FindAsync(previousScr.MovieId);
-            DateTime previousScrFinishTime = previousScr.StartTime.Add(previousMovie.Duration);
-            if(previousScrFinishTime > screening.StartTime) 
-            { 
-                return true; 
+
+            //at this points it is clear that the screeing isn't ovelaping with anything before it
+
+            Screening closestNext;
+            try
+            {
+                //there might be no more screenigns
+                closestNext = screenings.ElementAt(screenings.IndexOf(closestPrev) + 1);
             }
-            TimeSpan availableTime = nextScr.StartTime.Subtract(previousScrFinishTime);
-            if(availableTime < duration) {
-                return true; 
+            //there are no screenings after, so can't overlap
+            catch (ArgumentOutOfRangeException) { return true; }
+
+            DateTime finishTime = scr.StartTime.Add(duration);
+            if(finishTime > closestNext.StartTime)
+            {
+                //if the next closest scr starts before the comapring finishes, they overlap
+                return false;
             }
-            else {
-                return false; 
+            else
+            {
+                //if the next starts after, then they don't overlap
+                return true;
             }
         }
 
@@ -505,7 +555,7 @@ namespace VivedyWebApp
         public async Task<bool> IsDuringMovieShowing(Screening screening, Movie movie = null)
         {
             screening.Movie = movie == null ? await db.Movies.FindAsync(screening.MovieId) : movie;
-            return screening.StartTime < screening.Movie.ReleaseDate
+            return screening.StartTime >= screening.Movie.ReleaseDate
                 && (screening.StartTime + screening.Movie.Duration) < screening.Movie.ClosingDate;
         }
 
@@ -720,6 +770,24 @@ namespace VivedyWebApp
             List<int> allSeats = await GetSeatsForScreening(id);
             return allSeats.Intersect(seats).Any();
         }
+    
+        /// <summary>
+        /// Returns all bookings with the screenings joined
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<Booking>> AllToListWithScreeningsAndMovies()
+        {
+            return await dbSet.Include(b => b.Screening).Include(b => b.Screening.Movie).ToListAsync();
+        }
+
+        /// <summary>
+        /// Returns a bookings with the screening joined
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Booking> DetailsWithScreeningAndMovie(string Id)
+        {
+            return await dbSet.Where(b => b.Id == Id).Include(b => b.Screening).Include(b => b.Screening.Movie).FirstOrDefaultAsync();
+        }
     }
 
     public class RoomsManager : GenericManager<Room>
@@ -734,7 +802,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns List of items for dropdown with rooms grouped by cinemas
         /// </summary>
-        public async Task<List<SelectListItem>> GetSelectListItems()
+        public async Task<List<SelectListItem>> GetSelectListItems(string select = null)
         {
             List<Room> rooms = await dbSet.Include(r => r.Cinema).OrderBy(r => r.Name).OrderBy(r => r.Cinema.Name).ToListAsync();
             var groups = rooms.GroupBy(r => r.CinemaId);
@@ -748,11 +816,28 @@ namespace VivedyWebApp
                     {
                         Value = room.Id,
                         Text = room.Name,
-                        Group = roomsGroup
+                        Group = roomsGroup,
+                        Selected = (select != null && select == room.Id) ? true : false
                     });
                 }
             }
             return items;
+        }
+
+        /// <summary>
+        /// Returns List of all rooms with the Cinema details joined
+        /// </summary>
+        public async Task<List<Room>> AllToListWithCinemas()
+        {
+            return await dbSet.Include(r => r.Cinema).ToListAsync();
+        }
+    
+        /// <summary>
+        /// Returns a room entity with the cinema joined
+        /// </summary>
+        public async Task<Room> DetailsWithCinema(string id)
+        {
+            return await dbSet.Where(r => r.Id == id).Include(r => r.Cinema).FirstOrDefaultAsync();
         }
     }
 
@@ -768,7 +853,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns List of items for dropdown with cinemas
         /// </summary>
-        public async Task<List<SelectListItem>> GetSelectListItems()
+        public async Task<List<SelectListItem>> GetSelectListItems(string select = null)
         {
             List<Cinema> cinemas = await AllToList();
             List<SelectListItem> items = new List<SelectListItem>();
@@ -777,7 +862,8 @@ namespace VivedyWebApp
                 items.Add(new SelectListItem()
                 {
                     Value = cinema.Id,
-                    Text = cinema.Name
+                    Text = cinema.Name,
+                    Selected = (select != null && select == cinema.Id) ? true : false
                 });
             }
             return items;

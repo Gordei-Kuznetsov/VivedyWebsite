@@ -29,7 +29,7 @@
                     <div class="row">
                         <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.CinemaId) :</div>
                         <div class="mb-3 col-md-8 phenomena-sm">
-                            @Html.DisplayFor(model => model.CinemaId)
+                            @Html.ActionLink(Model.Cinema.Name, "Details", "Cinemas", routeValues: new { id = Model.CinemaId }, htmlAttributes: new { @class = "mt-3 text-link phenomena-sm ml-5" })
                         </div>
                     </div>
                 </div>

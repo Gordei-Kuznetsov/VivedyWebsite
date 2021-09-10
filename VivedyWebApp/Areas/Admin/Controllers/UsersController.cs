@@ -56,7 +56,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                     EmailConfirmed = user.EmailConfirmed,
                     PhoneNumber = user.PhoneNumber,
                     PhoneNumberConfirmed = user.PhoneNumberConfirmed,
-                    Role = user.Roles.First().ToString(),
+                    Role = UserManager.GetRoleName(user.Roles.First().RoleId),
                     UserName = user.UserName
                 });
             }
@@ -77,7 +77,18 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            return View(user);
+            UsersViewModel model = new UsersViewModel()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                EmailConfirmed = user.EmailConfirmed,
+                PhoneNumber = user.PhoneNumber,
+                PhoneNumberConfirmed = user.PhoneNumberConfirmed,
+                Role = UserManager.GetRoleName(user.Roles.First().RoleId),
+                UserName = user.UserName
+            };
+            return View(model);
         }
 
         /// <summary>
@@ -87,7 +98,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             UsersCreateViewModel model = new UsersCreateViewModel()
             {
-                Roles = await GetRoleSelectListItems()
+                Roles = await UserManager.GetRoleSelectListItems()
             };
             return View(model);
         }
@@ -137,7 +148,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 }
             }
             // If we got this far, something failed, redisplay form
-            model.Roles = await GetRoleSelectListItems();
+            model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
             return View(model);
         }
 
@@ -165,7 +176,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 PhoneNumberConfirmed = user.PhoneNumberConfirmed,
                 Role = user.Roles.First().ToString(),
                 UserName = user.UserName,
-                Roles = await GetRoleSelectListItems(user.Roles.First().ToString())
+                Roles = await UserManager.GetRoleSelectListItems(UserManager.GetRoleName(user.Roles.First().RoleId))
             };
             return View(model);
         }
@@ -215,9 +226,12 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ApplicationUser user = await UserManager.FindByIdAsync(model.Id);
-            model.Roles = await GetRoleSelectListItems(user.Roles.First().ToString());
-            return View(model);
+            else
+            {
+                ApplicationUser user = await UserManager.FindByIdAsync(model.Id);
+                model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
+                return View(model);
+            }
         }
 
         /// <summary>
@@ -242,7 +256,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 EmailConfirmed = user.EmailConfirmed,
                 PhoneNumber = user.PhoneNumber,
                 PhoneNumberConfirmed = user.PhoneNumberConfirmed,
-                Role = user.Roles.First().ToString(),
+                Role = UserManager.GetRoleName(user.Roles.First().RoleId),
                 UserName = user.UserName
             };
             return View(model);
@@ -285,37 +299,6 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             }
 
             base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// Returns List of items for dropdown with roles
-        /// </summary>
-        public async Task<List<SelectListItem>> GetRoleSelectListItems(string selectedRole = null)
-        {
-            ApplicationDbContext db = new ApplicationDbContext();
-            List<IdentityRole> roles = await db.Roles.ToListAsync();
-            List<SelectListItem> items = new List<SelectListItem>();
-            foreach (IdentityRole role in roles)
-            {
-                if(selectedRole == null)
-                {
-                    items.Add(new SelectListItem()
-                    {
-                        Value = role.Id,
-                        Text = role.Name
-                    });
-                }
-                else
-                {
-                    items.Add(new SelectListItem()
-                    {
-                        Value = role.Id,
-                        Text = role.Name,
-                        Selected = (selectedRole == role.Name)? true : false
-                    });
-                }
-            }
-            return items;
         }
     }
 }

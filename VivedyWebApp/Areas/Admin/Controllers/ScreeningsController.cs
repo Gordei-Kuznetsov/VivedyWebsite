@@ -29,7 +29,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         public async Task<ActionResult> Index()
         {
-            return View(await Helper.Screenings.AllToList());
+            return View(await Helper.Screenings.AllToListWithMoviesAndRooms());
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = await Helper.Screenings.Details(id);
+            Screening screening = await Helper.Screenings.DetailsWithMovieAndRoom(id);
             if (screening == null)
             {
                 return HttpNotFound();
@@ -74,8 +74,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
-                model.Movies = await Helper.Movies.GetSelectListItems();
-                model.Rooms = await Helper.Rooms.GetSelectListItems();
+                model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
+                model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
                 return View(model);
             }
             Screening screening = new Screening
@@ -89,15 +89,21 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             Room room = await Helper.Rooms.Details(model.RoomId);
             if (movie == null || room == null)
             {
-                model.Movies = await Helper.Movies.GetSelectListItems();
-                model.Rooms = await Helper.Rooms.GetSelectListItems();
+                model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
+                model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
                 return View(model);
             }
             List<Screening> screenings = new List<Screening>();
             if (await Helper.Screenings.IsDuringMovieShowing(screening, movie) 
-                && !(await Helper.Screenings.AnyOverlapWith(screening, movie.Duration)))
+                && await Helper.Screenings.NoneOverlapWith(screening, movie.Duration))
             {
                 screenings.Add(screening);
+            }
+            else
+            {
+                model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
+                model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
+                return View(model);
             }
             //Generating Screenings
             //Later will be replaced with the generaion from list of days and list of times
@@ -115,7 +121,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                     };
                     //Doesn't have to be chacked against other generated screenings as they are at different days anyway
                     if (await Helper.Screenings.IsDuringMovieShowing(genScreening, movie) 
-                        && !(await Helper.Screenings.AnyOverlapWith(genScreening, movie.Duration)))
+                        && await Helper.Screenings.NoneOverlapWith(genScreening, movie.Duration))
                     {
                         screenings.Add(genScreening);
                     }
@@ -145,8 +151,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 StartTime = screening.StartTime,
                 MovieId = screening.MovieId,
                 RoomId = screening.MovieId,
-                Movies = await Helper.Movies.GetSelectListItems(),
-                Rooms = await Helper.Rooms.GetSelectListItems()
+                Movies = await Helper.Movies.GetSelectListItems(screening.MovieId),
+                Rooms = await Helper.Rooms.GetSelectListItems(screening.RoomId)
             };
             return View(model);
         }
@@ -160,8 +166,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.Movies = await Helper.Movies.GetSelectListItems();
-                model.Rooms = await Helper.Rooms.GetSelectListItems();
+                model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
+                model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
                 return View(model);
             }
             Screening screening = await Helper.Screenings.DetailsWithMovie(model.Id);
@@ -174,14 +180,14 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             screening.MovieId = model.MovieId;
             screening.RoomId = model.RoomId;
             if (await Helper.Screenings.IsDuringMovieShowing(screening, screening.Movie) 
-                && !(await Helper.Screenings.AnyOverlapWith(screening, screening.Movie.Duration)))
+                && await Helper.Screenings.NoneOverlapWith(screening, screening.Movie.Duration))
             {
                 //possibly send notifying email to customers that there are changes
                 await Helper.Screenings.Edit(screening);
                 return RedirectToAction("Index");
             }
-            model.Movies = await Helper.Movies.GetSelectListItems();
-            model.Rooms = await Helper.Rooms.GetSelectListItems();
+            model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
+            model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
             return View(model);
         }
 
@@ -194,7 +200,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = await Helper.Screenings.Details(id);
+            Screening screening = await Helper.Screenings.DetailsWithMovieAndRoom(id);
             if (screening == null)
             {
                 return HttpNotFound();

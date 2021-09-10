@@ -285,7 +285,6 @@ namespace VivedyWebApp.Controllers
         [Authorize]
         public async Task<ActionResult> Index(AccountsMessageId? message)
         {
-
             //Adding message to display on the Account page
             ViewBag.StatusMessage =
                 message == AccountsMessageId.ChangePasswordSuccess ? "Your password has been changed."
@@ -341,7 +340,7 @@ namespace VivedyWebApp.Controllers
             IdentityResult result = await UserManager.UpdateAsync(user);
             if (result.Succeeded)
             {
-                return View("Index");
+                return RedirectToAction("Index", "Accounts");
             }
             return View(model);
         }

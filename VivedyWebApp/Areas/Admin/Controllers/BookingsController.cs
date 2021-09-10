@@ -29,7 +29,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// </summary>
         public async Task<ActionResult> Index()
         {
-            return View(await Helper.Bookings.AllToList());
+            return View(await Helper.Bookings.AllToListWithScreeningsAndMovies());
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Booking booking = await Helper.Bookings.Details(id);
+            Booking booking = await Helper.Bookings.DetailsWithScreeningAndMovie(id);
             if (booking == null)
             {
                 return HttpNotFound();
@@ -58,7 +58,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Booking booking = await Helper.Bookings.Details(id);
+            Booking booking = await Helper.Bookings.DetailsWithScreeningAndMovie(id);
             if (booking == null)
             {
                 return HttpNotFound();
