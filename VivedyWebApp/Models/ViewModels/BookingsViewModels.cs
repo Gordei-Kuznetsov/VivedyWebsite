@@ -25,7 +25,12 @@ namespace VivedyWebApp.Models.ViewModels
     public class ScreeningDetails
     {
         public string Id { get; set; }
-        public DateTime StartTime { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime StartDate { get; set; }
+
+        [DataType(DataType.Time)]
+        public TimeSpan StartTime { get; set; }
         public int BookedSeats { get; set; }
     }
 

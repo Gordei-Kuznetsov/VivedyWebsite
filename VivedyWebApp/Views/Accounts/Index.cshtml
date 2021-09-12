@@ -47,7 +47,7 @@
                     </div>
                     <p class="phenomena">@booking.Screening.Movie.Name</p>
                     <p>In @booking.Screening.Room.Cinema.Name, @booking.Screening.Room.Name</p>
-                    <p>on @booking.Screening.StartTime.ToString("dddd, dd MMMM yyyy HH:mm")</p>
+                    <p>on @booking.Screening.StartDate.ToString("dddd, dd MMMM yyyy ") at @booking.Screening.StartTime.ToString(@"hh\:mm")</p>
                     <p>with seats: @booking.Seats</p>
                 </div>
             }

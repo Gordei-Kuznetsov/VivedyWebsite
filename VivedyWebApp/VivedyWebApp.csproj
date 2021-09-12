@@ -207,6 +207,10 @@
     <Compile Include="Migrations\202108290601556_ChabgedBookingVerTimeToDateTime.Designer.cs">
       <DependentUpon>202108290601556_ChabgedBookingVerTimeToDateTime.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202109121103510_StartTimeToDateAndTime_MovieDateTimesToDates.cs" />
+    <Compile Include="Migrations\202109121103510_StartTimeToDateAndTime_MovieDateTimesToDates.Designer.cs">
+      <DependentUpon>202109121103510_StartTimeToDateAndTime_MovieDateTimesToDates.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppDbContext.cs" />
     <Compile Include="Models\BaseModel.cs" />
@@ -361,6 +365,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202108290601556_ChabgedBookingVerTimeToDateTime.resx">
       <DependentUpon>202108290601556_ChabgedBookingVerTimeToDateTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109121103510_StartTimeToDateAndTime_MovieDateTimesToDates.resx">
+      <DependentUpon>202109121103510_StartTimeToDateAndTime_MovieDateTimesToDates.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

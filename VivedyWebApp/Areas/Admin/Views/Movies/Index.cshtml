@@ -80,13 +80,13 @@
                             </td>
                             <td class="startTime admin-display-set-width">
                                 @{
-                                    string releaseDate = item.ReleaseDate.ToString("dddd, dd MMMM yyyy HH:mm tt");
+                                    string releaseDate = item.ReleaseDate.ToString("dddd, dd MMMM yyyy");
                                     @Html.DisplayFor(modelItem => releaseDate)
                                 }
                             </td>
                             <td class="startTime admin-display-set-width">
                                 @{
-                                    string closingDate = item.ClosingDate.ToString("dddd, dd MMMM yyyy HH:mm tt");
+                                    string closingDate = item.ClosingDate.ToString("dddd, dd MMMM yyyy");
                                     @Html.DisplayFor(modelItem => closingDate)
                                 }
                             </td>

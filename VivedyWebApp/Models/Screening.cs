@@ -13,12 +13,20 @@ namespace VivedyWebApp.Models
     public class Screening : BaseModel
     {
         /// <summary>
-        /// Screening start date and time
+        /// Screening start date
         /// </summary>
         [Required]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
+        [Display(Name = "Start Date")]
+        public DateTime StartDate { get; set; }
+
+        /// <summary>
+        /// Screening start time
+        /// </summary>
+        [Required]
+        [DataType(DataType.Time)]
         [Display(Name = "Start Time")]
-        public DateTime StartTime { get; set; }
+        public TimeSpan StartTime { get; set; }
 
         /// <summary>
         /// ID of the movie for which the Screenings is created

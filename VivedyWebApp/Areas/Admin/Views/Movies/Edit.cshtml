@@ -133,7 +133,7 @@
         let validateUrl = function () {
             validateUrl = false;
             let url = trailerUrl.value;
-            if (url == null) {
+            if (url == null || url == "") {
                 return;
             }
             let id = url.split('/')[4];

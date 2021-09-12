@@ -42,12 +42,20 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
     public class BaseScreeningViewModel
     {
         /// <summary>
-        /// Start day and time for the Screening
+        /// Start date for the Screening
         /// </summary>
         [Required]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
+        [Display(Name = "Start Date")]
+        public DateTime StartDate { get; set; }
+
+        /// <summary>
+        /// Start time for the Screening
+        /// </summary>
+        [Required]
+        [DataType(DataType.Time)]
         [Display(Name = "Start Time")]
-        public DateTime StartTime { get; set; }
+        public TimeSpan StartTime { get; set; }
 
         /// <summary>
         /// ID of the movie for which the Screenings is created

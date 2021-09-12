@@ -15,6 +15,13 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 @Html.HiddenFor(model => model.Id)
                 <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.StartDate) : </div>
+                    <div class="mb-3 col-md-8 phenomena-sm">
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.StartTime) : </div>
                     <div class="mb-3 col-md-8 phenomena-sm">
                         @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "col-md-12" } })

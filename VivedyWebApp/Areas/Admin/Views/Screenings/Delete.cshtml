@@ -15,10 +15,19 @@
                 <div class="border-bottom">
                     @Html.HiddenFor(model => model.Id)
                     <div class="row">
+                        <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.StartDate) : </div>
+                        <div class="mb-3 col-md-8 phenomena-sm" readonly>
+                            @{
+                                string startDate = Model.StartDate.ToString("dddd, dd MMMM yyyy");
+                                @Html.DisplayFor(model => startDate)
+                            }
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.StartTime) : </div>
                         <div class="mb-3 col-md-8 phenomena-sm" readonly>
                             @{
-                                string startTime = Model.StartTime.ToString("dddd, dd MMMM yyyy HH:mm tt");
+                                string startTime = Model.StartTime.ToString(@"hh\:mm");
                                 @Html.DisplayFor(model => startTime)
                             }
                         </div>

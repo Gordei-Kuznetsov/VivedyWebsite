@@ -220,7 +220,8 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<List<TEntity>> AllToList()
         {
-            return await dbSet.ToListAsync();
+            List<TEntity> entities = await dbSet.ToListAsync();
+            return entities;
         }
 
         /// <summary>
@@ -228,7 +229,8 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<TEntity> Details(string id)
         {
-            return await dbSet.FindAsync(id);
+            TEntity entity = await dbSet.FindAsync(id);
+            return entity;
         }
 
         /// <summary>
@@ -280,9 +282,10 @@ namespace VivedyWebApp
         public async Task<List<SelectListItem>> GetCategoriesSelectListItems()
         {
             List<string> categories = await (from movie in dbSet
-                                       orderby movie.Category
-                                       group movie by movie.Category into movies
-                                       select movies.FirstOrDefault().Category).ToListAsync();
+                                        where movie.ClosingDate > DateTime.Now
+                                        orderby movie.Category
+                                        group movie by movie.Category into movies
+                                        select movies.FirstOrDefault().Category).ToListAsync();
             List<SelectListItem> items = new List<SelectListItem>();
             foreach (string category in categories)
             {
@@ -308,6 +311,7 @@ namespace VivedyWebApp
         public async Task<List<SelectListItem>> GetRatingsSelectListItems()
         {
             List<int> ratings = await (from movie in dbSet
+                                       where movie.ClosingDate > DateTime.Now
                                        orderby movie.Rating
                                        group movie by movie.Rating into movies
                                        select movies.FirstOrDefault().Rating).ToListAsync();
@@ -335,10 +339,11 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<List<Movie>> GetAllShowing()
         {
-            return await dbSet.Where(
-                m => m.ReleaseDate <= DateTime.Now
-                && m.ClosingDate > DateTime.Now)
-                .ToListAsync();
+            List<Movie> movies = await dbSet.Where(m => m.ReleaseDate <= DateTime.Now
+                                            && m.ClosingDate > DateTime.Now)
+                                            .OrderByDescending(m => m.ViewerRating)
+                                            .ToListAsync();
+            return movies;
         }
 
         /// <summary>
@@ -346,9 +351,10 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<List<Movie>> GetAllComming()
         {
-            return await dbSet.Where(
-                m => m.ReleaseDate > DateTime.Now)
-                .ToListAsync();
+            List<Movie> movies = await dbSet.Where(m => m.ReleaseDate > DateTime.Now)
+                                            .OrderByDescending(m => m.ViewerRating)
+                                            .ToListAsync();
+            return movies;
         }
 
         /// <summary>
@@ -356,7 +362,10 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<List<Movie>> GetAllNotClosed()
         {
-            return await dbSet.Where(m => m.ClosingDate > DateTime.Now).ToListAsync();
+            List<Movie> movies = await dbSet.Where(m => m.ClosingDate > DateTime.Now)
+                                            .OrderByDescending(m => m.ViewerRating)
+                                            .ToListAsync();
+            return movies;
         }
 
         /// <summary>
@@ -364,7 +373,11 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<List<Movie>> GetTopShowing(int x)
         {
-            return await dbSet.Where(m => m.ClosingDate > DateTime.Now && m.ReleaseDate < DateTime.Now).OrderByDescending(m => m.ViewerRating).Take(x).ToListAsync();
+            List<Movie> movies = await dbSet.Where(m => m.ClosingDate > DateTime.Now && m.ReleaseDate < DateTime.Now)
+                                .OrderByDescending(m => m.ViewerRating)
+                                .Take(x)
+                                .ToListAsync();
+            return movies;
         }
 
         /// <summary>
@@ -374,7 +387,8 @@ namespace VivedyWebApp
         {
             entity.Price = (float)Math.Round(entity.Price, 2);
             entity.ViewerRating = (float)Math.Round(entity.ViewerRating, 1);
-            return await base.Create(entity);
+            Movie result = await base.Create(entity);
+            return result;
         }
 
         /// <summary>
@@ -382,7 +396,9 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<List<SelectListItem>> GetSelectListItems(string select = null)
         {
-            List<Movie> movies = await dbSet.Where(m => m.ClosingDate > DateTime.Now).OrderByDescending(m => m.ViewerRating).ToListAsync();
+            List<Movie> movies = await dbSet.Where(m => m.ClosingDate > DateTime.Now)
+                                            .OrderByDescending(m => m.ViewerRating)
+                                            .ToListAsync();
             List<SelectListItem> items = new List<SelectListItem>();
             foreach (Movie movie in movies)
             {
@@ -402,14 +418,14 @@ namespace VivedyWebApp
         public async Task<List<Cinema>> GetCinemasForMovie(string id)
         {
             List<Cinema> cinemas = await (from room in
-                                        (from scr in
-                                                (from scr in db.Screenings
+                                         from scr in
+                                                 from scr in db.Screenings
                                                  where scr.MovieId == id
                                                  group scr by scr.RoomId into scrs
-                                                 select scrs.FirstOrDefault())
+                                                 select scrs.FirstOrDefault()
                                          join room in db.Rooms on scr.RoomId equals room.Id
                                          group room by room.CinemaId into rooms
-                                         select rooms.FirstOrDefault())
+                                         select rooms.FirstOrDefault()
                                     join cinema in db.Cinemas on room.CinemaId equals cinema.Id
                                     orderby cinema.Name
                                     select cinema).ToListAsync();
@@ -431,11 +447,15 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<List<Screening>> GetAllComming()
         {
-            DateTime now = DateTime.Now;
-            List<Screening> screenings = await (from s in dbSet
-                                          join m in db.Movies on s.MovieId equals m.Id
-                                          where m.ClosingDate > now && s.StartTime > now
-                                          select s).ToListAsync();
+            DateTime nowDate = DateTime.Now;
+            TimeSpan nowTime = nowDate.TimeOfDay;
+            List<Screening> screenings = await dbSet.Where(s => s.Movie.ClosingDate > DateTime.Now 
+                                                    && s.StartDate > nowDate
+                                                    && s.StartTime > nowTime)
+                                                    .Include(s => s.Movie)
+                                                    .OrderBy(s => s.StartTime)
+                                                    .OrderBy(s => s.StartDate)
+                                                    .ToListAsync();
             return screenings;
         }
 
@@ -443,7 +463,12 @@ namespace VivedyWebApp
         /// Returns all screenings with movies and rooms joined
         /// </summary>
         public async Task<List<Screening>> AllToListWithMoviesAndRooms() {
-            return await dbSet.Include(s => s.Movie).Include(s => s.Room).ToListAsync();
+            List<Screening> screenings = await dbSet.Include(s => s.Movie)
+                                                    .Include(s => s.Room)
+                                                    .OrderBy(s => s.StartTime)
+                                                    .OrderBy(s => s.StartDate)
+                                                    .ToListAsync();
+            return screenings;
         }
 
         /// <summary>
@@ -451,7 +476,8 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<Screening> DetailsWithMovie(string id)
         {
-            return await dbSet.Where(s => s.Id == id).Include(s => s.Movie).FirstOrDefaultAsync();
+            Screening screening = await dbSet.Where(s => s.Id == id).Include(s => s.Movie).FirstOrDefaultAsync();
+            return screening;
         }
 
         /// <summary>
@@ -459,30 +485,32 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<Screening> DetailsWithMovieAndRoom(string id)
         {
-            return await dbSet.Where(s => s.Id == id).Include(s => s.Movie).Include(s => s.Room).FirstOrDefaultAsync();
+            Screening screening = await dbSet.Where(s => s.Id == id).Include(s => s.Movie).Include(s => s.Room).FirstOrDefaultAsync();
+            return screening;
         }
 
         /// <summary>
         /// Generates and saves a set of screenigs for a list of days, where a screening is created for each time (from provided list) for that day.
         /// <returns>List of saved screenings</returns>
         /// </summary>
-        public async Task<List<Screening>> GenerateFrom(Screening model, List<DateTime> days, List<DateTime> times)
+        public async Task<int> GenerateFrom(Screening model, List<DateTime> days, List<TimeSpan> times)
         {
             List<Screening> screenings = new List<Screening>();
             foreach(DateTime day in days)
             {
-                foreach(DateTime time in times)
+                foreach(TimeSpan time in times)
                 {
                     screenings.Add(new Screening()
                     {
                         Id = Guid.NewGuid().ToString(),
-                        StartTime = new DateTime(day.Year, day.Month, day.Day, time.Hour, time.Minute, time.Second),
+                        StartDate = day,
+                        StartTime = time,
                         MovieId = model.MovieId,
                         RoomId = model.RoomId
                     });
                 }
             }
-            return (await SaveRange(screenings) > 0) ? screenings : null;
+            return await SaveRange(screenings);
         }
 
         /// <summary>
@@ -503,6 +531,7 @@ namespace VivedyWebApp
             //all screenings in the room
             List<Screening> screenings = await dbSet.Where(s => s.RoomId == scr.RoomId)
                                                     .OrderBy(s => s.StartTime)
+                                                    .OrderBy(s => s.StartDate)
                                                     .ToListAsync();
             if (screenings == null)
             {
@@ -510,9 +539,10 @@ namespace VivedyWebApp
                 return true;
             }
             //screening that starts closest to the comparing screening
-            Screening closestPrev = screenings.FindLast(s => s.StartTime <= scr.StartTime);
+            DateTime origStartDateTime = scr.StartDate.Add(scr.StartTime);
+            Screening closestPrev = screenings.FindLast(s => s.StartDate.Add(s.StartTime) <= origStartDateTime);
             closestPrev.Movie = await db.Movies.FindAsync(closestPrev.MovieId);
-            if(closestPrev.StartTime.Add(closestPrev.Movie.Duration) > scr.StartTime)
+            if(closestPrev.StartDate.Add(closestPrev.StartTime.Add(closestPrev.Movie.Duration)) > origStartDateTime)
             {
                 //if the previous screening ends after the comparing scr, then they overlap
                 return false;
@@ -529,8 +559,8 @@ namespace VivedyWebApp
             //there are no screenings after, so can't overlap
             catch (ArgumentOutOfRangeException) { return true; }
 
-            DateTime finishTime = scr.StartTime.Add(duration);
-            if(finishTime > closestNext.StartTime)
+            DateTime finishTime = scr.StartDate.Add(scr.StartTime.Add(duration));
+            if(finishTime > closestNext.StartDate.Add(closestNext.StartTime))
             {
                 //if the next closest scr starts before the comapring finishes, they overlap
                 return false;
@@ -548,8 +578,9 @@ namespace VivedyWebApp
         public async Task<bool> IsDuringMovieShowing(Screening screening, Movie movie = null)
         {
             screening.Movie = movie == null ? await db.Movies.FindAsync(screening.MovieId) : movie;
-            return screening.StartTime >= screening.Movie.ReleaseDate
-                && (screening.StartTime + screening.Movie.Duration) < screening.Movie.ClosingDate;
+            bool result = screening.StartDate.Add(screening.StartTime) >= screening.Movie.ReleaseDate
+                && (screening.StartDate.Add(screening.StartTime.Add(screening.Movie.Duration)) < screening.Movie.ClosingDate);
+            return result;
         }
 
         /// <summary>
@@ -557,17 +588,20 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<List<SelectListItem>> GetSelectListItems()
         {
-            DateTime now = DateTime.Now;
-            var screenings = await dbSet
-                .Include(s => s.Movie)
-                .Include(s => s.Room)
-                .Include(s => s.Room.Cinema)
-                .Where(s => s.Movie.ClosingDate > now && s.StartTime > now)
-                .OrderBy(s => s.Movie.Name)
-                .OrderBy(s => s.Room.Cinema.Name)
-                .OrderBy(s => s.Room.Name)
-                .OrderBy(s => s.StartTime)
-                .ToListAsync();
+            DateTime nowDate = DateTime.Now;
+            TimeSpan nowTime = nowDate.TimeOfDay;
+            var screenings = await dbSet.Include(s => s.Movie)
+                                        .Include(s => s.Room)
+                                        .Include(s => s.Room.Cinema)
+                                        .Where(s => s.Movie.ClosingDate > nowDate
+                                        && s.StartDate > nowDate
+                                        && s.StartTime > nowTime)
+                                        .OrderBy(s => s.StartTime)
+                                        .OrderBy(s => s.StartDate)
+                                        .OrderBy(s => s.Room.Name)
+                                        .OrderBy(s => s.Room.Cinema.Name)
+                                        .OrderBy(s => s.Movie.Name)
+                                        .ToListAsync();
             var groups = screenings.GroupBy(s => s.MovieId);
             List<SelectListItem> items = new List<SelectListItem>();
             foreach (var group in groups)
@@ -578,7 +612,7 @@ namespace VivedyWebApp
                     items.Add(new SelectListItem()
                     {
                         Value = screening.Id,
-                        Text = screening.Room.Cinema.Name + " | " + screening.Room.Name + " | " + screening.StartTime.ToString("dd/MM/yy H:mm"),
+                        Text = screening.Room.Cinema.Name + " | " + screening.Room.Name + " | " + screening.StartDate.ToString("dd/MM/yyyy") + " | " + screening.StartTime.ToString("hh:mm tt"),
                         Group = roomsGroup
                     });
                 }
@@ -591,20 +625,21 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<List<ScreeningDetails>> GetAllForMovieInCinema(string movieId, string cinemaId)
         {
-            DateTime now = DateTime.Now;
-            List<Screening> screenings = await (from s in db.Screenings
-                                         join r in db.Rooms on s.RoomId equals r.Id
-                                         where s.MovieId == movieId
-                                         && r.CinemaId == cinemaId
-                                         && s.StartTime > now
-                                         select s).ToListAsync();
-            var bookings = (from b in db.Bookings
-                            join s in db.Screenings on b.ScreeningId equals s.Id
-                            join r in db.Rooms on s.RoomId equals r.Id
-                            where s.MovieId == movieId
-                            && r.CinemaId == cinemaId
-                            && s.StartTime > now
-                            group b by b.ScreeningId);
+            DateTime nowDate = DateTime.Now;
+            TimeSpan nowTime = nowDate.TimeOfDay;
+            List<Screening> screenings = await dbSet.Include(s => s.Room)
+                                                    .Where(s => s.MovieId == movieId
+                                                    && s.Room.CinemaId == cinemaId
+                                                    && s.StartDate > nowDate
+                                                    && s.StartTime > nowTime)
+                                                    .ToListAsync();
+            var bookings = (await db.Bookings.Include(b => b.Screening)
+                            .Include(b => b.Screening.Room)
+                            .Where(b => b.Screening.MovieId == movieId
+                            && b.Screening.Room.CinemaId == cinemaId
+                            && b.Screening.StartDate > nowDate
+                            && b.Screening.StartTime > nowTime)
+                            .ToListAsync()).GroupBy(b => b.ScreeningId);
             List<ScreeningDetails> list = new List<ScreeningDetails>();
             for (int i = 0; i < screenings.Count(); i++)
             {
@@ -615,7 +650,7 @@ namespace VivedyWebApp
                     {
                         foreach (var b in group)
                         {
-                            seats += convCount(b.Seats);
+                            seats += getCount(b.Seats);
                         }
                     }
                 }
@@ -628,7 +663,11 @@ namespace VivedyWebApp
             }
             return list;
         }
-        private int convCount(string seats)
+
+        /// <summary>
+        /// Local function to get number of seats in the seats string
+        /// </summary>
+        private int getCount(string seats)
         {
             int result = 0;
             foreach (string seat in seats.Split(','))
@@ -653,13 +692,19 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<List<Booking>> GetAllComingForUser(string email)
         {
-            DateTime now = DateTime.Now;
-            return await dbSet.Include(b => b.Screening)
+            DateTime nowDate = DateTime.Now;
+            TimeSpan nowTime = nowDate.TimeOfDay;
+            List<Booking> bookings = await dbSet.Include(b => b.Screening)
                                 .Include(b => b.Screening.Movie)
                                 .Include(b => b.Screening.Room)
                                 .Include(b => b.Screening.Room.Cinema)
-                                .Where(b => b.UserEmail == email && b.Screening.StartTime > now)
+                                .Where(b => b.UserEmail == email 
+                                && b.Screening.StartDate > nowDate
+                                && b.Screening.StartTime > nowTime)
+                                .OrderBy(b => b.Screening.StartTime)
+                                .OrderBy(b => b.Screening.StartDate)
                                 .ToListAsync();
+            return bookings;
         }
 
         /// <summary>
@@ -667,9 +712,8 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<List<int>> GetSeatsForScreening(string id)
         {
-            List<string> seatStrings = await (from b in dbSet
-                                        where b.ScreeningId == id
-                                        select b.Seats).ToListAsync();
+            List<string> seatStrings = await dbSet.Where(b => b.ScreeningId == id)
+                                                .Select(b => b.Seats).ToListAsync();
             List<int> seats = new List<int>();
             if (seatStrings != null)
             {
@@ -727,7 +771,7 @@ namespace VivedyWebApp
                                 $"<i><p>Please present this email when you arrive to the cinema to the our stuuf at the entrance to the auditorium.</p></i>" +
                                 $"<div style=\"box-sizing: inherit; padding: 0.01em 16px; margin-top: 16px; margin-bottom: 16px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);\">" +
                                     $"<h3>{screening.Movie.Name}</h3>" +
-                                    $"<h4><b>Date:</b> {screening.StartTime.ToString("dd MMMM yyyy")}</h4>" +
+                                    $"<h4><b>Date:</b> {screening.StartDate.ToString("dd MMMM yyyy")}</h4>" +
                                     $"<h4><b>Time:</b> {screening.StartTime.ToString("hh:mm tt")}</h4>" +
                                     $"<h4><b>Your seats:</b> </h4>" +
                                     $"<ul>" +
@@ -750,7 +794,8 @@ namespace VivedyWebApp
         public override async Task<Booking> Create(Booking entity)
         {
             entity.PayedAmout = (float)Math.Round(entity.PayedAmout, 2);
-            return await base.Create(entity);
+            Booking result = await base.Create(entity);
+            return result;
         }
 
         /// <summary>
@@ -759,7 +804,8 @@ namespace VivedyWebApp
         public async Task<bool> AnySeatsOverlapWith(List<int> seats, string id)
         {
             List<int> allSeats = await GetSeatsForScreening(id);
-            return allSeats.Intersect(seats).Any();
+            bool result = allSeats.Intersect(seats).Any();
+            return result;
         }
     
         /// <summary>
@@ -768,7 +814,13 @@ namespace VivedyWebApp
         /// <returns></returns>
         public async Task<List<Booking>> AllToListWithScreeningsAndMovies()
         {
-            return await dbSet.Include(b => b.Screening).Include(b => b.Screening.Movie).ToListAsync();
+            List<Booking> bookings = await dbSet.Include(b => b.Screening)
+                                                .Include(b => b.Screening.Movie)
+                                                .OrderBy(b => b.Screening.StartTime)
+                                                .OrderBy(b => b.Screening.StartDate)
+                                                .OrderBy(b => b.Screening.Movie.Name)
+                                                .ToListAsync();
+            return bookings;
         }
 
         /// <summary>
@@ -777,7 +829,11 @@ namespace VivedyWebApp
         /// <returns></returns>
         public async Task<Booking> DetailsWithScreeningAndMovie(string Id)
         {
-            return await dbSet.Where(b => b.Id == Id).Include(b => b.Screening).Include(b => b.Screening.Movie).FirstOrDefaultAsync();
+            Booking booking = await dbSet.Where(b => b.Id == Id)
+                                        .Include(b => b.Screening)
+                                        .Include(b => b.Screening.Movie)
+                                        .FirstOrDefaultAsync();
+            return booking;
         }
     }
 
@@ -795,7 +851,10 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<List<SelectListItem>> GetSelectListItems(string select = null)
         {
-            List<Room> rooms = await dbSet.Include(r => r.Cinema).OrderBy(r => r.Name).OrderBy(r => r.Cinema.Name).ToListAsync();
+            List<Room> rooms = await dbSet.Include(r => r.Cinema)
+                                            .OrderBy(r => r.Name)
+                                            .OrderBy(r => r.Cinema.Name)
+                                            .ToListAsync();
             var groups = rooms.GroupBy(r => r.CinemaId);
             List<SelectListItem> items = new List<SelectListItem>();
             foreach (var group in groups)
@@ -820,7 +879,8 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<List<Room>> AllToListWithCinemas()
         {
-            return await dbSet.Include(r => r.Cinema).ToListAsync();
+            List<Room> rooms = await dbSet.Include(r => r.Cinema).OrderBy(r => r.Name).OrderBy(r => r.Cinema.Name).ToListAsync();
+            return rooms;
         }
     
         /// <summary>
@@ -828,7 +888,8 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<Room> DetailsWithCinema(string id)
         {
-            return await dbSet.Where(r => r.Id == id).Include(r => r.Cinema).FirstOrDefaultAsync();
+            Room room = await dbSet.Where(r => r.Id == id).Include(r => r.Cinema).FirstOrDefaultAsync();
+            return room;
         }
     }
 
@@ -846,7 +907,7 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<List<SelectListItem>> GetSelectListItems(string select = null)
         {
-            List<Cinema> cinemas = await AllToList();
+            List<Cinema> cinemas = await dbSet.OrderBy(c => c.Name).ToListAsync();
             List<SelectListItem> items = new List<SelectListItem>();
             foreach (Cinema cinema in cinemas)
             {

@@ -67,7 +67,7 @@
                     <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.ReleaseDate):</div>
                     <div class="col-md-8 mb-3 phenomena-sm text-link">
                         @{
-                            string releaseDate = Model.ReleaseDate.ToString("dddd, dd MMMM yyyy HH:mm tt");
+                            string releaseDate = Model.ReleaseDate.ToString("dddd, dd MMMM yyyy");
                         }
                         @Html.DisplayFor(model => releaseDate)
                     </div>
@@ -76,7 +76,7 @@
                     <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.ClosingDate):</div>
                     <div class="col-md-8 mb-3 phenomena-sm text-link">
                         @{
-                            string closingDate = Model.ClosingDate.ToString("dddd, dd MMMM yyyy HH:mm tt");
+                            string closingDate = Model.ClosingDate.ToString("dddd, dd MMMM yyyy");
                         }
                         @Html.DisplayFor(model => closingDate)
                     </div>

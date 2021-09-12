@@ -83,6 +83,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             Screening screening = new Screening
             {
                 Id = Guid.NewGuid().ToString(),
+                StartDate = model.StartDate,
                 StartTime = model.StartTime,
                 MovieId = model.MovieId,
                 RoomId = model.RoomId
@@ -122,7 +123,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                     Screening genScreening = new Screening
                     {
                         Id = Guid.NewGuid().ToString(),
-                        StartTime = screening.StartTime.AddDays(i),
+                        StartDate = screening.StartDate.AddDays(i),
+                        StartTime = screening.StartTime,
                         MovieId = screening.MovieId,
                         RoomId = screening.RoomId
                     };
@@ -170,6 +172,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             ScreeningsViewModel model = new ScreeningsViewModel()
             {
                 Id = screening.Id,
+                StartDate = screening.StartDate,
                 StartTime = screening.StartTime,
                 MovieId = screening.MovieId,
                 RoomId = screening.MovieId,
@@ -199,6 +202,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 return HttpNotFound();
             }
             screening.Id = model.Id;
+            screening.StartDate = model.StartDate;
             screening.StartTime = model.StartTime;
             screening.MovieId = model.MovieId;
             screening.RoomId = model.RoomId;

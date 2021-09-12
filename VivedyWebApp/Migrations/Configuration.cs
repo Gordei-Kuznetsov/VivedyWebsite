@@ -173,12 +173,12 @@ namespace VivedyWebApp.Migrations
             _context.Rooms.AddRange(rooms);
             _context.SaveChanges();
 
-            DateTime now = DateTime.Now;
+            DateTime nowDate = DateTime.Now.Date;
             Movie[] movies = new Movie[]
             {
                 new Movie()
                 {
-                    Id = "8323b6bd-b6b9-42b2-b97b-576cb908c073",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "How to Train Your Dragon: The Hidden World",
                     Rating = 10,
                     ViewerRating = 4.5f,
@@ -187,12 +187,12 @@ namespace VivedyWebApp.Migrations
                     Duration = new TimeSpan(1,45,0),
                     Price = 14,
                     TrailerUrl = "https://www.youtube.com/embed/naW9U8MiUY0",
-                    ReleaseDate = now.AddDays(-25),
-                    ClosingDate = now.AddDays(3)
+                    ReleaseDate = nowDate.AddDays(-25),
+                    ClosingDate = nowDate.AddDays(3)
                 },
                 new Movie()
                 {
-                    Id = "3f48d8e1-8de6-4829-8ecf-ad3eded4251c",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Thor: Ragnarok",
                     Rating = 14,
                     ViewerRating = 4.7f,
@@ -201,12 +201,12 @@ namespace VivedyWebApp.Migrations
                     Duration = new TimeSpan(2,10,0),
                     Price = 21,
                     TrailerUrl = "https://www.youtube.com/embed/ue80QwXMRHg",
-                    ReleaseDate = now.AddDays(-22),
-                    ClosingDate = now.AddDays(6)
+                    ReleaseDate = nowDate.AddDays(-22),
+                    ClosingDate = nowDate.AddDays(6)
                 },
                 new Movie()
                 {
-                    Id = "70da58b3-2018-42fd-a2ab-6ce9ce8dbeb7",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Joker",
                     Rating = 16,
                     ViewerRating = 4.3f,
@@ -215,12 +215,12 @@ namespace VivedyWebApp.Migrations
                     Duration = new TimeSpan(2,0,2),
                     Price = 20,
                     TrailerUrl = "https://www.youtube.com/embed/zAGVQLHvwOY",
-                    ReleaseDate = now.AddDays(-19),
-                    ClosingDate = now.AddDays(9)
+                    ReleaseDate = nowDate.AddDays(-19),
+                    ClosingDate = nowDate.AddDays(9)
                 },
                 new Movie()
                 {
-                    Id = "834b4a02-e7d7-436b-b0b5-58f0a521bc76",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Cruella",
                     Rating = 12,
                     ViewerRating = 3.9f,
@@ -229,12 +229,12 @@ namespace VivedyWebApp.Migrations
                     Duration = new TimeSpan(2,14,0),
                     Price = 21,
                     TrailerUrl = "https://www.youtube.com/embed/gmRKv7n2If8",
-                    ReleaseDate = now.AddDays(-16),
-                    ClosingDate = now.AddDays(12)
+                    ReleaseDate = nowDate.AddDays(-16),
+                    ClosingDate = nowDate.AddDays(12)
                 },
                 new Movie()
                 {
-                    Id = "350d19c2-561a-48e6-910c-9541bdce469b",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Army of the Dead",
                     Rating = 16,
                     ViewerRating = 4.4f,
@@ -243,12 +243,12 @@ namespace VivedyWebApp.Migrations
                     Duration = new TimeSpan(2,28,0),
                     Price = 22,
                     TrailerUrl = "https://www.youtube.com/embed/tI1JGPhYBS8",
-                    ReleaseDate = now.AddDays(-13),
-                    ClosingDate = now.AddDays(15)
+                    ReleaseDate = nowDate.AddDays(-13),
+                    ClosingDate = nowDate.AddDays(15)
                 },
                 new Movie()
                 {
-                    Id = "401b05cc-76ad-4f0c-887e-fc310fc03ec0",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "The Marksman",
                     Rating = 16,
                     ViewerRating = 4.1f,
@@ -257,12 +257,12 @@ namespace VivedyWebApp.Migrations
                     Duration = new TimeSpan(1,48,0),
                     Price = 14,
                     TrailerUrl = "https://www.youtube.com/embed/B_T0F36YEi0",
-                    ReleaseDate = now.AddDays(-10),
-                    ClosingDate = now.AddDays(18)
+                    ReleaseDate = nowDate.AddDays(-10),
+                    ClosingDate = nowDate.AddDays(18)
                 },
                 new Movie()
                 {
-                    Id = "e6e72458-4fcc-40b2-a772-fcc81e93164e",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "The Little Things",
                     Rating = 14,
                     ViewerRating = 3.6f,
@@ -271,12 +271,12 @@ namespace VivedyWebApp.Migrations
                     Duration = new TimeSpan(2,8,0),
                     Price = 20,
                     TrailerUrl = "https://www.youtube.com/embed/1HZAnkxdYuA",
-                    ReleaseDate = now.AddDays(-7),
-                    ClosingDate = now.AddDays(21)
+                    ReleaseDate = nowDate.AddDays(-7),
+                    ClosingDate = nowDate.AddDays(21)
                 },
                 new Movie()
                 {
-                    Id = "365aaaf3-0121-42ff-8a39-b5afcd054ec4",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "The Unholy",
                     Rating = 14,
                     ViewerRating = 4.1f,
@@ -285,12 +285,12 @@ namespace VivedyWebApp.Migrations
                     Duration = new TimeSpan(1,39,0),
                     Price = 13,
                     TrailerUrl = "https://www.youtube.com/embed/5zne4Rb37Ns",
-                    ReleaseDate = now.AddDays(-4),
-                    ClosingDate = now.AddDays(27)
+                    ReleaseDate = nowDate.AddDays(-4),
+                    ClosingDate = nowDate.AddDays(27)
                 },
                 new Movie()
                 {
-                    Id = "cc7c5039-8b51-494b-affb-0a1f6ea6c9c0",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Raya and the Last Dragon",
                     Rating = 8,
                     ViewerRating = 3.9f,
@@ -299,12 +299,12 @@ namespace VivedyWebApp.Migrations
                     Duration = new TimeSpan(1,57,0),
                     Price = 15,
                     TrailerUrl = "https://www.youtube.com/embed/1VIZ89FEjYI",
-                    ReleaseDate = now.AddDays(2),
-                    ClosingDate = now.AddDays(30)
+                    ReleaseDate = nowDate.AddDays(2),
+                    ClosingDate = nowDate.AddDays(30)
                 },
                 new Movie()
                 {
-                    Id = "79fc64b8-8727-4114-a9b2-4048f859276b",
+                    Id = Guid.NewGuid().ToString(),
                     Name = "The Dig",
                     Rating = 13,
                     ViewerRating = 3.5f,
@@ -313,145 +313,166 @@ namespace VivedyWebApp.Migrations
                     Duration = new TimeSpan(1,52,0),
                     Price = 15,
                     TrailerUrl = "https://www.youtube.com/embed/JZQz0rkNajo",
-                    ReleaseDate = now.AddDays(5),
-                    ClosingDate = now.AddDays(33)
+                    ReleaseDate = nowDate.AddDays(5),
+                    ClosingDate = nowDate.AddDays(33)
                 }
             };
             _context.Movies.AddRange(movies);
             _context.SaveChanges();
 
+            TimeSpan morning = new TimeSpan(10, 0, 0);
+            TimeSpan afternoon = new TimeSpan(16, 0, 0);
             Screening[] screenings = new Screening[]
             {
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(1).AddHours(1),
+                    StartDate = nowDate.AddDays(1),
+                    StartTime = morning,
                     MovieId = movies[7].Id,
                     RoomId = rooms[6].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(1).AddHours(4),
+                    StartDate = nowDate.AddDays(1),
+                    StartTime = afternoon,
                     MovieId = movies[7].Id,
                     RoomId = rooms[6].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(2).AddHours(1),
+                    StartDate = nowDate.AddDays(2),
+                    StartTime = morning,
                     MovieId = movies[7].Id,
                     RoomId = rooms[6].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(2).AddHours(4),
+                    StartDate = nowDate.AddDays(2),
+                    StartTime = afternoon,
                     MovieId = movies[7].Id,
                     RoomId = rooms[6].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(3).AddHours(1),
+                    StartDate = nowDate.AddDays(3),
+                    StartTime = morning,
                     MovieId = movies[7].Id,
                     RoomId = rooms[6].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(3).AddHours(4),
+                    StartDate = nowDate.AddDays(3),
+                    StartTime = afternoon,
                     MovieId = movies[7].Id,
                     RoomId = rooms[6].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(4).AddHours(1),
+                    StartDate = nowDate.AddDays(4),
+                    StartTime = morning,
                     MovieId = movies[7].Id,
                     RoomId = rooms[6].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(1).AddHours(1),
+                    StartDate = nowDate.AddDays(1),
+                    StartTime = morning,
                     MovieId = movies[7].Id,
                     RoomId = rooms[10].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(1).AddHours(4),
+                    StartDate = nowDate.AddDays(1),
+                    StartTime = afternoon,
                     MovieId = movies[7].Id,
                     RoomId = rooms[10].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(2).AddHours(1),
+                    StartDate = nowDate.AddDays(2),
+                    StartTime = morning,
                     MovieId = movies[7].Id,
                     RoomId = rooms[10].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(2).AddHours(4),
+                    StartDate = nowDate.AddDays(2),
+                    StartTime = afternoon,
                     MovieId = movies[7].Id,
                     RoomId = rooms[10].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(3).AddHours(1),
+                    StartDate = nowDate.AddDays(3),
+                    StartTime = morning,
                     MovieId = movies[7].Id,
                     RoomId = rooms[10].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(3).AddHours(4),
+                    StartDate = nowDate.AddDays(3),
+                    StartTime = afternoon,
                     MovieId = movies[7].Id,
                     RoomId = rooms[10].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(4).AddHours(1),
+                    StartDate = nowDate.AddDays(4),
+                    StartTime = morning,
                     MovieId = movies[7].Id,
                     RoomId = rooms[10].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(1).AddHours(1),
+                    StartDate = nowDate.AddDays(1),
+                    StartTime = morning,
                     MovieId = movies[7].Id,
                     RoomId = rooms[9].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(1).AddHours(4),
+                    StartDate = nowDate.AddDays(1),
+                    StartTime = afternoon,
                     MovieId = movies[7].Id,
                     RoomId = rooms[9].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(2).AddHours(1),
+                    StartDate = nowDate.AddDays(2),
+                    StartTime = morning,
                     MovieId = movies[7].Id,
                     RoomId = rooms[9].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(2).AddHours(4),
+                    StartDate = nowDate.AddDays(2),
+                    StartTime = afternoon,
                     MovieId = movies[7].Id,
                     RoomId = rooms[9].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(3).AddHours(1),
+                    StartDate = nowDate.AddDays(3),
+                    StartTime = morning,
                     MovieId = movies[7].Id,
                     RoomId = rooms[9].Id
                 },
@@ -459,14 +480,16 @@ namespace VivedyWebApp.Migrations
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(3).AddHours(4),
+                    StartDate = nowDate.AddDays(3),
+                    StartTime = afternoon,
                     MovieId = movies[7].Id,
                     RoomId = rooms[9].Id
                 },
                 new Screening()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    StartTime = now.AddDays(4).AddHours(1),
+                    StartDate = nowDate.AddDays(4),
+                    StartTime = morning,
                     MovieId = movies[7].Id,
                     RoomId = rooms[9].Id
                 }
@@ -481,7 +504,7 @@ namespace VivedyWebApp.Migrations
                     Id = Guid.NewGuid().ToString(),
                     Seats = "54,42,43,55,56,44,",
                     PayedAmout = 78f,
-                    VerificationTime = now,
+                    VerificationTime = nowDate,
                     UserEmail = "vivedycinemas@gmail.com",
                     ScreeningId = screenings[7].Id
                 },

@@ -82,7 +82,7 @@ namespace VivedyWebApp.Models
         /// Movie release date
         /// </summary>
         [Required]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         [Display(Name = "Release Date")]
         public DateTime ReleaseDate { get; set; }
 
@@ -90,7 +90,7 @@ namespace VivedyWebApp.Models
         /// Movie closing date
         /// </summary>
         [Required]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         [Display(Name = "Closing Date")]
         public DateTime ClosingDate { get; set; }
     }

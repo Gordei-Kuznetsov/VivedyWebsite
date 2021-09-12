@@ -67,7 +67,7 @@ namespace VivedyWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Screening screening = await Helper.Screenings.DetailsWithMovie(id);
-            if(screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartTime > DateTime.Now)
+            if(screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartDate.Add(screening.StartTime) > DateTime.Now)
             {
                 BookingSeatsViewModel seatsModel = new BookingSeatsViewModel
                 {
@@ -100,7 +100,7 @@ namespace VivedyWebApp.Controllers
             }
             List<int> selectedSeats = Helper.Bookings.ConvertSeatsToIntList(seatsModel.SelectedSeats);
             Screening screening = await Helper.Screenings.DetailsWithMovie(seatsModel.SelectedScreeningId);
-            if (screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartTime > DateTime.Now
+            if (screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartDate.Add(screening.StartTime) > DateTime.Now
                 && !await Helper.Bookings.AnySeatsOverlapWith(selectedSeats, screening.Id))
             {
                 //If user is logged in, then take their email and pass to the model
@@ -138,7 +138,7 @@ namespace VivedyWebApp.Controllers
             }
             List<int> seats = Helper.Bookings.ConvertSeatsToIntList(payModel.SelectedSeats);
             Screening screening = await Helper.Screenings.DetailsWithMovie(payModel.SelectedScreeningId);
-            if (screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartTime > DateTime.Now
+            if (screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartDate.Add(screening.StartTime) > DateTime.Now
                 && ! await Helper.Bookings.AnySeatsOverlapWith(seats, screening.Id))
             {
                 Booking booking = new Booking

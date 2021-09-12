@@ -12,7 +12,7 @@
                     <h5 class="phenomena-sm-two">Booking Times</h5>
                     <hr style="width:40%" />
                     <div class="progress">
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: 33%;" aria-valuemin="0" aria-valuemax="100">0% Booking</div>
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 33%;" aria-valuemin="0" aria-valuemax="100">33% Time</div>
                     </div>
                     <hr style="width:40%" />
                     <p class="card-text">Select a time to watch your movie</p>
@@ -21,9 +21,9 @@
                             @foreach (var screening in Model.AvailableScreenings)
                             {
                                 <a href="/Bookings/Seats?id=@screening.Id" class="btn btn-danger m-1 align-items-center" style="width:100%; max-width:10rem;">
-                                    <p class="mb-2 text-center">@screening.StartTime.DayOfWeek</p>
-                                    <p class="mb-2 text-center">@screening.StartTime.ToString("dd MMMM yyyy")</p>
-                                    <p class="mb-2 text-center">@screening.StartTime.ToString("hh:mm tt")</p>
+                                    <p class="mb-2 text-center">@screening.StartDate.DayOfWeek</p>
+                                    <p class="mb-2 text-center">@screening.StartDate.ToString("dd MMMM yyyy")</p>
+                                    <p class="mb-2 text-center">@screening.StartTime.ToString(@"hh\:mm")</p>
                                     <p class="mb-2 text-center">@screening.BookedSeats</p>
                                 </a>
                             }
