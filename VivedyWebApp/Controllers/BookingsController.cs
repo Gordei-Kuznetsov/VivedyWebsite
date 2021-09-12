@@ -45,8 +45,7 @@ namespace VivedyWebApp.Controllers
             if (screenings.Count == 0)
             {
                 //If no Screenings found then send back to the Movies/Details page with a message
-                ViewBag.ErrorMessage = "No screenings found for this movie in the selected cinema.";
-                return RedirectToAction("Details", "Movies", routeValues: new { id = movieId });
+                return RedirectToAction("Details", "Movies", routeValues: new { id = movieId, message = Messages.NoScreenings });
             }
             BookingTimeViewModel model = new BookingTimeViewModel
             {
@@ -96,12 +95,13 @@ namespace VivedyWebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Message = Messages.Error;
                 return View(seatsModel);
             }
             List<int> selectedSeats = Helper.Bookings.ConvertSeatsToIntList(seatsModel.SelectedSeats);
             Screening screening = await Helper.Screenings.DetailsWithMovie(seatsModel.SelectedScreeningId);
             if (screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartTime > DateTime.Now
-                && !(await Helper.Bookings.AnySeatsOverlapWith(selectedSeats, screening.Id)))
+                && !await Helper.Bookings.AnySeatsOverlapWith(selectedSeats, screening.Id))
             {
                 //If user is logged in, then take their email and pass to the model
                 ApplicationUser user = User.Identity.IsAuthenticated
@@ -117,6 +117,7 @@ namespace VivedyWebApp.Controllers
                 };
                 return View("Pay", payModel);
             }
+            ViewBag.Message = Messages.Error;
             seatsModel.Movie = screening.Movie;
             seatsModel.OccupiedSeats = await Helper.Bookings.GetSeatsForScreening(screening.Id);
             return View(seatsModel);
@@ -132,12 +133,13 @@ namespace VivedyWebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Message = Messages.Error;
                 return View(payModel);
             }
             List<int> seats = Helper.Bookings.ConvertSeatsToIntList(payModel.SelectedSeats);
             Screening screening = await Helper.Screenings.DetailsWithMovie(payModel.SelectedScreeningId);
             if (screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartTime > DateTime.Now
-                && !(await Helper.Bookings.AnySeatsOverlapWith(seats, screening.Id)))
+                && ! await Helper.Bookings.AnySeatsOverlapWith(seats, screening.Id))
             {
                 Booking booking = new Booking
                 {
@@ -147,18 +149,24 @@ namespace VivedyWebApp.Controllers
                     ScreeningId = screening.Id
                 };
 
-                Booking newBooking = await Helper.Bookings.CreateFrom(booking);
+                Booking newBooking = await Helper.Bookings.Create(booking);
                 if (newBooking != null)
                 {
-                    Helper.Bookings.SendConfirmationEmail(newBooking);
-                    return View("Confirmation");
+                    int result = await Helper.Bookings.SendConfirmationEmail(newBooking);
+                    if(result > 0)
+                    {
+                        return View("Confirmation");
+                    }
+                    ViewBag.Message = Messages.FailedBookingEmail;
+                    return View("Error");
                 }
                 else
                 {
-                    ViewBag.ErrorMessage = "There was a problem processing your booking.";
+                    ViewBag.Message = Messages.FailedBooking;
                     return View("Error");
                 }
             }
+            ViewBag.Message = Messages.Error;
             payModel.Movie = screening.Movie;
             return View(payModel);
         }
@@ -171,5 +179,13 @@ namespace VivedyWebApp.Controllers
         {
             return View();
         }
+    }
+
+    public partial class Messages
+    {
+        public static string Error = "Something went wrong while processing your request.\nPlease try again.";
+        public static string NoScreenings = "No screenings found for this movie in the selected cinema.";
+        public static string FailedBooking = "Something went wrong while processing your booking.\nPlease try again.";
+        public static string FailedBookingEmail = "Something went wrong while sending your booking confirmation email.\nPlease contact our service desk.";
     }
 }

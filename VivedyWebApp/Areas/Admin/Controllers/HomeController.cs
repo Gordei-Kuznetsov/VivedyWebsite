@@ -58,15 +58,30 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 var result = new VerifyBookingsResult();
                 Booking booking = await Helper.Bookings.Details(bookingId);
-                if(booking == null || screeningId != booking.ScreeningId || booking.VerificationTime != null)
+                if(booking == null)
                 {
-                    result.verified = false;
+                    result.error = "Invalid booking";
+                }
+                else if(screeningId != booking.ScreeningId)
+                {
+                    result.error = "Wrong srcreening";
+                }
+                else if(booking.VerificationTime != null)
+                {
+                    result.error = "Booking has already been verified";
                 }
                 else
                 {
                     booking.VerificationTime = DateTime.Now;
-                    await Helper.Bookings.Edit(booking);
-                    result.verified = true;
+                    var edited = await Helper.Bookings.Edit(booking);
+                    if(edited != null)
+                    {
+                        result.verified = true;
+                    }
+                    else
+                    {
+                        result.error = "Valid booking, but an error occured while updating it's details";
+                    }
                 }
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -104,8 +119,9 @@ namespace VivedyWebApp.Areas.Admin.Controllers
 
             /// <summary>
             /// Field for any error messages that occure during the request proccesing
+            /// If set to any value then verified is set ot false
             /// </summary>
-            public string error;
+            public string error { set { verified = false; error = value; } }
         }
     }
 }

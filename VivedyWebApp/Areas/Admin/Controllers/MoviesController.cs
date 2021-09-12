@@ -28,8 +28,9 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Index page
         /// </summary>
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string message = null)
         {
+            ViewBag.Message = message;
             return View(await Helper.Movies.AllToList());
         }
 
@@ -67,6 +68,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Message = Messages.Error;
                 return View(model);
             }
             Movie movie = new Movie()
@@ -84,9 +86,15 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             };
             if(movie.ReleaseDate >= movie.ClosingDate)
             {
+                ViewBag.Message = Messages.WrongMovieDates;
                 return View(model);
             }
-            await Helper.Movies.CreateFrom(movie);
+            var result = await Helper.Movies.Create(movie);
+            if(result == null)
+            {
+                ViewBag.Message = Messages.Movies.CreateFailed;
+                return View(model);
+            }
             //Saving the images uploaded for the posters
             if(model.HorizontalImage != null)
             {
@@ -102,7 +110,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 var imagePath = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
                 model.VerticalImage.SaveAs(imagePath);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { message = Messages.Movies.Created });
         }
 
         /// <summary>
@@ -144,15 +152,18 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Message = Messages.Error;
                 return View(model);
             }
             Movie movie = await Helper.Movies.Details(model.Id);
             if(movie == null)
             {
+                ViewBag.Message = Messages.Error;
                 return View(model);
             }
             //Possibly requires a check on all screenings
             //As change in start date, close date, or duration can screw up timing
+            //And possibly sending emails to everyone who made bookings for the affected screenings
             movie.Name = model.Name;
             movie.Rating = model.Rating;
             movie.ViewerRating = model.ViewerRating;
@@ -166,10 +177,16 @@ namespace VivedyWebApp.Areas.Admin.Controllers
 
             if (movie.ReleaseDate >= movie.ClosingDate)
             {
+                ViewBag.Message = Messages.WrongMovieDates;
                 return View(model);
             }
 
-            await Helper.Movies.Edit(movie);
+            var result = await Helper.Movies.Edit(movie);
+            if(result == null)
+            {
+                ViewBag.Message = Messages.Movies.EditFailed;
+                return View(model);
+            }
             //Saving the images for the posters if re-uploaded 
             if (model.HorizontalImage != null)
             {
@@ -195,13 +212,13 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 //Saving vertical poster
                 model.VerticalImage.SaveAs(path);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { message = Messages.Movies.Edited });
         }
 
         /// <summary>
         /// GET request action for Delete page
         /// </summary>
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> Delete(string id, string message = null)
         {
             if (id == null)
             {
@@ -212,6 +229,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Message = message;
             return View(movie);
         }
 
@@ -226,13 +244,17 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie room = await Helper.Movies.Details(id);
-            if (room == null)
+            Movie movie = await Helper.Movies.Details(id);
+            if (movie == null)
             {
                 return HttpNotFound();
             }
-            await Helper.Movies.Delete(id);
 
+            int result = await Helper.Movies.Delete(movie);
+            if(result <= 0)
+            {
+                return View("Delete", "Movies", new { id = id, message = Messages.Movies.DeleteFailed });
+            }
             //Deleting poster images
             //Deleting horizontal poster
             string path = Server.MapPath("/Content/Images/" + id + "-HorizontalPoster.png");
@@ -248,7 +270,12 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 fi.Delete();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { message =  Messages.Movies.Deleted });
         }
+    }
+    
+    public partial class Messages
+    {
+        public static string WrongMovieDates = "The release date cannot be after the closing date.";
     }
 }

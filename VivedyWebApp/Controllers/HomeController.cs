@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using VivedyWebApp.Models.ViewModels;
-using VivedyWebApp.Models;
 
 namespace VivedyWebApp.Controllers
 {
@@ -27,12 +26,13 @@ namespace VivedyWebApp.Controllers
         /// <summary>
         /// GET request action for Index page
         /// </summary>
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string message = null)
         {
+            ViewBag.Message = message;
             MoviesHomeViewModel model = new MoviesHomeViewModel()
             {
                 ComingSoonMovies = await Helper.Movies.GetAllComming(),
-                TopMovies = await Helper.Movies.GetTopNotClosed(4)
+                TopMovies = await Helper.Movies.GetTopShowing(4)
             };
             return View(model);
         }

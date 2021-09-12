@@ -42,7 +42,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Index page
         /// </summary>
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string message = null)
         {
             List<ApplicationUser> users = await UserManager.Users.ToListAsync();
             List<UsersViewModel> models = new List<UsersViewModel>();
@@ -60,6 +60,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                     UserName = user.UserName
                 });
             }
+            ViewBag.Message = message;
             return View(models);
         }
 
@@ -110,46 +111,59 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(UsersCreateViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = new ApplicationUser { 
-                    UserName = model.Email, 
-                    Email = model.Email,
-                    Name = model.Name,
-                    PhoneNumber = model.PhoneNumber,
-                };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    var currentUser = await UserManager.FindByEmailAsync(user.Email);
-                    //Assigning the role
-                    switch (model.Role) 
-                    {
-                        case "Admin":
-                            if(await UserManager.IsInRoleAsync(currentUser.Id, "Visitor"))
-                            {
-                                await UserManager.RemoveFromRoleAsync(currentUser.Id, "Visitor");
-                            }
-                            await UserManager.AddToRoleAsync(currentUser.Id, "Admin");
-                            break;
-                        case "Visitor":
-                        default:
-                            if (await UserManager.IsInRoleAsync(currentUser.Id, "Admin"))
-                            {
-                                await UserManager.RemoveFromRoleAsync(currentUser.Id, "Admin");
-                            }
-                            await UserManager.AddToRoleAsync(currentUser.Id, "Visitor");
-                            break;
-                    }
-                    string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
-                    UserManager.SendRegisterEmailTo(user, callbackUrl);
-                    return RedirectToAction("Index");
-                }
+                ViewBag.Message = Messages.Error;
+                model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
+                return View(model);
             }
-            // If we got this far, something failed, redisplay form
-            model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
-            return View(model);
+            var user = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                Name = model.Name,
+                PhoneNumber = model.PhoneNumber,
+            };
+            var result = await UserManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+            {
+                ViewBag.Message = Messages.Users.CreateFailed;
+                model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
+                return View(model);
+            }
+            var currentUser = await UserManager.FindByEmailAsync(user.Email);
+            //Assigning the role
+            switch (model.Role)
+            {
+                case "Admin":
+                    if (await UserManager.IsInRoleAsync(currentUser.Id, "Visitor"))
+                    {
+                        await UserManager.RemoveFromRoleAsync(currentUser.Id, "Visitor");
+                    }
+                    await UserManager.AddToRoleAsync(currentUser.Id, "Admin");
+                    break;
+                case "Visitor":
+                default:
+                    if (await UserManager.IsInRoleAsync(currentUser.Id, "Admin"))
+                    {
+                        await UserManager.RemoveFromRoleAsync(currentUser.Id, "Admin");
+                    }
+                    await UserManager.AddToRoleAsync(currentUser.Id, "Visitor");
+                    break;
+            }
+            string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+            var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
+            int result2 = await UserManager.SendRegisterEmailTo(user, callbackUrl);
+            if (result2 > 0)
+            {
+                return RedirectToAction("Index", new { message = Messages.Users.Created });
+            }
+            else
+            {
+                ViewBag.Message = Messages.UserFailedVerificationEmail;
+                model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
+                return View(model);
+            }        
         }
 
         /// <summary>
@@ -190,54 +204,69 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await UserManager.FindByIdAsync(model.Id);
-                user.Name = model.Name;
-                if(user.PhoneNumber != model.PhoneNumber)
-                {
-                    user.PhoneNumber = model.PhoneNumber;
-                }
-                await UserManager.UpdateAsync(user);
-                if (user.Email != model.Email)
-                {
-                    user.UserName = model.UserName;
-                    await UserManager.SetEmailAsync(user.Id, model.Email);
-                    string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
-                    UserManager.SendChangedEmailEmailTo(user, callbackUrl);
-                }
-                //Updating the role
-                switch (model.Role)
-                {
-                    case "Admin":
-                        if (await UserManager.IsInRoleAsync(user.Id, "Visitor"))
-                        {
-                            await UserManager.RemoveFromRoleAsync(user.Id, "Visitor");
-                        }
-                        await UserManager.AddToRoleAsync(user.Id, "Admin");
-                        break;
-                    case "Visitor":
-                    default:
-                        if (await UserManager.IsInRoleAsync(user.Id, "Admin"))
-                        {
-                            await UserManager.RemoveFromRoleAsync(user.Id, "Admin");
-                        }
-                        await UserManager.AddToRoleAsync(user.Id, "Visitor");
-                        break;
-                }
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                ApplicationUser user = await UserManager.FindByIdAsync(model.Id);
+                ViewBag.Message = Messages.Error;
                 model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
                 return View(model);
             }
+            ApplicationUser user = await UserManager.FindByIdAsync(model.Id);
+            user.Name = model.Name;
+            if (user.PhoneNumber != model.PhoneNumber)
+            {
+                user.PhoneNumber = model.PhoneNumber;
+            }
+            var result = await UserManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                ViewBag.Message = Messages.Users.EditFailed;
+                model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
+                return View(model);
+            }
+            if (user.Email != model.Email)
+            {
+                user.UserName = model.UserName;
+                var result2 = await UserManager.SetEmailAsync(user.Id, model.Email);
+                if (!result2.Succeeded)
+                {
+                    ViewBag.Message = Messages.UserEditEmailFailed;
+                    model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
+                    return View(model);
+                }
+                string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
+                int result3 = await UserManager.SendChangedEmailEmailTo(user, callbackUrl);
+                if (result3 <= 0)
+                {
+                    ViewBag.Message = Messages.UserFailedVerificationEmail;
+                    model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
+                    return View(model);
+                }
+            }
+            //Updating the role
+            switch (model.Role)
+            {
+                case "Admin":
+                    if (await UserManager.IsInRoleAsync(user.Id, "Visitor"))
+                    {
+                        await UserManager.RemoveFromRoleAsync(user.Id, "Visitor");
+                    }
+                    await UserManager.AddToRoleAsync(user.Id, "Admin");
+                    break;
+                case "Visitor":
+                default:
+                    if (await UserManager.IsInRoleAsync(user.Id, "Admin"))
+                    {
+                        await UserManager.RemoveFromRoleAsync(user.Id, "Admin");
+                    }
+                    await UserManager.AddToRoleAsync(user.Id, "Visitor");
+                    break;
+            }
+            return RedirectToAction("Index", new { message = Messages.Users.Edited });
         }
 
         /// <summary>
         /// GET request action for Delete page
         /// </summary>
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> Delete(string id, string message = null)
         {
             if (id == null)
             {
@@ -259,6 +288,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 Role = UserManager.GetRoleName(user.Roles.First().RoleId),
                 UserName = user.UserName
             };
+            ViewBag.ErorMessage = message;
             return View(model);
         }
 
@@ -280,8 +310,15 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 return HttpNotFound();
             }
             //The role is automatically removed by the UserManager
-            await UserManager.DeleteAsync(user);
-            return RedirectToAction("Index");
+            var result = await UserManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", new { message = Messages.Users.Deleted });
+            }
+            else
+            {
+                return View("Delete", "Users", new { id = id, message = Messages.Users.DeleteFailed });
+            }
         }
 
         /// <summary>
@@ -300,5 +337,11 @@ namespace VivedyWebApp.Areas.Admin.Controllers
 
             base.Dispose(disposing);
         }
+    }
+
+    public partial class Messages
+    {
+        public static string UserFailedVerificationEmail = "Something went wrong while sending the email with verification link.";
+        public static string UserEditEmailFailed = "Something went wrong while trying to change the user email.";
     }
 }

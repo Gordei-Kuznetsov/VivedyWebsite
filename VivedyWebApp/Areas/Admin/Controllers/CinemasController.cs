@@ -24,8 +24,9 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         private readonly Entities Helper = new Entities();
 
         // GET: Admin/Cinemas
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string message = null)
         {
+            ViewBag.Message = message;
             return View(await Helper.Cinemas.AllToList());
         }
 
@@ -53,14 +54,23 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         //POST: Admin/Cinemas/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Exclude = "Id")] Cinema cinema)
+        public async Task<ActionResult> Create([Bind(Exclude = "Id")] Cinema model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                await Helper.Cinemas.CreateFrom(cinema);
-                return RedirectToAction("Index");
+                ViewBag.Message = Messages.Error;
+                return View(model);
             }
-            return View(cinema);
+            var result = await Helper.Cinemas.Create(model);
+            if (result != null)
+            {
+                return RedirectToAction("Index", new { message = Messages.Cinemas.Created});
+            }
+            else
+            {
+                ViewBag.Message = Messages.Cinemas.CreateFailed;
+                return View(model);
+            }
         }
 
         // GET: Admin/Cinemas/Edit/5
@@ -85,19 +95,29 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Message = Messages.Error;
                 return View(model);
             }
             Cinema cinema = await Helper.Cinemas.Details(model.Id);
             if(cinema == null)
             {
+                ViewBag.Message = Messages.Error;
                 return View(model);
             }
-            await Helper.Cinemas.Edit(cinema);
-            return RedirectToAction("Index");
+            var result = await Helper.Cinemas.Edit(cinema);
+            if (result != null)
+            {
+                return RedirectToAction("Index", new { message = Messages.Cinemas.Edited});
+            }
+            else
+            {
+                ViewBag.Message = Messages.Cinemas.EditFailed;
+                return View(model);
+            }
         }
 
         // GET: Admin/Cinemas/Delete/5
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> Delete(string id, string message = null)
         {
             if (id == null)
             {
@@ -108,6 +128,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Message = message;
             return View(cinema);
         }
 
@@ -125,8 +146,15 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            await Helper.Cinemas.Delete(id);
-            return RedirectToAction("Index");
+            int result = await Helper.Cinemas.Delete(cinema);
+            if(result > 0)
+            {
+                return RedirectToAction("Index", new { message = Messages.Cinemas.Deleted });
+            }
+            else
+            {
+                return View("Delete", "Cinemas", new { id = id, message = Messages.Cinemas.DeleteFailed });
+            }
         }
     }
 }

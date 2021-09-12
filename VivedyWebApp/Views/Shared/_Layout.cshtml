@@ -60,6 +60,15 @@
         </div>
     </footer>
     <!-- Footer End -->
+    
+    <script>
+        window.addEventListener('load', () => {
+            if ("@ViewBag.ErrorMessage" != "") {
+                alert("@ViewBag.ErrorMessage");
+            }
+        });
+    </script>
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/modernizr")

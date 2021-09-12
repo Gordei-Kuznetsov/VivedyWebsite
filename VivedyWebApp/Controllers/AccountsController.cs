@@ -69,9 +69,10 @@ namespace VivedyWebApp.Controllers
         /// GET request action for Login page
         /// </summary>
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login(string returnUrl, string message = null)
         {
             ViewBag.ReturnUrl = returnUrl;
+            ViewBag.Message = message;
             return View();
         }
 
@@ -85,6 +86,7 @@ namespace VivedyWebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Message = Messages.Error;
                 return View(model);
             }
             //Handling situations when the user got to the Login page directly and there is no return url
@@ -93,7 +95,7 @@ namespace VivedyWebApp.Controllers
             var user = await UserManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
-                ModelState.AddModelError("", "Invalid login attempt.");
+                ViewBag.Message = Messages.InvalidLogin;
                 return View(model);
             }
 
@@ -108,18 +110,17 @@ namespace VivedyWebApp.Controllers
                     case SignInStatus.Success:
                         return RedirectToLocal(returnUrl);
                     case SignInStatus.LockedOut:
+                        ViewBag.Message = Messages.LockedOut;
                         return View("Lockout");
-                    case SignInStatus.RequiresVerification:
-                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                     case SignInStatus.Failure:
                     default:
-                        ModelState.AddModelError("", "Invalid login attempt.");
+                        ViewBag.Message = Messages.InvalidLogin;
                         return View(model);
                 }
             }
             else
             {
-                ViewBag.ErrorMessage = "You have not confirmed your email. Please check your email box.";
+                ViewBag.Message = Messages.UnconfirmedEmail;
                 return View("Error");
             }
         }
@@ -141,23 +142,31 @@ namespace VivedyWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Name = model.Name, Email = model.Email, PhoneNumber = model.PhoneNumber };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    var currentUser = await UserManager.FindByEmailAsync(user.Email);
-                    await UserManager.AddToRoleAsync(currentUser.Id, "Visitor");
-                    string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
-                    UserManager.SendRegisterEmailTo(currentUser, callbackUrl);
-                    return RedirectToAction("Index", "Home");
-                }
-                AddErrors(result);
+                ViewBag.Message = Messages.Error;
+                return View(model);
             }
-
-            // If we got this far, something failed, redisplay form
+            var user = new ApplicationUser { UserName = model.Email, Name = model.Name, Email = model.Email, PhoneNumber = model.PhoneNumber };
+            var result = await UserManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                var currentUser = await UserManager.FindByEmailAsync(user.Email);
+                await UserManager.AddToRoleAsync(currentUser.Id, "Visitor");
+                string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
+                int result2 = await UserManager.SendRegisterEmailTo(currentUser, callbackUrl);
+                if(result2 > 0)
+                {
+                    return RedirectToAction("Index", "Home", new { message = Messages.Registered });
+                }
+                else
+                {
+                    ViewBag.Message = Messages.FailedRegEmail;
+                    return View("Error");
+                }
+            }
+            ViewBag.Message = Messages.Error;
             return View(model);
         }
 
@@ -169,11 +178,20 @@ namespace VivedyWebApp.Controllers
         {
             if (userId == null || code == null)
             {
+                ViewBag.Message = Messages.Error;
                 return View("Error");
             }
             //Confirming that the code is valid for the email
             var result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+            if (result.Succeeded)
+            {
+                return View();
+            }
+            else
+            {
+                ViewBag.Message = Messages.Error;
+                return View("Error");
+            }
         }
 
         /// <summary>
@@ -193,23 +211,35 @@ namespace VivedyWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !user.EmailConfirmed)
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
-                }
-                //Sending email to the user with the link to ResetPassword page
-                string securityCode = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
-                UserManager.SendForgotPasswordEmailTo(user, callbackUrl);
+                ViewBag.Message = Messages.Error;
+                return View(model);
+            }
+            var user = await UserManager.FindByNameAsync(model.Email);
+            if (user == null)
+            {
+                ViewBag.Message = Messages.Error;
+                return View("Error");
+            }
+            if (!user.EmailConfirmed)
+            {
+                ViewBag.Message = Messages.UnconfirmedEmail;
+                return View(model);
+            }
+            //Sending email to the user with the link to ResetPassword page
+            string securityCode = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+            var callbackUrl = Url.Action("ResetPassword", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
+            int result = await UserManager.SendForgotPasswordEmailTo(user, callbackUrl);
+            if(result > 0)
+            {
                 return RedirectToAction("ForgotPasswordConfirmation", "Accounts");
             }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            else
+            {
+                ViewBag.ErrorMesage = Messages.FailedForgPassEmail;
+                return View("Error");
+            }
         }
 
         /// <summary>
@@ -227,7 +257,15 @@ namespace VivedyWebApp.Controllers
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
-            return code == null ? View("Error") : View();
+            if(code == null)
+            {
+                ViewBag.Message = Messages.Error;
+                return View("Error");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         /// <summary>
@@ -240,13 +278,14 @@ namespace VivedyWebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Message = Messages.Error;
                 return View(model);
             }
             var user = await UserManager.FindByNameAsync(model.Email);
             if (user == null)
             {
-                // Don't reveal that the user does not exist
-                return RedirectToAction("ResetPasswordConfirmation", "Accounts");
+                ViewBag.Message = Messages.Error;
+                return View("Error");
             }
 
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
@@ -254,8 +293,8 @@ namespace VivedyWebApp.Controllers
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Accounts");
             }
-            AddErrors(result);
-            return View();
+            ViewBag.Message = Messages.Error;
+            return View(model);
         }
 
         /// <summary>
@@ -283,14 +322,10 @@ namespace VivedyWebApp.Controllers
         /// GET request action for Index page
         /// </summary>
         [Authorize]
-        public async Task<ActionResult> Index(AccountsMessageId? message)
+        public async Task<ActionResult> Index(string message = null)
         {
             //Adding message to display on the Account page
-            ViewBag.StatusMessage =
-                message == AccountsMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == AccountsMessageId.ChangeEmailSuccess ? "Your email has been changed."
-                : message == AccountsMessageId.Error ? "An error has occurred."
-                : "";
+            ViewBag.Message = message;
 
             var userId = User.Identity.GetUserId();
             var user = await UserManager.FindByIdAsync(userId);
@@ -332,16 +367,18 @@ namespace VivedyWebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Message = Messages.Error;
                 return View(model);
             }
             var userId = User.Identity.GetUserId();
             var user = await UserManager.FindByIdAsync(userId);
             user.Name = model.Name;
-            IdentityResult result = await UserManager.UpdateAsync(user);
+            var result = await UserManager.UpdateAsync(user);
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Accounts");
+                return RedirectToAction("Index", "Accounts", new { message = Messages.ModifiedAcc });
             }
+            ViewBag.Message = Messages.Error;
             return View(model);
         }
 
@@ -374,8 +411,13 @@ namespace VivedyWebApp.Controllers
             var user = await UserManager.FindByIdAsync(userId);
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             //The role is automatically removed by the UserManager
-            await UserManager.DeleteAsync(user);
-            return RedirectToAction("Index", "Home");
+            var result = await UserManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", "Home", new { message = Messages.DeletedAcc });
+            }
+            ViewBag.Message = Messages.Error;
+            return View("Error");
         }
 
 
@@ -398,36 +440,45 @@ namespace VivedyWebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Message = Messages.Error;
                 return View(model);
             }
             var userId = User.Identity.GetUserId();
             var user = await UserManager.FindByIdAsync(userId);
-            if (user != null)
+            if (user == null)
             {
-                if (user.Email != model.OldEmail)
+                ViewBag.Message = Messages.Error;
+                return View("Error");
+            }
+            if (user.Email != model.OldEmail)
+            {
+                ViewBag.Message = Messages.OldEmailNotNew;
+                return View(model);
+            }
+            //Saving the changes to the email
+            user.UserName = model.NewEmail;
+            UserManager.SetEmail(user.Id, model.NewEmail);
+            IdentityResult result = await UserManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                //Sending email to the user confirming the email address change
+                string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
+                int result2 = await UserManager.SendChangedEmailEmailTo(user, callbackUrl);
+                if(result2 > 0)
                 {
-                    return View("Error");
-                }
-                //Saving the changes to the email
-                user.UserName = model.NewEmail;
-                UserManager.SetEmail(user.Id, model.NewEmail);
-                IdentityResult result = await UserManager.UpdateAsync(user);
-                if (result.Succeeded)
-                {
-                    //Sending email to the user confirming the email address change
-                    string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
-                    UserManager.SendChangedEmailEmailTo(user, callbackUrl);
                     AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-                    return RedirectToAction("Login", new { Message = AccountsMessageId.ChangeEmailSuccess });
+                    return RedirectToAction("Login", new { message = Messages.ChangedEmail });
                 }
                 else
                 {
+                    ViewBag.Message = Messages.ChangeEmailFailedEmail;
                     return View("Error");
                 }
             }
             else
             {
+                ViewBag.Message = Messages.Error;
                 return View("Error");
             }
         }
@@ -451,6 +502,7 @@ namespace VivedyWebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Message = Messages.Error;
                 return View(model);
             }
             var userId = User.Identity.GetUserId();
@@ -463,9 +515,9 @@ namespace VivedyWebApp.Controllers
                     //Signing the user out so that they login with the new password
                     AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
                 }
-                return RedirectToAction("Login", new { Message = AccountsMessageId.ChangePasswordSuccess });
+                return RedirectToAction("Login", new { message = Messages.ChangedPass });
             }
-            AddErrors(result);
+            ViewBag.Message = Messages.Error;
             return View(model);
         }
 
@@ -491,6 +543,7 @@ namespace VivedyWebApp.Controllers
 
             base.Dispose(disposing);
         }
+
 
         #region Helpers
         // Used for XSRF protection when adding external logins
@@ -549,12 +602,22 @@ namespace VivedyWebApp.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
-        public enum AccountsMessageId
-        {
-            ChangePasswordSuccess,
-            Error,
-            ChangeEmailSuccess
-        }
         #endregion
+    }
+
+    public partial class Messages
+    {
+        public static string InvalidLogin = "Invalid Login attempt.\nPlease Try again.";
+        public static string LockedOut = "Your account has been locked out due to too many failed login attempts.";
+        public static string UnconfirmedEmail= "You have not confirmed your email. Please check your email box.";
+        public static string Registered = "You have successfuly registered. Please check your email box to verify the email address";
+        public static string FailedRegEmail = "Something went wrong while sending your registration email.\nPlease contact our service desk.";
+        public static string FailedForgPassEmail = "Something went wrong while sending the email with instructions on reviving the password.\nPlease try again, or contact our service desk.";
+        public static string ModifiedAcc = "Your account details have been successfuly modified.";
+        public static string DeletedAcc = "Your account has been successfuly deleted.";
+        public static string OldEmailNotNew = "Provided old email is incorrect.\nPlease try again.";
+        public static string ChangedEmail = "Your email address has been successfuly updated.\nPlease check your email box to verify the address";
+        public static string ChangeEmailFailedEmail = "Something went wrong while sending your email with instruction on verifying your email address.\nPlease try again, or contact our service desk.";
+        public static string ChangedPass = "Your password has been successfuly changed.\nPlease login to access your account.";
     }
 }

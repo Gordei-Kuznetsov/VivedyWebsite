@@ -134,7 +134,7 @@
     </div>
 
     <script>
-        window.onload = function () {
+        window.addEventListener('load', function () {
             let seats = document.getElementsByClassName("SeatButton");
             for (let i = 0; i < seats.length; i++) {
                 if (seats[i].id.includes("occupied")) {
@@ -147,7 +147,7 @@
                     seats[i].onclick = selectedChange;
                 }
             }
-        }
+        });
         function selectedChange() {
             if (!this.occupied) {
                 if (this.selected) {

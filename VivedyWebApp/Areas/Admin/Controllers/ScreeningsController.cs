@@ -27,8 +27,9 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Index page
         /// </summary>
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string message = null)
         {
+            ViewBag.Message = message;
             return View(await Helper.Screenings.AllToListWithMoviesAndRooms());
         }
 
@@ -74,6 +75,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
+                ViewBag.Message = Messages.Error;
                 model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
                 model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
                 return View(model);
@@ -89,22 +91,27 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             Room room = await Helper.Rooms.Details(model.RoomId);
             if (movie == null || room == null)
             {
+                ViewBag.Message = Messages.Error;
                 model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
                 model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
                 return View(model);
             }
+            string finalMessage;
             List<Screening> screenings = new List<Screening>();
-            if (await Helper.Screenings.IsDuringMovieShowing(screening, movie) 
-                && await Helper.Screenings.NoneOverlapWith(screening, movie.Duration))
+            if (await Helper.Screenings.IsDuringMovieShowing(screening, movie)
+                        && await Helper.Screenings.NoneOverlapWith(screening, movie.Duration))
             {
                 screenings.Add(screening);
+                finalMessage = "Messages:\nOriginal screening: " + Messages.Screenings.Created;
             }
             else
             {
+                ViewBag.Message = Messages.ScreeningWrongDates;
                 model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
                 model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
                 return View(model);
             }
+
             //Generating Screenings
             //Later will be replaced with the generaion from list of days and list of times
             if (model.GenerateScreenings)
@@ -124,11 +131,26 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                         && await Helper.Screenings.NoneOverlapWith(genScreening, movie.Duration))
                     {
                         screenings.Add(genScreening);
+                        finalMessage += "\nGenerated screening " + i + ": " + Messages.Screenings.Created;
+                    }
+                    else
+                    {
+                        finalMessage += "\nGenerated screening " + i + ": " + Messages.ScreeningWrongDates;
                     }
                 }
             }
-            await Helper.Screenings.SaveRange(screenings);
-            return RedirectToAction("Index");
+            var result = await Helper.Screenings.SaveRange(screenings);
+            if(result < 0)
+            {
+                ViewBag.Message = Messages.FailedScreeings;
+                model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
+                model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Index", new { message = finalMessage });
+            }
         }
 
         /// <summary>
@@ -166,6 +188,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Message = Messages.Error;
                 model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
                 model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
                 return View(model);
@@ -183,18 +206,31 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 && await Helper.Screenings.NoneOverlapWith(screening, screening.Movie.Duration))
             {
                 //possibly send notifying email to customers that there are changes
-                await Helper.Screenings.Edit(screening);
-                return RedirectToAction("Index");
+                var result = await Helper.Screenings.Edit(screening);
+                if(result == null)
+                {
+                    return RedirectToAction("Index", new { message = Messages.Screenings.Edited });
+                }
+                else
+                {
+                    ViewBag.Message = Messages.Screenings.EditFailed;
+                    return View(model);
+                }
             }
-            model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
-            model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
-            return View(model);
+            else
+            {
+                ViewBag.Message = Messages.ScreeningWrongDates;
+                model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
+                model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
+                return View(model);
+            }
+            
         }
 
         /// <summary>
         /// GET request action for Delete page
         /// </summary>
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> Delete(string id, string message = null)
         {
             if (id == null)
             {
@@ -205,6 +241,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Message = message;
             return View(screening);
         }
 
@@ -224,8 +261,21 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            await Helper.Screenings.Delete(id);
-            return RedirectToAction("Index");
+            int result = await Helper.Screenings.Delete(screening);
+            if(result > 0)
+            {
+                return RedirectToAction("Index", new { message = Messages.Screenings.Deleted });
+            }
+            else
+            {
+                return View("Delete", "Screenings", new { message = Messages.Screenings.DeleteFailed });
+            }
         }
+    }
+
+    public partial class Messages
+    {
+        public static string ScreeningWrongDates = "Either the screeing was not during the movie release times, or the the it was overlaping with existing screeings.";
+        public static string FailedScreeings = "One or more screeings could not be create due to an error.";
     }
 }

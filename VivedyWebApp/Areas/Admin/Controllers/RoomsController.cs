@@ -24,8 +24,9 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         private readonly Entities Helper = new Entities();
 
         // GET: Admin/Rooms
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string message = null)
         {
+            ViewBag.Message = message;
             return View(await Helper.Rooms.AllToListWithCinemas());
         }
 
@@ -61,6 +62,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Message = Messages.Error;
                 model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
                 return View(model);
             }
@@ -71,13 +73,23 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 CinemaId = model.CinemaId
             };
             Cinema cinema = await Helper.Cinemas.Details(model.CinemaId);
-            if (cinema != null)
+            if (cinema == null)
             {
-                await Helper.Rooms.CreateFrom(room);
-                return RedirectToAction("Index");
+                ViewBag.Message = Messages.Error;
+                model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
+                return View(model);
             }
-            model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
-            return View(model);
+            var result = await Helper.Rooms.Create(room);
+            if(result != null)
+            {
+                return RedirectToAction("Index", new { message = Messages.Rooms.Created });
+            }
+            else
+            {
+                ViewBag.Message = Messages.Rooms.CreateFailed;
+                model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
+                return View(model);
+            }
         }
 
         // GET: Admin/Rooms/Edit/5
@@ -109,26 +121,38 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Message = Messages.Error;
                 model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
                 return View(model);
             }
             Room room = await Helper.Rooms.Details(model.Id);
             Cinema cinema = await Helper.Cinemas.Details(model.CinemaId);
-            if (room != null || cinema != null)
+            if (room == null || cinema == null)
             {
-                room.Name = model.Name;
-                room.SeatsLayout = model.SeatsLayout;
-                room.CinemaId = model.CinemaId;
-
-                await Helper.Rooms.Edit(room);
-                return RedirectToAction("Index");
+                ViewBag.Message = Messages.Error;
+                model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
+                return View(model);
             }
-            model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
-            return View(model);
+
+            room.Name = model.Name;
+            room.SeatsLayout = model.SeatsLayout;
+            room.CinemaId = model.CinemaId;
+
+            var result = await Helper.Rooms.Edit(room);
+            if (result != null)
+            {
+                return RedirectToAction("Index", new { message = Messages.Rooms.Edited });
+            }
+            else
+            {
+                ViewBag.Message = Messages.Rooms.EditFailed;
+                model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
+                return View(model);
+            }
         }
 
         // GET: Admin/Rooms/Delete/5
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> Delete(string id, string message = null)
         {
             if (id == null)
             {
@@ -139,6 +163,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Message = message;
             return View(room);
         }
 
@@ -156,8 +181,15 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            await Helper.Rooms.Delete(id);
-            return RedirectToAction("Index");
+            int result = await Helper.Rooms.Delete(room);
+            if(result > 0)
+            {
+                return RedirectToAction("Index", new { message = Messages.Rooms.Deleted });
+            }
+            else
+            {
+                return View("Delete", "Rooms", new { message = Messages.Rooms.DeleteFailed });
+            }
         }
     }
 }

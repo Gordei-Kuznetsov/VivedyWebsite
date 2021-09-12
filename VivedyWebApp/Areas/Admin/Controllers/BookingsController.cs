@@ -27,8 +27,9 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Index page
         /// </summary>
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string message = null)
         {
+            ViewBag.Message = message;
             return View(await Helper.Bookings.AllToListWithScreeningsAndMovies());
         }
 
@@ -52,7 +53,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// <summary>
         /// GET request action for Delete page
         /// </summary>
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> Delete(string id, string message = null)
         {
             if (id == null)
             {
@@ -63,6 +64,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Message = message;
             return View(booking);
         }
 
@@ -82,8 +84,48 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            await Helper.Cinemas.Delete(id);
-            return RedirectToAction("Index");
+            int result = await Helper.Bookings.Delete(booking);
+            if(result > 0)
+            {
+                return RedirectToAction("Index", new { message = Messages.Bookings.Deleted });
+            }
+            else
+            {
+                return View("Delete", "Bookings", new { id = id, message = Messages.Error });
+            }
+        }
+    }
+
+    public partial class Messages
+    {
+        public static string Error = "Something went wrong while processing your request.\nPlease try again.";
+        public static BasicMessages<Booking> Bookings = new BasicMessages<Booking>();
+        public static BasicMessages<Booking> Cinemas = new BasicMessages<Booking>();
+        public static BasicMessages<Booking> Movies = new BasicMessages<Booking>();
+        public static BasicMessages<Booking> Rooms = new BasicMessages<Booking>();
+        public static BasicMessages<Booking> Screenings = new BasicMessages<Booking>();
+        public static BasicMessages<Booking> Users = new BasicMessages<Booking>();
+
+        public class BasicMessages<TEntity> where TEntity : BaseModel
+        {
+            public BasicMessages()
+            {
+                string name = Activator.CreateInstance<TEntity>().GetType().Name;
+                string successfully = "The " + name + " was successfully ";
+                string failed = " of the " + name + " failed due to an error.";
+                Created = successfully + "created.";
+                Edited = successfully + "edited.";
+                Deleted = successfully + "deleted.";
+                CreateFailed = "Creation" + failed;
+                EditFailed = "Modification" + failed;
+                DeleteFailed = "Deletion" + failed;
+            }
+            public string Created;
+            public string Edited;
+            public string Deleted;
+            public string CreateFailed;
+            public string EditFailed;
+            public string DeleteFailed;
         }
     }
 }

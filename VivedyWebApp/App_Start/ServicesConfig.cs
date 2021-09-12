@@ -28,7 +28,7 @@ namespace VivedyWebApp
         }
 
         //Custom method for sending email over SMTP server
-        public void Send(string to, string subject, string body)
+        public Task<int> Send(string to, string subject, string body)
         {
             // Plug in your email service here to send an email.
             string from = "vivedycinemas@gmail.com"; //From address 
@@ -44,12 +44,14 @@ namespace VivedyWebApp
             try
             {
                 client.Send(message);
+                return Task.FromResult(1);
             }
 
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                return Task.FromResult(0);
             }
+            
         }
     }
 
@@ -120,34 +122,34 @@ namespace VivedyWebApp
         /// <summary>
         /// Sends a 'register' email to the user with a security check callback url
         /// </summary>
-        public void SendRegisterEmailTo(ApplicationUser user, string callbackUrl)
+        public async Task<int> SendRegisterEmailTo(ApplicationUser user, string callbackUrl)
         {
             string subject = "Email Confirmation";
             string mailbody = "<b>Hi " + user.Name + "</b><br/>Thank you for regestering on our website. Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
             EmailService mailService = new EmailService();
-            mailService.Send(user.Email, subject, mailbody);
+            return await mailService.Send(user.Email, subject, mailbody);
         }
 
         /// <summary>
         /// Sends a 'forgot password' email to the user with a security check callback url
         /// </summary>
-        public void SendForgotPasswordEmailTo(ApplicationUser user, string callbackUrl)
+        public async Task<int> SendForgotPasswordEmailTo(ApplicationUser user, string callbackUrl)
         {
             string subject = "Password Resetting";
             string mailbody = "<b>Hi " + user.Name + "</b><br/>Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to reset password for your account on <a href=\"vivedy.azurewebsites.net/Home/Index\">vivedy.azurewebsites.net</a>.";
             EmailService mailService = new EmailService();
-            mailService.Send(user.Email, subject, mailbody);
+            return await mailService.Send(user.Email, subject, mailbody);
         }
 
         /// <summary>
         /// Sends a 'changes email' email to the user with a security check callback url
         /// </summary>
-        public void SendChangedEmailEmailTo(ApplicationUser user, string callbackUrl)
+        public async Task<int> SendChangedEmailEmailTo(ApplicationUser user, string callbackUrl)
         {
             string subject = "Email Confirmation";
             string mailbody = "<b>Hi " + user.Name + "</b><br/>You have changed your email address on our website.<br/>Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
             EmailService mailService = new EmailService();
-            mailService.Send(user.Email, subject, mailbody);
+            return await mailService.Send(user.Email, subject, mailbody);
         }
 
         /// <summary>
@@ -230,24 +232,16 @@ namespace VivedyWebApp
         }
 
         /// <summary>
-        /// Saves an entity if all members initialized.
+        /// Saves an entity without an Id, which is assigned automatically.
+        /// Can have overrides for entities that require some other automatic modifications prior to creation
         /// <returns>The saved TEntity</returns>
         /// </summary>
-        public async Task<TEntity> Create(TEntity entity)
+        public virtual async Task<TEntity> Create(TEntity entity)
         {
+            entity.Id = Guid.NewGuid().ToString();
             TEntity result = dbSet.Add(entity);
             int saved = await db.SaveChangesAsync();
             return (saved == 1) ? result : null;
-        }
-
-        /// <summary>
-        /// Saves an entity without an Id, which is assigned automatically.
-        /// <returns>The saved TEntity</returns>
-        /// </summary>
-        public virtual async Task<TEntity> CreateFrom(TEntity entity)
-        {
-            entity.Id = Guid.NewGuid().ToString();
-            return await Create(entity);
         }
 
         /// <summary>
@@ -263,9 +257,8 @@ namespace VivedyWebApp
         /// <summary>
         /// Deletes the TEntity from the context
         /// </summary>
-        public async Task<int> Delete(string id)
+        public async Task<int> Delete(TEntity entity)
         {
-            TEntity entity = dbSet.Find(id);
             dbSet.Remove(entity);
             int saved = await db.SaveChangesAsync();
             return saved;
@@ -369,19 +362,19 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns a List of top x current movies based on Viewer Rating
         /// </summary>
-        public async Task<List<Movie>> GetTopNotClosed(int x)
+        public async Task<List<Movie>> GetTopShowing(int x)
         {
-            return await dbSet.Where(m => m.ClosingDate > DateTime.Now).OrderByDescending(m => m.ViewerRating).Take(x).ToListAsync();
+            return await dbSet.Where(m => m.ClosingDate > DateTime.Now && m.ReleaseDate < DateTime.Now).OrderByDescending(m => m.ViewerRating).Take(x).ToListAsync();
         }
 
         /// <summary>
         /// Override of the base CreateFrom method. Rounds up Price and ViewerRating
         /// </summary>
-        public override async Task<Movie> CreateFrom(Movie entity)
+        public override async Task<Movie> Create(Movie entity)
         {
             entity.Price = (float)Math.Round(entity.Price, 2);
             entity.ViewerRating = (float)Math.Round(entity.ViewerRating, 1);
-            return await base.CreateFrom(entity);
+            return await base.Create(entity);
         }
 
         /// <summary>
@@ -661,14 +654,12 @@ namespace VivedyWebApp
         public async Task<List<Booking>> GetAllComingForUser(string email)
         {
             DateTime now = DateTime.Now;
-            return await (from b in dbSet
-                    join s in db.Screenings on b.ScreeningId equals s.Id
-                    join m in db.Movies on s.MovieId equals m.Id
-                    join r in db.Rooms on s.RoomId equals r.Id
-                    join c in db.Cinemas on r.CinemaId equals c.Id
-                    where b.UserEmail == email
-                    && s.StartTime > now
-                    select b).ToListAsync();
+            return await dbSet.Include(b => b.Screening)
+                                .Include(b => b.Screening.Movie)
+                                .Include(b => b.Screening.Room)
+                                .Include(b => b.Screening.Room.Cinema)
+                                .Where(b => b.UserEmail == email && b.Screening.StartTime > now)
+                                .ToListAsync();
         }
 
         /// <summary>
@@ -710,7 +701,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Sends a 'booking confirmation' email for the booking
         /// </summary>
-        public async void SendConfirmationEmail(Booking booking)
+        public async Task<int> SendConfirmationEmail(Booking booking)
         {
             string htmlSeats = "";
             List<int> seats = ConvertSeatsToIntList(booking.Seats);
@@ -750,16 +741,16 @@ namespace VivedyWebApp
                                 $"<p>Go to our <a href=\"vivedy.azurewebsites.net\">website</a> to find more movies!</p>" +
                               $"</div>";
             EmailService mailService = new EmailService();
-            mailService.Send(booking.UserEmail, subject, mailbody);
+            return await mailService.Send(booking.UserEmail, subject, mailbody);
         }
 
         /// <summary>
         /// Override of the base CreateFrom method. Rounds up PayedAmout
         /// </summary>
-        public override async Task<Booking> CreateFrom(Booking entity)
+        public override async Task<Booking> Create(Booking entity)
         {
             entity.PayedAmout = (float)Math.Round(entity.PayedAmout, 2);
-            return await base.CreateFrom(entity);
+            return await base.Create(entity);
         }
 
         /// <summary>

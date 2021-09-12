@@ -40,16 +40,15 @@
         <div class="row mt-5">
             @foreach (var booking in Model.Bookings)
             {
-                <div class="card-body col-lg-3 col-sm-6 movieCard phenomena">
+                <div class="card-body col-lg-3 col-sm-6 movieCard phenomena-sm text-center">
                     <div class="card">
-                        <img src="/Content/Images/@booking.Screening.Movie.Id.-VerticalPoster.png"
+                        <img src="/Content/Images/@booking.Screening.Movie.Id-VerticalPoster.png"
                              class="card-img-top" style="max-height:20rem; min-height:20rem; object-fit:cover" alt="Failed Img">
                     </div>
-                    <p>@booking.Screening.Movie.Name</p>
-                    <p>at @booking.Screening.Room.Cinema.Name</p>
-                    <p>in @booking.Screening.Room.Name</p>
-                    <p>at @booking.Screening.StartTime.ToString("dddd, dd MMMM yyyy HH:mm")</p>
-                    <p>in @booking.Seats</p>
+                    <p class="phenomena">@booking.Screening.Movie.Name</p>
+                    <p>In @booking.Screening.Room.Cinema.Name, @booking.Screening.Room.Name</p>
+                    <p>on @booking.Screening.StartTime.ToString("dddd, dd MMMM yyyy HH:mm")</p>
+                    <p>with seats: @booking.Seats</p>
                 </div>
             }
         </div>

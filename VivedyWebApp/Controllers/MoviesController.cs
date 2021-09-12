@@ -41,15 +41,14 @@ namespace VivedyWebApp.Controllers
         /// <summary>
         /// GET request action for Details page
         /// </summary>
-        public async Task<ActionResult> Details(string id)
+        public async Task<ActionResult> Details(string id, string message = null)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
             Movie movie = await Helper.Movies.Details(id);
-            if (movie == null)
+            if (movie == null || movie.ClosingDate < DateTime.Now)
             {
                 return HttpNotFound();
             }
@@ -58,6 +57,7 @@ namespace VivedyWebApp.Controllers
                 Movie = movie,
                 Cinemas = await Helper.Movies.GetCinemasForMovie(id)
             };
+            ViewBag.Message = message;
             return View(model);
         }
 
