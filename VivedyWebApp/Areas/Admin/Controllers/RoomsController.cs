@@ -50,7 +50,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             RoomsCreateViewModel model = new RoomsCreateViewModel()
             {
-                Cinemas = await Helper.Cinemas.GetSelectListItems()
+                Cinemas = await Helper.Cinemas.GetSelectListItems(),
+                SeatsLayouts = Helper.Rooms.GetSelectLayoutListItems()
             };
             return View(model);
         }
@@ -64,6 +65,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 ViewBag.Message = Messages.Error;
                 model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
+                model.SeatsLayouts = Helper.Rooms.GetSelectLayoutListItems(model.SeatsLayout);
                 return View(model);
             }
             Room room = new Room()
@@ -77,6 +79,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 ViewBag.Message = Messages.Error;
                 model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
+                model.SeatsLayouts = Helper.Rooms.GetSelectLayoutListItems(model.SeatsLayout);
                 return View(model);
             }
             var result = await Helper.Rooms.Create(room);
@@ -88,6 +91,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 ViewBag.Message = Messages.Rooms.CreateFailed;
                 model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
+                model.SeatsLayouts = Helper.Rooms.GetSelectLayoutListItems(model.SeatsLayout);
                 return View(model);
             }
         }
@@ -108,7 +112,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 Id = room.Id,
                 Name = room.Name,
-                SeatsLayout = room.SeatsLayout,
+                SeatsLayouts = Helper.Rooms.GetSelectLayoutListItems(room.SeatsLayout),
                 Cinemas = await Helper.Cinemas.GetSelectListItems(room.CinemaId)
             };
             return View(model);
@@ -123,6 +127,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 ViewBag.Message = Messages.Error;
                 model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
+                model.SeatsLayouts = Helper.Rooms.GetSelectLayoutListItems(model.SeatsLayout);
                 return View(model);
             }
             Room room = await Helper.Rooms.Details(model.Id);
@@ -131,6 +136,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 ViewBag.Message = Messages.Error;
                 model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
+                model.SeatsLayouts = Helper.Rooms.GetSelectLayoutListItems(model.SeatsLayout);
                 return View(model);
             }
 
@@ -147,6 +153,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 ViewBag.Message = Messages.Rooms.EditFailed;
                 model.Cinemas = await Helper.Cinemas.GetSelectListItems(model.CinemaId);
+                model.SeatsLayouts = Helper.Rooms.GetSelectLayoutListItems(model.SeatsLayout);
                 return View(model);
             }
         }

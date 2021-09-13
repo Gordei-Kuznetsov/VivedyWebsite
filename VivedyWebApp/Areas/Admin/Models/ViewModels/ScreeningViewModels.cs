@@ -65,7 +65,7 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
         [Display(Name = "Movie")]
         public string MovieId { get; set; }
-        public List<SelectListItem> Movies = new List<SelectListItem>();
+        public List<SelectListItem> Movies;
 
         /// <summary>
         /// ID of the room where the screening is happeneing
@@ -75,6 +75,6 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
         [Display(Name = "Room")]
         public string RoomId { get; set; }
-        public List<SelectListItem> Rooms = new List<SelectListItem>();
+        public List<SelectListItem> Rooms;
     }
 }

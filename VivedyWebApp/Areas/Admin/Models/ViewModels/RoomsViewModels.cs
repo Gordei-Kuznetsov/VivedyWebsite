@@ -24,6 +24,7 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         [MaxLength(16)]
         [Display(Name = "Seats Layout")]
         public string SeatsLayout { get; set; }
+        public List<SelectListItem> SeatsLayouts;
 
         /// <summary>
         /// ID of the cinema where the room is located
@@ -33,7 +34,7 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
         [Display(Name = "Cinema")]
         public string CinemaId { get; set; }
-        public List<SelectListItem> Cinemas = new List<SelectListItem>();
+        public List<SelectListItem> Cinemas;
     }
 
     public class RoomsViewModel : RoomsCreateViewModel

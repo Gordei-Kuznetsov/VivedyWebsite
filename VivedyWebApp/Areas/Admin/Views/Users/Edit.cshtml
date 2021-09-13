@@ -54,7 +54,7 @@
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.Role) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.DropDownList("Role", Model.Roles, "Please select", new { @class = "col-md-12" })
+                        @Html.DropDownList("Role", Model.Roles, new { @class = "col-md-12" })
                         @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
                     </div>
                 </div>

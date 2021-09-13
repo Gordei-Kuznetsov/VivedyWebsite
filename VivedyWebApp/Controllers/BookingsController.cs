@@ -72,7 +72,7 @@ namespace VivedyWebApp.Controllers
                 BookingSeatsViewModel seatsModel = new BookingSeatsViewModel
                 {
                     SelectedScreeningId = id,
-                    //Getting the movie from db to avoid depending on the object being sent through the request
+                    Screening = screening,
                     Movie = screening.Movie,
                     OccupiedSeats = await Helper.Bookings.GetSeatsForScreening(id),
                     SelectedSeats = ""
@@ -111,6 +111,7 @@ namespace VivedyWebApp.Controllers
                 {
                     SelectedSeats = seatsModel.SelectedSeats,
                     SelectedScreeningId = seatsModel.SelectedScreeningId,
+                    Screening = screening,
                     Movie = screening.Movie,
                     TotalPrice = selectedSeats.Count() * screening.Movie.Price,
                     Email = (user != null) ? user.Email : ""

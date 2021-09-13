@@ -78,42 +78,42 @@ namespace VivedyWebApp.Migrations
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Room 1",
-                    SeatsLayout = "small",
+                    SeatsLayout = "Small",
                     CinemaId = cinemas[2].Id
                 },
                 new Room()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Room 2",
-                    SeatsLayout = "small",
+                    SeatsLayout = "Small",
                     CinemaId = cinemas[2].Id
                 },
                 new Room()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Room 3",
-                    SeatsLayout = "medium",
+                    SeatsLayout = "Medium",
                     CinemaId = cinemas[2].Id
                 },
                 new Room()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Room 4",
-                    SeatsLayout = "medium",
+                    SeatsLayout = "Medium",
                     CinemaId = cinemas[2].Id
                 },
                 new Room()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Room 5",
-                    SeatsLayout = "medium",
+                    SeatsLayout = "Medium",
                     CinemaId = cinemas[2].Id
                 },
                 new Room()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Room 6",
-                    SeatsLayout = "large",
+                    SeatsLayout = "Large",
                     CinemaId = cinemas[2].Id
                 },
 
@@ -122,28 +122,28 @@ namespace VivedyWebApp.Migrations
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Room 1",
-                    SeatsLayout = "small",
+                    SeatsLayout = "Small",
                     CinemaId = cinemas[1].Id
                 },
                 new Room()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Room 2",
-                    SeatsLayout = "medium",
+                    SeatsLayout = "Medium",
                     CinemaId = cinemas[1].Id
                 },
                 new Room()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Room 3",
-                    SeatsLayout = "medium",
+                    SeatsLayout = "Medium",
                     CinemaId = cinemas[1].Id
                 },
                 new Room()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Room 4",
-                    SeatsLayout = "large",
+                    SeatsLayout = "Large",
                     CinemaId = cinemas[1].Id
                 },
 
@@ -152,21 +152,21 @@ namespace VivedyWebApp.Migrations
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Room 1",
-                    SeatsLayout = "small",
+                    SeatsLayout = "Small",
                     CinemaId = cinemas[0].Id
                 },
                 new Room()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Room 2",
-                    SeatsLayout = "medium",
+                    SeatsLayout = "Medium",
                     CinemaId = cinemas[0].Id
                 },
                 new Room()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Room 3",
-                    SeatsLayout = "medium",
+                    SeatsLayout = "Medium",
                     CinemaId = cinemas[0].Id
                 }
             };

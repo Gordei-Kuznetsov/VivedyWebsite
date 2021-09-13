@@ -612,7 +612,7 @@ namespace VivedyWebApp
                     items.Add(new SelectListItem()
                     {
                         Value = screening.Id,
-                        Text = screening.Room.Cinema.Name + " | " + screening.Room.Name + " | " + screening.StartDate.ToString("dd/MM/yyyy") + " | " + screening.StartTime.ToString("hh:mm tt"),
+                        Text = screening.Room.Cinema.Name + " | " + screening.Room.Name + " | " + screening.StartDate.ToString("dd/MM/yyyy") + " | " + screening.StartTime.ToString(@"hh\:mm"),
                         Group = roomsGroup
                     });
                 }
@@ -890,6 +890,20 @@ namespace VivedyWebApp
         {
             Room room = await dbSet.Where(r => r.Id == id).Include(r => r.Cinema).FirstOrDefaultAsync();
             return room;
+        }
+
+        /// <summary>
+        /// Returns List of items for dropdown with room layout types
+        /// </summary>
+        public List<SelectListItem> GetSelectLayoutListItems(string select = null)
+        {
+            List<SelectListItem> items = new List<SelectListItem>() { 
+                new SelectListItem(){ Value = "Small", Text = "Small" },
+                new SelectListItem(){ Value = "Medium", Text = "Medium" },
+                new SelectListItem(){ Value = "Large", Text = "Large" }
+            };
+            items.Find(l => l.Value == select).Selected = true;
+            return items;
         }
     }
 

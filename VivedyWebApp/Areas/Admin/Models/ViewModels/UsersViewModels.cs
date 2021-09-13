@@ -97,6 +97,6 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         [MaxLength(7)]
         [Display(Name = "Role")]
         public string Role { get; set; }
-        public List<SelectListItem> Roles = new List<SelectListItem>();
+        public List<SelectListItem> Roles;
     }
 }

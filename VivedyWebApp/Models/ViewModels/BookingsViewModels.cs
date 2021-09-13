@@ -65,6 +65,11 @@ namespace VivedyWebApp.Models.ViewModels
         /// Movie selected for the booking
         /// </summary>
         public Movie Movie { get; set; }
+
+        /// <summary>
+        /// Screening selected for the booking
+        /// </summary>
+        public Screening Screening { get; set; }
     }
 
     /// <summary>
@@ -138,5 +143,10 @@ namespace VivedyWebApp.Models.ViewModels
         /// Movie selected for the booking
         /// </summary>
         public Movie Movie { get; set; }
+
+        /// <summary>
+        /// Screening selected for the booking
+        /// </summary>
+        public Screening Screening { get; set; }
     }
 }

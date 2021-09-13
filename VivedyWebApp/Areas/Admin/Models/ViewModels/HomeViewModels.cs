@@ -9,6 +9,6 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
     public class HomeViewModel
     {
         public string ScreeningId { get; set; }
-        public List<SelectListItem> Screenings = new List<SelectListItem>();
+        public List<SelectListItem> Screenings;
     }
 }

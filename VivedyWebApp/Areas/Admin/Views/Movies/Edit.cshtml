@@ -55,7 +55,7 @@
                 <div class="row">
                     <label class="col-3 phenomena-sm">@Html.LabelFor(model => model.Duration):</label>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "col-md-12", @value = Model.Duration.ToString(@"hh\:mm") } })
                         @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -76,14 +76,14 @@
                 <div class="row mb-3">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.ReleaseDate) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.EditorFor(model => model.ReleaseDate, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.EditorFor(model => model.ReleaseDate, new { htmlAttributes = new { @class = "col-md-12", @format = "yyyy-MM-dd" } })
                         @Html.ValidationMessageFor(model => model.ReleaseDate, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.ClosingDate) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.EditorFor(model => model.ClosingDate, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.EditorFor(model => model.ClosingDate, new { htmlAttributes = new { @class = "col-md-12", @format = "yyyy-MM-dd" } })
                         @Html.ValidationMessageFor(model => model.ClosingDate, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -142,14 +142,14 @@
               id = id.substring(0, ampersandPosition);
             }
 		    var img = new Image();
-		    img.src = "http://img.youtube.com/vi/" + id + "/mqdefault.jpg";
+		    img.src = "https://img.youtube.com/vi/" + id + "/mqdefault.jpg";
 		    img.onload = function () {
                 validYoutubeUrl = (this.width != 120);
 		    }
         }
 
         document.getElementById("TrailerUrl").onchange = validateUrl;
-        window.onload = validateUrl;
+        window.addEventListener('load', validateUrl);
 
         let readFileToDataURI = function (file) {
             return new Promise((resolve, reject) => {
