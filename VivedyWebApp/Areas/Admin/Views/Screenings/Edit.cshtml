@@ -55,4 +55,9 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        window.addEventListener('load', () => {
+            document.getElementById("StartDate").value = "@Model.StartDate.Date.ToString("yyyy-MM-dd")";
+        });
+    </script>
 }
