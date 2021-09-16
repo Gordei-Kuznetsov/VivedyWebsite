@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using VivedyWebApp.Models;
 using VivedyWebApp.Models.ViewModels;
 using VivedyWebApp.Areas.Admin.Models.ViewModels;
+using Newtonsoft.Json;
 
 namespace VivedyWebApp.Areas.Admin.Controllers
 {
@@ -70,9 +71,6 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(ScreeningsCreateViewModel model)
         {
-            // Method needs improvement for cases when a screening cannot be creaed
-            // Either terminate the process or return a message with the results
-
             if (!ModelState.IsValid)
             {
                 ViewBag.Message = Messages.Error;
@@ -80,16 +78,10 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
                 return View(model);
             }
-            Screening screening = new Screening
-            {
-                Id = Guid.NewGuid().ToString(),
-                StartDate = model.StartDate,
-                StartTime = model.StartTime,
-                MovieId = model.MovieId,
-                RoomId = model.RoomId
-            };
-            Movie movie = await Helper.Movies.Details(screening.MovieId);
+
+            Movie movie = await Helper.Movies.Details(model.MovieId);
             Room room = await Helper.Rooms.Details(model.RoomId);
+
             if (movie == null || room == null)
             {
                 ViewBag.Message = Messages.Error;
@@ -97,52 +89,30 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
                 return View(model);
             }
-            string finalMessage;
-            List<Screening> screenings = new List<Screening>();
-            if (await Helper.Screenings.IsDuringMovieShowing(screening, movie)
-                        && await Helper.Screenings.NoneOverlapWith(screening, movie.Duration))
+            List<DateTime> startDates;
+            List<TimeSpan> startTimes;
+            try
             {
-                screenings.Add(screening);
-                finalMessage = "Messages:\nOriginal screening: " + Messages.Screenings.Created;
+                startDates = JsonConvert.DeserializeObject<List<DateTime>>(model.StartDates);
+                startTimes = JsonConvert.DeserializeObject<List<TimeSpan>>(model.StartTimes);
             }
-            else
+            catch
             {
-                ViewBag.Message = Messages.ScreeningWrongDates;
+                ViewBag.Message = Messages.FailedStartDateTimesConvertion;
                 model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
                 model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
                 return View(model);
             }
 
-            //Generating Screenings
-            //Later will be replaced with the generaion from list of days and list of times
-            if (model.GenerateScreenings)
+            Screening baseScreening = new Screening
             {
-                for (int i = 1; i < 7; i++)
-                {
-                    //A Screening for each day starting from the newScreening.StartTime at the same time of the day
-                    Screening genScreening = new Screening
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        StartDate = screening.StartDate.AddDays(i),
-                        StartTime = screening.StartTime,
-                        MovieId = screening.MovieId,
-                        RoomId = screening.RoomId
-                    };
-                    //Doesn't have to be chacked against other generated screenings as they are at different days anyway
-                    if (await Helper.Screenings.IsDuringMovieShowing(genScreening, movie) 
-                        && await Helper.Screenings.NoneOverlapWith(genScreening, movie.Duration))
-                    {
-                        screenings.Add(genScreening);
-                        finalMessage += "\nGenerated screening " + i + ": " + Messages.Screenings.Created;
-                    }
-                    else
-                    {
-                        finalMessage += "\nGenerated screening " + i + ": " + Messages.ScreeningWrongDates;
-                    }
-                }
-            }
-            var result = await Helper.Screenings.SaveRange(screenings);
-            if(result < 0)
+                MovieId = model.MovieId,
+                RoomId = model.RoomId,
+                Movie = movie
+            };
+
+            int result = await Helper.Screenings.GenerateFrom(baseScreening, startDates, startTimes);
+            if (result < 0)
             {
                 ViewBag.Message = Messages.FailedScreeings;
                 model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
@@ -151,7 +121,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             }
             else
             {
-                return RedirectToAction("Index", new { message = finalMessage });
+                return RedirectToAction("Index", new { message = Messages.SuccessfullyCreatedScreenings });
             }
         }
 
@@ -281,5 +251,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
     {
         public static string ScreeningWrongDates = "Either the screeing was not during the movie release times, or the the it was overlaping with existing screeings.";
         public static string FailedScreeings = "One or more screeings could not be create due to an error.";
+        public static string SuccessfullyCreatedScreenings = "All screenings were successfully created.";
+        public static string FailedStartDateTimesConvertion = "An error occured while proccessing the provided start dates and times.";
     }
 }

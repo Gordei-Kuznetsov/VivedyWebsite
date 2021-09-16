@@ -44,7 +44,7 @@
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.Description) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "col-md-12" } })
+                        @Html.TextAreaFor(m => m.Description, new { htmlAttributes = new { @class = "col-md-12" } })
                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -66,7 +66,7 @@
                     <div class="col-3 phenomena-sm">@Html.LabelFor(m => m.TrailerUrl) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
                         @Html.EditorFor(m => m.TrailerUrl, new { htmlAttributes = new { @class = "col-md-12" } })
-                        @Html.ValidationMessageFor(model => model.TrailerUrl, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.TrailerUrl, "", new { @class = "text-danger", id="TrailerUrlValidator"})
                     </div>
                 </div>
                 <div class="row">
@@ -143,8 +143,10 @@
             }
 		    var img = new Image();
 		    img.src = "https://img.youtube.com/vi/" + id + "/mqdefault.jpg";
-		    img.onload = function () {
-                validYoutubeUrl = (this.width != 120);
+            img.onload = function () {
+                let bool = this.width != 120;
+                validYoutubeUrl = bool;
+                document.getElementById("TrailerUrlValidator").innerText = bool? "" : "Invalid Trailer Url. The video does not exist. Please select a different video.";
 		    }
         }
 
@@ -219,7 +221,7 @@
 
         document.querySelector("button.vivedy-submit-button").addEventListener("click", async () => {
             if (!validYoutubeUrl) {
-                alert("Invalid Trailer Url. The video does not exist. Please select a different video.")
+                document.getElementById("TrailerUrlValidator").innerText = "Invalid Trailer Url. The video does not exist. Please select a different video.";
                 return;
             }
             if (verticalFILE.value) {

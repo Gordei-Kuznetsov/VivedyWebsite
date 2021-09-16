@@ -4,7 +4,7 @@
     ViewBag.Title = "Create Screening";
 }
 
-@using (Html.BeginForm("Create", "Screenings", null, FormMethod.Post, new { role = "form" }))
+@using (Html.BeginForm("Create", "Screenings", null, FormMethod.Post, new { role = "form", id = "mainForm" }))
 {
     @Html.AntiForgeryToken()
     
@@ -13,20 +13,6 @@
             <div class="mb-5 mt-4 phenomena-sm border-bottom border-dark " style="color: #a8000a"><h1 class="display-5">ADD SCREENING</h1></div>
             <div class="border-bottom">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="row">
-                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.StartDate) :</div>
-                    <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "col-md-12", @format = "yyyy-MM-dd", @value = DateTime.Now.Date.ToString("yyyy-MM-dd") } })
-                        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.StartTime) :</div>
-                    <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "col-md-12", @value = DateTime.Now.TimeOfDay.ToString(@"hh\:mm") } })
-                        @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.MovieId) :</div>
                     <div class="mb-3 col-md-8 phenomena-sm">
@@ -41,16 +27,37 @@
                         @Html.ValidationMessageFor(model => model.RoomId, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                @Html.HiddenFor(model => model.StartDates)
                 <div class="row">
-                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.GenerateScreenings):</div>
-                    <div class="mb-3 col-md-8 phenomena-sm">
-                        @Html.CheckBoxFor(model => model.GenerateScreenings, new { htmlAttributes = new { @class = "col-md-12" } })
-                        @Html.ValidationMessageFor(model => model.GenerateScreenings, "", new { @class = "text-danger" })
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.StartDates) :</div>
+                    <div class="col-7">
+                        <div class="btn btn-danger pl-2 pr-2 pt-1 pb-1 mt-1 mb-1 phenomena-sm" id="addDateButton">Add</div>
+                        <ul class="col-12" id="dateList" style="list-style-type: none;">
+                            <li class="mb-3 col-md-8 phenomena-sm">
+                                <input data-val="true" data-val-date="The field Start Date must be a date." data-val-required="The Start Date field is required."
+                                       class="col-md-10" format="yyyy-MM-dd" id="StartDate0" name="StartDate0" type="date" value="@DateTime.Now.Date.ToString("yyyy-MM-dd")">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="StartDate0" data-valmsg-replace="true" id="dateValidator0"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.StartTimes)
+                <div class="row">
+                    <div class="col-3 phenomena-sm">@Html.LabelFor(model => model.StartTimes) :</div>
+                    <div class="col-7">
+                        <div class="btn btn-danger pl-2 pr-2 pt-1 pb-1 mt-1 mb-1 phenomena-sm" id="addTimeButton">Add</div>
+                        <ul class="col-12" id="timeList" style="list-style-type: none;">
+                            <li class="mb-3 col-md-8 phenomena-sm">
+                                <input class="col-md-10" data-val="true" data-val-required="The Start Time field is required."
+                                       id="StartTime0" name="StartTime0" type="time" value="@DateTime.Now.TimeOfDay.ToString(@"hh\:mm")">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="StartTime0" data-valmsg-replace="true" id="timeValidator0"></span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <input type="submit" value="Create" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 ml-3 phenomena-sm">
+                <div id="submitButton" type="submit" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3 ml-3 phenomena-sm">Create</div>
             </div>
             <div class="row">
                 @Html.ActionLink("Back to List", "Index", routeValues: null, htmlAttributes: new { @class = "mt-3 text-link phenomena-sm ml-5" })
@@ -61,9 +68,134 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        window.addEventListener('load', () => {
-            document.getElementById("StartDate").value = "@DateTime.Now.Date.ToString("yyyy-MM-dd")";
-        });
-    </script>
+<script>
+    let prefabDateInput;
+    let prefabTimeInput;
+    let prefabValidator;
+    let prefabremoveBtn;
+
+    let dateList;
+    let timeList;
+
+    let datesArray = [];
+    let timesArray = [];
+
+    window.addEventListener("load", () => {
+        let date0 = document.getElementById("StartDate0");
+        let time0 = document.getElementById("StartTime0");
+
+        datesArray.push(date0);
+        timesArray.push(time0);
+
+        prefabDateInput = date0.cloneNode();
+        prefabTimeInput = time0.cloneNode();
+        prefabValidator = document.getElementById("dateValidator0").cloneNode();
+
+        let icon = document.createElement("i");
+        icon.classList = "fas fa-times";
+
+        prefabremoveBtn = document.createElement("div");
+        prefabremoveBtn.appendChild(icon);
+        prefabremoveBtn.classList = "btn btn-danger phenomena-sm pl-1 pr-1 pt-0 pb-0 ml-1";
+
+        dateList = document.getElementById("dateList");
+        timeList = document.getElementById("timeList");
+
+        document.getElementById("addDateButton").onclick = addNewDate;
+        document.getElementById("addTimeButton").onclick = addNewTime;
+
+        document.getElementById("submitButton").onclick = (e) => {
+            e.preventDefault();
+            let invalid = false;
+            if(datesArray.length == 0){
+                document.getElementById("DatesValidationMessage").innerText = "Start Dates cannot be empty";
+                invalid = true;
+            }
+            if(timesArray.length == 0){
+                document.getElementById("TimesValidationMessage").innerText = "Start Times cannot be empty";
+                invalid = true;
+            }
+            if(invalid) { return; }
+
+            let dates = [];
+            for(let i = 0; i < datesArray.length; i++){
+                dates.push(datesArray[i].value);
+            }
+            let jsonDates = JSON.stringify(dates);
+            document.getElementById("StartDates").value = jsonDates;
+
+            let times = [];
+            for(let i = 0; i < timesArray.length; i++){
+                times.push(timesArray[i].value);
+            }
+            let jsonTimes = JSON.stringify(times);
+            document.getElementById("StartTimes").value = jsonTimes;
+
+            document.getElementById("mainForm").submit();
+        }
+    });
+
+
+    let addNewDate = function () {
+        let newDate = prefabDateInput.cloneNode();
+        newDate.id = "StartDate" + datesArray.length;
+        newDate.name = "StartDate" + datesArray.length;
+        newDate.value="@DateTime.Now.Date.ToString("yyyy-MM-dd")";
+
+        let newValidator = prefabValidator.cloneNode();
+        newValidator.id = "dateValidator" + datesArray.length;
+        newValidator["data-valmsg-for"] = newDate.name;
+
+        let removeButton = prefabremoveBtn.cloneNode(true);
+        removeButton.onclick = removeDate;
+
+        datesArray.push(newDate);
+
+        newLi = document.createElement("li");
+        newLi.classList = "mb-3 col-md-8 phenomena-sm";
+
+        newLi.appendChild(newDate);
+        newLi.appendChild(removeButton);
+        newLi.appendChild(newValidator);
+        dateList.appendChild(newLi);
+    }
+
+    let removeDate = function (e) {
+        const parentLi = e.target.closest("li");
+        dateList.removeChild(parentLi);
+
+        datesArray.splice(datesArray.indexOf(e.target), 1);
+    }
+
+    let addNewTime = function () {
+        let newTime = prefabTimeInput.cloneNode();
+        newTime.id = "StartTime" + timesArray.length;
+        newTime.name = "StartTime" + timesArray.length;
+        newTime.value = "@DateTime.Now.TimeOfDay.ToString(@"hh\:mm")";
+
+        let newValidator = prefabValidator.cloneNode();
+        newValidator.id = "timeValidator" + datesArray.length;
+        newValidator["data-valmsg-for"] = newTime.name;
+
+        let removeButton = prefabremoveBtn.cloneNode(true);
+        removeButton.onclick = removeTime;
+
+        timesArray.push(newTime);
+
+        newLi = document.createElement("li");
+        newLi.classList = "mb-3 col-md-8 phenomena-sm";
+
+        newLi.appendChild(newTime);
+        newLi.appendChild(removeButton);
+        newLi.appendChild(newValidator);
+        timeList.appendChild(newLi);
+    }
+
+    let removeTime = function (e) {
+        const parentLi = e.target.closest("li");
+        timeList.removeChild(parentLi);
+
+        timesArray.splice(timesArray.indexOf(e.target), 1);
+    }
+</script>
 }

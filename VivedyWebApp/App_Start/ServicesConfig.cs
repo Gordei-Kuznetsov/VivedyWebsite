@@ -495,21 +495,36 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<int> GenerateFrom(Screening model, List<DateTime> days, List<TimeSpan> times)
         {
+            days.Sort((a, b) => a.CompareTo(b));
+            times.Sort((a, b) => a.CompareTo(b));
+
             List<Screening> screenings = new List<Screening>();
+
             foreach(DateTime day in days)
             {
                 foreach(TimeSpan time in times)
                 {
-                    screenings.Add(new Screening()
+                    Screening screening = new Screening()
                     {
                         Id = Guid.NewGuid().ToString(),
                         StartDate = day,
                         StartTime = time,
                         MovieId = model.MovieId,
                         RoomId = model.RoomId
-                    });
+                    };
+                    if (await IsDuringMovieShowing(screening, model.Movie)
+                        && await NoneOverlapWith(screening, model.Movie.Duration))
+                    {
+                        // check if previous new screening edns before this one starts
+                        if (screenings.Last().StartDate.Add(screenings.Last().StartTime).Add(model.Movie.Duration) 
+                            <= screening.StartDate.Add(screening.StartTime))
+                        {
+                            screenings.Add(screening);
+                        }
+                    }
                 }
             }
+            
             return await SaveRange(screenings);
         }
 
@@ -533,7 +548,7 @@ namespace VivedyWebApp
                                                     .OrderBy(s => s.StartTime)
                                                     .OrderBy(s => s.StartDate)
                                                     .ToListAsync();
-            if (screenings == null)
+            if (screenings.Count == 0)
             {
                 //if no screenings then nothing can overlap
                 return true;
