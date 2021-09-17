@@ -20,10 +20,12 @@ namespace VivedyWebApp.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+
         /// <summary>
         /// The entities manager instance
         /// </summary>
         private readonly Entities Helper = new Entities();
+        //Only Bookings
 
         public AccountsController()
         {

@@ -22,6 +22,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// The entities manager instance
         /// </summary>
         private readonly Entities Helper = new Entities();
+        //Rooms, Cinemas
 
         // GET: Admin/Rooms
         public async Task<ActionResult> Index(string message = null)

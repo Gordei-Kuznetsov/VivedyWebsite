@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -31,7 +32,7 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         /// </summary>
         [Required]
         [MaxLength(36)]
-        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        [RegularExpression(@"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")]
         [Display(Name = "Cinema")]
         public string CinemaId { get; set; }
         public List<SelectListItem> Cinemas;
@@ -44,7 +45,7 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         /// </summary>
         [Required]
         [MaxLength(36)]
-        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        [RegularExpression(@"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")]
         public string Id { get; set; }
     }
 }

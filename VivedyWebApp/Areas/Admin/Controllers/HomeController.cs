@@ -20,6 +20,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         /// The entities manager instance
         /// </summary>
         private readonly Entities Helper = new Entities();
+        //Screenings, Bookings
 
         /// <summary>
         /// GET request action for Index page

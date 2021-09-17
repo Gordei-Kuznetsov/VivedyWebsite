@@ -22,6 +22,7 @@ namespace VivedyWebApp.Controllers
         /// The entities manager instance
         /// </summary>
         private readonly Entities Helper = new Entities();
+        //Only Movies
 
         /// <summary>
         /// GET request action for Index page

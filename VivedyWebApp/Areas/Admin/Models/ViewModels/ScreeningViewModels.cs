@@ -33,7 +33,7 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         /// </summary>
         [Required]
         [MaxLength(36)]
-        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        [RegularExpression(@"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")]
         [Display(Name = "Movie")]
         public string MovieId { get; set; }
         public List<SelectListItem> Movies;
@@ -43,7 +43,7 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         /// </summary>
         [Required]
         [MaxLength(36)]
-        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        [RegularExpression(@"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")]
         [Display(Name = "Room")]
         public string RoomId { get; set; }
         public List<SelectListItem> Rooms;
@@ -59,7 +59,7 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         /// </summary>
         [Required]
         [MaxLength(36)]
-        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        [RegularExpression(@"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")]
         [Display(Name = "Id")]
         public string Id { get; set; }
 
@@ -84,7 +84,7 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         /// </summary>
         [Required]
         [MaxLength(36)]
-        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        [RegularExpression(@"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")]
         [Display(Name = "Movie")]
         public string MovieId { get; set; }
         public List<SelectListItem> Movies;
@@ -94,7 +94,7 @@ namespace VivedyWebApp.Areas.Admin.Models.ViewModels
         /// </summary>
         [Required]
         [MaxLength(36)]
-        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        [RegularExpression(@"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")]
         [Display(Name = "Room")]
         public string RoomId { get; set; }
         public List<SelectListItem> Rooms;

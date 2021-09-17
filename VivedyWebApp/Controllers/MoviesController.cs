@@ -23,6 +23,7 @@ namespace VivedyWebApp.Controllers
         /// The entities manager instance
         /// </summary>
         private readonly Entities Helper = new Entities();
+        //Movies, Cinemas (if GetCinemasForMovie is back in the Movies manager, then only Movies)
 
         /// <summary>
         /// GET request action for Index page
@@ -55,7 +56,7 @@ namespace VivedyWebApp.Controllers
             MoviesDetailsViewModel model = new MoviesDetailsViewModel()
             {
                 Movie = movie,
-                Cinemas = await Helper.Movies.GetCinemasForMovie(id)
+                Cinemas = await Helper.Cinemas.GetCinemasForMovie(id)
             };
             ViewBag.Message = message;
             return View(model);
