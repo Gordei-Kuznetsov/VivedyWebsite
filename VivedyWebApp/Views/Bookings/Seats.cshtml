@@ -1,7 +1,7 @@
 ﻿@model VivedyWebApp.Models.ViewModels.BookingSeatsViewModel
 
 @{
-    ViewBag.Title = "Seats";
+    ViewBag.Title = "Seats | Booking";
 }
 
 @using (Html.BeginForm("Seats", "Bookings", FormMethod.Post, htmlAttributes: new { role = "form", id="seatsForm", onsubmit="return validateTheForm()" }))

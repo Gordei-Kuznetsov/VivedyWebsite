@@ -1,7 +1,7 @@
 ﻿@model VivedyWebApp.Areas.Admin.Models.ViewModels.MoviesAdminViewModel
 
 @{
-    ViewBag.Title = "Edit Movie";
+    ViewBag.Title = "Edit | Movies";
 }
 
 @using (Html.BeginForm("Edit", "Movies", null, FormMethod.Post, new { role = "form", enctype = "multipart/form-data", @class="vivedy-form-boi" }))
@@ -105,7 +105,7 @@
                 </div>
             </div>
             <div class="row">
-
+                <div class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3  mr-4 phenomena-sm vivedy-submit-button">Save</div>
             </div>
             <div class="row">
                 @Html.ActionLink("Back to List", "Index", routeValues: null, htmlAttributes: new { @class = "mt-3 text-link phenomena-sm ml-5" })
@@ -113,8 +113,6 @@
         </div>
     </div>
 }
-
-<button class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3  mr-4 phenomena-sm vivedy-submit-button">Save</button>
 
 <div class="canvas-dumpspace" hidden>
 
@@ -221,7 +219,7 @@
             });
         };
 
-        document.querySelector("button.vivedy-submit-button").addEventListener("click", async () => {
+        document.querySelector(".vivedy-submit-button").addEventListener("click", async () => {
             if (!validYoutubeUrl) {
                 document.getElementById("TrailerUrlValidator").value = "Invalid Trailer Url. The video does not exist. Please select a different video.";
                 return;
