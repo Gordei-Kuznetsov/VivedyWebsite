@@ -273,10 +273,62 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             }
             return RedirectToAction("Index", new { message =  Messages.Movies.Deleted });
         }
+
+        /// <summary>
+        /// GET request action for DeleteAllClosed page
+        /// </summary>
+        public async Task<ActionResult> DeleteAllClosed(string message = null)
+        {
+            
+            List<Movie> movies = await Helper.Movies.GetAllOld();
+            if(movies.Count == 0)
+            {
+                return RedirectToAction("Index", new { message = Messages.NoClosedMovies });
+            }
+            ViewBag.Message = message;
+            return View(movies);
+        }
+
+        /// <summary>
+        /// POST request action for DeleteAllCLosedConfirmed page
+        /// </summary>
+        [HttpPost, ActionName("DeleteAllClosed")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteAllCLosedConfirmed()
+        {
+            int result = await Helper.Movies.DeleteAllOld();
+            if (result <= 0)
+            {
+                return View("DeleteAllClosed", "Movies", new {message = Messages.ClosedMoviesFailedDelete });
+            }
+            List<Movie> movies = await Helper.Movies.GetAllOld();
+            foreach(Movie movie in movies)
+            {
+                //Deleting poster images
+                //Deleting horizontal poster
+                string path = Server.MapPath("/Content/Images/" + movie.Id + "-HorizontalPoster.png");
+                FileInfo fi = new FileInfo(path);
+                if (fi.Exists)
+                {
+                    fi.Delete();
+                }
+                //Deleting vertical poster
+                path = Server.MapPath("/Content/Images/" + movie.Id + "-VerticalPoster.png");
+                fi = new FileInfo(path);
+                if (fi.Exists)
+                {
+                    fi.Delete();
+                }
+            }
+            return RedirectToAction("Index", new { message = Messages.ClosedMoviesDeleted });
+        }
     }
     
     public partial class Messages
     {
         public static string WrongMovieDates = "The release date cannot be after the closing date.";
+        public static string NoClosedMovies = "There are no closed movies at the moment.";
+        public static string ClosedMoviesFailedDelete = "Failed to delete closed movie.\nPlease try again.";
+        public static string ClosedMoviesDeleted = "All closed movies deleted.";
     }
 }

@@ -269,7 +269,7 @@ namespace VivedyWebApp
         }
     }
 
-    public class MoviesManager : GenericManager<Movie>, IFKEntity
+    public class MoviesManager : GenericManager<Movie>, IFKEntity, ITimeBasedEntity<Movie>
     {
         /// <summary>
         /// Constructor for cases when a MoviesManager object is initialized as a DataManager member
@@ -402,9 +402,29 @@ namespace VivedyWebApp
             }
             return items;
         }
+    
+        /// <summary>
+        /// Returns all closed movies
+        /// </summary>
+        public async Task<List<Movie>> GetAllOld()
+        {
+            List<Movie> movies = await dbSet.Where(m => m.ClosingDate <= DateTime.Now).ToListAsync();
+            return movies;
+        }
+
+        /// <summary>
+        /// Deletes all closed movies
+        /// </summary>
+        public async Task<int> DeleteAllOld()
+        {
+            List<Movie> movies = await GetAllOld();
+            dbSet.RemoveRange(movies);
+            int result = await db.SaveChangesAsync();
+            return result;
+        }
     }
 
-    public class ScreeningsManager : GenericManager<Screening>, IFKEntity
+    public class ScreeningsManager : GenericManager<Screening>, IFKEntity, ITimeBasedEntity<Screening>
     {
         /// <summary>
         /// Constructor for cases when a ScreeningsManager object is initialized as a DataManager member
@@ -644,9 +664,39 @@ namespace VivedyWebApp
             }
             return items;
         }
+
+        /// <summary>
+        /// Returns all finished screenings
+        /// </summary>
+        public async Task<List<Screening>> GetAllOld()
+        {
+            DateTime nowDate = DateTime.Now;
+            TimeSpan nowTime = nowDate.TimeOfDay;
+            List<Screening> screenings = await dbSet.Where(s => s.StartDate < nowDate 
+                                                    || (s.StartDate == nowDate && s.StartTime < nowTime))
+                                                    .Include(s => s.Movie)
+                                                    .Include(s => s.Room)
+                                                    .OrderBy(s => s.StartTime)
+                                                    .OrderBy(s => s.StartDate)
+                                                    .ToListAsync();
+            return screenings;
+        }
+
+        /// <summary>
+        /// Deletes all finished screenings
+        /// </summary>
+        public async Task<int> DeleteAllOld()
+        {
+            DateTime nowDate = DateTime.Now;
+            TimeSpan nowTime = nowDate.TimeOfDay;
+            List<Screening> screenings = await dbSet.Where(s => s.StartDate < nowDate || (s.StartDate == nowDate && s.StartTime < nowTime)).ToListAsync();
+            dbSet.RemoveRange(screenings);
+            int result = await db.SaveChangesAsync();
+            return result;
+        }
     }
 
-    public class BookingsManager : GenericManager<Booking>
+    public class BookingsManager : GenericManager<Booking>, ITimeBasedEntity<Booking>
     {
         /// <summary>
         /// Constructor for cases when a BookingsManager object is initialized as a DataManager member
@@ -805,6 +855,36 @@ namespace VivedyWebApp
             return result;
         }
 
+        /// <summary>
+        /// Returns all bookings for finished screenings
+        /// </summary>
+        public async Task<List<Booking>> GetAllOld()
+        {
+            DateTime nowDate = DateTime.Now;
+            TimeSpan nowTime = nowDate.TimeOfDay;
+            List<Booking> bookings = await dbSet.Where(b => b.Screening.StartDate < nowDate 
+                                                || (b.Screening.StartDate == nowDate && b.Screening.StartTime < nowTime))
+                                                .Include(b => b.Screening)
+                                                .Include(b => b.Screening.Movie)
+                                                .OrderBy(b => b.Screening.StartTime)
+                                                .OrderBy(b => b.Screening.StartDate)
+                                                .OrderBy(b => b.Screening.Movie.Name)
+                                                .ToListAsync();
+            return bookings;
+        }
+
+        /// <summary>
+        /// Deletes all bookings for finished screenings
+        /// </summary>
+        public async Task<int> DeleteAllOld()
+        {
+            DateTime nowDate = DateTime.Now;
+            TimeSpan nowTime = nowDate.TimeOfDay;
+            List<Booking> bookings = await dbSet.Where(b => b.Screening.StartDate < nowDate || (b.Screening.StartDate == nowDate && b.Screening.StartTime < nowTime)).ToListAsync();
+            dbSet.RemoveRange(bookings);
+            int result = await db.SaveChangesAsync();
+            return result;
+        }
     }
 
     public class RoomsManager : GenericManager<Room>, IFKEntity
@@ -999,5 +1079,11 @@ namespace VivedyWebApp
     interface IFKEntity
     {
         Task<List<SelectListItem>> GetSelectListItems(string select = null);
+    }
+
+    interface ITimeBasedEntity<TEntity> where TEntity : BaseModel
+    {
+        Task<List<TEntity>> GetAllOld();
+        Task<int> DeleteAllOld();
     }
 }

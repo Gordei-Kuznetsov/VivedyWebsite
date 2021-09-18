@@ -246,6 +246,36 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 return View("Delete", "Screenings", new { message = Messages.Screenings.DeleteFailed });
             }
         }
+
+        /// <summary>
+        /// GET request action for DeleteAllFinished page
+        /// </summary>
+        public async Task<ActionResult> DeleteAllFinished(string message = null)
+        {
+
+            List<Screening> screenings = await Helper.Screenings.GetAllOld();
+            if (screenings.Count == 0)
+            {
+                return RedirectToAction("Index", new { message = Messages.NoFinishedScreenings });
+            }
+            ViewBag.Message = message;
+            return View(screenings);
+        }
+
+        /// <summary>
+        /// POST request action for DeleteAllFinishedConfirmed page
+        /// </summary>
+        [HttpPost, ActionName("DeleteAllFinished")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteAllFinishedConfirmed()
+        {
+            int result = await Helper.Screenings.DeleteAllOld();
+            if (result <= 0)
+            {
+                return View("DeleteAllFinished", "Screenings", new { message = Messages.FinishedScreeningsFailedDelete });
+            }
+            return RedirectToAction("Index", new { message = Messages.FinishedScreeningsDeleted });
+        }
     }
 
     public partial class Messages
@@ -254,5 +284,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         public static string FailedScreeings = "One or more screeings could not be create due to an error.";
         public static string SuccessfullyCreatedScreenings = "All screenings were successfully created.";
         public static string FailedStartDateTimesConvertion = "An error occured while proccessing the provided start dates and times.";
+        public static string NoFinishedScreenings = "There are no finished screenings at the moment.";
+        public static string FinishedScreeningsFailedDelete = "Failed to delete finished screenings.\nPlease try again.";
+        public static string FinishedScreeningsDeleted = "All finished screenings deleted.";
     }
 }

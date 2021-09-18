@@ -99,6 +99,7 @@
                     }
                 </tbody>
             </table>
+            <a class="btn btn-danger  phenomena-sm " href="/Admin/Movies/DeleteAllClosed">DELETE ALL CLOSED</a>
         </div>
         <div class="white-bg-color admin-mobile">
             <a class="btn btn-danger  phenomena-sm " href="/Admin/Movies/Create">ADD <i class="fas fa-plus"></i></a>
@@ -144,13 +145,14 @@
                                     <div class="row">
                                         @Html.ActionLink("Delete", "Delete", routeValues: new { id = item.Id }, htmlAttributes: new { @class = "btn btn-danger  phenomena-sm ", style = "font-size: .7rem;" })
                                     </div>
-                                  
+
                                 </div>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
+            <a class="btn btn-danger  phenomena-sm " href="/Admin/Movies/DeleteAllClosed">DELETE ALL CLOSED</a>
         </div>
     </div>
 <script>

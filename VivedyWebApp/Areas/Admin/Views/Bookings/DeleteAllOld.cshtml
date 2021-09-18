@@ -1,0 +1,111 @@
+﻿@model IEnumerable<VivedyWebApp.Models.Booking>
+
+@{
+    ViewBag.Title = "Delete All Old | Bookings";
+}
+
+@using (Html.BeginForm("DeleteAllOld", "Bookings", null, FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="adminCard">
+        <div class=" mx-auto phenomena-sm display-3 text-center">
+            DELETE ALL OLD BOOKINGS BELOW
+        </div>
+        <div class="white-bg-color admin-desktop">
+            <br>
+            <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
+                <thead>
+                    <tr class="text-center ">
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.ScreeningId)
+                        </th>
+                        <th scope="col" style="width:95px;">
+                            @Html.DisplayNameFor(model => model.Seats)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.UserEmail)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.PayedAmout)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="text-center">
+                            <td>
+                                @{
+                                    string scr = item.Screening.Movie.Name + ", " + item.Screening.StartDate.ToString("dddd, dd MMMM yyyy") + ", " + item.Screening.StartTime.ToString(@"hh\:mm");
+                                    @Html.ActionLink(scr, "Details", "Screenings", routeValues: new { id = item.ScreeningId }, htmlAttributes: new { @class = "mt-3 text-link phenomena-sm ml-5" })
+                                }
+                            </td>
+                            <td style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
+                                @Html.DisplayFor(modelItem => item.Seats)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserEmail)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PayedAmout)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="row">
+                <input type="submit" value="Delete all old" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3  mr-4 phenomena-sm">
+            </div>
+            <div class="row">
+                @Html.ActionLink("Back to List", "Index", routeValues: null, htmlAttributes: new { @class = "mt-3 text-link phenomena-sm ml-5" })
+            </div>
+        </div>
+        <div class="white-bg-color admin-mobile">
+            <br>
+            <table class="table table-striped  phenomena-sm" style="border: 8px solid #a8000a; color: #222;">
+                <thead>
+                    <tr class="text-center ">
+                        <th scope="col" class="admin-display-sm-none" style="width:95px;">
+                            @Html.DisplayNameFor(model => model.ScreeningId)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Seats)
+                        </th>
+                        <th scope="col" class="admin-display-none">
+                            @Html.DisplayNameFor(model => model.UserEmail)
+                        </th>
+                        <th scope="col">
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="text-center">
+                            <td class="admin-display-sm-none" style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
+                                @{
+                                    string scr = item.Screening.Movie.Name + ", " + item.Screening.StartDate.ToString("dddd, dd MMMM yyyy") + ", " + item.Screening.StartTime.ToString(@"hh\:mm");
+                                    @Html.ActionLink(scr, "Details", "Screenings", routeValues: new { id = item.ScreeningId }, htmlAttributes: new { @class = "mt-3 text-link phenomena-sm ml-5" })
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Seats)
+                            </td>
+                            <td class="admin-display-none">
+                                @Html.DisplayFor(modelItem => item.UserEmail)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="row">
+                <input type="submit" value="Delete all old" class="btn btn-danger pl-5 pr-5 pt-2 pb-2 mt-3  mr-4 phenomena-sm">
+            </div>
+            <div class="row">
+                @Html.ActionLink("Back to List", "Index", routeValues: null, htmlAttributes: new { @class = "mt-3 text-link phenomena-sm ml-5" })
+            </div>
+        </div>
+    </div>
+}

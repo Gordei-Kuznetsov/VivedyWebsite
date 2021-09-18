@@ -95,11 +95,44 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 return View("Delete", "Bookings", new { id = id, message = Messages.Error });
             }
         }
+
+        /// <summary>
+        /// GET request action for DeleteAllOld page
+        /// </summary>
+        public async Task<ActionResult> DeleteAllOld(string message = null)
+        {
+
+            List<Booking> bookings = await Helper.Bookings.GetAllOld();
+            if (bookings.Count == 0)
+            {
+                return RedirectToAction("Index", new { message = Messages.NoFinishedBookings });
+            }
+            ViewBag.Message = message;
+            return View(bookings);
+        }
+
+        /// <summary>
+        /// POST request action for DeleteAllOldConfirmed page
+        /// </summary>
+        [HttpPost, ActionName("DeleteAllOld")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteAllOldConfirmed()
+        {
+            int result = await Helper.Bookings.DeleteAllOld();
+            if (result <= 0)
+            {
+                return View("DeleteAllOld", "Bookings", new { message = Messages.FinishedBookingsFailedDelete });
+            }
+            return RedirectToAction("Index", new { message = Messages.FinishedBookingsDeleted });
+        }
     }
 
     public partial class Messages
     {
         public static string Error = "Something went wrong while processing your request.\nPlease try again.";
+        public static string NoFinishedBookings = "There are no bookings for finished screenings at the moment.";
+        public static string FinishedBookingsFailedDelete = "Failed to delete bookings for finished screenings.\nPlease try again.";
+        public static string FinishedBookingsDeleted = "All bookings for finished screenings deleted.";
         public static BasicMessages<Booking> Bookings = new BasicMessages<Booking>();
         public static BasicMessages<Booking> Cinemas = new BasicMessages<Booking>();
         public static BasicMessages<Booking> Movies = new BasicMessages<Booking>();

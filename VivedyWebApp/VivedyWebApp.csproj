@@ -270,6 +270,9 @@
     <Content Include="Areas\Admin\Views\Rooms\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Rooms\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Rooms\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Movies\DeleteAllClosed.cshtml" />
+    <Content Include="Areas\Admin\Views\Screenings\DeleteAllFinished.cshtml" />
+    <Content Include="Areas\Admin\Views\Bookings\DeleteAllOld.cshtml" />
     <None Include="Properties\PublishProfiles\vivedy - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
