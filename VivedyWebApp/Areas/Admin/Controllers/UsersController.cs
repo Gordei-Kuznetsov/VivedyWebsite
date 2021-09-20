@@ -127,7 +127,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             var result = await UserManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
             {
-                ViewBag.Message = Messages.Users.CreateFailed;
+                ViewBag.Message = Messages.UserCreateFailed;
                 model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
                 return View(model);
             }
@@ -156,7 +156,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             int result2 = await UserManager.SendRegisterEmailTo(user, callbackUrl);
             if (result2 > 0)
             {
-                return RedirectToAction("Index", new { message = Messages.Users.Created });
+                return RedirectToAction("Index", new { message = Messages.UserCreated });
             }
             else
             {
@@ -217,7 +217,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             var result = await UserManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
-                ViewBag.Message = Messages.Users.EditFailed;
+                ViewBag.Message = Messages.UserEditFailed;
                 model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
                 return View(model);
             }
@@ -260,7 +260,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                     await UserManager.AddToRoleAsync(user.Id, "Visitor");
                     break;
             }
-            return RedirectToAction("Index", new { message = Messages.Users.Edited });
+            return RedirectToAction("Index", new { message = Messages.UserEdited });
         }
 
         /// <summary>
@@ -313,11 +313,11 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             var result = await UserManager.DeleteAsync(user);
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", new { message = Messages.Users.Deleted });
+                return RedirectToAction("Index", new { message = Messages.UserDeleted });
             }
             else
             {
-                return View("Delete", "Users", new { id = id, message = Messages.Users.DeleteFailed });
+                return View("Delete", "Users", new { id = id, message = Messages.UserDeleteFailed });
             }
         }
 
@@ -343,5 +343,11 @@ namespace VivedyWebApp.Areas.Admin.Controllers
     {
         public static string UserFailedVerificationEmail = "Something went wrong while sending the email with verification link.";
         public static string UserEditEmailFailed = "Something went wrong while trying to change the user email.";
+        public static string UserCreated = "The user was successfully created.";
+        public static string UserEdited = "The user was successfully edited.";
+        public static string UserDeleted = "The user was successfully deleted.";
+        public static string UserCreateFailed = "Creation of the user failed due to an error.";
+        public static string UserEditFailed = "Modification of the user failed due to an error.";
+        public static string UserDeleteFailed = "Deletion of the user failed due to an error.";
     }
 }

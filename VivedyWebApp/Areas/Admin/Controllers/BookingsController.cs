@@ -134,11 +134,10 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         public static string FinishedBookingsFailedDelete = "Failed to delete bookings for finished screenings.\nPlease try again.";
         public static string FinishedBookingsDeleted = "All bookings for finished screenings deleted.";
         public static BasicMessages<Booking> Bookings = new BasicMessages<Booking>();
-        public static BasicMessages<Booking> Cinemas = new BasicMessages<Booking>();
-        public static BasicMessages<Booking> Movies = new BasicMessages<Booking>();
-        public static BasicMessages<Booking> Rooms = new BasicMessages<Booking>();
-        public static BasicMessages<Booking> Screenings = new BasicMessages<Booking>();
-        public static BasicMessages<Booking> Users = new BasicMessages<Booking>();
+        public static BasicMessages<Cinema> Cinemas = new BasicMessages<Cinema>();
+        public static BasicMessages<Movie> Movies = new BasicMessages<Movie>();
+        public static BasicMessages<Room> Rooms = new BasicMessages<Room>();
+        public static BasicMessages<Screening> Screenings = new BasicMessages<Screening>();
 
         public class BasicMessages<TEntity> where TEntity : BaseModel
         {

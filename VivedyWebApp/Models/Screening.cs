@@ -34,7 +34,7 @@ namespace VivedyWebApp.Models
         [ForeignKey ("Movie")]
         [Required]
         [MaxLength(36)]
-        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        [RegularExpression(@"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")]
         [Display(Name = "Movie")]
         public string MovieId { get; set; }
         public Movie Movie { get; set; }
@@ -45,7 +45,7 @@ namespace VivedyWebApp.Models
         [ForeignKey("Room")]
         [Required]
         [MaxLength(36)]
-        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        [RegularExpression(@"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")]
         [Display(Name = "Room")]
         public string RoomId { get; set; }
         public Room Room { get; set; }

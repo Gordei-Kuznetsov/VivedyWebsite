@@ -502,7 +502,7 @@ namespace VivedyWebApp.Migrations
                 new Booking()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Seats = "54,42,43,55,56,44,",
+                    Seats = "F4F5F6F7",
                     PayedAmout = 78f,
                     VerificationTime = nowDate,
                     UserEmail = "vivedycinemas@gmail.com",
@@ -511,7 +511,7 @@ namespace VivedyWebApp.Migrations
                 new Booking()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Seats = "16,17,18,19,51,39,40,52,41,",
+                    Seats = "G2G3G4",
                     PayedAmout = 117f,
                     UserEmail = "vivedycinemas@gmail.com",
                     ScreeningId = screenings[7].Id
@@ -519,7 +519,7 @@ namespace VivedyWebApp.Migrations
                 new Booking()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Seats = "43,44,45,33,32",
+                    Seats = "E4E5E6F4F5F6",
                     PayedAmout = 65f,
                     UserEmail = "vivedycinemas@gmail.com",
                     ScreeningId = screenings[8].Id
@@ -527,7 +527,7 @@ namespace VivedyWebApp.Migrations
                 new Booking()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Seats = "21,22,23,24,25,",
+                    Seats = "G3G4G5G6G7G8",
                     PayedAmout = 65f,
                     UserEmail = "vivedycinemas@gmail.com",
                     ScreeningId = screenings[8].Id

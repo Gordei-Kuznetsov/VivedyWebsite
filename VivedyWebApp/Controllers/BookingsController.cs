@@ -67,7 +67,7 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = await Helper.Screenings.DetailsWithMovie(id);
+            Screening screening = await Helper.Screenings.DetailsWithMovieAndRoom(id);
             if(screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartDate.Add(screening.StartTime) > DateTime.Now)
             {
                 BookingSeatsViewModel seatsModel = new BookingSeatsViewModel
@@ -94,7 +94,7 @@ namespace VivedyWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ViewResult> Seats(BookingSeatsViewModel model)
         {
-            List<int> seats = Helper.Bookings.ConvertSeatsToIntList(model.SelectedSeats);
+            List<string> seats = Helper.Bookings.ConvertSeatsToStrList(model.SelectedSeats);
             if (!ModelState.IsValid || seats.Count == 0 || seats.Count > 16)
             {
                 ViewBag.Message = Messages.Error;
@@ -138,7 +138,7 @@ namespace VivedyWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ViewResult> Pay(BookingPayViewModel model)
         {
-            List<int> seats = Helper.Bookings.ConvertSeatsToIntList(model.SelectedSeats);
+            List<string> seats = Helper.Bookings.ConvertSeatsToStrList(model.SelectedSeats);
             if (!ModelState.IsValid || seats.Count == 0 || seats.Count > 16)
             {
                 ViewBag.Message = Messages.Error;

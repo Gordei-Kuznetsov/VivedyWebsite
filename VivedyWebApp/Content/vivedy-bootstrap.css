@@ -12529,6 +12529,6 @@ button.bg-secondary:focus {
     background-color: rgb(88, 88, 88);
     color: white;
 }
-.seatNumber {
+.seatLable {
     padding-top: 3px;
 }

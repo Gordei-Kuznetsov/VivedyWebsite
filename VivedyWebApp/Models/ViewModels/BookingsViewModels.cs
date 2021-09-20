@@ -51,13 +51,14 @@ namespace VivedyWebApp.Models.ViewModels
         /// <summary>
         /// Seats occupied for this Screening
         /// </summary>
-        public List<int> OccupiedSeats { get; set; }
+        public List<string> OccupiedSeats { get; set; }
 
         /// <summary>
         /// Seats selected for the booking
         /// </summary>
         [Required]
-        [MaxLength(64, ErrorMessage = "Sorry but you can book maximum 16 seats")]
+        [MaxLength(48, ErrorMessage = "Sorry but you can book maximum 16 seats")]
+        [RegularExpression(@"^([A-Z]\d{1,2}){1,16}$")]
         [Display(Name = "Selected Seats")]
         public string SelectedSeats { get; set; }
 
@@ -90,7 +91,8 @@ namespace VivedyWebApp.Models.ViewModels
         /// Seats selected for the Screening
         /// </summary>
         [Required]
-        [MaxLength(64, ErrorMessage = "Sorry but you can book maximum 16 seats")]
+        [MaxLength(48, ErrorMessage = "Sorry but you can book maximum 16 seats")]
+        [RegularExpression(@"^([A-Z]\d{1,2}){1,16}$")]
         [Display(Name = "Selected Seats")]
         public string SelectedSeats { get; set; }
 

@@ -211,6 +211,10 @@
     <Compile Include="Migrations\202109121103510_StartTimeToDateAndTime_MovieDateTimesToDates.Designer.cs">
       <DependentUpon>202109121103510_StartTimeToDateAndTime_MovieDateTimesToDates.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202109200020192_ChangedBookingSeatsLength.cs" />
+    <Compile Include="Migrations\202109200020192_ChangedBookingSeatsLength.Designer.cs">
+      <DependentUpon>202109200020192_ChangedBookingSeatsLength.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppDbContext.cs" />
     <Compile Include="Models\BaseModel.cs" />
@@ -343,6 +347,9 @@
     <Content Include="Views\Accounts\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Accounts\Edit.cshtml" />
+    <Content Include="Views\Bookings\_SmallSeatsLayout.cshtml" />
+    <Content Include="Views\Bookings\_MediumSeatsLayout.cshtml" />
+    <Content Include="Views\Bookings\_LargeSeatsLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -370,6 +377,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202109121103510_StartTimeToDateAndTime_MovieDateTimesToDates.resx">
       <DependentUpon>202109121103510_StartTimeToDateAndTime_MovieDateTimesToDates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109200020192_ChangedBookingSeatsLength.resx">
+      <DependentUpon>202109200020192_ChangedBookingSeatsLength.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

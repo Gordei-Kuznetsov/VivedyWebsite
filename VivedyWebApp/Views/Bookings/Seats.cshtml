@@ -4,7 +4,7 @@
     ViewBag.Title = "Seats | Booking";
 }
 
-@using (Html.BeginForm("Seats", "Bookings", FormMethod.Post, htmlAttributes: new { role = "form", id="seatsForm", onsubmit="return validateTheForm()" }))
+@using (Html.BeginForm("Seats", "Bookings", FormMethod.Post, htmlAttributes: new { role = "form", id = "seatsForm", onsubmit = "return validateTheForm()" }))
 {
     @Html.AntiForgeryToken()
 
@@ -22,64 +22,20 @@
                         <p class="card-text">Select your seats</p>
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                        <!--use the Model.Screening.Room.SeatLayout to determine which layout page to render (Small,Medium, or Big)-->
-
-                        @for (int row = 0; row < 5; row++)
+                        <!--use the Model.Screening.Room.SeatLayout to determine which layout page to render (Small,Medium, or Large)-->
+                        @if (Model.Screening.Room.SeatsLayout == "Small")
                         {
-                            int min = 12 * row + 1;
-                            int max = min + 11;
-                            <div class="row ">
-                                @for (int s = min; s <= max; s++)
-                                {
-                                    if (Model.OccupiedSeats != null && Model.OccupiedSeats.Contains(s))
-                                    {
-                                        <div class="col-lg-1 col-md-2 col-sm-4 col-6">
-                                            <div id="occupied_@s" disabled="true" class="btn btn-warning SeatButton m-2" style="width: 100%; min-width:3rem; max-width:5rem;">@s</div>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="col-lg-1 col-md-2 col-sm-4 col-6">
-                                            <div class="btn btn-danger SeatButton m-2" style="width: 100%; min-width:3rem; max-width:5rem;">@s</div>
-                                        </div>
-                                    }
-                                }
-                            </div>
+                            Html.Partial("_SmallSeatsLayout");
                         }
-                        <!--
-                        <div class="row">
-                            <div class="gray-box">
-                                <p class="seatNumber">1</p>
-                            </div>
-                            <div class="gray-box">
-                                <p class="seatNumber">2</p>
-                            </div>
-                            <div class="gray-box">
-                                <p class="seatNumber">3</p>
-                            </div>
-                            <div class="gray-box">
-                                <p class="seatNumber">4</p>
-                            </div>
-                            <div class="gray-box">
-                                <p class="seatNumber">5</p>
-                            </div>
-                            <div class="gray-box">
-                                <p class="seatNumber">6</p>
-                            </div>
-                            <div class="gray-box">
-                                <p class="seatNumber">7</p>
-                            </div>
-                            <div class="gray-box">
-                                <p class="seatNumber">8</p>
-                            </div>
-                            <div class="gray-box-select">
-                                <p class="seatNumber">9</p>
-                            </div>
-                            <div class="gray-box-taken">
-                                <p class="seatNumber">10</p>
-                            </div>
-                        </div>
-                        -->
+                        @if (Model.Screening.Room.SeatsLayout == "Medium")
+                        {
+                            Html.Partial("_MediumSeatsLayout");
+                        }
+                        @if (Model.Screening.Room.SeatsLayout == "Large")
+                        {
+                            Html.Partial("_LargeSeatsLayout");
+                        }
+                        
                         @Html.HiddenFor(m => m.SelectedSeats)
                         @Html.ValidationMessageFor(m => m.SelectedSeats, "", new { @class = "text-danger", id = "ValMessageSpanForSeats" })
                         @Html.HiddenFor(m => m.SelectedScreeningId)
@@ -124,13 +80,16 @@
         let input = document.getElementById("SelectedSeats");
         let validator = document.getElementById("ValMessageSpanForSeats");
         let selectedSeats = [];
+        let occupiedSeats = "@string.Join("", Model.OccupiedSeats.ToArray())".split(/[A-Z]\d{1,2}/g);
 
         window.addEventListener('load', function () {
-            let seats = document.getElementsByClassName("SeatButton");
+            let seats = document.getElementsByClassName("seatLable");
             for (let i = 0; i < seats.length; i++) {
-                if (seats[i].id.includes("occupied")) {
+                if (occupiedSeats.includes(seats[i].textContent)) {
                     seats[i].occupied = true;
                     seats[i].selected = false;
+                    seats[i].classList.remove("gray-box");
+                    seats[i].classList.add("gray-box-taken")
                 }
                 else {
                     seats[i].occupied = false;
@@ -146,8 +105,8 @@
                         validator.innerText = "";
                     }
                     this.selected = false;
-                    this.classList.remove("btn-primary");
-                    this.classList.add("btn-danger");
+                    this.classList.remove("gray-box-select");
+                    this.classList.add("gray-box");
                     var index = selectedSeats.indexOf(this.textContent);
                     if (index !== -1) {
                       selectedSeats.splice(index, 1);
@@ -159,8 +118,8 @@
                         return;
                     }
                     this.selected = true;
-                    this.classList.remove("btn-danger");
-                    this.classList.add("primary");
+                    this.classList.remove("gray-box");
+                    this.classList.add("gray-box-select");
                     selectedSeats.push(this.textContent);
                 }
             }
@@ -172,7 +131,7 @@
                 return false;
             }
             else {
-                input.value = selectedSeats.join(",");
+                input.value = selectedSeats.join("");
                 return true;
             }
         }

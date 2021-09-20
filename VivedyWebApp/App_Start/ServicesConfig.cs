@@ -16,6 +16,7 @@ using VivedyWebApp.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using VivedyWebApp.Models.ViewModels;
+using System.Text.RegularExpressions;
 
 namespace VivedyWebApp
 {
@@ -511,12 +512,8 @@ namespace VivedyWebApp
         /// </summary>
         private int GetCount(string seats)
         {
-            int result = 0;
-            foreach (string seat in seats.Split(','))
-            {
-                if (seat != null && seat != "") { result++; }
-            }
-            return result;
+            MatchCollection matches = Regex.Matches(seats, @"([A-Z]\d{1,2})");
+            return matches.Count;
         }
 
         /// <summary>
@@ -529,8 +526,7 @@ namespace VivedyWebApp
             times.Sort((a, b) => a.CompareTo(b));
 
             List<Screening> screenings = new List<Screening>();
-
-            foreach(DateTime day in days)
+            foreach (DateTime day in days)
             {
                 foreach(TimeSpan time in times)
                 {
@@ -545,7 +541,13 @@ namespace VivedyWebApp
                     if (await IsDuringMovieShowing(screening, model.Movie)
                         && await NoneOverlapWith(screening, model.Movie.Duration))
                     {
-                        // check if previous new screening edns before this one starts
+                        // if no screenings were generated yet, then add to the list
+                        if(screenings.Count == 0)
+                        {
+                            screenings.Add(screening);
+                            continue;
+                        }
+                        // esle, check if previous generated screening ends before this one starts
                         if (screenings.Last().StartDate.Add(screenings.Last().StartTime).Add(model.Movie.Duration) 
                             <= screening.StartDate.Add(screening.StartTime))
                         {
@@ -755,22 +757,16 @@ namespace VivedyWebApp
         /// <summary>
         /// Reutrns all seats from bookings for screening with the Id
         /// </summary>
-        public async Task<List<int>> GetSeatsForScreening(string id)
+        public async Task<List<string>> GetSeatsForScreening(string id)
         {
-            List<string> seatStrings = await dbSet.Where(b => b.ScreeningId == id)
-                                                .Select(b => b.Seats).ToListAsync();
-            List<int> seats = new List<int>();
-            if (seatStrings != null)
+            string[] seatStrings = await dbSet.Where(b => b.ScreeningId == id)
+                                                .Select(b => b.Seats).ToArrayAsync();
+            if (seatStrings == null)
             {
-                for (int i = 0; i < seatStrings.Count; i++)
-                {
-                    seatStrings[i] = seatStrings[i].Trim(new char[] { ',' });
-                    foreach (string seat in seatStrings[i].Split(','))
-                    {
-                        seats.Add(int.Parse(seat));
-                    }
-                }
+                return null;
             }
+            string allSeats = string.Join("", seatStrings);
+            List<string> seats = ConvertSeatsToStrList(allSeats);
             return seats;
         }
 
@@ -778,23 +774,19 @@ namespace VivedyWebApp
         /// Converts the seats from a Booking.Seats into a list if strings
         /// <returns>List of strings</returns>
         /// </summary>
-        public List<int> ConvertSeatsToIntList(string seats)
+        public List<string> ConvertSeatsToStrList(string seats)
         {
-            List<int> result = new List<int>();
-            seats = seats.Trim(new char[] { ',' });
-            foreach (string seat in seats.Split(','))
-            {
-                result.Add(int.Parse(seat));
-            }
+            MatchCollection matches = Regex.Matches(seats, @"([A-Z]\d{1,2})");
+            List<string> result = matches.Cast<string>().ToList();
             return result;
         }
         
         /// <summary>
         /// Checks if any of the selected seats overlap with already booked seats        
         /// </summary>
-        public async Task<bool> AnySeatsOverlapWith(List<int> seats, string id)
+        public async Task<bool> AnySeatsOverlapWith(List<string> seats, string id)
         {
-            List<int> allSeats = await GetSeatsForScreening(id);
+            List<string> allSeats = await GetSeatsForScreening(id);
             bool result = allSeats.Intersect(seats).Any();
             return result;
         }
@@ -805,9 +797,10 @@ namespace VivedyWebApp
         public async Task<int> SendConfirmationEmail(Booking booking)
         {
             string htmlSeats = "";
-            List<int> seats = ConvertSeatsToIntList(booking.Seats);
-            foreach (int seat in seats)
+            List<string> seats = ConvertSeatsToStrList(booking.Seats);
+            foreach (string seat in seats)
             {
+                //can possibly be a rendered SeatsLayout page later
                 htmlSeats += $"<li>{seat}</li>";
             }
             Screening screening = await db.Screenings.Where(s => s.Id == booking.ScreeningId).Include(s => s.Movie).FirstOrDefaultAsync();

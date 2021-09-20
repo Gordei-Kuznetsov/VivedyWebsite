@@ -16,7 +16,8 @@ namespace VivedyWebApp.Models
         /// Selected seats for the booking
         /// </summary>
         [Required]
-        [MaxLength(64)]
+        [MaxLength(48)]
+        [RegularExpression(@"^([A-Z]\d{1,2}){1,16}$")]
         [Display(Name = "Seats")]
         public string Seats { get; set; }
 
@@ -49,7 +50,7 @@ namespace VivedyWebApp.Models
         [ForeignKey("Screening")]
         [Required]
         [MaxLength(36)]
-        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        [RegularExpression(@"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")]
         [Display(Name = "Screening")]
         public string ScreeningId { get; set; }
         public Screening Screening { get; set; }
