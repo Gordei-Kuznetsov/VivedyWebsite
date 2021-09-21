@@ -22,20 +22,8 @@
                         <p class="card-text">Select your seats</p>
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                        <!--use the Model.Screening.Room.SeatLayout to determine which layout page to render (Small,Medium, or Large)-->
-                        @if (Model.Screening.Room.SeatsLayout == "Small")
-                        {
-                            Html.Partial("_SmallSeatsLayout");
-                        }
-                        @if (Model.Screening.Room.SeatsLayout == "Medium")
-                        {
-                            Html.Partial("_MediumSeatsLayout");
-                        }
-                        @if (Model.Screening.Room.SeatsLayout == "Large")
-                        {
-                            Html.Partial("_LargeSeatsLayout");
-                        }
-                        
+                        @Html.Partial($"_{Model.Screening.Room.SeatsLayout}SeatsLayout")
+
                         @Html.HiddenFor(m => m.SelectedSeats)
                         @Html.ValidationMessageFor(m => m.SelectedSeats, "", new { @class = "text-danger", id = "ValMessageSpanForSeats" })
                         @Html.HiddenFor(m => m.SelectedScreeningId)
@@ -80,7 +68,7 @@
         let input = document.getElementById("SelectedSeats");
         let validator = document.getElementById("ValMessageSpanForSeats");
         let selectedSeats = [];
-        let occupiedSeats = "@string.Join("", Model.OccupiedSeats.ToArray())".split(/[A-Z]\d{1,2}/g);
+        let occupiedSeats = "@Model.OccupiedSeats".split(/([A-Z]\d{1,2})/g);
 
         window.addEventListener('load', function () {
             let seats = document.getElementsByClassName("seatLable");
@@ -88,8 +76,7 @@
                 if (occupiedSeats.includes(seats[i].textContent)) {
                     seats[i].occupied = true;
                     seats[i].selected = false;
-                    seats[i].classList.remove("gray-box");
-                    seats[i].classList.add("gray-box-taken")
+                    seats[i].classList.add("taken")
                 }
                 else {
                     seats[i].occupied = false;
@@ -105,8 +92,7 @@
                         validator.innerText = "";
                     }
                     this.selected = false;
-                    this.classList.remove("gray-box-select");
-                    this.classList.add("gray-box");
+                    this.classList.remove("selected");
                     var index = selectedSeats.indexOf(this.textContent);
                     if (index !== -1) {
                       selectedSeats.splice(index, 1);
@@ -118,8 +104,7 @@
                         return;
                     }
                     this.selected = true;
-                    this.classList.remove("gray-box");
-                    this.classList.add("gray-box-select");
+                    this.classList.add("selected");
                     selectedSeats.push(this.textContent);
                 }
             }

@@ -43,7 +43,8 @@
                             }
                         </td>
                         <td style="width:95px; display: block; display: -webkit-box; height: 2rem; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis;">
-                            @Html.DisplayFor(modelItem => item.Seats)
+                            @{string seats = string.Join(", ", item.SeparateSeats);}
+                            @Html.DisplayFor(modelItem => seats)
                         </td>
                         <td class="userEmail">
                             @Html.DisplayFor(modelItem => item.UserEmail)
@@ -93,7 +94,8 @@
                             }
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Seats)
+                            @{string seats = string.Join(", ", item.SeparateSeats);}
+                            @Html.DisplayFor(modelItem => seats)
                         </td>
                         <td class="admin-display-none userEmail">
                             @Html.DisplayFor(modelItem => item.UserEmail)

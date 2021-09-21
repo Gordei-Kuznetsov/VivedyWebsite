@@ -51,7 +51,7 @@ namespace VivedyWebApp.Models.ViewModels
         /// <summary>
         /// Seats occupied for this Screening
         /// </summary>
-        public List<string> OccupiedSeats { get; set; }
+        public string OccupiedSeats { get; set; }
 
         /// <summary>
         /// Seats selected for the booking
@@ -95,6 +95,7 @@ namespace VivedyWebApp.Models.ViewModels
         [RegularExpression(@"^([A-Z]\d{1,2}){1,16}$")]
         [Display(Name = "Selected Seats")]
         public string SelectedSeats { get; set; }
+        public List<string> SeparateSeats { get; set; }
 
         /// <summary>
         /// Email assotiated with the booking

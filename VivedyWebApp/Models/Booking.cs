@@ -20,6 +20,7 @@ namespace VivedyWebApp.Models
         [RegularExpression(@"^([A-Z]\d{1,2}){1,16}$")]
         [Display(Name = "Seats")]
         public string Seats { get; set; }
+        public List<string> SeparateSeats { get; set; }
 
         /// <summary>
         /// Amount paid for the booking

@@ -723,6 +723,7 @@ namespace VivedyWebApp
                                 .OrderBy(b => b.Screening.StartTime)
                                 .OrderBy(b => b.Screening.StartDate)
                                 .ToListAsync();
+            bookings.ForEach(b => b.SeparateSeats = ConvertSeats(b.Seats));
             return bookings;
         }
 
@@ -738,6 +739,7 @@ namespace VivedyWebApp
                                                 .OrderBy(b => b.Screening.StartDate)
                                                 .OrderBy(b => b.Screening.Movie.Name)
                                                 .ToListAsync();
+            bookings.ForEach(b => b.SeparateSeats = ConvertSeats(b.Seats));
             return bookings;
         }
 
@@ -751,6 +753,7 @@ namespace VivedyWebApp
                                         .Include(b => b.Screening)
                                         .Include(b => b.Screening.Movie)
                                         .FirstOrDefaultAsync();
+            booking.SeparateSeats = ConvertSeats(booking.Seats);
             return booking;
         }
 
@@ -766,7 +769,7 @@ namespace VivedyWebApp
                 return null;
             }
             string allSeats = string.Join("", seatStrings);
-            List<string> seats = ConvertSeatsToStrList(allSeats);
+            List<string> seats = ConvertSeats(allSeats);
             return seats;
         }
 
@@ -774,10 +777,14 @@ namespace VivedyWebApp
         /// Converts the seats from a Booking.Seats into a list if strings
         /// <returns>List of strings</returns>
         /// </summary>
-        public List<string> ConvertSeatsToStrList(string seats)
+        public List<string> ConvertSeats(string seats)
         {
             MatchCollection matches = Regex.Matches(seats, @"([A-Z]\d{1,2})");
-            List<string> result = matches.Cast<string>().ToList();
+            List<string> result = new List<string>();
+            foreach(var match in matches)
+            {
+                result.Add(match.ToString());
+            }
             return result;
         }
         
@@ -797,8 +804,7 @@ namespace VivedyWebApp
         public async Task<int> SendConfirmationEmail(Booking booking)
         {
             string htmlSeats = "";
-            List<string> seats = ConvertSeatsToStrList(booking.Seats);
-            foreach (string seat in seats)
+            foreach (string seat in booking.SeparateSeats)
             {
                 //can possibly be a rendered SeatsLayout page later
                 htmlSeats += $"<li>{seat}</li>";
@@ -863,6 +869,7 @@ namespace VivedyWebApp
                                                 .OrderBy(b => b.Screening.StartDate)
                                                 .OrderBy(b => b.Screening.Movie.Name)
                                                 .ToListAsync();
+            bookings.ForEach(b => b.SeparateSeats = ConvertSeats(b.Seats));
             return bookings;
         }
 

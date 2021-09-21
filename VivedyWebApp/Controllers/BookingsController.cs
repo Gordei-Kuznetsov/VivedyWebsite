@@ -75,7 +75,7 @@ namespace VivedyWebApp.Controllers
                     SelectedScreeningId = id,
                     Screening = screening,
                     Movie = screening.Movie,
-                    OccupiedSeats = await Helper.Bookings.GetSeatsForScreening(id),
+                    OccupiedSeats = string.Join("", await Helper.Bookings.GetSeatsForScreening(id)),
                     SelectedSeats = ""
                 };
                 return View("Seats", seatsModel);
@@ -94,13 +94,13 @@ namespace VivedyWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ViewResult> Seats(BookingSeatsViewModel model)
         {
-            List<string> seats = Helper.Bookings.ConvertSeatsToStrList(model.SelectedSeats);
+            List<string> seats = Helper.Bookings.ConvertSeats(model.SelectedSeats);
             if (!ModelState.IsValid || seats.Count == 0 || seats.Count > 16)
             {
                 ViewBag.Message = Messages.Error;
                 model.Screening = await Helper.Screenings.DetailsWithMovieAndRoom(model.SelectedScreeningId);
                 model.Movie = model.Screening.Movie;
-                model.OccupiedSeats = await Helper.Bookings.GetSeatsForScreening(model.SelectedScreeningId);
+                model.OccupiedSeats = string.Join("", await Helper.Bookings.GetSeatsForScreening(model.SelectedScreeningId));
                 return View(model);
             }
             
@@ -115,6 +115,7 @@ namespace VivedyWebApp.Controllers
                 BookingPayViewModel payModel = new BookingPayViewModel
                 {
                     SelectedSeats = model.SelectedSeats,
+                    SeparateSeats = seats,
                     SelectedScreeningId = model.SelectedScreeningId,
                     Screening = screening,
                     Movie = screening.Movie,
@@ -126,7 +127,7 @@ namespace VivedyWebApp.Controllers
             ViewBag.Message = Messages.Error;
             model.Screening = screening;
             model.Movie = screening.Movie;
-            model.OccupiedSeats = await Helper.Bookings.GetSeatsForScreening(screening.Id);
+            model.OccupiedSeats = string.Join("", await Helper.Bookings.GetSeatsForScreening(model.SelectedScreeningId));
             return View(model);
         }
 
@@ -138,10 +139,11 @@ namespace VivedyWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ViewResult> Pay(BookingPayViewModel model)
         {
-            List<string> seats = Helper.Bookings.ConvertSeatsToStrList(model.SelectedSeats);
+            List<string> seats = Helper.Bookings.ConvertSeats(model.SelectedSeats);
             if (!ModelState.IsValid || seats.Count == 0 || seats.Count > 16)
             {
                 ViewBag.Message = Messages.Error;
+                model.SeparateSeats = seats;
                 model.Screening = await Helper.Screenings.DetailsWithMovie(model.SelectedScreeningId);
                 model.Movie = model.Screening.Movie;
                 return View(model);
@@ -161,6 +163,7 @@ namespace VivedyWebApp.Controllers
                 Booking newBooking = await Helper.Bookings.Create(booking);
                 if (newBooking != null)
                 {
+                    newBooking.SeparateSeats = seats;
                     int result = await Helper.Bookings.SendConfirmationEmail(newBooking);
                     if(result < 0)
                     {
@@ -175,12 +178,14 @@ namespace VivedyWebApp.Controllers
                 else
                 {
                     ViewBag.Message = Messages.FailedBooking;
+                    model.SeparateSeats = seats;
                     model.Screening = screening;
                     model.Movie = screening.Movie;
                     return View(model);
                 }
             }
             ViewBag.Message = Messages.Error;
+            model.SeparateSeats = seats;
             model.Screening = screening;
             model.Movie = screening.Movie;
             return View(model);

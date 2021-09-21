@@ -20,7 +20,8 @@
             <div class="row">
                 <div class="col-3 phenomena-sm">@Html.DisplayNameFor(model => model.Seats) : </div>
                 <div class="mb-3 col-md-8 phenomena-sm">
-                    @Html.DisplayFor(model => model.Seats)
+                    @{string seats = string.Join(", ", Model.SeparateSeats);}
+                    @Html.DisplayFor(modelItem => seats)
                 </div>
             </div>
             <div class="row">
