@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using VivedyWebApp.Models;
 using VivedyWebApp.Models.ViewModels;
 
 namespace VivedyWebApp.Controllers
@@ -18,11 +19,13 @@ namespace VivedyWebApp.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
-        /// <summary>
-        /// The entities manager instance
-        /// </summary>
-        private readonly Entities Helper = new Entities();
-        //Only Movies
+        public HomeController()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            Movies = new MoviesManager(db);
+        }
+
+        private readonly MoviesManager Movies;
 
         /// <summary>
         /// GET request action for Index page
@@ -32,8 +35,8 @@ namespace VivedyWebApp.Controllers
             ViewBag.Message = message;
             MoviesHomeViewModel model = new MoviesHomeViewModel()
             {
-                ComingSoonMovies = await Helper.Movies.GetAllComming(),
-                TopMovies = await Helper.Movies.GetTopShowing(4)
+                ComingSoonMovies = await Movies.AllComming(),
+                TopMovies = await Movies.TopShowing(4)
             };
             return View(model);
         }

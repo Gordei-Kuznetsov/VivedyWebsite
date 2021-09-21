@@ -65,7 +65,6 @@ namespace VivedyWebApp
         }
     }
 
-    // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
@@ -154,38 +153,8 @@ namespace VivedyWebApp
             EmailService mailService = new EmailService();
             return await mailService.SendAsync(user.Email, subject, mailbody);
         }
-
-        /// <summary>
-        /// Returns List of items for dropdown with roles
-        /// </summary>
-        public async Task<List<SelectListItem>> GetRoleSelectListItems(string select = null)
-        {
-            ApplicationDbContext db = new ApplicationDbContext();
-            List<IdentityRole> roles = await db.Roles.ToListAsync();
-            List<SelectListItem> items = new List<SelectListItem>();
-            foreach (IdentityRole role in roles)
-            {
-                items.Add(new SelectListItem()
-                {
-                    Value = role.Name,
-                    Text = role.Name,
-                    Selected = (select != null && select == role.Name) ? true : false
-                });
-            }
-            return items;
-        }
-
-        /// <summary>
-        /// Returns the name of the role GetRoleName
-        /// </summary>
-        public string GetRoleName(string id)
-        {
-            ApplicationDbContext db = new ApplicationDbContext();
-            return db.Roles.Find(id).Name;
-        }
     }
 
-    // Configure the application sign-in manager which is used in this application.
     public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
     {
         public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
@@ -282,7 +251,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns a List of all categories of existing movies
         /// </summary>
-        public async Task<List<SelectListItem>> GetCategoriesSelectListItems()
+        public async Task<List<SelectListItem>> CategoriesSelectListItems()
         {
             List<string> categories = await (from movie in dbSet
                                         where movie.ClosingDate > DateTime.Now
@@ -311,7 +280,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns a List of all ratings of existing movies
         /// </summary>
-        public async Task<List<SelectListItem>> GetRatingsSelectListItems()
+        public async Task<List<SelectListItem>> RatingsSelectListItems()
         {
             List<int> ratings = await (from movie in dbSet
                                        where movie.ClosingDate > DateTime.Now
@@ -340,7 +309,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns a List of all not yet resealed movies
         /// </summary>
-        public async Task<List<Movie>> GetAllComming()
+        public async Task<List<Movie>> AllComming()
         {
             List<Movie> movies = await dbSet.Where(m => m.ReleaseDate > DateTime.Now)
                                             .OrderByDescending(m => m.ViewerRating)
@@ -351,7 +320,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns a List of all not yet resealed movies
         /// </summary>
-        public async Task<List<Movie>> GetAllNotClosed()
+        public async Task<List<Movie>> AllNotClosed()
         {
             List<Movie> movies = await dbSet.Where(m => m.ClosingDate > DateTime.Now)
                                             .OrderByDescending(m => m.ViewerRating)
@@ -362,7 +331,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns a List of top x current movies based on Viewer Rating
         /// </summary>
-        public async Task<List<Movie>> GetTopShowing(int x)
+        public async Task<List<Movie>> TopShowing(int x)
         {
             List<Movie> movies = await dbSet.Where(m => m.ClosingDate > DateTime.Now 
                                             && m.ReleaseDate < DateTime.Now)
@@ -386,7 +355,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns List of items for dropdown with movies
         /// </summary>
-        public async Task<List<SelectListItem>> GetSelectListItems(string select = null)
+        public async Task<List<SelectListItem>> SelectListItems(string select = null)
         {
             List<Movie> movies = await dbSet.Where(m => m.ClosingDate > DateTime.Now)
                                             .OrderByDescending(m => m.ViewerRating)
@@ -407,7 +376,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns all closed movies
         /// </summary>
-        public async Task<List<Movie>> GetAllOld()
+        public async Task<List<Movie>> AllOld()
         {
             List<Movie> movies = await dbSet.Where(m => m.ClosingDate <= DateTime.Now).ToListAsync();
             return movies;
@@ -418,7 +387,7 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<int> DeleteAllOld()
         {
-            List<Movie> movies = await GetAllOld();
+            List<Movie> movies = await AllOld();
             dbSet.RemoveRange(movies);
             int result = await db.SaveChangesAsync();
             return result;
@@ -467,7 +436,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns details for all screenings for the movie which are in a selected cinema (including booked seats)
         /// </summary>
-        public async Task<List<ScreeningDetails>> GetAllForMovieInCinema(string movieId, string cinemaId)
+        public async Task<List<ScreeningDetails>> AllForMovieInCinema(string movieId, string cinemaId)
         {
             DateTime nowDate = DateTime.Now;
             TimeSpan nowTime = nowDate.TimeOfDay;
@@ -633,7 +602,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns List of items for dropdown with screenigns grouped by movie name
         /// </summary>
-        public async Task<List<SelectListItem>> GetSelectListItems(string select = null)
+        public async Task<List<SelectListItem>> SelectListItems(string select = null)
         {
             DateTime nowDate = DateTime.Now;
             TimeSpan nowTime = nowDate.TimeOfDay;
@@ -670,7 +639,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns all finished screenings
         /// </summary>
-        public async Task<List<Screening>> GetAllOld()
+        public async Task<List<Screening>> AllOld()
         {
             DateTime nowDate = DateTime.Now;
             TimeSpan nowTime = nowDate.TimeOfDay;
@@ -710,7 +679,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Reutrns all bookings of the user with the email with screening, movie, room, and cinema attached
         /// </summary>
-        public async Task<List<Booking>> GetAllComingForUser(string email)
+        public async Task<List<Booking>> AllComingForUser(string email)
         {
             DateTime nowDate = DateTime.Now;
             TimeSpan nowTime = nowDate.TimeOfDay;
@@ -760,7 +729,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Reutrns all seats from bookings for screening with the Id
         /// </summary>
-        public async Task<List<string>> GetSeatsForScreening(string id)
+        public async Task<List<string>> SeatsForScreening(string id)
         {
             string[] seatStrings = await dbSet.Where(b => b.ScreeningId == id)
                                                 .Select(b => b.Seats).ToArrayAsync();
@@ -793,7 +762,7 @@ namespace VivedyWebApp
         /// </summary>
         public async Task<bool> AnySeatsOverlapWith(List<string> seats, string id)
         {
-            List<string> allSeats = await GetSeatsForScreening(id);
+            List<string> allSeats = await SeatsForScreening(id);
             bool result = allSeats.Intersect(seats).Any();
             return result;
         }
@@ -857,7 +826,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns all bookings for finished screenings
         /// </summary>
-        public async Task<List<Booking>> GetAllOld()
+        public async Task<List<Booking>> AllOld()
         {
             DateTime nowDate = DateTime.Now;
             TimeSpan nowTime = nowDate.TimeOfDay;
@@ -917,7 +886,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns List of items for dropdown with room layout types
         /// </summary>
-        public List<SelectListItem> GetSelectLayoutListItems(string select = null)
+        public List<SelectListItem> SelectLayoutListItems(string select = null)
         {
             List<SelectListItem> items = new List<SelectListItem>() { 
                 new SelectListItem(){ Value = "Small", Text = "Small" },
@@ -934,7 +903,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns List of items for dropdown with rooms grouped by cinemas
         /// </summary>
-        public async Task<List<SelectListItem>> GetSelectListItems(string select = null)
+        public async Task<List<SelectListItem>> SelectListItems(string select = null)
         {
             List<Room> rooms = await dbSet.Include(r => r.Cinema)
                                             .OrderBy(r => r.Name)
@@ -972,7 +941,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns all cinemas for the movie with the Id
         /// </summary>
-        public async Task<List<Cinema>> GetCinemasForMovie(string id)
+        public async Task<List<Cinema>> CinemasForMovie(string id)
         {
             DateTime nowDate = DateTime.Now;
             TimeSpan nowTime = nowDate.TimeOfDay;
@@ -995,7 +964,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns List of items for dropdown with cinemas
         /// </summary>
-        public async Task<List<SelectListItem>> GetSelectListItems(string select = null)
+        public async Task<List<SelectListItem>> SelectListItems(string select = null)
         {
             List<Cinema> cinemas = await dbSet.OrderBy(c => c.Name).ToListAsync();
             List<SelectListItem> items = new List<SelectListItem>();
@@ -1026,7 +995,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns the name of the role GetRoleName
         /// </summary>
-        public string GetRoleName(string id)
+        public string RoleName(string id)
         {
             return db.Roles.Find(id).Name;
         }
@@ -1034,7 +1003,7 @@ namespace VivedyWebApp
         /// <summary>
         /// Returns List of items for dropdown with roles
         /// </summary>
-        public async Task<List<SelectListItem>> GetSelectListItems(string select = null)
+        public async Task<List<SelectListItem>> SelectListItems(string select = null)
         {
             List<IdentityRole> roles = await db.Roles.ToListAsync();
             List<SelectListItem> items = new List<SelectListItem>();
@@ -1051,39 +1020,14 @@ namespace VivedyWebApp
         }
     }
 
-    public class Entities
-    {
-        public Entities()
-        {
-            db = new ApplicationDbContext();
-            Movies = new MoviesManager(db);
-            Screenings = new ScreeningsManager(db);
-            Bookings = new BookingsManager(db);
-            Cinemas = new CinemasManager(db);
-            Rooms = new RoomsManager(db);
-        }
-
-        private readonly ApplicationDbContext db;
-
-        public readonly MoviesManager Movies;
-
-        public readonly ScreeningsManager Screenings;
-
-        public readonly BookingsManager Bookings;
-
-        public readonly CinemasManager Cinemas;
-
-        public readonly RoomsManager Rooms;
-    }
-
     interface IFKEntity
     {
-        Task<List<SelectListItem>> GetSelectListItems(string select = null);
+        Task<List<SelectListItem>> SelectListItems(string select = null);
     }
 
     interface ITimeBasedEntity<TEntity> where TEntity : BaseModel
     {
-        Task<List<TEntity>> GetAllOld();
+        Task<List<TEntity>> AllOld();
         Task<int> DeleteAllOld();
     }
 }

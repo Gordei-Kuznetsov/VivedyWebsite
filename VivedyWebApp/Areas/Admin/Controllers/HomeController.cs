@@ -16,11 +16,15 @@ namespace VivedyWebApp.Areas.Admin.Controllers
     /// </summary>
     public class HomeController : Controller
     {
-        /// <summary>
-        /// The entities manager instance
-        /// </summary>
-        private readonly Entities Helper = new Entities();
-        //Screenings, Bookings
+        public HomeController()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            Screenings = new ScreeningsManager(db);
+            Bookings = new BookingsManager(db);
+        }
+
+        private readonly ScreeningsManager Screenings;
+        private readonly BookingsManager Bookings;
 
         /// <summary>
         /// GET request action for Index page
@@ -39,7 +43,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             HomeViewModel model = new HomeViewModel()
             {
-                Screenings = await Helper.Screenings.GetSelectListItems()
+                Screenings = await Screenings.SelectListItems()
             };
             return View(model);
         }
@@ -58,7 +62,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             try
             {
                 var result = new VerifyBookingsResult();
-                Booking booking = await Helper.Bookings.Details(bookingId);
+                Booking booking = await Bookings.Details(bookingId);
                 if(booking == null)
                 {
                     result.error = "Invalid booking";
@@ -74,7 +78,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 else
                 {
                     booking.VerificationTime = DateTime.Now;
-                    var edited = await Helper.Bookings.Edit(booking);
+                    var edited = await Bookings.Edit(booking);
                     if(edited != null)
                     {
                         result.verified = true;
@@ -122,7 +126,15 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             /// Field for any error messages that occure during the request proccesing
             /// If set to any value then verified is set ot false
             /// </summary>
-            public string error { set { verified = false; error = value; } }
+            public string error { 
+                get { return _error; }
+                set 
+                { 
+                    verified = false; 
+                    _error = value; 
+                } 
+            }
+            private string _error;
         }
     }
 }

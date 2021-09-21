@@ -41,23 +41,23 @@
             </div>
             <div class="col-lg-3 col-sm-12">
                 <div class="card mb-5">
-                    <img src="~/Content/Images/@Model.Movie.Id-VerticalPoster.png" class="card-img-top" alt="Movie Poster">
+                    <img src="~/Content/Images/@Model.Screening.Movie.Id-VerticalPoster.png" class="card-img-top" alt="Movie Poster">
                     <div class="card-body">
                         <hr />
-                        <h5 class="phenomena-sm-two mt-4 text-center">@Model.Movie.Name</h5>
+                        <h5 class="phenomena-sm-two mt-4 text-center">@Model.Screening.Movie.Name</h5>
                         <hr />
-                        <div class="p-2 phenomena-sm"> Catoegry: <span class="badge badge-pill badge-secondary">@Model.Movie.Category</span></div>
-                        <div class="p-2 phenomena-sm"> Rating: <span class="badge badge-pill badge-danger"> +@Model.Movie.Rating</span></div>
+                        <div class="p-2 phenomena-sm"> Catoegry: <span class="badge badge-pill badge-secondary">@Model.Screening.Movie.Category</span></div>
+                        <div class="p-2 phenomena-sm"> Rating: <span class="badge badge-pill badge-danger"> +@Model.Screening.Movie.Rating</span></div>
                         <div class="p-2 phenomena-sm">
                             Movie Duration: <span class="badge badge-pill badge-danger">
-                                @Model.Movie.Duration.Hours hr
-                                @Model.Movie.Duration.Minutes min
+                                @Model.Screening.Movie.Duration.Hours hr
+                                @Model.Screening.Movie.Duration.Minutes min
                             </span>
                         </div>
-                        <div class="p-2 phenomena-sm"> User Rating: <span class="badge badge-pill badge-danger"> @Model.Movie.ViewerRating</span></div>
+                        <div class="p-2 phenomena-sm"> User Rating: <span class="badge badge-pill badge-danger"> @Model.Screening.Movie.ViewerRating</span></div>
                         <hr />
-                        <p class="card-text">@Model.Movie.Description</p>
-                        <div class="phenomena-sm-two"> Ticket Price: <span style="color:white"> $@Model.Movie.Price </span></div>
+                        <p class="card-text">@Model.Screening.Movie.Description</p>
+                        <div class="phenomena-sm-two"> Ticket Price: <span style="color:white"> $@Model.Screening.Movie.Price </span></div>
                     </div>
                 </div>
             </div>

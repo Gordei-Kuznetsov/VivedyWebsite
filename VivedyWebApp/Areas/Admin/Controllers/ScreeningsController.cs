@@ -20,11 +20,17 @@ namespace VivedyWebApp.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class ScreeningsController : Controller
     {
-        /// <summary>
-        /// The entities manager instance
-        /// </summary>
-        private readonly Entities Helper = new Entities();
-        //Movies, Screenings, Rooms
+        public ScreeningsController()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            Movies = new MoviesManager(db);
+            Screenings = new ScreeningsManager(db);
+            Rooms = new RoomsManager(db);
+        }
+
+        private readonly MoviesManager Movies;
+        private readonly ScreeningsManager Screenings;
+        private readonly RoomsManager Rooms;
 
         /// <summary>
         /// GET request action for Index page
@@ -32,7 +38,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         public async Task<ActionResult> Index(string message = null)
         {
             ViewBag.Message = message;
-            return View(await Helper.Screenings.AllToListWithMoviesAndRooms());
+            return View(await Screenings.AllToListWithMoviesAndRooms());
         }
 
         /// <summary>
@@ -44,7 +50,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = await Helper.Screenings.DetailsWithMovieAndRoom(id);
+            Screening screening = await Screenings.DetailsWithMovieAndRoom(id);
             if (screening == null)
             {
                 return HttpNotFound();
@@ -59,8 +65,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             ScreeningsCreateViewModel model = new ScreeningsCreateViewModel()
             {
-                Movies = await Helper.Movies.GetSelectListItems(),
-                Rooms = await Helper.Rooms.GetSelectListItems()
+                Movies = await Movies.SelectListItems(),
+                Rooms = await Rooms.SelectListItems()
             };
             return View(model);
         }
@@ -75,19 +81,19 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Message = Messages.Error;
-                model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
-                model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
+                model.Movies = await Movies.SelectListItems(model.MovieId);
+                model.Rooms = await Rooms.SelectListItems(model.RoomId);
                 return View(model);
             }
 
-            Movie movie = await Helper.Movies.Details(model.MovieId);
-            Room room = await Helper.Rooms.Details(model.RoomId);
+            Movie movie = await Movies.Details(model.MovieId);
+            Room room = await Rooms.Details(model.RoomId);
 
             if (movie == null || room == null)
             {
                 ViewBag.Message = Messages.Error;
-                model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
-                model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
+                model.Movies = await Movies.SelectListItems(model.MovieId);
+                model.Rooms = await Rooms.SelectListItems(model.RoomId);
                 return View(model);
             }
             List<DateTime> startDates;
@@ -100,8 +106,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             catch
             {
                 ViewBag.Message = Messages.FailedStartDateTimesConvertion;
-                model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
-                model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
+                model.Movies = await Movies.SelectListItems(model.MovieId);
+                model.Rooms = await Rooms.SelectListItems(model.RoomId);
                 return View(model);
             }
 
@@ -112,12 +118,12 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 Movie = movie
             };
 
-            int result = await Helper.Screenings.GenerateFrom(baseScreening, startDates, startTimes);
+            int result = await Screenings.GenerateFrom(baseScreening, startDates, startTimes);
             if (result < 0)
             {
                 ViewBag.Message = Messages.FailedScreeings;
-                model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
-                model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
+                model.Movies = await Movies.SelectListItems(model.MovieId);
+                model.Rooms = await Rooms.SelectListItems(model.RoomId);
                 return View(model);
             }
             else
@@ -135,7 +141,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = await Helper.Screenings.Details(id);
+            Screening screening = await Screenings.Details(id);
             if (screening == null)
             {
                 return HttpNotFound();
@@ -147,8 +153,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 StartTime = screening.StartTime,
                 MovieId = screening.MovieId,
                 RoomId = screening.MovieId,
-                Movies = await Helper.Movies.GetSelectListItems(screening.MovieId),
-                Rooms = await Helper.Rooms.GetSelectListItems(screening.RoomId)
+                Movies = await Movies.SelectListItems(screening.MovieId),
+                Rooms = await Rooms.SelectListItems(screening.RoomId)
             };
             return View(model);
         }
@@ -163,11 +169,11 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Message = Messages.Error;
-                model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
-                model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
+                model.Movies = await Movies.SelectListItems(model.MovieId);
+                model.Rooms = await Rooms.SelectListItems(model.RoomId);
                 return View(model);
             }
-            Screening screening = await Helper.Screenings.DetailsWithMovie(model.Id);
+            Screening screening = await Screenings.DetailsWithMovie(model.Id);
             if (screening == null)
             {
                 return HttpNotFound();
@@ -177,11 +183,11 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             screening.StartTime = model.StartTime;
             screening.MovieId = model.MovieId;
             screening.RoomId = model.RoomId;
-            if (await Helper.Screenings.IsDuringMovieShowing(screening, screening.Movie) 
-                && await Helper.Screenings.NoneOverlapWith(screening, screening.Movie.Duration))
+            if (await Screenings.IsDuringMovieShowing(screening, screening.Movie) 
+                && await Screenings.NoneOverlapWith(screening, screening.Movie.Duration))
             {
                 //possibly send notifying email to customers that there are changes
-                var result = await Helper.Screenings.Edit(screening);
+                var result = await Screenings.Edit(screening);
                 if(result == null)
                 {
                     return RedirectToAction("Index", new { message = Messages.Screenings.Edited });
@@ -195,8 +201,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             else
             {
                 ViewBag.Message = Messages.ScreeningWrongDates;
-                model.Movies = await Helper.Movies.GetSelectListItems(model.MovieId);
-                model.Rooms = await Helper.Rooms.GetSelectListItems(model.RoomId);
+                model.Movies = await Movies.SelectListItems(model.MovieId);
+                model.Rooms = await Rooms.SelectListItems(model.RoomId);
                 return View(model);
             }
             
@@ -211,7 +217,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = await Helper.Screenings.DetailsWithMovieAndRoom(id);
+            Screening screening = await Screenings.DetailsWithMovieAndRoom(id);
             if (screening == null)
             {
                 return HttpNotFound();
@@ -231,12 +237,12 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = await Helper.Screenings.Details(id);
+            Screening screening = await Screenings.Details(id);
             if (screening == null)
             {
                 return HttpNotFound();
             }
-            int result = await Helper.Screenings.Delete(screening);
+            int result = await Screenings.Delete(screening);
             if(result > 0)
             {
                 return RedirectToAction("Index", new { message = Messages.Screenings.Deleted });
@@ -253,7 +259,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         public async Task<ActionResult> DeleteAllFinished(string message = null)
         {
 
-            List<Screening> screenings = await Helper.Screenings.GetAllOld();
+            List<Screening> screenings = await Screenings.AllOld();
             if (screenings.Count == 0)
             {
                 return RedirectToAction("Index", new { message = Messages.NoFinishedScreenings });
@@ -269,7 +275,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteAllFinishedConfirmed()
         {
-            int result = await Helper.Screenings.DeleteAllOld();
+            int result = await Screenings.DeleteAllOld();
             if (result <= 0)
             {
                 return View("DeleteAllFinished", "Screenings", new { message = Messages.FinishedScreeningsFailedDelete });

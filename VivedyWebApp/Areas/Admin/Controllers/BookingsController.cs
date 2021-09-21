@@ -19,11 +19,13 @@ namespace VivedyWebApp.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class BookingsController : Controller
     {
-        /// <summary>
-        /// The entities manager instance
-        /// </summary>
-        private readonly Entities Helper = new Entities();
-        //Only Bookings
+        public BookingsController()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            Bookings = new BookingsManager(db);
+        }
+
+        private readonly BookingsManager Bookings;
 
         /// <summary>
         /// GET request action for Index page
@@ -31,7 +33,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         public async Task<ActionResult> Index(string message = null)
         {
             ViewBag.Message = message;
-            return View(await Helper.Bookings.AllToListWithScreeningsAndMovies());
+            return View(await Bookings.AllToListWithScreeningsAndMovies());
         }
 
         /// <summary>
@@ -43,7 +45,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Booking booking = await Helper.Bookings.DetailsWithScreeningAndMovie(id);
+            Booking booking = await Bookings.DetailsWithScreeningAndMovie(id);
             if (booking == null)
             {
                 return HttpNotFound();
@@ -60,7 +62,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Booking booking = await Helper.Bookings.DetailsWithScreeningAndMovie(id);
+            Booking booking = await Bookings.DetailsWithScreeningAndMovie(id);
             if (booking == null)
             {
                 return HttpNotFound();
@@ -80,12 +82,12 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Booking booking = await Helper.Bookings.Details(id);
+            Booking booking = await Bookings.Details(id);
             if (booking == null)
             {
                 return HttpNotFound();
             }
-            int result = await Helper.Bookings.Delete(booking);
+            int result = await Bookings.Delete(booking);
             if(result > 0)
             {
                 return RedirectToAction("Index", new { message = Messages.Bookings.Deleted });
@@ -102,7 +104,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         public async Task<ActionResult> DeleteAllOld(string message = null)
         {
 
-            List<Booking> bookings = await Helper.Bookings.GetAllOld();
+            List<Booking> bookings = await Bookings.AllOld();
             if (bookings.Count == 0)
             {
                 return RedirectToAction("Index", new { message = Messages.NoFinishedBookings });
@@ -118,7 +120,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteAllOldConfirmed()
         {
-            int result = await Helper.Bookings.DeleteAllOld();
+            int result = await Bookings.DeleteAllOld();
             if (result <= 0)
             {
                 return View("DeleteAllOld", "Bookings", new { message = Messages.FinishedBookingsFailedDelete });

@@ -20,11 +20,13 @@ namespace VivedyWebApp.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class MoviesController : Controller
     {
-        /// <summary>
-        /// The entities manager instance
-        /// </summary>
-        private readonly Entities Helper = new Entities();
-        //Only Movies
+        public MoviesController()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            Movies = new MoviesManager(db);
+        }
+
+        private readonly MoviesManager Movies;
 
         /// <summary>
         /// GET request action for Index page
@@ -32,7 +34,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         public async Task<ActionResult> Index(string message = null)
         {
             ViewBag.Message = message;
-            return View(await Helper.Movies.AllToList());
+            return View(await Movies.AllToList());
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie movie = await Helper.Movies.Details(id);
+            Movie movie = await Movies.Details(id);
             if (movie == null)
             {
                 return HttpNotFound();
@@ -90,7 +92,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 ViewBag.Message = Messages.WrongMovieDates;
                 return View(model);
             }
-            var result = await Helper.Movies.Create(movie);
+            var result = await Movies.Create(movie);
             if(result == null)
             {
                 ViewBag.Message = Messages.Movies.CreateFailed;
@@ -123,7 +125,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie movie = await Helper.Movies.Details(id);
+            Movie movie = await Movies.Details(id);
             if (movie == null)
             {
                 return HttpNotFound();
@@ -156,7 +158,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 ViewBag.Message = Messages.Error;
                 return View(model);
             }
-            Movie movie = await Helper.Movies.Details(model.Id);
+            Movie movie = await Movies.Details(model.Id);
             if(movie == null)
             {
                 ViewBag.Message = Messages.Error;
@@ -182,7 +184,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 return View(model);
             }
 
-            var result = await Helper.Movies.Edit(movie);
+            var result = await Movies.Edit(movie);
             if(result == null)
             {
                 ViewBag.Message = Messages.Movies.EditFailed;
@@ -225,7 +227,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie movie = await Helper.Movies.Details(id);
+            Movie movie = await Movies.Details(id);
             if (movie == null)
             {
                 return HttpNotFound();
@@ -245,13 +247,13 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie movie = await Helper.Movies.Details(id);
+            Movie movie = await Movies.Details(id);
             if (movie == null)
             {
                 return HttpNotFound();
             }
 
-            int result = await Helper.Movies.Delete(movie);
+            int result = await Movies.Delete(movie);
             if(result <= 0)
             {
                 return View("Delete", "Movies", new { id = id, message = Messages.Movies.DeleteFailed });
@@ -280,7 +282,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         public async Task<ActionResult> DeleteAllClosed(string message = null)
         {
             
-            List<Movie> movies = await Helper.Movies.GetAllOld();
+            List<Movie> movies = await Movies.AllOld();
             if(movies.Count == 0)
             {
                 return RedirectToAction("Index", new { message = Messages.NoClosedMovies });
@@ -296,12 +298,12 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteAllCLosedConfirmed()
         {
-            int result = await Helper.Movies.DeleteAllOld();
+            int result = await Movies.DeleteAllOld();
             if (result <= 0)
             {
                 return View("DeleteAllClosed", "Movies", new {message = Messages.ClosedMoviesFailedDelete });
             }
-            List<Movie> movies = await Helper.Movies.GetAllOld();
+            List<Movie> movies = await Movies.AllOld();
             foreach(Movie movie in movies)
             {
                 //Deleting poster images

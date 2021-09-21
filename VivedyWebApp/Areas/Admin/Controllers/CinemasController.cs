@@ -18,17 +18,19 @@ namespace VivedyWebApp.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class CinemasController : Controller
     {
-        /// <summary>
-        /// The entities manager instance
-        /// </summary>
-        private readonly Entities Helper = new Entities();
-        //Only Cinemas
+        public CinemasController()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            Cinemas = new CinemasManager(db);
+        }
+
+        private readonly CinemasManager Cinemas;
 
         // GET: Admin/Cinemas
         public async Task<ActionResult> Index(string message = null)
         {
             ViewBag.Message = message;
-            return View(await Helper.Cinemas.AllToList());
+            return View(await Cinemas.AllToList());
         }
 
         // GET: Admin/Cinemas/Details/5
@@ -38,7 +40,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cinema cinema = await Helper.Cinemas.Details(id);
+            Cinema cinema = await Cinemas.Details(id);
             if (cinema == null)
             {
                 return HttpNotFound();
@@ -62,7 +64,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 ViewBag.Message = Messages.Error;
                 return View(model);
             }
-            var result = await Helper.Cinemas.Create(model);
+            var result = await Cinemas.Create(model);
             if (result != null)
             {
                 return RedirectToAction("Index", new { message = Messages.Cinemas.Created});
@@ -81,7 +83,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cinema cinema = await Helper.Cinemas.Details(id);
+            Cinema cinema = await Cinemas.Details(id);
             if (cinema == null)
             {
                 return HttpNotFound();
@@ -99,13 +101,13 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 ViewBag.Message = Messages.Error;
                 return View(model);
             }
-            Cinema cinema = await Helper.Cinemas.Details(model.Id);
+            Cinema cinema = await Cinemas.Details(model.Id);
             if(cinema == null)
             {
                 ViewBag.Message = Messages.Error;
                 return View(model);
             }
-            var result = await Helper.Cinemas.Edit(cinema);
+            var result = await Cinemas.Edit(cinema);
             if (result != null)
             {
                 return RedirectToAction("Index", new { message = Messages.Cinemas.Edited});
@@ -124,7 +126,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cinema cinema = await Helper.Cinemas.Details(id);
+            Cinema cinema = await Cinemas.Details(id);
             if (cinema == null)
             {
                 return HttpNotFound();
@@ -142,12 +144,12 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cinema cinema = await Helper.Cinemas.Details(id);
+            Cinema cinema = await Cinemas.Details(id);
             if (cinema == null)
             {
                 return HttpNotFound();
             }
-            int result = await Helper.Cinemas.Delete(cinema);
+            int result = await Cinemas.Delete(cinema);
             if(result > 0)
             {
                 return RedirectToAction("Index", new { message = Messages.Cinemas.Deleted });

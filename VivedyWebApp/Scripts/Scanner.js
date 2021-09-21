@@ -22,31 +22,27 @@ function decode() {
 }
 function sendDecodedResult(QRcontent) {
     $.post(`/Admin/Home/VerifyBookings/?bookingId=${QRcontent}&screeningId=${ScreeningSelect.options[ScreeningSelect.selectedIndex].value}`, "", (result) => {
-        if (result.error == null) {
-            if (result.verified) {
-                displayMessage(true, "VERIFIED", "The booking is valid");
-            }
-            else {
-                displayMessage(false, "FAILED", "The booking is NOT valid");
-            }
+        if (result.verified) {
+            displayMessage(true, "The booking is valid");
         }
         else {
-            displayMessage(false, "ERROR", `Sorry there was an error proccesing the requst. Error message: ${result.error}`)
+            displayMessage(false, result.error);
         }
     });
 }
-function displayMessage(pass, title, body) {
+function displayMessage(pass, body) {
     let Title = document.getElementById("myModalTitle")
     let Body = document.getElementById("myModalBody")
     let Icon = document.getElementById("modalIcon")
-    Title.innerHTML = title;
     Body.innerHTML = body;
     if (pass) {
+        Title.innerHTML = "VERIFIED";
         Title.style = "color: green";
         Icon.classList = "fas fa-check";
         Icon.style = "color: green";
     }
     else {
+        Title.innerHTML = "ERROR";
         Title.style = "color: red";
         Icon.classList = "fas fa-ban";
         Icon.style = "color: red";

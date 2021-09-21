@@ -19,11 +19,15 @@ namespace VivedyWebApp.Controllers
     [AllowAnonymous]
     public class MoviesController : Controller
     {
-        /// <summary>
-        /// The entities manager instance
-        /// </summary>
-        private readonly Entities Helper = new Entities();
-        //Movies, Cinemas (if GetCinemasForMovie is back in the Movies manager, then only Movies)
+        public MoviesController()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            Movies = new MoviesManager(db);
+            Cinemas = new CinemasManager(db);
+        }
+
+        private readonly MoviesManager Movies;
+        private readonly CinemasManager Cinemas;
 
         /// <summary>
         /// GET request action for Index page
@@ -32,9 +36,9 @@ namespace VivedyWebApp.Controllers
         {
             MoviesViewModel model = new MoviesViewModel()
             {
-                Movies = (await Helper.Movies.GetAllNotClosed()).OrderByDescending(m => m.ViewerRating).ToList(),
-                Categories = await Helper.Movies.GetCategoriesSelectListItems(),
-                Ratings = await Helper.Movies.GetRatingsSelectListItems()
+                Movies = (await Movies.AllNotClosed()).OrderByDescending(m => m.ViewerRating).ToList(),
+                Categories = await Movies.CategoriesSelectListItems(),
+                Ratings = await Movies.RatingsSelectListItems()
             };
             return View(model);
         }
@@ -48,7 +52,7 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie movie = await Helper.Movies.Details(id);
+            Movie movie = await Movies.Details(id);
             if (movie == null || movie.ClosingDate < DateTime.Now)
             {
                 return HttpNotFound();
@@ -56,7 +60,7 @@ namespace VivedyWebApp.Controllers
             MoviesDetailsViewModel model = new MoviesDetailsViewModel()
             {
                 Movie = movie,
-                Cinemas = await Helper.Cinemas.GetCinemasForMovie(id)
+                Cinemas = await Cinemas.CinemasForMovie(id)
             };
             ViewBag.Message = message;
             return View(model);
@@ -68,7 +72,7 @@ namespace VivedyWebApp.Controllers
         [AllowAnonymous]
         public async Task<JsonResult> All()
         {
-            return Json(await Helper.Movies.AllToList(), JsonRequestBehavior.AllowGet);
+            return Json(await Movies.AllToList(), JsonRequestBehavior.AllowGet);
         }
     }
 }

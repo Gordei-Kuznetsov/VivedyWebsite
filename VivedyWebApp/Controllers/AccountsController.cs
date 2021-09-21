@@ -18,27 +18,24 @@ namespace VivedyWebApp.Controllers
     /// </summary>
     public class AccountsController : Controller
     {
-        private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
-
-        /// <summary>
-        /// The entities manager instance
-        /// </summary>
-        private readonly Entities Helper = new Entities();
-        //Only Bookings
-
         public AccountsController()
         {
+            ApplicationDbContext db = new ApplicationDbContext();
+            Bookings = new BookingsManager(db);
         }
 
-        public AccountsController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountsController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
 
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
+        private readonly BookingsManager Bookings;
+
         /// <summary>
-        /// Manager object used to manipulate sign-in/-out procceses
+        /// Manager property used to manipulate sign-in/-out procceses
         /// </summary>
         public ApplicationSignInManager SignInManager
         {
@@ -53,7 +50,7 @@ namespace VivedyWebApp.Controllers
         }
 
         /// <summary>
-        /// Manager object used to manipulate ApplicationUser data
+        /// Manager property used to manipulate ApplicationUser data
         /// </summary>
         public ApplicationUserManager UserManager
         {
@@ -336,7 +333,7 @@ namespace VivedyWebApp.Controllers
                 Name = user.Name,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                Bookings = await Helper.Bookings.GetAllComingForUser(user.Email)
+                Bookings = await Bookings.AllComingForUser(user.Email)
             };
             return View(model);
         }

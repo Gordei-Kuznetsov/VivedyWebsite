@@ -18,11 +18,19 @@ namespace VivedyWebApp.Controllers
     /// </summary>
     public class BookingsController : Controller
     {
-        /// <summary>
-        /// The entities manager instance
-        /// </summary>
-        private readonly Entities Helper = new Entities();
-        //Movies. Screenings, Bookings, Cinemas
+        public BookingsController()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            Movies = new MoviesManager(db);
+            Screenings = new ScreeningsManager(db);
+            Bookings = new BookingsManager(db);
+            Cinemas = new CinemasManager(db);
+        }
+
+        private readonly MoviesManager Movies;
+        private readonly ScreeningsManager Screenings;
+        private readonly BookingsManager Bookings;
+        private readonly CinemasManager Cinemas;
 
         /// <summary>
         /// GET request action for Time page
@@ -35,14 +43,14 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie movie = await Helper.Movies.Details(movieId);
-            Cinema cinema = await Helper.Cinemas.Details(cinemaId);
+            Movie movie = await Movies.Details(movieId);
+            Cinema cinema = await Cinemas.Details(cinemaId);
             if( movie == null || cinema == null || movie.ClosingDate < DateTime.Now)
             {
                 return HttpNotFound();
             }
             //Getting available Screenings for the movie
-            List<ScreeningDetails> screenings = await Helper.Screenings.GetAllForMovieInCinema(movieId, cinemaId);
+            List<ScreeningDetails> screenings = await Screenings.AllForMovieInCinema(movieId, cinemaId);
             if (screenings.Count == 0)
             {
                 //If no Screenings found then send back to the Movies/Details page with a message
@@ -67,15 +75,14 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = await Helper.Screenings.DetailsWithMovieAndRoom(id);
+            Screening screening = await Screenings.DetailsWithMovieAndRoom(id);
             if(screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartDate.Add(screening.StartTime) > DateTime.Now)
             {
                 BookingSeatsViewModel seatsModel = new BookingSeatsViewModel
                 {
                     SelectedScreeningId = id,
                     Screening = screening,
-                    Movie = screening.Movie,
-                    OccupiedSeats = string.Join("", await Helper.Bookings.GetSeatsForScreening(id)),
+                    OccupiedSeats = string.Join("", await Bookings.SeatsForScreening(id)),
                     SelectedSeats = ""
                 };
                 return View("Seats", seatsModel);
@@ -94,19 +101,18 @@ namespace VivedyWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ViewResult> Seats(BookingSeatsViewModel model)
         {
-            List<string> seats = Helper.Bookings.ConvertSeats(model.SelectedSeats);
+            List<string> seats = Bookings.ConvertSeats(model.SelectedSeats);
             if (!ModelState.IsValid || seats.Count == 0 || seats.Count > 16)
             {
                 ViewBag.Message = Messages.Error;
-                model.Screening = await Helper.Screenings.DetailsWithMovieAndRoom(model.SelectedScreeningId);
-                model.Movie = model.Screening.Movie;
-                model.OccupiedSeats = string.Join("", await Helper.Bookings.GetSeatsForScreening(model.SelectedScreeningId));
+                model.Screening = await Screenings.DetailsWithMovieAndRoom(model.SelectedScreeningId);
+                model.OccupiedSeats = string.Join("", await Bookings.SeatsForScreening(model.SelectedScreeningId));
                 return View(model);
             }
             
-            Screening screening = await Helper.Screenings.DetailsWithMovieAndRoom(model.SelectedScreeningId);
+            Screening screening = await Screenings.DetailsWithMovieAndRoom(model.SelectedScreeningId);
             if (screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartDate.Add(screening.StartTime) > DateTime.Now
-                && !await Helper.Bookings.AnySeatsOverlapWith(seats, screening.Id))
+                && !await Bookings.AnySeatsOverlapWith(seats, screening.Id))
             {
                 //If user is logged in, then take their email and pass to the model
                 ApplicationUser user = User.Identity.IsAuthenticated
@@ -118,7 +124,6 @@ namespace VivedyWebApp.Controllers
                     SeparateSeats = seats,
                     SelectedScreeningId = model.SelectedScreeningId,
                     Screening = screening,
-                    Movie = screening.Movie,
                     TotalPrice = seats.Count() * screening.Movie.Price,
                     Email = (user != null) ? user.Email : ""
                 };
@@ -126,8 +131,7 @@ namespace VivedyWebApp.Controllers
             }
             ViewBag.Message = Messages.Error;
             model.Screening = screening;
-            model.Movie = screening.Movie;
-            model.OccupiedSeats = string.Join("", await Helper.Bookings.GetSeatsForScreening(model.SelectedScreeningId));
+            model.OccupiedSeats = string.Join("", await Bookings.SeatsForScreening(model.SelectedScreeningId));
             return View(model);
         }
 
@@ -139,18 +143,17 @@ namespace VivedyWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ViewResult> Pay(BookingPayViewModel model)
         {
-            List<string> seats = Helper.Bookings.ConvertSeats(model.SelectedSeats);
+            List<string> seats = Bookings.ConvertSeats(model.SelectedSeats);
             if (!ModelState.IsValid || seats.Count == 0 || seats.Count > 16)
             {
                 ViewBag.Message = Messages.Error;
                 model.SeparateSeats = seats;
-                model.Screening = await Helper.Screenings.DetailsWithMovie(model.SelectedScreeningId);
-                model.Movie = model.Screening.Movie;
+                model.Screening = await Screenings.DetailsWithMovie(model.SelectedScreeningId);
                 return View(model);
             }
-            Screening screening = await Helper.Screenings.DetailsWithMovie(model.SelectedScreeningId);
+            Screening screening = await Screenings.DetailsWithMovie(model.SelectedScreeningId);
             if (screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartDate.Add(screening.StartTime) > DateTime.Now
-                && ! await Helper.Bookings.AnySeatsOverlapWith(seats, screening.Id))
+                && ! await Bookings.AnySeatsOverlapWith(seats, screening.Id))
             {
                 Booking booking = new Booking
                 {
@@ -160,11 +163,11 @@ namespace VivedyWebApp.Controllers
                     ScreeningId = screening.Id
                 };
 
-                Booking newBooking = await Helper.Bookings.Create(booking);
+                Booking newBooking = await Bookings.Create(booking);
                 if (newBooking != null)
                 {
                     newBooking.SeparateSeats = seats;
-                    int result = await Helper.Bookings.SendConfirmationEmail(newBooking);
+                    int result = await Bookings.SendConfirmationEmail(newBooking);
                     if(result < 0)
                     {
                         ViewBag.Message = Messages.FailedBookingEmail;
@@ -180,14 +183,12 @@ namespace VivedyWebApp.Controllers
                     ViewBag.Message = Messages.FailedBooking;
                     model.SeparateSeats = seats;
                     model.Screening = screening;
-                    model.Movie = screening.Movie;
                     return View(model);
                 }
             }
             ViewBag.Message = Messages.Error;
             model.SeparateSeats = seats;
             model.Screening = screening;
-            model.Movie = screening.Movie;
             return View(model);
         }
 

@@ -22,10 +22,14 @@ namespace VivedyWebApp.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
-        /// <summary>
-        /// UserManager instance
-        /// </summary>
+        public UsersController()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            Roles = new RolesManager(db);
+        }
+
         private ApplicationUserManager _userManager;
+        private readonly RolesManager Roles;
 
         public ApplicationUserManager UserManager
         {
@@ -56,7 +60,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                     EmailConfirmed = user.EmailConfirmed,
                     PhoneNumber = user.PhoneNumber,
                     PhoneNumberConfirmed = user.PhoneNumberConfirmed,
-                    Role = UserManager.GetRoleName(user.Roles.First().RoleId),
+                    Role = Roles.RoleName(user.Roles.First().RoleId),
                     UserName = user.UserName
                 });
             }
@@ -86,7 +90,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 EmailConfirmed = user.EmailConfirmed,
                 PhoneNumber = user.PhoneNumber,
                 PhoneNumberConfirmed = user.PhoneNumberConfirmed,
-                Role = UserManager.GetRoleName(user.Roles.First().RoleId),
+                Role = Roles.RoleName(user.Roles.First().RoleId),
                 UserName = user.UserName
             };
             return View(model);
@@ -99,7 +103,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             UsersCreateViewModel model = new UsersCreateViewModel()
             {
-                Roles = await UserManager.GetRoleSelectListItems()
+                Roles = await Roles.SelectListItems()
             };
             return View(model);
         }
@@ -114,7 +118,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Message = Messages.Error;
-                model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
+                model.Roles = await Roles.SelectListItems(model.Role);
                 return View(model);
             }
             var user = new ApplicationUser
@@ -128,7 +132,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             if (!result.Succeeded)
             {
                 ViewBag.Message = Messages.UserCreateFailed;
-                model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
+                model.Roles = await Roles.SelectListItems(model.Role);
                 return View(model);
             }
             var currentUser = await UserManager.FindByEmailAsync(user.Email);
@@ -161,7 +165,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             else
             {
                 ViewBag.Message = Messages.UserFailedVerificationEmail;
-                model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
+                model.Roles = await Roles.SelectListItems(model.Role);
                 return View(model);
             }        
         }
@@ -190,7 +194,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 PhoneNumberConfirmed = user.PhoneNumberConfirmed,
                 Role = user.Roles.First().ToString(),
                 UserName = user.UserName,
-                Roles = await UserManager.GetRoleSelectListItems(UserManager.GetRoleName(user.Roles.First().RoleId))
+                Roles = await Roles.SelectListItems(Roles.RoleName(user.Roles.First().RoleId))
             };
             return View(model);
         }
@@ -205,7 +209,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 ViewBag.Message = Messages.Error;
-                model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
+                model.Roles = await Roles.SelectListItems(model.Role);
                 return View(model);
             }
             ApplicationUser user = await UserManager.FindByIdAsync(model.Id);
@@ -218,7 +222,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             if (!result.Succeeded)
             {
                 ViewBag.Message = Messages.UserEditFailed;
-                model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
+                model.Roles = await Roles.SelectListItems(model.Role);
                 return View(model);
             }
             if (user.Email != model.Email)
@@ -228,7 +232,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 if (!result2.Succeeded)
                 {
                     ViewBag.Message = Messages.UserEditEmailFailed;
-                    model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
+                    model.Roles = await Roles.SelectListItems(model.Role);
                     return View(model);
                 }
                 string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -237,7 +241,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 if (result3 <= 0)
                 {
                     ViewBag.Message = Messages.UserFailedVerificationEmail;
-                    model.Roles = await UserManager.GetRoleSelectListItems(model.Role);
+                    model.Roles = await Roles.SelectListItems(model.Role);
                     return View(model);
                 }
             }
@@ -285,7 +289,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 EmailConfirmed = user.EmailConfirmed,
                 PhoneNumber = user.PhoneNumber,
                 PhoneNumberConfirmed = user.PhoneNumberConfirmed,
-                Role = UserManager.GetRoleName(user.Roles.First().RoleId),
+                Role = Roles.RoleName(user.Roles.First().RoleId),
                 UserName = user.UserName
             };
             ViewBag.ErorMessage = message;

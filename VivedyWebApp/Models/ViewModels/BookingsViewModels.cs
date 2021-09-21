@@ -63,11 +63,6 @@ namespace VivedyWebApp.Models.ViewModels
         public string SelectedSeats { get; set; }
 
         /// <summary>
-        /// Movie selected for the booking
-        /// </summary>
-        public Movie Movie { get; set; }
-
-        /// <summary>
         /// Screening selected for the booking
         /// </summary>
         public Screening Screening { get; set; }
@@ -141,11 +136,6 @@ namespace VivedyWebApp.Models.ViewModels
         /// Total price for the booking
         /// </summary>
         public float TotalPrice { get; set; }
-
-        /// <summary>
-        /// Movie selected for the booking
-        /// </summary>
-        public Movie Movie { get; set; }
 
         /// <summary>
         /// Screening selected for the booking
