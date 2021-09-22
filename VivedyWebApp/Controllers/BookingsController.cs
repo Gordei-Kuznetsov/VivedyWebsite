@@ -82,7 +82,7 @@ namespace VivedyWebApp.Controllers
                 {
                     SelectedScreeningId = id,
                     Screening = screening,
-                    OccupiedSeats = string.Join("", await Bookings.SeatsForScreening(id)),
+                    OccupiedSeats = await Bookings.SeatsForScreening(id),
                     SelectedSeats = ""
                 };
                 return View("Seats", seatsModel);
@@ -106,7 +106,7 @@ namespace VivedyWebApp.Controllers
             {
                 ViewBag.Message = Messages.Error;
                 model.Screening = await Screenings.DetailsWithMovieAndRoom(model.SelectedScreeningId);
-                model.OccupiedSeats = string.Join("", await Bookings.SeatsForScreening(model.SelectedScreeningId));
+                model.OccupiedSeats = await Bookings.SeatsForScreening(model.SelectedScreeningId);
                 return View(model);
             }
             
@@ -131,7 +131,7 @@ namespace VivedyWebApp.Controllers
             }
             ViewBag.Message = Messages.Error;
             model.Screening = screening;
-            model.OccupiedSeats = string.Join("", await Bookings.SeatsForScreening(model.SelectedScreeningId));
+            model.OccupiedSeats = await Bookings.SeatsForScreening(model.SelectedScreeningId);
             return View(model);
         }
 
@@ -167,8 +167,9 @@ namespace VivedyWebApp.Controllers
                 if (newBooking != null)
                 {
                     newBooking.SeparateSeats = seats;
-                    int result = await Bookings.SendConfirmationEmail(newBooking);
-                    if(result < 0)
+                    newBooking.Screening = screening;
+                    int result = await Bookings.SendConfirmationEmail(newBooking, this);
+                    if(result == 0)
                     {
                         ViewBag.Message = Messages.FailedBookingEmail;
                         return View("Error");

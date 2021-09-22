@@ -350,6 +350,10 @@
     <Content Include="Views\Bookings\_SmallSeatsLayout.cshtml" />
     <Content Include="Views\Bookings\_MediumSeatsLayout.cshtml" />
     <Content Include="Views\Bookings\_LargeSeatsLayout.cshtml" />
+    <Content Include="Views\Emails\_BookingEmail.cshtml" />
+    <Content Include="Views\Emails\_RegisterEmail.cshtml" />
+    <Content Include="Views\Emails\_ForgotPasswordEmail.cshtml" />
+    <Content Include="Views\Emails\_ChangePasswordEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

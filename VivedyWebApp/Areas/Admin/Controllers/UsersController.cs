@@ -157,7 +157,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             }
             string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
             var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
-            int result2 = await UserManager.SendRegisterEmailTo(user, callbackUrl);
+            int result2 = await UserManager.SendRegisterEmailTo(user, callbackUrl, this);
             if (result2 > 0)
             {
                 return RedirectToAction("Index", new { message = Messages.UserCreated });
@@ -237,8 +237,8 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 }
                 string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
-                int result3 = await UserManager.SendChangedEmailEmailTo(user, callbackUrl);
-                if (result3 <= 0)
+                int result3 = await UserManager.SendChangedEmailEmailTo(user, callbackUrl, this);
+                if (result3 == 0)
                 {
                     ViewBag.Message = Messages.UserFailedVerificationEmail;
                     model.Roles = await Roles.SelectListItems(model.Role);

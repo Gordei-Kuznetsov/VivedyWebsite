@@ -51,7 +51,7 @@ namespace VivedyWebApp.Models.ViewModels
         /// <summary>
         /// Seats occupied for this Screening
         /// </summary>
-        public string OccupiedSeats { get; set; }
+        public List<string> OccupiedSeats { get; set; }
 
         /// <summary>
         /// Seats selected for the booking

@@ -17,6 +17,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using VivedyWebApp.Models.ViewModels;
 using System.Text.RegularExpressions;
+using System.IO;
+using System.Web.Routing;
 
 namespace VivedyWebApp
 {
@@ -53,6 +55,30 @@ namespace VivedyWebApp
                 return Task.FromResult(0);
             }
             
+        }
+
+        public static string RenderPartialViewToString(Controller controller, string viewName, object model)
+        {
+            using (var sw = new StringWriter())
+            {
+                // Create an MVC Controller Context
+                var wrapper = new HttpContextWrapper(HttpContext.Current);
+
+                RouteData routeData = new RouteData();
+
+                routeData.Values.Add("controller", controller.GetType().Name.ToLower().Replace("controller", ""));
+
+                controller.ControllerContext = new ControllerContext(wrapper, routeData, controller);
+
+                controller.ViewData.Model = model;
+
+                var viewResult = ViewEngines.Engines.FindPartialView(controller.ControllerContext, viewName);
+
+                var viewContext = new ViewContext(controller.ControllerContext, viewResult.View, controller.ViewData, controller.TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+
+                return sw.ToString();
+            }
         }
     }
 
@@ -124,10 +150,10 @@ namespace VivedyWebApp
         /// <summary>
         /// Sends a 'register' email to the user with a security check callback url
         /// </summary>
-        public async Task<int> SendRegisterEmailTo(ApplicationUser user, string callbackUrl)
+        public async Task<int> SendRegisterEmailTo(ApplicationUser user, string callbackUrl, Controller controller)
         {
             string subject = "Email Confirmation";
-            string mailbody = "<b>Hi " + user.Name + "</b><br/>Thank you for regestering on our website. Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
+            string mailbody = VivedyWebApp.EmailService.RenderPartialViewToString(controller, "~/Views/Emails/_RegisterEmail.cshtml", new List<string>() { user.Name, callbackUrl });
             EmailService mailService = new EmailService();
             return await mailService.SendAsync(user.Email, subject, mailbody);
         }
@@ -135,10 +161,10 @@ namespace VivedyWebApp
         /// <summary>
         /// Sends a 'forgot password' email to the user with a security check callback url
         /// </summary>
-        public async Task<int> SendForgotPasswordEmailTo(ApplicationUser user, string callbackUrl)
+        public async Task<int> SendForgotPasswordEmailTo(ApplicationUser user, string callbackUrl, Controller controller)
         {
             string subject = "Password Resetting";
-            string mailbody = "<b>Hi " + user.Name + "</b><br/>Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to reset password for your account on <a href=\"vivedy.azurewebsites.net/Home/Index\">vivedy.azurewebsites.net</a>.";
+            string mailbody = VivedyWebApp.EmailService.RenderPartialViewToString(controller, "~/Views/Emails/_ForgotPasswordEmail.cshtml", new List<string>() { user.Name, callbackUrl });
             EmailService mailService = new EmailService();
             return await mailService.SendAsync(user.Email, subject, mailbody);
         }
@@ -146,10 +172,10 @@ namespace VivedyWebApp
         /// <summary>
         /// Sends a 'changes email' email to the user with a security check callback url
         /// </summary>
-        public async Task<int> SendChangedEmailEmailTo(ApplicationUser user, string callbackUrl)
+        public async Task<int> SendChangedEmailEmailTo(ApplicationUser user, string callbackUrl, Controller controller)
         {
             string subject = "Email Confirmation";
-            string mailbody = "<b>Hi " + user.Name + "</b><br/>You have changed your email address on our website.<br/>Please follow the <a href=\"" + @callbackUrl + "\">link<a/> to confirm your email address.";
+            string mailbody = VivedyWebApp.EmailService.RenderPartialViewToString(controller, "~/Views/Emails/_ChangePasswordEmail.cshtml", new List<string>() { user.Name, callbackUrl });
             EmailService mailService = new EmailService();
             return await mailService.SendAsync(user.Email, subject, mailbody);
         }
@@ -770,45 +796,11 @@ namespace VivedyWebApp
         /// <summary>
         /// Sends a 'booking confirmation' email for the booking
         /// </summary>
-        public async Task<int> SendConfirmationEmail(Booking booking)
+        public async Task<int> SendConfirmationEmail(Booking booking, Controller controller)
         {
-            string htmlSeats = "";
-            foreach (string seat in booking.SeparateSeats)
-            {
-                //can possibly be a rendered SeatsLayout page later
-                htmlSeats += $"<li>{seat}</li>";
-            }
-            Screening screening = await db.Screenings.Where(s => s.Id == booking.ScreeningId).Include(s => s.Movie).FirstOrDefaultAsync();
-
-            //Generating content to put into the QR code for later validation
-            //Includes booking Id and UserEmail
-            string qrCodeData = "VIVEDYBOOKING_" + booking.Id;
+            Screening screening = await db.Screenings.Where(s => s.Id == booking.ScreeningId).Include(s => s.Movie).Include(s => s.Room).FirstOrDefaultAsync();
             string subject = "Booking Confirmation";
-            ApplicationUser user = await db.Users.Where(u => u.Email == booking.UserEmail).FirstAsync();
-            string greeting = user != null ? "<b>Hi " + user.Name + "</b><br/>" : "";
-
-            //Generating an HTML body for the email
-            string mailbody = $"<div id=\"mainEmailContent\" style=\"-webkit-text-size-adjust: 100%; font-family: Verdana,sans-serif;\">" +
-                                $"<img style=\"display: block; margin-left: auto; margin-right: auto; height: 3rem; width: 3rem;\" src=\"http://vivedy.azurewebsites.net/favicon.ico\">" +
-                                greeting +
-                                $"<b><h2 style=\"text-align: center;\">Thank you for purchasing tickets at our website!</h2></b>" +
-                                $"<p>Below are details of your purchase.</p>" +
-                                $"<i><p>Please present this email when you arrive to the cinema to the our stuuf at the entrance to the auditorium.</p></i>" +
-                                $"<div style=\"box-sizing: inherit; padding: 0.01em 16px; margin-top: 16px; margin-bottom: 16px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);\">" +
-                                    $"<h3>{screening.Movie.Name}</h3>" +
-                                    $"<h4><b>Date:</b> {screening.StartDate.ToString("dd MMMM yyyy")}</h4>" +
-                                    $"<h4><b>Time:</b> {screening.StartTime.ToString(@"hh\:mm")}</h4>" +
-                                    $"<h4><b>Your seats:</b> </h4>" +
-                                    $"<ul>" +
-                                        $"{htmlSeats}" +
-                                    $"</ul>" +
-                                    $"<h4><b>Total amount paid:</b> ${booking.PayedAmout}</h4>" +
-                                    $"<br>" +
-                                    $"<img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://api.qrserver.com/v1/create-qr-code/?size=250&bgcolor=255-255-255&color=9-10-15&qzone=0&data=" + qrCodeData + "\" alt=\"Qrcode\">" +
-                                    $"<br>" +
-                                $"</div>" +
-                                $"<p>Go to our <a href=\"vivedy.azurewebsites.net\">website</a> to find more movies!</p>" +
-                              $"</div>";
+            string mailbody = EmailService.RenderPartialViewToString(controller, "~/Views/Emails/_BookingEmail.cshtml", booking);
             EmailService mailService = new EmailService();
             return await mailService.SendAsync(booking.UserEmail, subject, mailbody);
         }

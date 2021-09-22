@@ -1,154 +1,205 @@
-﻿<div id="SmallSeatsLayout">
+﻿@model IEnumerable<string>
+
+<div id="SeatsLayout">
+    @{string taken;}
     <div class="row ">
+        @{taken = Model.Contains("A1") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">A1</div>
+            <div class="seatLable @taken">A1</div>
         </div>
+        @{taken = Model.Contains("A2") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">A2</div>
+            <div class="seatLable @taken">A2</div>
         </div>
+        @{taken = Model.Contains("A3") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">A3</div>
+            <div class="seatLable @taken">A3</div>
         </div>
+        @{taken = Model.Contains("A4") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">A4</div>
+            <div class="seatLable @taken">A4</div>
         </div>
+        @{taken = Model.Contains("A5") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">A5</div>
+            <div class="seatLable @taken">A5</div>
         </div>
+        @{taken = Model.Contains("A6") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">A6</div>
+            <div class="seatLable @taken">A6</div>
         </div>
+        @{taken = Model.Contains("A7") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">A7</div>
+            <div class="seatLable @taken">A7</div>
         </div>
+        @{taken = Model.Contains("A8") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">A8</div>
+            <div class="seatLable @taken">A8</div>
         </div>
+        @{taken = Model.Contains("A9") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">A9</div>
+            <div class="seatLable @taken">A9</div>
         </div>
+        @{taken = Model.Contains("A10") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">A10</div>
+            <div class="seatLable" @taken>A10</div>
         </div>
+        @{taken = Model.Contains("A11") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">A11</div>
+            <div class="seatLable" @taken>A11</div>
         </div>
+        @{taken = Model.Contains("A12") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">A12</div>
+            <div class="seatLable" @taken>A12</div>
         </div>
     </div>
     <div class="row ">
+        @{taken = Model.Contains("B1") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">B1</div>
+            <div class="seatLable @taken">B1</div>
         </div>
+        @{taken = Model.Contains("B2") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">B2</div>
+            <div class="seatLable @taken">B2</div>
         </div>
+        @{taken = Model.Contains("B3") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">B3</div>
+            <div class="seatLable @taken">B3</div>
         </div>
+        @{taken = Model.Contains("B4") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">B4</div>
+            <div class="seatLable @taken">B4</div>
         </div>
+        @{taken = Model.Contains("B5") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">B5</div>
+            <div class="seatLable @taken">B5</div>
         </div>
+        @{taken = Model.Contains("B6") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">B6</div>
+            <div class="seatLable @taken">B6</div>
         </div>
+        @{taken = Model.Contains("B7") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">B7</div>
+            <div class="seatLable @taken">B7</div>
         </div>
+        @{taken = Model.Contains("B8") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">B8</div>
+            <div class="seatLable @taken">B8</div>
         </div>
+        @{taken = Model.Contains("B9") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">B9</div>
+            <div class="seatLable @taken">B9</div>
         </div>
+        @{taken = Model.Contains("B10") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">B10</div>
+            <div class="seatLable" @taken>B10</div>
         </div>
+        @{taken = Model.Contains("B11") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">B11</div>
+            <div class="seatLable" @taken>B11</div>
         </div>
+        @{taken = Model.Contains("B12") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">B12</div>
-        </div>
-    </div>
-    <div class="row ">
-        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">C1</div>
-        </div>
-        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">C2</div>
-        </div>
-        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">C3</div>
-        </div>
-        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">C4</div>
-        </div>
-        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">C5</div>
-        </div>
-        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">C6</div>
-        </div>
-        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">C7</div>
-        </div>
-        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">C8</div>
-        </div>
-        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">C9</div>
-        </div>
-        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">C10</div>
-        </div>
-        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">C11</div>
-        </div>
-        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">C12</div>
+            <div class="seatLable" @taken>B12</div>
         </div>
     </div>
     <div class="row ">
+        @{taken = Model.Contains("C1") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">D1</div>
+            <div class="seatLable @taken">C1</div>
         </div>
+        @{taken = Model.Contains("C2") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">D2</div>
+            <div class="seatLable @taken">C2</div>
         </div>
+        @{taken = Model.Contains("C3") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">D3</div>
+            <div class="seatLable @taken">C3</div>
         </div>
+        @{taken = Model.Contains("C4") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">D4</div>
+            <div class="seatLable @taken">C4</div>
         </div>
+        @{taken = Model.Contains("C5") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">D5</div>
+            <div class="seatLable @taken">C5</div>
         </div>
+        @{taken = Model.Contains("C6") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">D6</div>
+            <div class="seatLable @taken">C6</div>
         </div>
+        @{taken = Model.Contains("C7") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">D7</div>
+            <div class="seatLable @taken">C7</div>
         </div>
+        @{taken = Model.Contains("C8") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">D8</div>
+            <div class="seatLable @taken">C8</div>
         </div>
+        @{taken = Model.Contains("C9") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">D9</div>
+            <div class="seatLable @taken">C9</div>
         </div>
+        @{taken = Model.Contains("C10") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">D10</div>
+            <div class="seatLable" @taken>C10</div>
         </div>
+        @{taken = Model.Contains("C11") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">D11</div>
+            <div class="seatLable" @taken>C11</div>
         </div>
+        @{taken = Model.Contains("C12") ? "taken" : "";}
         <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
-            <div class="seatLable">D12</div>
+            <div class="seatLable" @taken>C12</div>
+        </div>
+    </div>
+    <div class="row ">
+        @{taken = Model.Contains("D1") ? "taken" : "";}
+        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
+            <div class="seatLable @taken">D1</div>
+        </div>
+        @{taken = Model.Contains("D2") ? "taken" : "";}
+        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
+            <div class="seatLable @taken">D2</div>
+        </div>
+        @{taken = Model.Contains("D3") ? "taken" : "";}
+        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
+            <div class="seatLable @taken">D3</div>
+        </div>
+        @{taken = Model.Contains("D4") ? "taken" : "";}
+        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
+            <div class="seatLable @taken">D4</div>
+        </div>
+        @{taken = Model.Contains("D5") ? "taken" : "";}
+        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
+            <div class="seatLable @taken">D5</div>
+        </div>
+        @{taken = Model.Contains("D6") ? "taken" : "";}
+        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
+            <div class="seatLable @taken">D6</div>
+        </div>
+        @{taken = Model.Contains("D7") ? "taken" : "";}
+        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
+            <div class="seatLable @taken">D7</div>
+        </div>
+        @{taken = Model.Contains("D8") ? "taken" : "";}
+        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
+            <div class="seatLable @taken">D8</div>
+        </div>
+        @{taken = Model.Contains("D9") ? "taken" : "";}
+        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
+            <div class="seatLable @taken">D9</div>
+        </div>
+        @{taken = Model.Contains("D10") ? "taken" : "";}
+        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
+            <div class="seatLable" @taken>D10</div>
+        </div>
+        @{taken = Model.Contains("D11") ? "taken" : "";}
+        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
+            <div class="seatLable" @taken>D11</div>
+        </div>
+        @{taken = Model.Contains("D12") ? "taken" : "";}
+        <div class="col-lg-1 col-md-2 col-sm-4 col-6 seatbox">
+            <div class="seatLable" @taken>D12</div>
         </div>
     </div>
 </div>
