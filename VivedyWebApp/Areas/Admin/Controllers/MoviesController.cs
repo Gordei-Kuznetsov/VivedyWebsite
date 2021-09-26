@@ -332,5 +332,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         public static string NoClosedMovies = "There are no closed movies at the moment.";
         public static string ClosedMoviesFailedDelete = "Failed to delete closed movie.\nPlease try again.";
         public static string ClosedMoviesDeleted = "All closed movies deleted.";
+
+        public static BasicMessages<Movie> Movies = new BasicMessages<Movie>();
     }
 }

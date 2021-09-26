@@ -204,4 +204,10 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             }
         }
     }
+
+    public partial class Messages
+    {
+        public static BasicMessages<Room> Rooms = new BasicMessages<Room>();
+    }
+
 }

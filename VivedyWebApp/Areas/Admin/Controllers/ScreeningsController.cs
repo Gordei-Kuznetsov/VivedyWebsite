@@ -293,5 +293,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         public static string NoFinishedScreenings = "There are no finished screenings at the moment.";
         public static string FinishedScreeningsFailedDelete = "Failed to delete finished screenings.\nPlease try again.";
         public static string FinishedScreeningsDeleted = "All finished screenings deleted.";
+
+        public static BasicMessages<Screening> Screenings = new BasicMessages<Screening>();
     }
 }
