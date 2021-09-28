@@ -43,7 +43,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             HomeViewModel model = new HomeViewModel()
             {
-                Screenings = await Screenings.SelectListItems()
+                Screenings = await Screenings.SelectListItemsAsync()
             };
             return View(model);
         }
@@ -62,7 +62,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             try
             {
                 var result = new VerifyBookingsResult();
-                Booking booking = await Bookings.Details(bookingId);
+                Booking booking = await Bookings.DetailsAsync(bookingId);
                 if(booking == null)
                 {
                     result.error = "Invalid booking";
@@ -78,7 +78,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 else
                 {
                     booking.VerificationTime = DateTime.Now;
-                    var edited = await Bookings.Edit(booking);
+                    var edited = await Bookings.EditAsync(booking);
                     if(edited != null)
                     {
                         result.verified = true;

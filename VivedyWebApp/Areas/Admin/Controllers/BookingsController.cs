@@ -33,7 +33,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         public async Task<ActionResult> Index(string message = null)
         {
             ViewBag.Message = message;
-            return View(await Bookings.AllToListWithScreeningsAndMovies());
+            return View(await Bookings.AllWithScreeningsAndMoviesAsync());
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Booking booking = await Bookings.DetailsWithScreeningAndMovie(id);
+            Booking booking = await Bookings.DetailsWithScreeningAndMovieAsync(id);
             if (booking == null)
             {
                 return HttpNotFound();
@@ -62,7 +62,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Booking booking = await Bookings.DetailsWithScreeningAndMovie(id);
+            Booking booking = await Bookings.DetailsWithScreeningAndMovieAsync(id);
             if (booking == null)
             {
                 return HttpNotFound();
@@ -82,12 +82,12 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Booking booking = await Bookings.Details(id);
+            Booking booking = await Bookings.DetailsAsync(id);
             if (booking == null)
             {
                 return HttpNotFound();
             }
-            int result = await Bookings.Delete(booking);
+            int result = await Bookings.DeleteAsync(booking);
             if(result > 0)
             {
                 return RedirectToAction("Index", new { message = Messages.Bookings.Deleted });
@@ -104,7 +104,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         public async Task<ActionResult> DeleteAllOld(string message = null)
         {
 
-            List<Booking> bookings = await Bookings.AllOld();
+            List<Booking> bookings = await Bookings.AllOldAsync();
             if (bookings.Count == 0)
             {
                 return RedirectToAction("Index", new { message = Messages.NoFinishedBookings });
@@ -120,7 +120,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteAllOldConfirmed()
         {
-            int result = await Bookings.DeleteAllOld();
+            int result = await Bookings.DeleteAllOldAsync();
             if (result <= 0)
             {
                 return View("DeleteAllOld", "Bookings", new { message = Messages.FinishedBookingsFailedDelete });

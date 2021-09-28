@@ -35,8 +35,8 @@ namespace VivedyWebApp.Controllers
             ViewBag.Message = message;
             MoviesHomeViewModel model = new MoviesHomeViewModel()
             {
-                ComingSoonMovies = await Movies.AllComming(),
-                TopMovies = await Movies.TopShowing(4)
+                ComingSoonMovies = await Movies.AllCommingAsync(),
+                TopMovies = await Movies.TopShowingAsync(4)
             };
             return View(model);
         }

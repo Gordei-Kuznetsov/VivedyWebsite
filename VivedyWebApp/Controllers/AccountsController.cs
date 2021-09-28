@@ -154,7 +154,7 @@ namespace VivedyWebApp.Controllers
                 await UserManager.AddToRoleAsync(currentUser.Id, "Visitor");
                 string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
-                int result2 = await UserManager.SendRegisterEmailTo(currentUser, callbackUrl, this);
+                int result2 = await UserManager.SendRegisterEmailToAsync(currentUser, callbackUrl, this);
                 if(result2 > 0)
                 {
                     return RedirectToAction("Index", "Home", new { message = Messages.Registered });
@@ -229,7 +229,7 @@ namespace VivedyWebApp.Controllers
             //Sending email to the user with the link to ResetPassword page
             string securityCode = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
             var callbackUrl = Url.Action("ResetPassword", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
-            int result = await UserManager.SendForgotPasswordEmailTo(user, callbackUrl, this);
+            int result = await UserManager.SendForgotPasswordEmailToAsync(user, callbackUrl, this);
             if(result > 0)
             {
                 return RedirectToAction("ForgotPasswordConfirmation", "Accounts");
@@ -333,7 +333,7 @@ namespace VivedyWebApp.Controllers
                 Name = user.Name,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                Bookings = await Bookings.AllComingForUser(user.Email)
+                Bookings = await Bookings.AllComingForUserAsync(user.Email)
             };
             return View(model);
         }
@@ -463,7 +463,7 @@ namespace VivedyWebApp.Controllers
                 //Sending email to the user confirming the email address change
                 string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
-                int result2 = await UserManager.SendChangedEmailEmailTo(user, callbackUrl, this);
+                int result2 = await UserManager.SendChangedEmailEmailToAsync(user, callbackUrl, this);
                 if(result2 > 0)
                 {
                     AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);

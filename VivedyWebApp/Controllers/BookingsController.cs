@@ -43,14 +43,14 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie movie = await Movies.Details(movieId);
-            Cinema cinema = await Cinemas.Details(cinemaId);
+            Movie movie = await Movies.DetailsAsync(movieId);
+            Cinema cinema = await Cinemas.DetailsAsync(cinemaId);
             if( movie == null || cinema == null || movie.ClosingDate < DateTime.Now)
             {
                 return HttpNotFound();
             }
             //Getting available Screenings for the movie
-            List<ScreeningDetails> screenings = await Screenings.AllForMovieInCinema(movieId, cinemaId);
+            List<ScreeningDetails> screenings = await Screenings.AllForMovieInCinemaAsync(movieId, cinemaId);
             if (screenings.Count == 0)
             {
                 //If no Screenings found then send back to the Movies/Details page with a message
@@ -75,14 +75,14 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Screening screening = await Screenings.DetailsWithMovieAndRoom(id);
+            Screening screening = await Screenings.DetailsWithMovieAndRoomAsync(id);
             if(screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartDate.Add(screening.StartTime) > DateTime.Now)
             {
                 BookingSeatsViewModel seatsModel = new BookingSeatsViewModel
                 {
                     SelectedScreeningId = id,
                     Screening = screening,
-                    OccupiedSeats = await Bookings.SeatsForScreening(id),
+                    OccupiedSeats = await Bookings.SeatsForScreeningAsync(id),
                     SelectedSeats = ""
                 };
                 return View("Seats", seatsModel);
@@ -105,14 +105,14 @@ namespace VivedyWebApp.Controllers
             if (!ModelState.IsValid || seats.Count == 0 || seats.Count > 16)
             {
                 ViewBag.Message = Messages.Error;
-                model.Screening = await Screenings.DetailsWithMovieAndRoom(model.SelectedScreeningId);
-                model.OccupiedSeats = await Bookings.SeatsForScreening(model.SelectedScreeningId);
+                model.Screening = await Screenings.DetailsWithMovieAndRoomAsync(model.SelectedScreeningId);
+                model.OccupiedSeats = await Bookings.SeatsForScreeningAsync(model.SelectedScreeningId);
                 return View(model);
             }
             
-            Screening screening = await Screenings.DetailsWithMovieAndRoom(model.SelectedScreeningId);
+            Screening screening = await Screenings.DetailsWithMovieAndRoomAsync(model.SelectedScreeningId);
             if (screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartDate.Add(screening.StartTime) > DateTime.Now
-                && !await Bookings.AnySeatsOverlapWith(seats, screening.Id))
+                && !await Bookings.AnySeatsOverlapWithAsync(seats, screening.Id))
             {
                 //If user is logged in, then take their email and pass to the model
                 ApplicationUser user = User.Identity.IsAuthenticated
@@ -131,7 +131,7 @@ namespace VivedyWebApp.Controllers
             }
             ViewBag.Message = Messages.Error;
             model.Screening = screening;
-            model.OccupiedSeats = await Bookings.SeatsForScreening(model.SelectedScreeningId);
+            model.OccupiedSeats = await Bookings.SeatsForScreeningAsync(model.SelectedScreeningId);
             return View(model);
         }
 
@@ -148,12 +148,12 @@ namespace VivedyWebApp.Controllers
             {
                 ViewBag.Message = Messages.Error;
                 model.SeparateSeats = seats;
-                model.Screening = await Screenings.DetailsWithMovie(model.SelectedScreeningId);
+                model.Screening = await Screenings.DetailsWithMovieAsync(model.SelectedScreeningId);
                 return View(model);
             }
-            Screening screening = await Screenings.DetailsWithMovie(model.SelectedScreeningId);
+            Screening screening = await Screenings.DetailsWithMovieAsync(model.SelectedScreeningId);
             if (screening != null && screening.Movie.ClosingDate > DateTime.Now && screening.StartDate.Add(screening.StartTime) > DateTime.Now
-                && ! await Bookings.AnySeatsOverlapWith(seats, screening.Id))
+                && ! await Bookings.AnySeatsOverlapWithAsync(seats, screening.Id))
             {
                 Booking booking = new Booking
                 {
@@ -163,12 +163,12 @@ namespace VivedyWebApp.Controllers
                     ScreeningId = screening.Id
                 };
 
-                Booking newBooking = await Bookings.Create(booking);
+                Booking newBooking = await Bookings.CreateAsync(booking);
                 if (newBooking != null)
                 {
                     newBooking.SeparateSeats = seats;
                     newBooking.Screening = screening;
-                    int result = await Bookings.SendConfirmationEmail(newBooking, this);
+                    int result = await Bookings.SendConfirmationEmailAsync(newBooking, this);
                     if(result == 0)
                     {
                         ViewBag.Message = Messages.FailedBookingEmail;

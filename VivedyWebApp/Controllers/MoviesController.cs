@@ -36,9 +36,9 @@ namespace VivedyWebApp.Controllers
         {
             MoviesViewModel model = new MoviesViewModel()
             {
-                Movies = (await Movies.AllNotClosed()).OrderByDescending(m => m.ViewerRating).ToList(),
-                Categories = await Movies.CategoriesSelectListItems(),
-                Ratings = await Movies.RatingsSelectListItems()
+                Movies = (await Movies.AllNotClosedAsync()).OrderByDescending(m => m.ViewerRating).ToList(),
+                Categories = await Movies.CategoriesSelectListItemsAsync(),
+                Ratings = await Movies.RatingsSelectListItemsAsync()
             };
             return View(model);
         }
@@ -52,7 +52,7 @@ namespace VivedyWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie movie = await Movies.Details(id);
+            Movie movie = await Movies.DetailsAsync(id);
             if (movie == null || movie.ClosingDate < DateTime.Now)
             {
                 return HttpNotFound();
@@ -60,7 +60,7 @@ namespace VivedyWebApp.Controllers
             MoviesDetailsViewModel model = new MoviesDetailsViewModel()
             {
                 Movie = movie,
-                Cinemas = await Cinemas.CinemasForMovie(id)
+                Cinemas = await Cinemas.CinemasForMovieAsync(id)
             };
             ViewBag.Message = message;
             return View(model);
@@ -72,7 +72,7 @@ namespace VivedyWebApp.Controllers
         [AllowAnonymous]
         public async Task<JsonResult> All()
         {
-            return Json(await Movies.AllToList(), JsonRequestBehavior.AllowGet);
+            return Json(await Movies.AllAsync(), JsonRequestBehavior.AllowGet);
         }
     }
 }

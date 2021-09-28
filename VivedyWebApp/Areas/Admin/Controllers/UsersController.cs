@@ -103,7 +103,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
         {
             UsersCreateViewModel model = new UsersCreateViewModel()
             {
-                Roles = await Roles.SelectListItems()
+                Roles = await Roles.SelectListItemsAsync()
             };
             return View(model);
         }
@@ -118,7 +118,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Message = Messages.Error;
-                model.Roles = await Roles.SelectListItems(model.Role);
+                model.Roles = await Roles.SelectListItemsAsync(model.Role);
                 return View(model);
             }
             var user = new ApplicationUser
@@ -132,7 +132,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             if (!result.Succeeded)
             {
                 ViewBag.Message = Messages.UserCreateFailed;
-                model.Roles = await Roles.SelectListItems(model.Role);
+                model.Roles = await Roles.SelectListItemsAsync(model.Role);
                 return View(model);
             }
             var currentUser = await UserManager.FindByEmailAsync(user.Email);
@@ -157,7 +157,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             }
             string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
             var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
-            int result2 = await UserManager.SendRegisterEmailTo(user, callbackUrl, this);
+            int result2 = await UserManager.SendRegisterEmailToAsync(user, callbackUrl, this);
             if (result2 > 0)
             {
                 return RedirectToAction("Index", new { message = Messages.UserCreated });
@@ -165,7 +165,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             else
             {
                 ViewBag.Message = Messages.UserFailedVerificationEmail;
-                model.Roles = await Roles.SelectListItems(model.Role);
+                model.Roles = await Roles.SelectListItemsAsync(model.Role);
                 return View(model);
             }        
         }
@@ -194,7 +194,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 PhoneNumberConfirmed = user.PhoneNumberConfirmed,
                 Role = user.Roles.First().ToString(),
                 UserName = user.UserName,
-                Roles = await Roles.SelectListItems(Roles.RoleName(user.Roles.First().RoleId))
+                Roles = await Roles.SelectListItemsAsync(Roles.RoleName(user.Roles.First().RoleId))
             };
             return View(model);
         }
@@ -209,7 +209,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 ViewBag.Message = Messages.Error;
-                model.Roles = await Roles.SelectListItems(model.Role);
+                model.Roles = await Roles.SelectListItemsAsync(model.Role);
                 return View(model);
             }
             ApplicationUser user = await UserManager.FindByIdAsync(model.Id);
@@ -222,7 +222,7 @@ namespace VivedyWebApp.Areas.Admin.Controllers
             if (!result.Succeeded)
             {
                 ViewBag.Message = Messages.UserEditFailed;
-                model.Roles = await Roles.SelectListItems(model.Role);
+                model.Roles = await Roles.SelectListItemsAsync(model.Role);
                 return View(model);
             }
             if (user.Email != model.Email)
@@ -232,16 +232,16 @@ namespace VivedyWebApp.Areas.Admin.Controllers
                 if (!result2.Succeeded)
                 {
                     ViewBag.Message = Messages.UserEditEmailFailed;
-                    model.Roles = await Roles.SelectListItems(model.Role);
+                    model.Roles = await Roles.SelectListItemsAsync(model.Role);
                     return View(model);
                 }
                 string securityCode = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, code = securityCode }, protocol: Request.Url.Scheme);
-                int result3 = await UserManager.SendChangedEmailEmailTo(user, callbackUrl, this);
+                int result3 = await UserManager.SendChangedEmailEmailToAsync(user, callbackUrl, this);
                 if (result3 == 0)
                 {
                     ViewBag.Message = Messages.UserFailedVerificationEmail;
-                    model.Roles = await Roles.SelectListItems(model.Role);
+                    model.Roles = await Roles.SelectListItemsAsync(model.Role);
                     return View(model);
                 }
             }
